@@ -269,6 +269,33 @@ html,body{overflow-x:hidden}
 .sched.compact{font-size:.85rem;max-width:420px}
 .sched.compact td{padding:4px 4px}
 
+/* ---------- Series directory ---------- */
+.dir-top{display:flex;gap:8px;align-items:center;margin:4px 0 6px}
+.dir-top .search{margin:0;flex:1;min-width:0}
+.dir-count{font-size:.8rem;color:var(--sub);white-space:nowrap}
+.dir-h{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:1.05rem;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.dir-h small{font-family:var(--ui);font-weight:500;text-transform:none;letter-spacing:0;color:var(--sub);font-size:.8rem}
+.dir-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.srow{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--c);border-radius:var(--r);padding:10px 12px;min-width:0}
+.srow:focus-visible{outline:2px solid var(--signal)}
+.srow .nm{font-weight:700;line-height:1.2}
+.srow .rg{font-size:.8rem;color:var(--sub);margin-top:1px}
+.srow .st{font-size:.82rem;margin-top:4px;overflow-wrap:anywhere}
+.srow .st b{font-weight:600}
+.srow > div{min-width:0}
+.dplate{display:inline-grid;place-items:center;min-width:44px;height:30px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--c);color:var(--plate-ink);font-family:var(--display);font-weight:800;font-size:.82rem;letter-spacing:.02em;white-space:nowrap}
+.intag{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--signal);color:var(--signal-ink);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.lvl{display:inline-block;font-size:.7rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;color:var(--sub);margin-left:4px}
+.d-ow{--c:#D7261E} .d-sc{--c:#0F8A6C} .d-gt{--c:#C2410C} .d-om{--c:#6B7280} .d-stk{--c:#1D4ED8} .d-tc{--c:#7C3AED} .d-ral{--c:#B45309} .d-off{--c:#92400E} .d-drg{--c:#BE123C} .d-dft{--c:#DB2777} .d-dirt{--c:#78350F} .d-gr{--c:#4D7C0F} .d-hc{--c:#0369A1} .d-mr{--c:#0E7490} .d-mx{--c:#A16207} .d-mo{--c:#475569}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .d-ow{--c:#FF6B5E} :root:not([data-theme="light"]) .d-sc{--c:#34C79D} :root:not([data-theme="light"]) .d-gt{--c:#FF8A3D} :root:not([data-theme="light"]) .d-om{--c:#9CA3AF} :root:not([data-theme="light"]) .d-stk{--c:#6FA2EE} :root:not([data-theme="light"]) .d-tc{--c:#B39BFF} :root:not([data-theme="light"]) .d-ral{--c:#F59E0B} :root:not([data-theme="light"]) .d-off{--c:#D6A35C} :root:not([data-theme="light"]) .d-drg{--c:#FB7185} :root:not([data-theme="light"]) .d-dft{--c:#F472B6} :root:not([data-theme="light"]) .d-dirt{--c:#C08A5A} :root:not([data-theme="light"]) .d-gr{--c:#A3E635} :root:not([data-theme="light"]) .d-hc{--c:#38BDF8} :root:not([data-theme="light"]) .d-mr{--c:#3FD6EE} :root:not([data-theme="light"]) .d-mx{--c:#FACC15} :root:not([data-theme="light"]) .d-mo{--c:#CBD5E1}}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:6px 0 0;font-size:.9rem}
+.kv dt{color:var(--sub);font-size:.8rem;padding-top:2px}
+.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.tabs{overflow-x:auto;scrollbar-width:none}
+@media (max-width:640px){ .tabs{display:flex} .tabs .tab{flex:1 1 auto;text-align:center;padding:8px 2px 10px !important;font-size:.9rem !important;letter-spacing:.03em} }
+@media (max-width:350px){ .tabs .tab{font-size:.8rem !important;letter-spacing:.01em} }
+.tabs::-webkit-scrollbar{display:none}
+
 @media (max-width:440px){ .mark{display:none} }
 @media (max-width:360px){
   .brand h1 span{display:none}
@@ -306,6 +333,7 @@ html,body{overflow-x:hidden}
       <button class="tab" role="tab" id="t-weekend" aria-controls="v-weekend" aria-selected="true">Weekend</button>
       <button class="tab" role="tab" id="t-calendar" aria-controls="v-calendar" aria-selected="false">Calendar</button>
       <button class="tab" role="tab" id="t-standings" aria-controls="v-standings" aria-selected="false">Standings</button>
+      <button class="tab" role="tab" id="t-series" aria-controls="v-series" aria-selected="false">Series</button>
     </nav>
   </div>
 </header>
@@ -340,12 +368,20 @@ html,body{overflow-x:hidden}
     <p class="asof">Standings updated Tuesday, October 27, 2026, after the United States Grand Prix (F1 result matches the official classification). WEC Monza session times added Oct 27. Porsche Supercup, Carrera Cup North America and Mustang Challenge added with final 2026 results. Other series last updated October 11. Ask Claude to refresh it after each race weekend.</p>
     <div id="statsBody"></div>
   </section>
+
+  <section class="view" id="v-series" role="tabpanel" aria-labelledby="t-series" hidden>
+    <div class="dir-top"><input class="search" id="dirSearch" type="search" placeholder="Search series, country, car…" aria-label="Search series" autocomplete="off"><span class="dir-count" id="dirCount"></span></div>
+    <div class="chips" id="dirChips" role="toolbar" aria-label="Type of racing"></div>
+    <p class="asof" id="dirAsof"></p>
+    <div id="dirBody"></div>
+  </section>
 </main>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
 </div>
 
+<script src="world.js"></script>
 <script>
 // ---------- Data ----------
 // [id, series, name, circuit, location, start, end, tags[], status]
@@ -1402,16 +1438,89 @@ function closeRace(){
   if (lastFocus) try { lastFocus.focus(); } catch(e){}
 }
 
+
+// ---------- Series directory ----------
+const WORLD_LIST = (window.WORLD && window.WORLD.series) || [];
+const DISC = [
+  ["Open-wheel","d-ow"],["Sports car & endurance","d-sc"],["GT","d-gt"],["One-make","d-om"],
+  ["Stock car","d-stk"],["Touring car","d-tc"],["Rally","d-ral"],["Off-road","d-off"],["Drag","d-drg"],["Drift","d-dft"],
+  ["Dirt oval","d-dirt"],["Hill climb","d-hc"],["Grassroots","d-gr"],
+  ["Motorcycle road racing","d-mr"],["Motocross & supercross","d-mx"],["Motorcycle (other)","d-mo"]];
+const DISC_CLS = Object.fromEntries(DISC);
+const DISC_GROUPS = [["all","All"],["tracked","★ In this app"],["Open-wheel","Open-wheel"],["sportsgt","Sports car & GT"],["stocktour","Stock & touring"],["rallyoff","Rally & off-road"],["dragdrift","Drag, drift & dirt"],["bikes","Motorcycles"]];
+const GROUP_OF = d => ({"Open-wheel":"Open-wheel","Sports car & endurance":"sportsgt","GT":"sportsgt","One-make":"sportsgt","Stock car":"stocktour","Touring car":"stocktour","Rally":"rallyoff","Off-road":"rallyoff","Hill climb":"rallyoff","Drag":"dragdrift","Drift":"dragdrift","Dirt oval":"dragdrift","Grassroots":"dragdrift","Motorcycle road racing":"bikes","Motocross & supercross":"bikes","Motorcycle (other)":"bikes"}[d] || "all");
+let dirGroup = "all", dirQuery = "";
+function dirCode(x){ return x.code || (x.short || x.name).replace(/[^A-Za-z0-9 ]/g,"").split(" ").filter(Boolean).map((w,i,a) => a.length === 1 ? w.slice(0,5) : (/\d/.test(w) ? w : w[0])).join("").slice(0,5).toUpperCase(); }
+function dirLine(x){
+  if (x.champion) return `<span>🏆 <b>${esc(x.champion)}</b></span>`;
+  if (x.leader) return `<span>Leader: <b>${esc(x.leader)}</b></span>${x.next ? `<br><span style="color:var(--sub)">Next: ${esc(x.next)}</span>` : ""}`;
+  if (x.next) return `<span>Next: <b>${esc(x.next)}</b></span>`;
+  return `<span style="color:var(--sub)">${esc(x.season || "")}</span>`;
+}
+function renderDirChips(){
+  const n = g => g === "all" ? WORLD_LIST.length : g === "tracked" ? WORLD_LIST.filter(x => x.app).length : WORLD_LIST.filter(x => GROUP_OF(x.discipline) === g).length;
+  document.getElementById("dirChips").innerHTML = DISC_GROUPS.map(([v, l]) => `<button class="chip txt" data-v="${v}" aria-pressed="${dirGroup === v}">${esc(l)} <span style="color:var(--sub);font-weight:500">${n(v)}</span></button>`).join("");
+}
+function renderDir(){
+  const q = dirQuery.trim().toLowerCase();
+  let list = WORLD_LIST.filter(x => dirGroup === "all" || (dirGroup === "tracked" ? x.app : GROUP_OF(x.discipline) === dirGroup));
+  if (q) list = list.filter(x => [x.name, x.short, x.region, x.cars, x.discipline, x.level, x.about, x.champion, x.leader].join(" ").toLowerCase().includes(q));
+  document.getElementById("dirCount").textContent = `${list.length} series`;
+  document.getElementById("dirAsof").textContent = (window.WORLD && window.WORLD.asof) ? `Every series we could verify, worldwide. Champions, leaders and next rounds checked ${window.WORLD.asof}. ★ = full calendar, times and results in this app.` : "";
+  let h = "";
+  for (const [d, cls] of DISC) {
+    const g = list.filter(x => x.discipline === d);
+    if (!g.length) continue;
+    g.sort((a, b) => (b.app ? 1 : 0) - (a.app ? 1 : 0) || LVL_RANK(a.level) - LVL_RANK(b.level) || a.name.localeCompare(b.name));
+    h += `<h3 class="dir-h">${esc(d)} <small>${g.length}</small></h3><div class="dir-list">` + g.map(x =>
+      `<button class="srow ${cls}" data-world="${esc(x.id)}" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div></div></button>`).join("") + `</div>`;
+  }
+  document.getElementById("dirBody").innerHTML = h || `<div class="card"><p class="lede" style="margin:0">No series match “${esc(dirQuery)}”.</p></div>`;
+}
+const LVL_RANK = l => ["World championship","International","National","Feeder","One-make"].indexOf(l) + 1 || 9;
+function openWorld(id){
+  const x = WORLD_LIST.find(s => s.id === id); if (!x) return;
+  const cls = DISC_CLS[x.discipline] || "d-mo";
+  const row = (k, v) => v || v === 0 ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : "";
+  let h = `<div class="sh-head ${cls}"><span class="dplate" style="height:38px;min-width:54px;font-size:.95rem">${esc(dirCode(x))}</span>
+    <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? " · " + esc(x.level) : ""}</span><h2 id="sheetTitle">${esc(x.name)}</h2><div class="m">${esc(x.region || "")}</div></div>
+    <button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
+  if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
+  h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
+  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
+  h += `<section class="card"><h3>Watch in the US</h3><p style="margin:2px 0 0">${esc(x.watch_us || "Check the series website")}</p><div class="mine" style="margin:12px 0 0">`;
+  if (x.app) h += `<button class="btn star" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
+  if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
+  h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
+  const sheet = document.getElementById("sheet");
+  sheet.innerHTML = h; sheet.scrollTop = 0;
+  lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("sheetClose").focus();
+}
+document.getElementById("dirChips").addEventListener("click", ev => {
+  const b = ev.target.closest(".chip"); if (!b) return;
+  dirGroup = b.dataset.v; renderDirChips(); renderDir();
+});
+document.getElementById("dirSearch").addEventListener("input", ev => { dirQuery = ev.target.value; renderDir(); });
+document.addEventListener("click", ev => {
+  const w = ev.target.closest("[data-world]");
+  if (w) { openWorld(w.dataset.world); return; }
+  const g = ev.target.closest("[data-goapp]");
+  if (g) { closeRace(); const s = g.dataset.goapp; calSeries = s; view = "season"; document.querySelectorAll("#viewSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === "season")); renderCalChips(); renderList(); showTab("calendar"); }
+});
+
 // ---------- Tabs & events ----------
 function showTab(name){
-  for (const n of ["weekend","calendar","standings"]) {
+  for (const n of ["weekend","calendar","standings","series"]) {
     document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
     document.getElementById("v-" + n).hidden = n !== name;
   }
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
+function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); }
 
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
@@ -1475,9 +1584,9 @@ renderAll();
 initAccounts();
 (() => {
   const h = (location.hash || "").slice(1);
-  let t = ["weekend","calendar","standings"].includes(h) ? h : null;
+  let t = ["weekend","calendar","standings","series"].includes(h) ? h : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
-  showTab(["weekend","calendar","standings"].includes(t) ? t : "weekend");
+  showTab(["weekend","calendar","standings","series"].includes(t) ? t : "weekend");
 })();
 setInterval(renderAll, 60 * 60 * 1000);
 

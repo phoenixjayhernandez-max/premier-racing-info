@@ -28,3 +28,7 @@ Your stars and Going/Watched marks are saved on each phone.
 - ★ (top right): follow drivers and teams. They get a card on the Weekend tab and a ★ in every table. Saved on the phone.
 - 🔔 (top right): subscribe to a calendar per series. Every session with a published start time gets a
   30-minute alert. Calendars live in `calendar/` and are rebuilt with `node tools/build-ics.mjs`.
+
+## Series directory
+
+The **Series** tab lists racing series from around the world (open-wheel, sports cars and GT, stock and touring cars, rally and off-road, drag, drift and motorcycles). The data is in `world.js`: one entry per series with its 2026 champion or leader, next round, where to watch in the US and the official site. Series marked ★ In app have full calendars, times and results in the app.
