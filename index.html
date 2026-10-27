@@ -195,7 +195,11 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .maker small{color:var(--sub);font-weight:500;margin-left:5px}
 
 /* Favorites */
-.hbtns{margin-left:auto;display:flex;gap:6px}
+.hbtns{margin-left:auto;display:flex;gap:6px;flex:none}
+.brand{min-width:0}
+.brand h1{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.sh-head > div{min-width:0}
+html,body{overflow-x:hidden}
 .hbtn.alt{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
 .hbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:.8rem;padding:5px 10px;border-radius:999px;background:var(--signal);color:var(--signal-ink);white-space:nowrap;width:34px;height:34px;padding:0;justify-content:center;font-size:1rem}
 .hbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
@@ -232,6 +236,11 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .stats4 div{background:var(--panel-2);border-radius:8px;padding:8px;text-align:center}
 .stats4 b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1}
 .stats4 span{font-size:.72rem;color:var(--sub)}
+.install{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--signal);border-radius:var(--r);padding:10px 12px;margin-bottom:16px}
+.install img{width:40px;height:40px;border-radius:9px;flex:none}
+.install .tx{flex:1;min-width:0;font-size:.88rem}
+.install .tx b{display:block;font-size:.95rem}
+.install .x2{all:unset;cursor:pointer;color:var(--sub);font-size:1.2rem;padding:4px 6px}
 /* Sheet */
 .sheet-bg[hidden]{display:none}
 .sheet-bg{position:fixed;inset:0;background:rgba(5,8,12,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center}
@@ -260,12 +269,21 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .sched.compact{font-size:.85rem;max-width:420px}
 .sched.compact td{padding:4px 4px}
 
+@media (max-width:440px){ .mark{display:none} }
+@media (max-width:360px){
+  .brand h1 span{display:none}
+  .tab{padding:8px 8px 10px;font-size:.92rem}
+}
 @media (max-width:640px){
   .board{grid-template-columns:1fr}
   .count{min-height:0;flex-direction:row;align-items:flex-end;gap:12px}
   .row{grid-template-columns:44px auto 1fr auto;gap:10px;padding:9px 10px}
   .ev h3{font-size:1.25rem}
   .tab{padding:8px 10px 10px;font-size:.98rem}
+  .brand{gap:8px}
+  .brand h1{font-size:1.15rem}
+  .hbtn{width:32px;height:32px;font-size:.92rem}
+  .hbtns{gap:5px}
   .tower td{padding:6px 6px}
   .tower .num{font-size:.92rem}
   .tower .who{font-size:.92rem}
@@ -294,6 +312,7 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
+    <div id="installBox"></div>
     <div id="weekendTop"></div>
     <div class="sec" id="favSec"></div>
     <details class="sec more-sec">
@@ -1063,21 +1082,22 @@ async function initAccounts(){
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
   document.getElementById("acctBtn").hidden = false;
   try {
-    await new Promise((ok, bad) => { const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"; sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc); });
+    await new Promise((ok, bad) => { const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"; sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc); });
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
     const { data } = await sb.auth.getSession();
     me = data.session ? data.session.user : null;
     if (me) await cloudPull();
     sb.auth.onAuthStateChange((_e, session) => { me = session ? session.user : null; });
-  } catch(e) { sb = null; }
+  } catch(e) { sb = null; acctError = "The sign-in service didn't load. Check your connection and reopen the app."; }
 }
+let acctError = "";
 let acctMode = "signup";
 function openAccount(msg){
   const sheet = document.getElementById("sheet");
   const head = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="19" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">👤</text></svg>
     <div><h2 id="sheetTitle">${me ? esc(myName || "Your account") : "Your account"}</h2><div class="m">${me ? esc(me.email || "") : "Save your favorites and races on every device"}</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
   let body;
-  if (!sb) body = `<div class="empty">Accounts aren't available right now. Check your connection and try again.</div>`;
+  if (!sb) body = `<div class="empty">${esc(acctError || "Accounts are still loading. Try again in a few seconds.")}</div>`;
   else if (me) {
     const n = k => Object.keys(state[k]).length;
     const been = events.filter(e => state.going[e.id] && phase(e) === "past");
@@ -1126,6 +1146,38 @@ function openAccount(msg){
   const so = document.getElementById("signOut");
   if (so) so.addEventListener("click", async () => { await sb.auth.signOut(); me = null; myName = ""; syncState = ""; openAccount(); });
 }
+
+// ---------- Install as an app (iPhone, Android, Mac, Windows) ----------
+let deferredInstall = null;
+const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+function platform(){
+  const ua = navigator.userAgent, iOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (iOS) return "ios";
+  if (/Android/.test(ua)) return "android";
+  if (/Macintosh/.test(ua) && /Safari/.test(ua) && !/Chrome|Chromium|Edg|Firefox/.test(ua)) return "macsafari";
+  if (/Firefox/.test(ua)) return "firefox";
+  return "chromium";
+}
+function installHow(){
+  const p = platform();
+  if (deferredInstall) return { btn: true, text: "Add it to your " + (p === "android" ? "home screen" : "computer") + " so it opens like an app." };
+  if (p === "ios") return { text: "Tap Share (the square with the arrow), then Add to Home Screen." };
+  if (p === "macsafari") return { text: "In the menu bar, choose File → Add to Dock." };
+  if (p === "android") return { text: "Open the browser menu (⋮), then Install app or Add to Home screen." };
+  if (p === "firefox") return { text: "Firefox can't install apps. Open this page in Chrome, Edge or Safari to install it." };
+  return { text: "Click the install icon at the right end of the address bar, or open the browser menu and choose Install." };
+}
+function renderInstall(){
+  const el = document.getElementById("installBox");
+  let hidden = isStandalone();
+  try { if (localStorage.getItem(KEY + "-installhide") === "1" && !deferredInstall) hidden = true; } catch(e){}
+  if (hidden) { el.innerHTML = ""; return; }
+  const h = installHow();
+  el.innerHTML = `<div class="install"><img src="icons/icon-192.png" alt=""><div class="tx"><b>Get the Racing Info app</b>${esc(h.text)}</div>
+    ${h.btn ? `<button class="btn star" aria-pressed="true" id="doInstall">Install</button>` : ""}<button class="x2" id="hideInstall" aria-label="Hide">×</button></div>`;
+}
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; renderInstall(); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; renderInstall(); });
 
 // ---------- Reminders (calendar subscription) ----------
 function openReminders(){
@@ -1359,7 +1411,7 @@ function showTab(name){
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
+function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
 
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
@@ -1384,6 +1436,8 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("#favBtn") || ev.target.closest("[data-favpick]")) { openFavPicker(); return; }
   if (ev.target.closest("#bellBtn")) { openReminders(); return; }
   if (ev.target.closest("#acctBtn")) { openAccount(); return; }
+  if (ev.target.closest("#doInstall")) { if (deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; renderInstall(); }); } return; }
+  if (ev.target.closest("#hideInstall")) { try { localStorage.setItem(KEY + "-installhide", "1"); } catch(e){} document.getElementById("installBox").innerHTML = ""; return; }
   const pc = ev.target.closest("#pickChips .chip");
   if (pc) { pickSeries = pc.dataset.v; pickQuery = ""; openFavPicker(); return; }
   const pk = ev.target.closest(".pk");
