@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E1319">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Racing Info">
+<meta name="description" content="F1, IMSA, WEC, GT World Challenge, Porsche Cups and Mustang Challenge: race weekends, results, standings and start times in Texas time.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Premier Racing Info</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Saira:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a pit-wall app — sticky header + three tabs (Weekend / Calendar / Standings); timing-tower lists; series plates as the visual system. */
+:root{
+  --bg:#E6E9ED; --panel:#FFFFFF; --panel-2:#F3F5F7; --ink:#0E1319; --sub:#576172; --rule:#D2D8DF;
+  --signal:#FFD100; --signal-ink:#111; --plate-ink:#FFFFFF; --done:#9AA3AE;
+  --f1:#D7261E; --imsa:#2563B8; --wec:#0F8A6C; --gtwc:#C2410C; --gte:#6D28D9; --gtas:#BE185D; --gtau:#0E7490; --psc:#4B5563; --pccna:#3F6212; --mustang:#7F1D1D;
+  --display:"Saira Condensed","Arial Narrow",system-ui,sans-serif;
+  --ui:"Saira","Segoe UI",system-ui,sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B0F14; --panel:#141A21; --panel-2:#1B222B; --ink:#EDF1F5; --sub:#97A3B4; --rule:#29323D;
+    --signal:#FFD100; --signal-ink:#111; --plate-ink:#0B0F14; --done:#5D6878;
+    --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B0F14; --panel:#141A21; --panel-2:#1B222B; --ink:#EDF1F5; --sub:#97A3B4; --rule:#29323D;
+  --signal:#FFD100; --signal-ink:#111; --plate-ink:#0B0F14; --done:#5D6878;
+  --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.f1{--c:var(--f1)} .imsa{--c:var(--imsa)} .wec{--c:var(--wec)} .gtwc{--c:var(--gtwc)} .gte{--c:var(--gte)} .gtas{--c:var(--gtas)} .gtau{--c:var(--gtau)} .psc{--c:var(--psc)} .pccna{--c:var(--pccna)} .mustang{--c:var(--mustang)}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--rule)}
+.top-in{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:12px 0}
+.brand{display:flex;align-items:center;gap:10px}
+.brand h1{white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(1.25rem,5.5vw,1.65rem);letter-spacing:.01em;margin:0;line-height:1;text-transform:uppercase}
+.brand h1 span{color:var(--sub);font-weight:600}
+.mark{width:26px;height:26px;flex:none}
+.sync{margin-left:auto;font-size:.75rem;color:var(--sub);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--done);display:inline-block}
+.sync.on i{background:var(--wec)}
+.tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.tab{all:unset;cursor:pointer;font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);padding:8px 14px 10px;border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--signal)}
+.tab:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+
+main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
+.view[hidden]{display:none}
+.h2{font-family:var(--display);font-weight:800;font-size:1.5rem;text-transform:uppercase;letter-spacing:.02em;margin:0 0 4px;line-height:1.05;text-wrap:balance}
+.kicker{font-size:.8rem;color:var(--sub);margin:0 0 14px}
+.sec{margin-top:28px}
+
+/* Series plate */
+.plate{display:block;flex:none}
+.plate text{font-family:var(--display);font-weight:800;fill:var(--plate-ink)}
+
+/* Chips (filters) */
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;flex:none;background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:4px 12px 4px 5px;font-weight:600;font-size:.85rem;white-space:nowrap}
+.chip.txt{padding:6px 14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:3px;gap:2px}
+.seg button{all:unset;cursor:pointer;font-weight:600;font-size:.85rem;padding:5px 12px;border-radius:6px;color:var(--sub)}
+.seg button[aria-pressed="true"]{background:var(--panel-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule)}
+.seg button:focus-visible{outline:2px solid var(--signal)}
+.bar-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--sub);cursor:pointer}
+.toggle input{accent-color:var(--ink);width:16px;height:16px;margin:0}
+
+/* Weekend hero */
+.board{display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:14px;align-items:stretch}
+.count{background:var(--signal);color:var(--signal-ink);border-radius:var(--r);padding:16px 52px 16px 18px;display:flex;flex-direction:column;justify-content:space-between;min-height:150px;position:relative;overflow:hidden}
+.count::after{content:"";position:absolute;right:-14px;top:0;bottom:0;width:44px;background:repeating-conic-gradient(#111 0 25%,transparent 0 50%) 0 0/14px 14px;opacity:.9}
+.count .lbl{font-family:var(--display);font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.06em;position:relative;z-index:1}
+.count .num{font-family:var(--display);font-weight:800;font-size:clamp(3.6rem,13vw,5.6rem);line-height:.82;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+.stack{display:grid;gap:10px}
+.ev{background:var(--panel);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;cursor:pointer;border:1px solid var(--rule);position:relative}
+.ev::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 3px 3px 0;background:var(--c)}
+.ev:hover{border-color:var(--sub)}
+.ev .pl{grid-row:span 3;align-self:start;margin-top:2px}
+.ev h3{font-family:var(--display);font-weight:700;font-size:1.45rem;line-height:1.05;margin:0;text-wrap:balance}
+.ev .meta{color:var(--sub);font-size:.85rem}
+.ev .res{font-weight:600;font-size:.9rem;margin-top:4px}
+.ev .acts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:var(--panel-2);color:var(--sub);border:1px solid var(--rule);vertical-align:middle}
+.status.live{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+.status.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal-ink);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.status.live::before{animation:none}}
+
+/* Series progress */
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.sp{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:2px 12px;cursor:pointer}
+.sp:hover{border-color:var(--sub)}
+.sp .pl{grid-row:span 3}
+.sp .t{font-weight:600;font-size:.9rem;line-height:1.2}
+.sp .n{font-size:.82rem;color:var(--sub)}
+.prog{grid-column:2;display:flex;gap:2px;margin-top:6px}
+.prog i{flex:1;height:6px;border-radius:2px;background:var(--rule)}
+.prog i.d{background:var(--c)}
+.prog i.now{background:var(--signal)}
+
+/* Buttons */
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:6px;background:var(--panel-2);border:1px solid var(--rule);color:var(--ink);text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--sub)}
+.btn.watch{background:var(--c);border-color:var(--c);color:var(--plate-ink)}
+.btn .free{font-size:.66rem;font-weight:800;background:var(--signal);color:var(--signal-ink);border-radius:3px;padding:0 4px}
+.btn:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.star[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+
+/* Calendar */
+.month{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin:22px 0 8px;display:flex;align-items:center;gap:10px}
+.month::after{content:"";flex:1;height:1px;background:var(--rule)}
+.list{display:grid;gap:6px}
+.row{display:grid;grid-template-columns:52px auto 1fr auto;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;cursor:pointer}
+.row:hover{border-color:var(--sub)}
+.row.now{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal)}
+.row.past{background:var(--panel-2)}
+.row.past .nm,.row.past .dt b{color:var(--sub)}
+.row.cancelled .nm{text-decoration:line-through;color:var(--done)}
+.dt{text-align:center;font-family:var(--display);line-height:1}
+.dt b{display:block;font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums}
+.dt span{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.body{min-width:0}
+.nm{font-weight:600;font-size:1rem;line-height:1.25}
+.loc{color:var(--sub);font-size:.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.tag{font-size:.7rem;font-weight:600;padding:1px 7px;border-radius:4px;background:var(--panel-2);color:var(--sub);border:1px solid var(--rule)}
+.tag.win{color:var(--ink);border-color:var(--signal);background:transparent}
+.tag.clash{border-style:dashed}
+.staricon{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:8px;font-size:1.15rem;color:var(--done)}
+.staricon[aria-pressed="true"]{color:var(--signal-ink);background:var(--signal)}
+.staricon:focus-visible{outline:2px solid var(--signal)}
+.empty{background:var(--panel);border:1px dashed var(--rule);border-radius:var(--r);padding:28px 20px;text-align:center;color:var(--sub)}
+
+/* Standings / tables */
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card > h3{font-family:var(--display);font-weight:800;font-size:1.25rem;text-transform:uppercase;letter-spacing:.03em;margin:0 0 2px}
+.card h4{font-family:var(--display);font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.05em;margin:18px 0 6px;color:var(--sub)}
+.card .lede{color:var(--sub);margin:0 0 10px;font-size:.88rem}
+.card .story{margin:0 0 10px;max-width:65ch}
+.asof{font-size:.8rem;color:var(--sub);margin:0 0 14px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tower{width:100%;border-collapse:separate;border-spacing:0 3px;font-variant-numeric:tabular-nums}
+.tower th{text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);padding:2px 8px}
+.tower td{background:var(--panel-2);padding:7px 8px;vertical-align:middle}
+.tower td:first-child{border-radius:6px 0 0 6px}
+.tower td:last-child{border-radius:0 6px 6px 0}
+.tower .pos{width:2.4em;text-align:center;font-family:var(--display);font-weight:800;font-size:1.1rem;background:var(--ink);color:var(--bg)}
+.tower tr.p1 .pos{background:var(--signal);color:var(--signal-ink)}
+.tower .stripe{width:4px;padding:0;background:var(--c)}
+.tower .who{font-weight:600}
+.tower .sub{font-size:.78rem;color:var(--sub);font-weight:500}
+.tower .num{text-align:right;font-family:var(--display);font-weight:700;font-size:1.05rem;white-space:nowrap}
+.tower .gap{text-align:right;font-size:.78rem;color:var(--sub);white-space:nowrap}
+.carno{display:inline-block;min-width:2.2em;text-align:center;font-family:var(--display);font-weight:800;font-size:.85rem;border:1.5px solid var(--ink);border-radius:4px;padding:0 4px;margin-right:6px}
+.pbar{height:4px;background:var(--rule);border-radius:2px;margin-top:4px}
+.pbar span{display:block;height:100%;background:var(--c);border-radius:2px}
+.champs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.champ{background:var(--panel-2);border-radius:8px;padding:10px 12px;border-top:3px solid var(--signal)}
+.champ .cl{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.champ .w{font-weight:700;margin-top:2px}
+.champ .x{font-size:.82rem;color:var(--sub)}
+.teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.team{background:var(--panel-2);border-radius:8px;padding:10px 12px;border-left:3px solid var(--c)}
+.team .a{font-weight:700}
+.team .b{font-size:.8rem;color:var(--sub)}
+.team .d{font-size:.9rem;margin-top:3px}
+.notes{margin:0;padding-left:18px;max-width:70ch}
+.notes li{margin-bottom:4px}
+.fine{font-size:.78rem;color:var(--sub);margin:8px 0 0}
+.makers{display:flex;flex-wrap:wrap;gap:6px}
+.maker{background:var(--panel-2);border-radius:6px;padding:5px 10px;font-weight:600;font-size:.88rem}
+.maker small{color:var(--sub);font-weight:500;margin-left:5px}
+
+/* Sheet */
+.sheet-bg[hidden]{display:none}
+.sheet-bg{position:fixed;inset:0;background:rgba(5,8,12,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:760px;max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:0 16px calc(28px + env(safe-area-inset-bottom,0px))}
+@media (min-width:720px){.sheet-bg{align-items:center}.sheet{border-radius:14px;max-height:88vh}}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}}
+.sh-head{position:sticky;top:0;z-index:2;background:var(--bg);padding:16px 0 12px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;border-bottom:3px solid var(--c);margin-bottom:14px}
+.sh-head h2{font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.02;margin:4px 0 2px;text-transform:uppercase;text-wrap:balance}
+.sh-head .m{color:var(--sub);font-size:.88rem}
+.close{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--rule);font-size:1.25rem}
+.close:focus-visible{outline:2px solid var(--signal)}
+.mine{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.fact{background:var(--panel-2);border-radius:8px;padding:8px 10px}
+.fact .k{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.fact .v{font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.1}
+.sched{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+.sched td{padding:6px 4px;border-bottom:1px solid var(--rule)}
+.sched td:last-child{text-align:right;font-weight:700}
+.sched tr:last-child td{border-bottom:0}
+.sched tr.done td{color:var(--done);text-decoration:line-through}
+.sched tr.sup td{color:var(--sub);font-size:.85em}
+.sched tr.nx td{background:var(--signal);color:var(--signal-ink)}
+.sched tr.nx td:first-child{border-radius:4px 0 0 4px;padding-left:8px}
+.sched tr.nx td:last-child{border-radius:0 4px 4px 0;padding-right:8px}
+.sched.compact{font-size:.85rem;max-width:420px}
+.sched.compact td{padding:4px 4px}
+
+@media (max-width:640px){
+  .board{grid-template-columns:1fr}
+  .count{min-height:0;flex-direction:row;align-items:flex-end;gap:12px}
+  .row{grid-template-columns:44px auto 1fr auto;gap:10px;padding:9px 10px}
+  .ev h3{font-size:1.25rem}
+  .tab{padding:8px 10px 10px;font-size:.98rem}
+  .tower td{padding:6px 6px}
+  .tower .num{font-size:.92rem}
+  .tower .who{font-size:.92rem}
+  .sync b{display:none}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
+      <h1>Premier Racing <span>Info</span></h1>
+      <span class="sync" id="sync"><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="t-weekend" aria-controls="v-weekend" aria-selected="true">Weekend</button>
+      <button class="tab" role="tab" id="t-calendar" aria-controls="v-calendar" aria-selected="false">Calendar</button>
+      <button class="tab" role="tab" id="t-standings" aria-controls="v-standings" aria-selected="false">Standings</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
+    <div id="weekendTop"></div>
+    <div class="sec">
+      <h2 class="h2">Season progress</h2>
+      <p class="kicker">Each block is a round. Tap a series to see its calendar.</p>
+      <div class="series-grid" id="seriesGrid"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-calendar" role="tabpanel" aria-labelledby="t-calendar" hidden>
+    <div class="chips" id="calChips" role="toolbar" aria-label="Series"></div>
+    <div class="bar-row">
+      <div class="seg" id="viewSeg">
+        <button data-v="upcoming" aria-pressed="true">Upcoming</button>
+        <button data-v="season" aria-pressed="false">Full season</button>
+        <button data-v="mine" aria-pressed="false">My weekends</button>
+      </div>
+      <label class="toggle"><input type="checkbox" id="showCancelled"> Show cancelled</label>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <section class="view" id="v-standings" role="tabpanel" aria-labelledby="t-standings" hidden>
+    <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
+    <p class="asof">Standings updated Tuesday, October 27, 2026, after the United States Grand Prix (F1 result matches the official classification). WEC Monza session times added Oct 27. Porsche Supercup, Carrera Cup North America and Mustang Challenge added with final 2026 results. Other series last updated October 11. Ask Claude to refresh it after each race weekend.</p>
+    <div id="statsBody"></div>
+  </section>
+</main>
+
+<div class="sheet-bg" id="sheetBg" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
+</div>
+
+<script>
+// ---------- Data ----------
+// [id, series, name, circuit, location, start, end, tags[], status]
+const RAW = [
+  // IMSA WeatherTech SportsCar Championship
+  ["imsa-daytona","imsa","Rolex 24 at Daytona","Daytona International Speedway","Daytona Beach, FL","2026-01-22","2026-01-25",["24 hours","Endurance Cup"]],
+  ["imsa-sebring","imsa","Twelve Hours of Sebring","Sebring International Raceway","Sebring, FL","2026-03-18","2026-03-21",["12 hours","Endurance Cup"]],
+  ["imsa-longbeach","imsa","Grand Prix of Long Beach","Streets of Long Beach","Long Beach, CA","2026-04-17","2026-04-18",["Street circuit","GTP + GTD"]],
+  ["imsa-laguna","imsa","Laguna Seca","WeatherTech Raceway Laguna Seca","Monterey, CA","2026-05-01","2026-05-03",[]],
+  ["imsa-detroit","imsa","Detroit Grand Prix","Streets of Detroit","Detroit, MI","2026-05-29","2026-05-30",["Street circuit","GTP + GTD Pro"]],
+  ["imsa-glen","imsa","Six Hours of The Glen","Watkins Glen International","Watkins Glen, NY","2026-06-25","2026-06-28",["6 hours","Endurance Cup"]],
+  ["imsa-ctmp","imsa","Canadian Tire Motorsport Park","Canadian Tire Motorsport Park","Bowmanville, ON","2026-07-10","2026-07-12",[]],
+  ["imsa-roadam","imsa","Motul SportsCar Endurance Grand Prix","Road America","Elkhart Lake, WI","2026-07-30","2026-08-02",["6 hours","Endurance Cup"]],
+  ["imsa-vir","imsa","VIRginia International Raceway","VIRginia International Raceway","Alton, VA","2026-08-21","2026-08-23",["GT only"]],
+  ["imsa-indy","imsa","Battle on the Bricks","Indianapolis Motor Speedway","Indianapolis, IN","2026-09-18","2026-09-20",[]],
+  ["imsa-petit","imsa","Petit Le Mans","Michelin Raceway Road Atlanta","Braselton, GA","2026-09-30","2026-10-03",["10 hours","Endurance Cup","Finale"]],
+
+  // Formula 1
+  ["f1-aus","f1","Australian Grand Prix","Albert Park","Melbourne","2026-03-06","2026-03-08",[]],
+  ["f1-chn","f1","Chinese Grand Prix","Shanghai International Circuit","Shanghai","2026-03-13","2026-03-15",["Sprint"]],
+  ["f1-jpn","f1","Japanese Grand Prix","Suzuka","Suzuka","2026-03-27","2026-03-29",[]],
+  ["f1-bhr-orig","f1","Bahrain Grand Prix","Bahrain International Circuit","Sakhir","2026-04-10","2026-04-12",["Moved to Sepang in October"],"cancelled"],
+  ["f1-sau","f1","Saudi Arabian Grand Prix","Jeddah Corniche Circuit","Jeddah","2026-04-17","2026-04-19",[],"cancelled"],
+  ["f1-mia","f1","Miami Grand Prix","Miami International Autodrome","Miami, FL","2026-05-01","2026-05-03",["Sprint"]],
+  ["f1-can","f1","Canadian Grand Prix","Circuit Gilles Villeneuve","Montréal","2026-05-22","2026-05-24",["Sprint"]],
+  ["f1-mon","f1","Monaco Grand Prix","Circuit de Monaco","Monte Carlo","2026-06-05","2026-06-07",[]],
+  ["f1-bcn","f1","Barcelona-Catalunya Grand Prix","Circuit de Barcelona-Catalunya","Barcelona","2026-06-12","2026-06-14",[]],
+  ["f1-aut","f1","Austrian Grand Prix","Red Bull Ring","Spielberg","2026-06-26","2026-06-28",[]],
+  ["f1-gbr","f1","British Grand Prix","Silverstone","Silverstone","2026-07-03","2026-07-05",["Sprint"]],
+  ["f1-bel","f1","Belgian Grand Prix","Spa-Francorchamps","Stavelot","2026-07-17","2026-07-19",[]],
+  ["f1-hun","f1","Hungarian Grand Prix","Hungaroring","Budapest","2026-07-24","2026-07-26",[]],
+  ["f1-ned","f1","Dutch Grand Prix","Zandvoort","Zandvoort","2026-08-21","2026-08-23",["Sprint","Final Zandvoort race"]],
+  ["f1-ita","f1","Italian Grand Prix","Monza","Monza","2026-09-04","2026-09-06",[]],
+  ["f1-mad","f1","Spanish Grand Prix","Madring","Madrid","2026-09-11","2026-09-13",["New circuit"]],
+  ["f1-aze","f1","Azerbaijan Grand Prix","Baku City Circuit","Baku","2026-09-24","2026-09-26",["Saturday race"]],
+  ["f1-bhr-mys","f1","Bahrain Grand Prix in Malaysia","Sepang International Circuit","Sepang","2026-10-02","2026-10-04",["Relocated"]],
+  ["f1-sgp","f1","Singapore Grand Prix","Marina Bay","Singapore","2026-10-09","2026-10-11",["Sprint","Night race"]],
+  ["f1-usa","f1","United States Grand Prix","Circuit of the Americas","Austin, TX","2026-10-23","2026-10-25",[]],
+  ["f1-mex","f1","Mexico City Grand Prix","Autódromo Hermanos Rodríguez","Mexico City","2026-10-30","2026-11-01",[]],
+  ["f1-bra","f1","São Paulo Grand Prix","Interlagos","São Paulo","2026-11-06","2026-11-08",[]],
+  ["f1-lv","f1","Las Vegas Grand Prix","Las Vegas Strip Circuit","Las Vegas, NV","2026-11-19","2026-11-21",["Saturday race","Night race"]],
+  ["f1-qat","f1","Qatar Grand Prix","Lusail International Circuit","Lusail","2026-11-27","2026-11-29",[]],
+  ["f1-abu","f1","Abu Dhabi Grand Prix","Yas Marina","Abu Dhabi","2026-12-04","2026-12-06",["Finale"]],
+
+  // FIA WEC
+  ["wec-qat","wec","Qatar 1812km","Lusail International Circuit","Lusail","2026-03-26","2026-03-28",["Postponed, then called off"],"cancelled"],
+  ["wec-imola","wec","6 Hours of Imola","Autodromo Enzo e Dino Ferrari","Imola","2026-04-17","2026-04-19",["6 hours"]],
+  ["wec-spa","wec","6 Hours of Spa-Francorchamps","Spa-Francorchamps","Stavelot","2026-05-07","2026-05-09",["6 hours"]],
+  ["wec-lm","wec","24 Hours of Le Mans","Circuit de la Sarthe","Le Mans","2026-06-10","2026-06-14",["24 hours"]],
+  ["wec-sp","wec","6 Hours of São Paulo","Interlagos","São Paulo","2026-07-10","2026-07-12",["6 hours"]],
+  ["wec-cota","wec","Lone Star Le Mans","Circuit of the Americas","Austin, TX","2026-09-04","2026-09-06",["6 hours"]],
+  ["wec-fuji","wec","6 Hours of Fuji","Fuji Speedway","Oyama","2026-09-25","2026-09-27",["6 hours"]],
+  ["wec-bcn","wec","6 Hours of Barcelona","Circuit de Barcelona-Catalunya","Barcelona","2026-10-16","2026-10-18",["6 hours","New to WEC"]],
+  ["wec-monza","wec","6 Hours of Monza","Monza","Monza","2026-11-06","2026-11-08",["6 hours","Finale"]],
+  ["wec-bhr","wec","8 Hours of Bahrain","Bahrain International Circuit","Sakhir","2026-11-05","2026-11-07",["Replaced by Monza"],"cancelled"],
+
+  // GT World Challenge America
+  ["gtwc-sonoma","gtwc","Sonoma","Sonoma Raceway","Sonoma, CA","2026-03-27","2026-03-29",["3 hours"]],
+  ["gtwc-cota","gtwc","Circuit of The Americas","Circuit of the Americas","Austin, TX","2026-04-24","2026-04-26",["3 hours"]],
+  ["gtwc-sebring","gtwc","Sebring","Sebring International Raceway","Sebring, FL","2026-05-08","2026-05-10",["3 hours"]],
+  ["gtwc-roadatl","gtwc","Road Atlanta","Michelin Raceway Road Atlanta","Braselton, GA","2026-06-12","2026-06-14",["3 hours","Return to Road Atlanta"]],
+  ["gtwc-roadam","gtwc","Road America","Road America","Elkhart Lake, WI","2026-08-28","2026-08-30",["3 hours"]],
+  ["gtwc-barber","gtwc","Barber","Barber Motorsports Park","Birmingham, AL","2026-09-25","2026-09-27",["3 hours"]],
+  ["gtwc-indy","gtwc","Indianapolis 8 Hour","Indianapolis Motor Speedway","Indianapolis, IN","2026-10-09","2026-10-11",["8 hours","Finale"]],
+
+  // GT World Challenge Europe (Endurance + Sprint)
+  ["gte-ricard","gte","6 Hours of Paul Ricard","Circuit Paul Ricard","Le Castellet, France","2026-04-10","2026-04-12",["Endurance Cup","6 hours"]],
+  ["gte-brands","gte","Brands Hatch","Brands Hatch","Kent, UK","2026-05-02","2026-05-03",["Sprint Cup","2 races"]],
+  ["gte-monza","gte","3 Hours of Monza","Monza","Monza, Italy","2026-05-28","2026-05-31",["Endurance Cup","3 hours"]],
+  ["gte-spa","gte","CrowdStrike 24 Hours of Spa","Spa-Francorchamps","Stavelot, Belgium","2026-06-23","2026-06-28",["Endurance Cup","24 hours"]],
+  ["gte-misano","gte","Misano","Misano World Circuit","Misano Adriatico, Italy","2026-07-16","2026-07-19",["Sprint Cup","2 races"]],
+  ["gte-magny","gte","Magny-Cours","Circuit de Nevers Magny-Cours","Magny-Cours, France","2026-07-30","2026-08-02",["Sprint Cup","2 races"]],
+  ["gte-nring","gte","3 Hours of Nürburgring","Nürburgring","Nürburg, Germany","2026-08-28","2026-08-30",["Endurance Cup","3 hours"]],
+  ["gte-zandvoort","gte","Zandvoort","Zandvoort","Zandvoort, Netherlands","2026-09-17","2026-09-20",["Sprint Cup","2 races"]],
+  ["gte-bcn","gte","Barcelona","Circuit de Barcelona-Catalunya","Montmeló, Spain","2026-10-01","2026-10-04",["Sprint Cup","2 races","Sprint finale"]],
+  ["gte-portimao","gte","3 Hours of Portimão","Algarve International Circuit","Portimão, Portugal","2026-10-14","2026-10-18",["Endurance Cup","3 hours","Finale"]],
+
+  // GT World Challenge Asia
+  ["gtas-sepang","gtas","Sepang","Sepang International Circuit","Sepang, Malaysia","2026-04-04","2026-04-05",["2 × 1 hour"]],
+  ["gtas-mandalika","gtas","Mandalika","Mandalika International Circuit","Lombok, Indonesia","2026-05-02","2026-05-03",["2 × 1 hour"]],
+  ["gtas-shanghai","gtas","Shanghai","Shanghai International Circuit","Shanghai, China","2026-06-05","2026-06-06",["2 × 1 hour"]],
+  ["gtas-fuji","gtas","Fuji","Fuji Speedway","Oyama, Japan","2026-07-11","2026-07-12",["2 × 1 hour"]],
+  ["gtas-okayama","gtas","Okayama","Okayama International Circuit","Mimasaka, Japan","2026-08-29","2026-08-30",["2 × 1 hour"]],
+  ["gtas-beijing","gtas","Beijing","Beijing Street Circuit","Beijing, China","2026-10-17","2026-10-18",["2 × 1 hour","Street circuit","Finale"]],
+
+  // GT World Challenge Australia
+  ["gtau-phillip","gtau","Phillip Island","Phillip Island Grand Prix Circuit","Phillip Island, VIC","2026-03-27","2026-03-29",[]],
+  ["gtau-bend","gtau","The Bend","The Bend Motorsport Park","Tailem Bend, SA","2026-05-08","2026-05-10",[]],
+  ["gtau-qld","gtau","Queensland Raceway","Queensland Raceway","Ipswich, QLD","2026-06-12","2026-06-14",[]],
+  ["gtau-darwin","gtau","Hidden Valley","Hidden Valley Raceway","Darwin, NT","2026-07-24","2026-07-26",[]],
+  ["gtau-sydney","gtau","Sydney Motorsport Park","Sydney Motorsport Park","Eastern Creek, NSW","2026-09-18","2026-09-20",[]],
+  ["gtau-adelaide","gtau","Adelaide","Adelaide Street Circuit","Adelaide, SA","2026-11-26","2026-11-29",["Street circuit","Finale","Supercars support"]],
+
+  // Porsche Mobil 1 Supercup (F1 support)
+  ["psc-monaco","psc","Monaco","Circuit de Monaco","Monte Carlo","2026-06-05","2026-06-07",["F1 support"]],
+  ["psc-bcn","psc","Barcelona","Circuit de Barcelona-Catalunya","Barcelona","2026-06-12","2026-06-14",["F1 support"]],
+  ["psc-austria","psc","Red Bull Ring","Red Bull Ring","Spielberg","2026-06-26","2026-06-28",["F1 support"]],
+  ["psc-spa","psc","Spa-Francorchamps","Spa-Francorchamps","Stavelot","2026-07-17","2026-07-19",["F1 support"]],
+  ["psc-hungary","psc","Hungaroring","Hungaroring","Budapest","2026-07-24","2026-07-26",["F1 support"]],
+  ["psc-zandvoort","psc","Zandvoort","Zandvoort","Zandvoort","2026-08-21","2026-08-23",["F1 support","2 races"]],
+  ["psc-monza","psc","Monza","Monza","Monza","2026-09-04","2026-09-06",["F1 support","Finale"]],
+
+  // Porsche Carrera Cup North America
+  ["pccna-sebring","pccna","Sebring","Sebring International Raceway","Sebring, FL","2026-03-18","2026-03-20",["2 races"]],
+  ["pccna-longbeach","pccna","Long Beach","Streets of Long Beach","Long Beach, CA","2026-04-17","2026-04-19",["2 races","Street circuit"]],
+  ["pccna-miami","pccna","Miami","Miami International Autodrome","Miami, FL","2026-05-01","2026-05-03",["2 races","F1 support"]],
+  ["pccna-glen","pccna","Watkins Glen","Watkins Glen International","Watkins Glen, NY","2026-06-25","2026-06-27",["2 races"]],
+  ["pccna-roadam","pccna","Road America","Road America","Elkhart Lake, WI","2026-07-30","2026-08-01",["2 races"]],
+  ["pccna-indy","pccna","Indianapolis","Indianapolis Motor Speedway","Indianapolis, IN","2026-09-17","2026-09-19",["2 races"]],
+  ["pccna-atlanta","pccna","Road Atlanta","Michelin Raceway Road Atlanta","Braselton, GA","2026-09-30","2026-10-02",["2 races"]],
+  ["pccna-cota","pccna","Circuit of The Americas","Circuit of the Americas","Austin, TX","2026-10-23","2026-10-25",["2 races","F1 support","Finale"]],
+
+  // Ford Mustang Challenge
+  ["mustang-sebring","mustang","Sebring","Sebring International Raceway","Sebring, FL","2026-03-18","2026-03-20",["2 races"]],
+  ["mustang-laguna","mustang","Laguna Seca","WeatherTech Raceway Laguna Seca","Monterey, CA","2026-05-01","2026-05-03",["2 races"]],
+  ["mustang-midohio","mustang","Mid-Ohio","Mid-Ohio Sports Car Course","Lexington, OH","2026-06-05","2026-06-07",["2 races"]],
+  ["mustang-glen","mustang","Watkins Glen","Watkins Glen International","Watkins Glen, NY","2026-06-25","2026-06-27",["2 races"]],
+  ["mustang-vir","mustang","VIRginia International Raceway","VIRginia International Raceway","Alton, VA","2026-08-21","2026-08-23",["2 races"]],
+  ["mustang-cota","mustang","Circuit of The Americas","Circuit of the Americas","Austin, TX","2026-09-04","2026-09-06",["2 races","Finale"]],
+];
+const SERIES = {f1:"F1", imsa:"IMSA", wec:"WEC", gtwc:"GT America", gte:"GT Europe", gtas:"GT Asia", gtau:"GT Australia", psc:"Supercup", pccna:"Carrera Cup NA", mustang:"Mustang Challenge"};
+const SERIES_FULL = {f1:"Formula 1", imsa:"IMSA WeatherTech", wec:"World Endurance", gtwc:"GT World Challenge America", gte:"GT World Challenge Europe", gtas:"GT World Challenge Asia", gtau:"GT World Challenge Australia", psc:"Porsche Mobil 1 Supercup", pccna:"Porsche Carrera Cup North America", mustang:"Ford Mustang Challenge"};
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const parse = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const events = RAW.map(([id,series,name,circuit,location,start,end,tags,status]) => ({
+  id, series, name, circuit, location, start:parse(start), end:parse(end), tags, cancelled: status==="cancelled"
+})).sort((a,b) => a.start - b.start || a.end - b.end);
+
+// Known winners (overall / top class)
+const WINNERS = {
+  "f1-chn":"Kimi Antonelli, Mercedes", "f1-bhr-mys":"Max Verstappen, Red Bull",
+  "imsa-daytona":"#7 Porsche Penske 963", "imsa-sebring":"#7 Porsche Penske 963", "imsa-petit":"#6 Porsche Penske 963",
+  "wec-cota":"Ferrari", "wec-fuji":"#8 Toyota",
+  "gtwc-sonoma":"#34 JMF Mercedes-AMG", "gtwc-cota":"#34 JMF Mercedes-AMG", "gtwc-sebring":"#29 Turner BMW",
+  "gtwc-roadatl":"#12 AF Corse USA Ferrari", "gtwc-roadam":"#29 Turner BMW", "gtwc-barber":"#12 AF Corse USA Ferrari",
+  "f1-sgp":"Max Verstappen, Red Bull", "f1-usa":"Kimi Antonelli, Mercedes", "gtwc-indy":"#32 GMG Porsche",
+  "gte-ricard":"#7 Comtoyou Aston Martin", "gte-monza":"#66 Attempto Audi", "gte-spa":"#80 Lionspeed Porsche",
+  "gte-brands":"R1 #50 AF Corse Ferrari · R2 #80 Lionspeed Porsche", "gte-misano":"#32 WRT BMW, both races",
+  "gte-magny":"R1 #3 Verstappen Racing Mercedes · R2 #80 Lionspeed Porsche", "gte-zandvoort":"R1 #58 Garage 59 McLaren · R2 #69 Emil Frey Ferrari",
+  "gte-bcn":"R2 #69 Emil Frey Ferrari",
+  "gtau-phillip":"Pro-Am: R1 #1 Team MPC · R2 #66 Tigani", "gtau-bend":"Pro-Am: R1 #44 Tigani · R2 #66 Tigani", "gtau-darwin":"Pro-Am: R1 #268 Team BRM · R2 #1 Team MPC",
+  "psc-monaco":"Theo Oeverhaus", "psc-bcn":"Flynt Schuring", "psc-austria":"Robert de Haan", "psc-spa":"Flynt Schuring",
+  "psc-hungary":"Marcus Amand", "psc-zandvoort":"R1 Paul Cauhaupé · R2 Flynt Schuring", "psc-monza":"Andrea Bristot",
+  "pccna-sebring":"Tyler Maxson, both races", "pccna-longbeach":"Tom Sargent, both races", "pccna-miami":"Tyler Maxson", "pccna-glen":"Janne Stiak",
+  "pccna-roadam":"Tyler Maxson", "pccna-atlanta":"Tyler Maxson, both races", "pccna-cota":"R1 Janne Stiak · R2 Tyler Maxson",
+  "mustang-sebring":"Cole Loftsgard, both races", "mustang-laguna":"R1 Cole Loftsgard · R2 Devin Anderson", "mustang-midohio":"R1 Cole Loftsgard · R2 Devin Anderson",
+  "mustang-glen":"Cole Loftsgard, both races", "mustang-vir":"R1 Cole Loftsgard · R2 Will Lucas", "mustang-cota":"Devin Anderson, both races"
+};
+// Same-weekend clashes between different series
+for (const e of events) {
+  e.clashes = events.filter(o => o !== e && o.series !== e.series && !o.cancelled && !e.cancelled && o.start <= e.end && o.end >= e.start);
+}
+
+
+// ---------- Circuits: [length km, turns, type, note] ----------
+const TRACKS = {
+  "Daytona International Speedway":[5.73,12,"Road course + oval banking","Uses the 31° banking of the speedway oval"],
+  "Sebring International Raceway":[6.02,17,"Permanent / old airfield","Famously bumpy concrete runway sections"],
+  "Streets of Long Beach":[3.17,11,"Street circuit","Shoreline Drive and the tight hairpin"],
+  "WeatherTech Raceway Laguna Seca":[3.60,11,"Permanent","Home of the Corkscrew"],
+  "Streets of Detroit":[2.65,9,"Street circuit","Downtown layout with a long Jefferson Ave straight"],
+  "Watkins Glen International":[5.43,11,"Permanent","Fast, flowing; the Esses and the Boot"],
+  "Canadian Tire Motorsport Park":[3.96,10,"Permanent","Big elevation changes, blind crests"],
+  "Road America":[6.52,14,"Permanent","Long straights and the Kink"],
+  "VIRginia International Raceway":[5.26,17,"Permanent","The Climbing Esses"],
+  "Indianapolis Motor Speedway":[3.93,14,"Road course inside the oval","Uses part of the famous oval and front straight"],
+  "Michelin Raceway Road Atlanta":[4.09,12,"Permanent","Downhill run to Turn 10 and the Esses"],
+  "Albert Park":[5.28,14,"Semi-street circuit","Around a lake in a city park"],
+  "Shanghai International Circuit":[5.45,16,"Permanent","Snail-shaped Turns 1–2 and a 1.2 km back straight"],
+  "Suzuka":[5.81,18,"Permanent","Figure-eight layout and the 130R"],
+  "Bahrain International Circuit":[5.41,15,"Permanent","Desert circuit, hard on rear tyres"],
+  "Jeddah Corniche Circuit":[6.17,27,"Street circuit","Fastest street circuit on the calendar"],
+  "Miami International Autodrome":[5.41,19,"Temporary circuit","Around Hard Rock Stadium"],
+  "Circuit Gilles Villeneuve":[4.36,14,"Semi-street circuit","On an island; the Wall of Champions"],
+  "Circuit de Monaco":[3.34,19,"Street circuit","Qualifying is everything; almost no overtaking"],
+  "Circuit de Barcelona-Catalunya":[4.66,14,"Permanent","Long main straight, classic test track"],
+  "Red Bull Ring":[4.32,10,"Permanent","Short lap, steep climbs, big braking zones"],
+  "Silverstone":[5.89,18,"Permanent / old airfield","Maggotts, Becketts and Chapel"],
+  "Spa-Francorchamps":[7.00,19,"Permanent","Eau Rouge–Raidillon; weather can change mid-lap"],
+  "Hungaroring":[4.38,14,"Permanent","Tight and twisty, hard to pass"],
+  "Zandvoort":[4.26,14,"Permanent","Banked corners in the dunes"],
+  "Monza":[5.79,11,"Permanent","Temple of Speed; lowest downforce of the year"],
+  "Madring":[5.47,null,"Hybrid street circuit","New for 2026, around Madrid's IFEMA area"],
+  "Baku City Circuit":[6.00,20,"Street circuit","Narrow castle section and a 2 km flat-out run"],
+  "Sepang International Circuit":[5.54,15,"Permanent","Two long straights, heat and tropical storms"],
+  "Marina Bay":[4.93,19,"Street circuit","Night race; hot, humid and physically brutal"],
+  "Circuit of the Americas":[5.51,20,"Permanent","Steep climb to Turn 1, Esses inspired by Silverstone"],
+  "Autódromo Hermanos Rodríguez":[4.30,17,"Permanent","High altitude; runs through a baseball stadium"],
+  "Interlagos":[4.31,15,"Permanent","Anti-clockwise, Senna S, frequent rain"],
+  "Las Vegas Strip Circuit":[6.20,17,"Street circuit","Night race down the Strip"],
+  "Lusail International Circuit":[5.42,16,"Permanent","Fast, flowing corners; built for MotoGP"],
+  "Yas Marina":[5.28,16,"Permanent","Twilight race, finishes under lights"],
+  "Autodromo Enzo e Dino Ferrari":[4.91,19,"Permanent","Old-school, anti-clockwise, narrow"],
+  "Circuit de la Sarthe":[13.63,38,"Semi-public roads","Mulsanne Straight; partly public roads"],
+  "Fuji Speedway":[4.56,16,"Permanent","1.5 km straight beneath Mount Fuji"],
+  "Sonoma Raceway":[4.06,12,"Permanent","Hilly wine-country circuit"],
+  "Mid-Ohio Sports Car Course":[3.63,13,"Permanent","Narrow and technical, with the Keyhole and the Esses"],
+  "Barber Motorsports Park":[3.70,17,"Permanent","Park-like, flowing, many elevation changes"],
+  "Circuit Paul Ricard":[5.84,15,"Permanent","Striped run-off zones and the long Mistral Straight"],
+  "Brands Hatch":[3.91,9,"Permanent","GP loop with Paddock Hill Bend's blind drop"],
+  "Misano World Circuit":[4.23,16,"Permanent","Flat and technical, near the Adriatic coast"],
+  "Circuit de Nevers Magny-Cours":[4.41,17,"Permanent","Smooth surface, Adelaide hairpin"],
+  "Nürburgring":[5.15,15,"Permanent","The modern GP circuit, not the Nordschleife"],
+  "Algarve International Circuit":[4.65,15,"Permanent","Rollercoaster crests and blind corners"],
+  "Mandalika International Circuit":[4.31,17,"Permanent","Seaside track on Lombok"],
+  "Okayama International Circuit":[3.70,13,"Permanent","Tight and twisty, hard to pass"],
+  "Beijing Street Circuit":[null,null,"Street circuit","New city street circuit"],
+  "Phillip Island Grand Prix Circuit":[4.45,12,"Permanent","Fast clifftop circuit above Bass Strait"],
+  "The Bend Motorsport Park":[4.95,18,"Permanent","International layout in South Australia"],
+  "Queensland Raceway":[3.12,6,"Permanent","Short 'paperclip' layout, heavy braking"],
+  "Hidden Valley Raceway":[2.87,10,"Permanent","Darwin's tropical circuit with a long straight"],
+  "Sydney Motorsport Park":[3.93,11,"Permanent","Gardner GP layout at Eastern Creek"],
+  "Adelaide Street Circuit":[3.22,14,"Street circuit","Former F1 venue; Supercars season finale"],
+};
+
+// Who builds the cars in each series
+const MAKERS = {
+  f1:{ title:"Teams & power units", list:[["Mercedes","own engine"],["Ferrari","own engine"],["McLaren","Mercedes"],["Red Bull","Red Bull Ford"],["Racing Bulls","Red Bull Ford"],["Alpine","Mercedes"],["Haas","Ferrari"],["Audi","own engine"],["Williams","Mercedes"],["Aston Martin","Honda"],["Cadillac","Ferrari"]] },
+  imsa:{ title:"Manufacturers", list:[["Porsche","963 · GTP"],["Cadillac","V-Series.R · GTP"],["BMW","M Hybrid V8 · GTP / M4 GT3"],["Acura","ARX-06 · GTP"],["Mercedes-AMG","GT3 · GTD"],["Aston Martin","Vantage GT3"],["ORECA","07 · LMP2"]] },
+  wec:{ title:"Hypercar makers", list:[["Toyota",""],["BMW","M Hybrid V8"],["Ferrari","499P"],["Alpine","A424"],["Cadillac","V-Series.R"],["Aston Martin","Valkyrie"],["Peugeot","9X8"],["Genesis","GMR-001"]],
+        extraTitle:"LMGT3 makers", extra:[["Corvette",""],["Aston Martin",""],["Porsche",""],["Ferrari",""],["BMW",""],["Lexus",""],["McLaren",""],["Mercedes-AMG",""],["Ford",""]] },
+  gtwc:{ title:"Manufacturers (GT3)", list:[["Mercedes-AMG","GT3 EVO"],["Ferrari","296 GT3 EVO"],["BMW","M4 GT3 Evo"],["Porsche","911 GT3 R"],["McLaren","720S GT3 Evo"],["Ford","Mustang GT3"]] },
+  gte:{ title:"Manufacturers (GT3)", list:[["Mercedes-AMG","GT3 Evo"],["Ferrari","296 GT3 Evo"],["BMW","M4 GT3 Evo"],["Porsche","911 GT3 R (992.2)"],["Aston Martin","Vantage AMR GT3 Evo"],["Audi","R8 LMS Evo II"],["McLaren","720S GT3 Evo"],["Lamborghini","Huracán GT3 Evo2"],["Corvette","Z06 GT3.R"],["Ford","Mustang GT3"]] },
+  gtas:{ title:"Manufacturers (GT3)", list:[["Mercedes-AMG",""],["Ferrari",""],["BMW",""],["Porsche",""],["Audi",""],["Lamborghini",""],["Aston Martin",""],["Nissan",""]] },
+  gtau:{ title:"Manufacturers (GT3)", list:[["Mercedes-AMG",""],["Audi",""],["Porsche",""],["Lamborghini",""],["Ferrari",""],["McLaren",""],["BMW",""]] },
+  psc:{ title:"The car (one-make series)", list:[["Porsche","911 GT3 Cup (992)"]] },
+  pccna:{ title:"The car (one-make series)", list:[["Porsche","911 GT3 Cup (992)"]] },
+  mustang:{ title:"The car (one-make series)", list:[["Ford","Mustang Dark Horse R"]] },
+};
+// Where to watch in the US
+const WATCH = {
+  f1:[["Apple TV","https://tv.apple.com/",false,"Every session, US home of F1"],["F1 live timing","https://www.formula1.com/",false,"Free timing on F1.com"]],
+  imsa:[["Peacock","https://www.peacocktv.com/",false,"Every race live"],["NBC / USA Network","https://www.nbcsports.com/motor-sports",false,"Selected races on TV"]],
+  wec:[["HBO Max","https://www.hbomax.com/",false,"Every race"],["truTV","https://www.trutv.com/",false,"Le Mans, São Paulo, COTA"]],
+  gtwc:[["GT World on YouTube","https://www.youtube.com/gtworld",true,"Every race live"],["Twitch","https://www.twitch.tv/sromotorsports",true,"Live with chat"],["FS1","https://www.foxsports.com/",false,"1-hour highlights show"]],
+  gte:[["GT World on YouTube","https://www.youtube.com/gtworld",true,"Every race live, including all 24 hours of Spa"],["Twitch","https://www.twitch.tv/sromotorsports",true,"Live with chat"]],
+  gtas:[["GT World on YouTube","https://www.youtube.com/gtworld",true,"Every race live"],["Twitch","https://www.twitch.tv/sromotorsports",true,"Live with chat"]],
+  gtau:[["GT World on YouTube","https://www.youtube.com/gtworld",true,"Every race live"],["Twitch","https://www.twitch.tv/sromotorsports",true,"Live with chat"]],
+  psc:[["Apple TV","https://tv.apple.com/",false,"Shown with F1 coverage in the US"]],
+  pccna:[["IMSA on YouTube","https://www.youtube.com/@IMSA",true,"Support races streamed live"],["Peacock","https://www.peacocktv.com/",false,"IMSA race weekends"]],
+  mustang:[["IMSA on YouTube","https://www.youtube.com/@IMSA",true,"Support races streamed live"],["Peacock","https://www.peacocktv.com/",false,"IMSA race weekends"]],
+};
+// Session times in US Central, where known
+const SESSIONS = {
+  // [session, start time in UTC, 1 = support race]. Shown in Texas (Central) time.
+  "f1-sgp":[["Practice","2026-10-09T08:30Z"],["Sprint qualifying","2026-10-09T12:30Z"],["Sprint","2026-10-10T09:00Z"],["Qualifying","2026-10-10T13:00Z"],["Grand Prix","2026-10-11T12:00Z"]],
+  "f1-usa":[["Practice 1","2026-10-23T17:30Z"],["Practice 2","2026-10-23T21:00Z"],["F1 Academy race 1","2026-10-23T22:50Z",1],["Practice 3","2026-10-24T17:30Z"],
+    ["Qualifying","2026-10-24T21:00Z"],["F1 Academy race 2","2026-10-24T23:00Z",1],["F1 Academy feature race","2026-10-25T17:00Z",1],["Grand Prix","2026-10-25T20:00Z"]],
+  "f1-mex":[["Practice 1","2026-10-30T18:30Z"],["Practice 2","2026-10-30T22:00Z"],["Practice 3","2026-10-31T17:30Z"],["Qualifying","2026-10-31T21:00Z"],["Grand Prix","2026-11-01T20:00Z"]],
+  "f1-bra":[["Practice 1","2026-11-06T15:30Z"],["Practice 2","2026-11-06T19:00Z"],["Practice 3","2026-11-07T14:30Z"],["Qualifying","2026-11-07T18:00Z"],["Grand Prix","2026-11-08T17:00Z"]],
+  "wec-monza":[["Free Practice 1","2026-11-06T09:30Z"],["Free Practice 2","2026-11-06T13:30Z"],["Free Practice 3","2026-11-07T09:30Z"],
+    ["LMGT3 qualifying","2026-11-07T13:20Z"],["LMGT3 Hyperpole","2026-11-07T13:40Z"],["Hypercar qualifying","2026-11-07T14:00Z"],["Hypercar Hyperpole","2026-11-07T14:20Z"],["6 Hours of Monza","2026-11-08T10:00Z"]],
+};
+
+
+const LIVE = {};
+const WINNERS_LIVE = {};
+
+// Races that have full results in the stats snapshot
+const RESULT_FOR = { "f1-usa":"f1", "imsa-petit":"imsa", "wec-fuji":"wec", "gtwc-indy":"gtwc" };
+
+
+// ---------- Stats snapshot (Oct 4, 2026) ----------
+const STATS = {
+  f1: {
+    race: { name:"United States Grand Prix", where:"Circuit of the Americas · Oct 25",
+      note:"Antonelli won from pole after a strong opening lap and Verstappen's slow start, making a one-stop strategy work while many rivals stopped twice. Leclerc took second late on and Verstappen held third despite problems with his Red Bull. A Virtual Safety Car for Bottas's stopped Cadillac came in the final laps; Colapinto retired after contact with Lindblad.",
+      rows:[["1","12","Kimi Antonelli","Mercedes","1:35:16.650 · 25 pts"],["2","16","Charles Leclerc","Ferrari","+13.078"],["3","3","Max Verstappen","Red Bull","+17.485"],
+        ["4","44","Lewis Hamilton","Ferrari","+18.515"],["5","1","Lando Norris","McLaren","+30.521"],["6","6","Isack Hadjar","Red Bull","+34.373"],
+        ["7","81","Oscar Piastri","McLaren","+52.674"],["8","63","George Russell","Mercedes","+54.303"],["9","30","Liam Lawson","Racing Bulls","+79.183"],
+        ["10","10","Pierre Gasly","Alpine","+87.516"],["11","27","Nico Hülkenberg","Audi","+94.945"],["12","41","Arvid Lindblad","Racing Bulls","+1 lap"],
+        ["13","5","Gabriel Bortoleto","Audi","+1 lap"],["14","31","Esteban Ocon","Haas","+1 lap"],["15","18","Lance Stroll","Aston Martin","+1 lap"],
+        ["16","14","Fernando Alonso","Aston Martin","+1 lap"],["17","23","Alex Albon","Williams","+1 lap"],["18","55","Carlos Sainz","Williams","+1 lap"],
+        ["19","11","Sergio Pérez","Cadillac","+1 lap"],["DNF","77","Valtteri Bottas","Cadillac","DNF · lap 48"],["DNF","43","Franco Colapinto","Alpine","DNF · lap 35"],["DNF","87","Oliver Bearman","Haas","DNF · lap 24"]],
+      quali:[["1","12","Kimi Antonelli","Mercedes","1:34.035"],["2","3","Max Verstappen","Red Bull","+0.179"],["3","6","Isack Hadjar","Red Bull","+0.215"],
+        ["4","16","Charles Leclerc","Ferrari","+0.232"],["5","44","Lewis Hamilton","Ferrari","+0.276"],["6","63","George Russell","Mercedes","+0.441"],
+        ["7","81","Oscar Piastri","McLaren","+0.768"],["8","1","Lando Norris","McLaren","+1.014 · lap deleted"],["9","41","Arvid Lindblad","Racing Bulls","Q3 · 5-place grid penalty"],
+        ["10","30","Liam Lawson","Racing Bulls","Q3"],["11","10","Pierre Gasly","Alpine","Q2"],["12","27","Nico Hülkenberg","Audi","Q2"],
+        ["13","5","Gabriel Bortoleto","Audi","Q2 · grid penalty"],["14","43","Franco Colapinto","Alpine","Q2 · 10-place grid penalty"],["15","14","Fernando Alonso","Aston Martin","Q2"],
+        ["16","87","Oliver Bearman","Haas","Q2"],["17","31","Esteban Ocon","Haas","Q1"],["18","18","Lance Stroll","Aston Martin","Q1"],
+        ["19","55","Carlos Sainz","Williams","Q1"],["20","23","Alex Albon","Williams","Q1"],["21","11","Sergio Pérez","Cadillac","Q1"],["22","77","Valtteri Bottas","Cadillac","Q1"]],
+      qualiNote:"Lindblad (5 places), Colapinto (10 places) and Bortoleto took power-unit grid penalties, so the starting grid differed from this order." },
+    champs: null,
+    standingsTitle:"Drivers' championship",
+    standings:[["Kimi Antonelli","Mercedes",365],["George Russell","Mercedes",242],["Lewis Hamilton","Ferrari",241],["Max Verstappen","Red Bull",236],
+      ["Charles Leclerc","Ferrari",233],["Lando Norris","McLaren",211],["Oscar Piastri","McLaren",144],["Isack Hadjar","Red Bull",105],
+      ["Liam Lawson","Racing Bulls",77],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
+      ["Oliver Bearman","Haas",23],["Nico Hülkenberg","Audi",13],["Gabriel Bortoleto","Audi",10],["Esteban Ocon","Haas",7],
+      ["Fernando Alonso","Aston Martin",7],["Carlos Sainz","Williams",7],["Alex Albon","Williams",5],["Yuki Tsunoda","Racing Bulls",1],
+      ["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
+    makersTitle:"Constructors' championship",
+    makers:[["Mercedes",607],["Ferrari",474],["McLaren",355],["Red Bull",341],["Racing Bulls",116],["Alpine",69],["Haas",30],["Audi",23],["Williams",12],["Aston Martin",7],["Cadillac",0]],
+    gridTitle:"The grid",
+    grid:[["Mercedes","Mercedes power","Kimi Antonelli · George Russell"],["Ferrari","Ferrari power","Lewis Hamilton · Charles Leclerc"],
+      ["McLaren","Mercedes power","Lando Norris · Oscar Piastri"],["Red Bull","Red Bull Ford power","Max Verstappen · Isack Hadjar"],
+      ["Racing Bulls","Red Bull Ford power","Liam Lawson · Arvid Lindblad"],["Alpine","Mercedes power","Pierre Gasly · Franco Colapinto"],
+      ["Haas","Ferrari power","Oliver Bearman · Esteban Ocon"],["Audi","Audi power","Gabriel Bortoleto · Nico Hülkenberg"],
+      ["Williams","Mercedes power","Carlos Sainz · Alex Albon"],["Aston Martin","Honda power","Fernando Alonso · Lance Stroll"],
+      ["Cadillac","Ferrari power","Valtteri Bottas · Sergio Pérez"]],
+    notes:["Antonelli leads Russell by 123 points with five rounds (125 points) left. He can clinch the title in Mexico City next weekend unless he loses more than 22 points to Russell there.","Antonelli's Austin win came from pole on a one-stop strategy; Leclerc has finished 2nd in back-to-back races.","Russell, Hamilton, Verstappen and Leclerc are covered by 9 points in the fight for 2nd.","McLaren lead Red Bull by 14 in the fight for 3rd in the constructors'. Constructors' totals here are the sum of each team's drivers."]
+  },
+  imsa: {
+    race: { name:"Motul Petit Le Mans (season finale)", where:"Road Atlanta · Oct 3 · GTP class",
+      note:"Vanthoor passed Bamber in traffic and held off the BMW to the flag. It was Porsche's first overall Petit Le Mans win with a prototype.",
+      rows:[["1","6","Laurens Vanthoor / Kévin Estre / Matt Campbell","Porsche 963 · Porsche Penske","Winner"],
+        ["2","24","Sheldon van der Linde and co.","BMW M Hybrid V8 · BMW M Team WRT","+1.205"],
+        ["3","40","Cadillac Wayne Taylor Racing","Cadillac V-Series.R",""],
+        ["–","31","Jack Aitken / Earl Bamber","Cadillac V-Series.R · Whelen","Late incident, off podium"],
+        ["DNF","7","Andlauer / Nasr / Heinrich","Porsche 963 · Porsche Penske","DNF"],
+        ["DNF","5","JDC-Miller MotorSports","Porsche 963","DNF"]],
+      quali:[["1","60","Tom Blomqvist","Acura ARX-06 · Meyer Shank","Pole"],["2","93","Meyer Shank Racing","Acura ARX-06",""],
+        ["4","31","Jack Aitken","Cadillac V-Series.R · Whelen",""],["5","6","Laurens Vanthoor","Porsche 963 · Porsche Penske",""],
+        ["7","7","Laurin Heinrich","Porsche 963 · Porsche Penske",""]],
+      partial:true },
+    champs:[["GTP drivers","Jack Aitken","#31 Cadillac Whelen (Action Express)"],["GTP teams & makers","Action Express · Cadillac","Cadillac swept the GTP titles"],
+      ["GTD Pro","Neil Verhagen / Connor De Phillippi","#1 Paul Miller Racing BMW M4 GT3 EVO"],["GTD","Russell Ward / Philip Ellis","#57 Winward Mercedes-AMG · 3rd straight title"],
+      ["LMP2","George Kurtz / Alex Quinn / Toby Sowery","Kurtz also won the Jim Trueman Award again"],["Endurance Cup","Porsche","Manufacturers', teams' and drivers' titles"]],
+    standingsTitle:null, standings:null, makersTitle:null, makers:null,
+    gridTitle:"GTP cars to know",
+    grid:[["#6 Porsche Penske","Porsche 963","Laurens Vanthoor · Kévin Estre · Matt Campbell"],["#7 Porsche Penske","Porsche 963","Laurin Heinrich (GTP runner-up)"],
+      ["#31 Cadillac Whelen","Cadillac V-Series.R","Jack Aitken · Earl Bamber"],["#40 Cadillac WTR","Cadillac V-Series.R","Wayne Taylor Racing"],
+      ["#24 BMW M Team WRT","BMW M Hybrid V8","Sheldon van der Linde"],["#60 Acura MSR","Acura ARX-06","Tom Blomqvist · pole at Acura's final GTP race"]],
+    notes:["Porsche swept Daytona, Sebring and Petit Le Mans, a first for one manufacturer in a single season.","Aitken clinched the GTP title just by starting Petit Le Mans.","GTD: the #57 Winward Mercedes won Petit Le Mans from pole.","Season complete. The 2027 season opens with the Rolex 24 in January."]
+  },
+  wec: {
+    race: { name:"6 Hours of Fuji", where:"Fuji Speedway · Sep 27 · Hypercar",
+      note:"Toyota's late strategy call jumped the #8 ahead of the pole-sitting #36 Alpine, winning by 0.591s.",
+      rows:[["1","8","Buemi / Hartley / Hirakawa","Toyota","6:01:01.299"],["2","36","Gounon / Martins / Makowiecki","Alpine A424","+0.591"],
+        ["3","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8","+6.415"],["4","35","Milesi / Habsburg / Félix da Costa","Alpine A424","+7.699"],
+        ["5","38","Bamber / Bourdais","Cadillac V-Series.R","+8.142"],["6","94","Duval / Jakobsen / Pourchaire","Peugeot 9X8","+10.176"],
+        ["7","12","Nato / Stevens / Lynn","Cadillac V-Series.R","+13.497"],["8","7","Conway / Kobayashi / de Vries","Toyota","+14.206"],
+        ["9","009","Riberas / Sørensen","Aston Martin Valkyrie","+24.237"],["10","51","Pier Guidi / Calado / Giovinazzi","Ferrari 499P",""],
+        ["11","19","Jaminet / Chatin / Juncadella","Genesis GMR-001",""],["12","83","Hanson / Kubica / Ye","Ferrari 499P",""],
+        ["13","20","Rast / Frijns","BMW M Hybrid V8",""],["14","007","Tincknell / Gamble","Aston Martin Valkyrie","+1 lap"],
+        ["15","17","Lotterer / Derani / Jaubert","Genesis GMR-001","+1 lap"],["DNF","93","Di Resta / Vandoorne / Cassidy","Peugeot 9X8","Out after 67 laps"]],
+      quali:[["1","36","Gounon / Martins","Alpine A424","Pole"],["2","35","Milesi / Habsburg","Alpine A424",""],["3","19","Jaminet / Chatin / Juncadella","Genesis GMR-001",""],
+        ["4","007","Tincknell / Gamble","Aston Martin Valkyrie","2-place penalty"],["5","17","Lotterer / Derani / Jaubert","Genesis GMR-001",""],
+        ["6","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["7","38","Bamber / Bourdais","Cadillac V-Series.R",""],["8","8","Buemi / Hartley / Hirakawa","Toyota",""],
+        ["9","93","Di Resta / Vandoorne / Cassidy","Peugeot 9X8",""]],
+      qualiNote:"Qualifying was cancelled for weather. The grid was set from each car's best lap of the weekend.",
+      partial:true },
+    champs:null,
+    standingsTitle:"Hypercar drivers' championship",
+    standings:[["Buemi / Hartley / Hirakawa","#8 Toyota",89],["Conway / Kobayashi / de Vries","#7 Toyota",79],["Rast / Frijns","#20 BMW",75],
+      ["Magnussen / Marciello","#15 BMW",69],["Sheldon van der Linde","#20 BMW",65],["Dries Vanthoor","#15 BMW",63],
+      ["Pier Guidi / Calado / Giovinazzi","#51 Ferrari",59],["Milesi / Habsburg","#35 Alpine",56],["Fuoco / Molina / Nielsen","#50 Ferrari",54],["Nato / Stevens","#12 Cadillac",50]],
+    makersTitle:"Hypercar manufacturers",
+    makers:[["Toyota",169],["BMW",146],["Ferrari",115],["Alpine",96],["Cadillac",96],["Aston Martin",54],["Peugeot",24],["Genesis",12]],
+    extraTitle:"LMGT3 drivers",
+    extra:[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],
+      ["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],
+    gridTitle:"Hypercar grid",
+    grid:[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],
+      ["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],
+      ["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],
+      ["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],
+      ["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],
+      ["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],
+      ["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],
+      ["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],
+      ["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],
+    notes:["Two rounds left: Barcelona (Oct 16–18) and Monza (Nov 6–8).","Toyota leads BMW by 23 in the manufacturers' fight.","Ferrari won the Lone Star Le Mans at COTA but scored one point at Fuji.","LMGT3 at Fuji went to the #32 WRT BMW after Farfus charged from sixth on the final restart."]
+  },
+  gte: {
+    race: { name:"CrowdStrike 24 Hours of Spa", where:"Spa-Francorchamps · Jun 28 · class winners",
+      note:"The biggest GT3 race of the year. Lionspeed GP's Porsche won overall.",
+      rows:[["1","80","Buus / Feller / Preining","Porsche 911 GT3 R (992.2) · Lionspeed GP · overall","Winner"],
+        ["Gold","998","De Wilde / Klingmann / Tramnitz","BMW M4 GT3 Evo · ROWE Racing","Class win"],
+        ["Silver","45","Balzan / Durán / Medler / Perel","Ferrari 296 GT3 Evo · Rinaldi","Class win"],
+        ["Bronze","74","Blattner / Jaubert / Marschall / Tuck","Ferrari 296 GT3 Evo · Kessel","Class win"],
+        ["Pro-Am","0","Green / Abu Bakar / Jefri / Love","Corvette Z06 GT3.R · Johor Motorsports","Class win"]] },
+    champs:null,
+    standingsTitle:"Endurance Cup Pro (before Portimão)",
+    standings:[["Auer / Engel / Stolz","#48 Mercedes-AMG Team Mann-Filter",74],["Drudi / Sørensen / Thiim","#7 Comtoyou Aston Martin",33]],
+    makersTitle:null, makers:null,
+    extraTitle:"Sprint Cup leaders (after Zandvoort)",
+    extra:[["Bastian Buus / Ricardo Feller","Overall · #80 Lionspeed Porsche",59],["Team WRT","Teams",67],["Mosca / Zagazeta","Gold Cup · AF Corse",96.5],["Lismont / Montenegro","Silver Cup · Team WRT",120],["Dienst / Salikhov","Bronze Cup · Winward",56.5]],
+    gridTitle:"Crews to know",
+    grid:[["#80 Lionspeed GP","Porsche 911 GT3 R","Bastian Buus · Ricardo Feller · Thomas Preining"],["#48 Mercedes-AMG Team Mann-Filter","Mercedes-AMG GT3 Evo","Lucas Auer · Maro Engel · Luca Stolz"],
+      ["#32 Team WRT","BMW M4 GT3 Evo","Kelvin van der Linde · Charles Weerts"],["#7 Comtoyou Racing","Aston Martin Vantage AMR GT3 Evo","Mattia Drudi · Marco Sørensen · Nicki Thiim"],
+      ["#3 Verstappen Racing","Mercedes-AMG GT3 Evo","Jules Gounon · Daniel Juncadella"],["#69 Emil Frey Racing","Ferrari 296 GT3 Evo","Ben Green · Thierry Vermeulen"],
+      ["#58 Garage 59","McLaren 720S GT3 Evo","Tom Fleming · Louis Prette"],["#50 AF Corse","Ferrari 296 GT3 Evo","Arthur Leclerc · Thomas Neubauer"]],
+    notes:["Two championships in one: the Endurance Cup (Ricard, Monza, Spa, Nürburgring, Portimão) and the Sprint Cup (Brands Hatch, Misano, Magny-Cours, Zandvoort, Barcelona).","Portimão this weekend is the Endurance Cup finale.","Lionspeed's Buus and Feller won the Spa 24 Hours and twice in the Sprint Cup.","Final Sprint Cup and overall champions weren't published when this was updated."]
+  },
+  gtas: {
+    race: null, champs:null, standingsTitle:null, standings:null, makersTitle:null, makers:null,
+    gridTitle:"Format",
+    grid:[["6 rounds","2 one-hour races each","Sepang, Mandalika, Shanghai, Fuji, Okayama, Beijing"],["Classes","Pro-Am, Silver-Am, Am","Most cars share a pro with an amateur driver"]],
+    notes:["The Beijing Street Circuit finale runs this weekend, Oct 17–18.","Results and standings aren't loaded yet. Ask Claude to add them."]
+  },
+  psc: {
+    race: { name:"Monza (season finale)", where:"Autodromo Nazionale Monza · Sep 6",
+      note:"Andrea Bristot won the finale for Dinamic Motorsport. Flynt Schuring had already wrapped up the title with three wins.",
+      rows:[["1","","Andrea Bristot","Dinamic Motorsport","Winner"]], partial:true },
+    champs:[["Drivers","Flynt Schuring","Schumacher CLRT · 3 wins, 132.5 pts"],["Teams","Schumacher CLRT","214.5 pts"]],
+    standingsTitle:"Final drivers' standings",
+    standings:[["Flynt Schuring","Schumacher CLRT",132.5],["Robert de Haan","BWT Lechner Racing",107],["Theo Oeverhaus","Martinet by Alméras",95],["Chester Kieffer","Schumacher CLRT",82],["Marcus Amand","BWT Lechner Racing",74]],
+    makersTitle:"Teams", makers:[["Schumacher CLRT",214.5],["Martinet by Alméras",185.5]],
+    gridTitle:"Front-runners",
+    grid:[["Schumacher CLRT","Porsche 911 GT3 Cup","Flynt Schuring · Chester Kieffer"],["BWT Lechner Racing","Porsche 911 GT3 Cup","Robert de Haan · Marcus Amand"],["Martinet by Alméras","Porsche 911 GT3 Cup","Theo Oeverhaus · Paul Cauhaupé"],["Dinamic Motorsport","Porsche 911 GT3 Cup","Andrea Bristot"]],
+    notes:["Eight races at seven European F1 weekends, with a double-header at Zandvoort.","Every car is the same Porsche 911 GT3 Cup, so it's all about the driver.","Seven different winners across eight races. Schuring was the only driver to win more than once."]
+  },
+  pccna: {
+    race: { name:"Circuit of The Americas (season finale)", where:"Austin, TX · Oct 24–25 · Pro class",
+      note:"Janne Stiak won race 1 and Tyler Maxson won race 2 to finish off his title. TOPP Racing took back-to-back championships. Callum Hedge led race 2 but a track-limits penalty dropped him back.",
+      rows:[["1","","Janne Stiak","ACI Motorsports · Race 1","Winner"],["2","","Aaron Jeansonne","Kellymoss · Race 1",""],["3","","Tyler Maxson","TOPP Racing · Race 1",""],
+        ["1","77","Tyler Maxson","TOPP Racing · Race 2","Winner"],["2","","Janne Stiak","ACI Motorsports · Race 2",""],["3","","Jared Thomas","JTR Motorsports Engineering · Race 2",""]], partial:true },
+    champs:[["Pro","Tyler Maxson","#77 TOPP Racing · back-to-back titles"],["Pro-Am","Patrick Mulcahy","#54 ACI Motorsports"],["Masters","Marco Cirone","#88 ACI Motorsports"],["Teams","TOPP Racing",""],["Rookie of the Year","Cole Kleck","TOPP Racing"]],
+    standingsTitle:"Pro standings (before the finale)",
+    standings:[["Tyler Maxson","TOPP Racing",147],["Aaron Jeansonne","Kellymoss",110],["Callum Hedge","JDX Racing",110],["Jared Thomas","JTR Motorsports Engineering",82],["Janne Stiak","ACI Motorsports",74]],
+    makersTitle:null, makers:null,
+    extraTitle:"Pro-Am standings (before the finale)",
+    extra:[["Patrick Mulcahy","ACI Motorsports",196],["Josh Conley","Kellymoss",125],["James Sofronas","GMG Racing",40],["Steve Wetterau","Kellymoss",40]],
+    gridTitle:"Front-runners",
+    grid:[["#77 TOPP Racing","Porsche 911 GT3 Cup","Tyler Maxson"],["ACI Motorsports","Porsche 911 GT3 Cup","Janne Stiak · Patrick Mulcahy · Marco Cirone"],["Kellymoss","Porsche 911 GT3 Cup","Aaron Jeansonne · Josh Conley"],["JDX Racing","Porsche 911 GT3 Cup","Callum Hedge"],["GMG Racing","Porsche 911 GT3 Cup","Tom Sargent · James Sofronas"]],
+    notes:["Season complete: Maxson won the Pro title for TOPP Racing.","Eight weekends, mostly with IMSA, plus F1 support rounds at Miami and Austin.","Final points totals weren't published when this was updated."]
+  },
+  mustang: {
+    race: { name:"Circuit of The Americas (season finale)", where:"Austin, TX · Sep 5–6",
+      note:"Devin Anderson won both races in the Dark Horse class, but Cole Loftsgard's second place in race 2 sealed the title for Round 3 Racing. Tom Tait clinched Dark Horse Legends.",
+      rows:[["1","22","Devin Anderson","TechSport Racing · Dark Horse","Winner"],["2","42","Cole Loftsgard","Round 3 Racing · Dark Horse",""],["3","34","Will Lucas","Wheelhouse Motorsports · Dark Horse",""],
+        ["1","70","Brad McCall","Round 3 Racing · Legends","Class win"],["2","84","Paolo Salvatore","Torre Racing · Legends",""],["3","8","Tom Tait","Wheelhouse Motorsports · Legends",""]], partial:true },
+    champs:[["Dark Horse","Cole Loftsgard","#42 Round 3 Racing · 7 wins"],["Dark Horse Legends","Tom Tait","#8 Wheelhouse Motorsports"],["Teams","Round 3 Racing",""]],
+    standingsTitle:"Dark Horse (before the finale)",
+    standings:[["Cole Loftsgard","Round 3 Racing",4080],["Devin Anderson","TechSport Racing",3970],["Will Lucas","Wheelhouse Motorsports",3430],["Sandy Satullo","Wheelhouse Motorsports",3370],["Tate Pritt","Automatic Racing",3020]],
+    makersTitle:null, makers:null,
+    extraTitle:"Dark Horse Legends (before the finale)",
+    extra:[["Tom Tait","Wheelhouse Motorsports",3700],["Chris Clarke","Paley Motorsport with AAG Racing",3600],["Paolo Salvatore","Torre Racing",3430],["Joseph Dederichs","Wheelhouse Motorsports",2980]],
+    gridTitle:"Front-runners",
+    grid:[["#42 Round 3 Racing","Mustang Dark Horse R","Cole Loftsgard"],["#22 TechSport Racing","Mustang Dark Horse R","Devin Anderson"],["Wheelhouse Motorsports","Mustang Dark Horse R","Will Lucas · Sandy Satullo · Tom Tait"],["Round 3 Racing","Mustang Dark Horse R","Oleg Gorshkov · Brad McCall"]],
+    notes:["Season complete: Loftsgard and Tait are the 2026 champions.","Every car is a Ford Mustang Dark Horse R. Dark Horse is the top class; Dark Horse Legends is for older drivers.","Six weekends, two races each, all on IMSA race weekends."]
+  },
+  gtau: {
+    race: { name:"Hidden Valley (Round 4)", where:"Darwin · Jul 26 · Pro-Am",
+      note:"Team BRM won race 1 and Team MPC won race 2 to strengthen its title lead.",
+      rows:[["R1","268","Alex Peroni / Mark Rosser","Team BRM · Pro-Am","Winner"],["R2","1","Broc Feeney / Brad Schumacher","Team MPC · Pro-Am","Winner"]], partial:true },
+    champs:null,
+    standingsTitle:"Pro-Am drivers (after Round 4)",
+    standings:[["Broc Feeney / Brad Schumacher","Melbourne Performance Centre",111],["Brendon Leitch / Sergio Pires","Tigani Motorsport",101],["Mark Rosser","Team BRM",101]],
+    makersTitle:"Teams (after Round 4)",
+    makers:[["Tigani Motorsport",171],["Team BRM",136],["Melbourne Performance Centre",133]],
+    extraTitle:"Trophy class",
+    extra:[["Paul Stokell","Melbourne Performance Centre",165],["Nathan Halstead / Luke Youlden","Tigani Motorsport",154]],
+    gridTitle:"Crews to know",
+    grid:[["#1 Team MPC","GT3","Broc Feeney · Brad Schumacher"],["#44 Tigani Motorsport","GT3","Sergio Pires · Brendon Leitch"],["#66 Tigani Motorsport","GT3","Paul Lucchitti · Jayden Ojeda"],
+      ["#268 Team BRM","GT3","Alex Peroni · Mark Rosser"],["#56 Tigani Motorsport","GT3","Oscar Targett"],["#181 OnlyFans Racing","GT3","Will Davison · Renee Gracie"]],
+    notes:["Supercars champion Broc Feeney leads the Pro-Am title fight.","The finale is at the Adelaide street circuit, Nov 26–29, alongside the Supercars season finale.","Round 5 at Sydney (Sep 18–20) results aren't fully loaded yet."]
+  },
+  gtwc: {
+    race: { name:"Indianapolis 8 Hour (season finale)", where:"Indianapolis Motor Speedway · Oct 11 · overall",
+      note:"GMG Racing back-timed its last stops and won by 56.209s, Porsche's first Indy 8 Hour win and the first by a Pro-Am crew. Foley passed Schandorff's Ferrari for the Pro lead with an hour left, which decided the Pro title. The last 5 hours 39 minutes ran without a caution.",
+      rows:[["1","32","Washington / Pera / Güven","Porsche 911 GT3 R Evo · GMG · Pro-Am winner","Winner"],
+        ["2","69","Coleman / Telitz / Fleming","McLaren 720S GT3 Evo · Archangel · Pro-Am","+56.209"],
+        ["3","29","Rothberg / De Phillippi / Foley","BMW M4 GT3 EVO · Turner · Pro winner",""],
+        ["4","12","Pérez Companc / Nielsen / Schandorff","Ferrari 296 GT3 Evo · AF Corse USA · Pro",""],
+        ["5","34","Stephens / Grenier / Martin","Mercedes-AMG GT3 EVO · JMF · Pro",""],
+        ["6","31","Musial Jr. / Yardley / Heinrich","Porsche 911 GT3 R Evo · Wright · Pro-Am",""],
+        ["7","28","Dyszelski / Arrow / Heylen","Porsche 911 GT3 R Evo · RS1 · Pro-Am",""],
+        ["8","91","Renauer and crew","Porsche 911 GT3 R Evo · Herberth · IGTC",""],
+        ["9","120","Estre and crew","Porsche 911 GT3 R Evo · Wright · IGTC",""],
+        ["10","86","Li / Ye and crew","Porsche 911 GT3 R Evo · High Class Racing",""],
+        ["17","163","Simonsen / Negri / Schreibman","Ferrari 296 GT3 Evo · AF Corse USA · Am winner",""],
+        ["DNF","80","Lone Star Racing","Mercedes-AMG GT3 EVO","Crash, hour 1"],["DNF","6","Dollahite Racing","Ford Mustang GT3","Steering"],["DNF","27","JMF Motorsports","Mercedes-AMG GT3 EVO","Gearbox"]],
+      quali:[["1","29","Robby Foley","BMW M4 GT3 EVO · Turner","1:22.805"],["2","32","Ayhancan Güven","Porsche 911 GT3 R · GMG","+0.002"],
+        ["3","6","Christopher Mies","Ford Mustang GT3 · Dollahite",""],["4","8","Alessio Picariello","Porsche 911 GT3 R · McCann",""],
+        ["5","69","Aaron Telitz","McLaren 720S GT3 EVO · Archangel",""],["6","12","Frederik Schandorff","Ferrari 296 GT3 EVO · AF Corse USA",""],
+        ["7","80","Alex Palou","Mercedes-AMG GT3 EVO · Lone Star",""],["8","34","Mikaël Grenier","Mercedes-AMG GT3 EVO · JMF",""],
+        ["9","27","Philip Ellis","Mercedes-AMG GT3 EVO · JMF",""],["10","28","Jan Heylen","Porsche 911 GT3 R · RS1",""]],
+      qualiNote:"Superpole top 10. All ten cars were within 0.895s.", partial:true },
+    champs:[["Pro drivers","Robby Foley / Justin Rothberg","#29 Turner BMW · third straight title for the pair"],["Pro-Am drivers","Kyle Washington","#32 GMG Porsche"],
+      ["Am drivers","Jay Schreibman","#163 AF Corse USA Ferrari"],["IGTC drivers","Maxime Martin","Intercontinental GT Challenge, his first title"],["IGTC manufacturers","Porsche","Fourth IGTC title"]],
+    standingsTitle:null, standings:null, makersTitle:null, makers:null, extra:null,
+    gridTitle:"Key crews",
+    grid:[["#34 JMF Motorsports","Mercedes-AMG GT3 EVO","Michai Stephens · Mikael Grenier"],["#12 AF Corse USA","Ferrari 296 GT3 EVO","Matías Pérez Companc · Frederik Schandorff"],
+      ["#29 Turner Motorsport","BMW M4 GT3 Evo","Justin Rothberg · Robby Foley"],["#32 GMG Racing","Porsche (Pro-Am)","Kyle Washington · Tom Sargent"],
+      ["Wright Motorsports","Porsche (Pro-Am)","Dave Musial Jr. · Ryan Yardley"]],
+    notes:["Season complete. Turner came from 10 points down to win the Pro title at the finale.","JMF led the Pro standings all year before finishing 3rd in class at Indy.","Pro winners this year: Turner ×3, JMF ×2, AF Corse USA ×2.","Final points totals were not published when this was updated."]
+  }
+};
+
+
+
+// ================= UI =================
+const ORDER = ["f1","imsa","wec","gtwc","gte","gtas","gtau","psc","pccna","mustang"];
+function today(){ const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+function phase(e){ const t = today(); if (e.cancelled) return "cancelled"; if (t > e.end) return "past"; if (t >= e.start) return "now"; return "future"; }
+const dayDiff = (a,b) => Math.round((b - a) / 86400000);
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function range(e){
+  const s = e.start, f = e.end;
+  if (+s === +f) return `${MON[s.getMonth()]} ${s.getDate()}`;
+  if (s.getMonth() === f.getMonth()) return `${MON[s.getMonth()]} ${s.getDate()}–${f.getDate()}`;
+  return `${MON[s.getMonth()]} ${s.getDate()} – ${MON[f.getMonth()]} ${f.getDate()}`;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+// Original series plates (not the series' logos)
+const PLATE = {
+  f1:{code:"F1"}, imsa:{code:"IMSA"}, wec:{code:"WEC"},
+  psc:{code:"CUP",reg:"EU"}, pccna:{code:"CUP",reg:"NA"}, mustang:{code:"MC",reg:"DH"},
+  gtwc:{code:"GT",reg:"US"}, gte:{code:"GT",reg:"EU"}, gtas:{code:"GT",reg:"AS"}, gtau:{code:"GT",reg:"AU"}
+};
+function plate(s, h = 30){
+  const p = PLATE[s], w = Math.round(h * 44 / 32), fill = `fill:var(--${s})`;
+  let shape;
+  if (s === "f1") shape = `<path d="M9 1H44L35 31H0Z" style="${fill}"/>`;
+  else if (s === "imsa") shape = `<rect x="0" y="1" width="44" height="30" rx="5" style="${fill}"/>`;
+  else if (s === "wec") shape = `<rect x="0" y="1" width="44" height="30" rx="15" style="${fill}"/><circle cx="37" cy="16" r="4" style="fill:none;stroke:var(--plate-ink);stroke-width:1.6"/><path d="M37 13.8V16H38.8" style="fill:none;stroke:var(--plate-ink);stroke-width:1.4"/>`;
+  else if (s === "psc" || s === "pccna") shape = `<path d="M0 1H44V25L38 31H0Z" style="${fill}"/>`;
+  else if (s === "mustang") shape = `<path d="M0 1H35L44 31H9Z" style="${fill}"/>`;
+  else shape = `<path d="M5 1H39L44 16L39 31H5L0 16Z" style="${fill}"/>`;
+  let text;
+  if (p.reg) text = `<text x="22" y="15.5" text-anchor="middle" font-size="13">${p.code}</text><text x="22" y="27" text-anchor="middle" font-size="9" letter-spacing=".8">${p.reg}</text>`;
+  else if (s === "wec") text = `<text x="15.5" y="20.5" text-anchor="middle" font-size="11">${p.code}</text>`;
+  else if (s === "imsa") text = `<text x="22" y="21" text-anchor="middle" font-size="12" letter-spacing=".4">${p.code}</text>`;
+  else text = `<text x="21" y="22" text-anchor="middle" font-size="16" font-style="italic">${p.code}</text>`;
+  return `<svg class="plate" width="${w}" height="${h}" viewBox="0 0 44 32" role="img" aria-label="${esc(SERIES_FULL[s])}">${shape}${text}</svg>`;
+}
+
+// ---------- State (device storage, synced to the account when available) ----------
+const KEY = "raceweekends-2026";
+let state = { starred:{}, watched:{}, going:{} };
+try { const s = localStorage.getItem(KEY); if (s) state = Object.assign(state, JSON.parse(s)); } catch(e){}
+let remoteRef = null, saveTimer = null;
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+  if (remoteRef) {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      remoteRef.set(JSON.parse(JSON.stringify(state))).then(() => setSync(true)).catch(() => setSync(false));
+    }, 400);
+  }
+}
+function setSync(on){
+  document.getElementById("sync").classList.toggle("on", on);
+  document.getElementById("syncText").textContent = on ? "Synced to your account" : "Saved on this device";
+}
+(async () => {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if (!db || !user) return;
+    const uid = await user.id();
+    if (!uid) return;
+    remoteRef = db.doc("data/users/" + uid + "/tracker");
+    const snap = await remoteRef.get();
+    if (snap.exists) {
+      const d = snap.data() || {};
+      state = { starred: Object.assign({}, state.starred, d.starred), watched: Object.assign({}, state.watched, d.watched), going: Object.assign({}, state.going, d.going) };
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+    } else {
+      await remoteRef.set(JSON.parse(JSON.stringify(state)));
+    }
+    setSync(true);
+    renderAll();
+  } catch(e) { remoteRef = null; }
+})();
+
+// ---------- Shared bits ----------
+function statusOf(e){
+  const ph = phase(e), t = today();
+  if (e.cancelled) return ["Cancelled",""];
+  if (ph === "past") return ["Finished",""];
+  if (ph === "now") { const ns = nextSession(e.id); return [ns ? `Next: ${ns[0]} ${txTime(ns[1])}` : (+t === +e.end ? "Race day" : "On track"), "live"]; }
+  const d = dayDiff(t, e.start);
+  const ns = nextSession(e.id);
+  if (ns && d < 7) return [`${ns[0]} ${fmtDow.format(new Date(ns[1]))} ${txTime(ns[1])}`, ""];
+  return [d === 1 ? "Tomorrow" : d < 7 ? `Starts ${DOW[e.start.getDay()]}` : `In ${d} days`, ""];
+}
+const TX = "America/Chicago";
+const fmtDay = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short", month: "short", day: "numeric" });
+const fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: TX, hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+const fmtDow = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short" });
+const txTime = iso => fmtTime.format(new Date(iso)).replace(":00 ", " ");
+function nextSession(id){
+  const L = SESSIONS[id]; if (!L) return null;
+  const now = Date.now();
+  return L.find(x => !x[2] && Date.parse(x[1]) + 2 * 3600000 > now) || null;
+}
+function schedHTML(id, compact){
+  const L = SESSIONS[id]; if (!L) return "";
+  const nx = nextSession(id), now = Date.now();
+  const rows = L.filter(x => !compact || !x[2]);
+  return `<table class="sched${compact ? " compact" : ""}">${rows.map(x => {
+    const t = Date.parse(x[1]), done = t + 2 * 3600000 < now, on = t <= now && !done;
+    return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
+  }).join("")}</table>`;
+}
+function watchButtons(series, n = 9){
+  return WATCH[series].slice(0, n).map((w, i) =>
+    `<a class="btn ${i === 0 ? "watch " + series : ""}" href="${w[1]}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("");
+}
+function weekendEvents(){
+  const t = today(), dow = t.getDay();
+  let ws = null, we = null;
+  if (dow >= 4 || dow === 0) {
+    ws = new Date(t); ws.setDate(t.getDate() + (dow === 4 ? 1 : dow === 0 ? -2 : 5 - dow));
+    we = new Date(ws); we.setDate(ws.getDate() + 2);
+  }
+  return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
+}
+function row5(x){
+  return `<tr class="${x[0]==='1'?'p1':''}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
+}
+function tower(rows, head3){
+  return `<div class="scroll"><table class="tower"><thead><tr><th>Pos</th><th>Driver &amp; car</th><th style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
+}
+function resultsBlock(r){
+  if (!r || !r.rows) return "";
+  let h = `<h4>Race order</h4>` + tower(r.rows);
+  if (r.sprint) h += `<h4>Sprint</h4>` + tower(r.sprint);
+  if (r.quali) h += `<h4>Qualifying</h4>${r.qualiNote ? `<p class="fine" style="margin:0 0 6px">${esc(r.qualiNote)}</p>` : ""}` + tower(r.quali, "Time");
+  if (r.partial) h += `<p class="fine">Only the positions reported publicly are listed.</p>`;
+  return h;
+}
+function pointsTower(list, c){
+  const max = Math.max(1, ...list.map(x => x[x.length-1]));
+  const lead = list[0][list[0].length-1];
+  return `<div class="scroll"><table class="tower ${c}"><thead><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr></thead><tbody>` +
+    list.map((x,i) => {
+      const pts = x[x.length-1];
+      return `<tr class="${i===0?'p1':''}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
+    }).join("") + `</tbody></table></div>`;
+}
+
+// ---------- Weekend tab ----------
+function renderWeekend(){
+  const wk = weekendEvents();
+  const el = document.getElementById("weekendTop");
+  const t = today();
+  let countLbl, countNum, title, kicker, items;
+  if (wk.length) {
+    const live = wk.filter(e => phase(e) === "now").length;
+    countLbl = live ? "On track now" : "This weekend";
+    countNum = wk.length;
+    title = wk.length === 1 ? "1 race this weekend" : `${wk.length} races this weekend`;
+    kicker = "Tap a race for the track, drivers, results and where to watch.";
+    items = wk;
+  } else {
+    const next = events.filter(e => !e.cancelled && phase(e) === "future").sort((a,b) => a.start - b.start);
+    if (!next.length) { el.innerHTML = `<div class="empty">That's the 2026 season done. Check back when the 2027 calendars are out.</div>`; return; }
+    const d = dayDiff(t, next[0].start);
+    countLbl = "Next race in";
+    countNum = d;
+    title = "Coming up";
+    kicker = "No racing this weekend. Here's what's next.";
+    items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).concat(next.filter(e => e.start > new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 2));
+  }
+  el.innerHTML = `
+    <h2 class="h2">${esc(title)}</h2><p class="kicker">${esc(kicker)}</p>
+    <div class="board">
+      <div class="count" aria-label="${esc(countLbl)}"><div class="lbl">${esc(countLbl)}</div><div class="num">${countNum}</div><div class="lbl">${wk.length ? (wk.length === 1 ? "race" : "races") : (countNum === 1 ? "day" : "days")}</div></div>
+      <div class="stack">${items.map(evCard).join("")}</div>
+    </div>`;
+}
+function evCard(e){
+  const [st, cls] = statusOf(e);
+  const resLine = WINNERS_LIVE[e.id] || (phase(e) === "past" && WINNERS[e.id] ? `Won by ${WINNERS[e.id]}` : "");
+  return `<article class="ev ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
+    <div class="pl">${plate(e.series, 34)}</div>
+    <div><span class="status ${cls}">${esc(st)}</span></div>
+    <h3>${esc(e.name)}</h3>
+    <div class="meta">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</div>
+    ${resLine ? `<div class="res" style="grid-column:2">${esc(resLine)}</div>` : ""}
+    ${SESSIONS[e.id] && phase(e) !== "past" ? `<div style="grid-column:2;margin-top:8px">${schedHTML(e.id, true)}<div class="fine" style="margin-top:4px">Texas time (Central)</div></div>` : ""}
+    <div class="acts">${watchButtons(e.series, 2)}<button class="btn" data-open="${e.id}">Details</button></div>
+  </article>`;
+}
+function renderSeriesGrid(){
+  document.getElementById("seriesGrid").innerHTML = ORDER.map(s => {
+    const list = events.filter(e => e.series === s && !e.cancelled);
+    const done = list.filter(e => phase(e) === "past").length;
+    const nxt = list.find(e => phase(e) === "now") || list.find(e => phase(e) === "future");
+    const line = nxt ? `${phase(nxt) === "now" ? "Now" : "Next"}: ${nxt.name} · ${range(nxt)}` : "Season complete";
+    return `<div class="sp ${s}" data-series="${s}" role="button" tabindex="0">
+      <div class="pl">${plate(s, 30)}</div>
+      <div class="t">${esc(SERIES_FULL[s])}</div>
+      <div class="n">${done} of ${list.length} rounds · ${esc(line)}</div>
+      <div class="prog" aria-hidden="true">${list.map(e => `<i class="${phase(e) === "past" ? "d" : phase(e) === "now" ? "now" : ""}"></i>`).join("")}</div>
+    </div>`;
+  }).join("");
+}
+
+// ---------- Calendar tab ----------
+let calSeries = "all", view = "upcoming", showCancelled = false;
+const inCal = e => calSeries === "all" || e.series === calSeries || (calSeries === "gt" && /^gt/.test(e.series)) || (calSeries === "cups" && /^(psc|pccna)$/.test(e.series));
+function chipsHTML(sel, opts){
+  return opts.map(([v, label, s]) => `<button class="chip ${s ? "" : "txt"}" data-v="${v}" aria-pressed="${sel === v}">${s ? plate(s, 20) : ""}${esc(label)}</button>`).join("");
+}
+function renderCalChips(){
+  document.getElementById("calChips").innerHTML = chipsHTML(calSeries,
+    [["all","All series"],["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gt","All GT World"],["gtwc","America","gtwc"],["gte","Europe","gte"],["gtas","Asia","gtas"],["gtau","Australia","gtau"],["cups","Porsche Cups"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang","mustang"]]);
+}
+function renderList(){
+  const el = document.getElementById("list");
+  let list = events.filter(inCal);
+  if (!showCancelled) list = list.filter(e => !e.cancelled);
+  if (view === "upcoming") list = list.filter(e => e.cancelled ? e.end >= today() : phase(e) !== "past");
+  if (view === "mine") list = list.filter(e => state.starred[e.id] || state.going[e.id] || state.watched[e.id]);
+  if (!list.length) {
+    el.innerHTML = `<div class="empty" style="margin-top:14px">${view === "mine" ? "Nothing saved yet. Star a race, or open one and mark it Going or Watched." : "No races left here this season. Switch to Full season to see results."}</div>`;
+    return;
+  }
+  let h = "", m = -1;
+  for (const e of list) {
+    if (e.start.getMonth() !== m) { if (m !== -1) h += `</div>`; m = e.start.getMonth(); h += `<div class="month">${MONTHS[m]}</div><div class="list">`; }
+    const ph = phase(e), [st, cls] = statusOf(e);
+    const tags = [];
+    if (ph === "now") tags.push(`<span class="status live">${esc(st)}</span>`);
+    if (e.cancelled) tags.push(`<span class="tag">Cancelled</span>`);
+    if (WINNERS_LIVE[e.id]) tags.push(`<span class="tag win">${esc(WINNERS_LIVE[e.id])}</span>`);
+    if (WINNERS[e.id]) tags.push(`<span class="tag win">🏁 ${esc(WINNERS[e.id])}</span>`);
+    e.tags.forEach(t => tags.push(`<span class="tag">${esc(t)}</span>`));
+    if (e.clashes.length && ph !== "past") tags.push(`<span class="tag clash">Same weekend: ${e.clashes.map(c => SERIES[c.series]).join(", ")}</span>`);
+    if (state.going[e.id]) tags.push(`<span class="tag">Going</span>`);
+    if (state.watched[e.id]) tags.push(`<span class="tag">Watched</span>`);
+    h += `<article class="row ${e.series} ${ph}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
+      <div class="dt"><b>${e.end.getDate()}</b><span>${MON[e.end.getMonth()]} · ${DOW[e.end.getDay()]}</span></div>
+      ${plate(e.series, 26)}
+      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
+      ${e.cancelled ? "<span></span>" : `<button class="staricon" data-k="starred" data-id="${e.id}" aria-pressed="${!!state.starred[e.id]}" aria-label="Star ${esc(e.name)}" title="Can't miss">★</button>`}
+    </article>`;
+  }
+  el.innerHTML = h + `</div>`;
+}
+
+// ---------- Standings tab ----------
+let statsSeries = "f1";
+function renderStatChips(){
+  document.getElementById("statChips").innerHTML = chipsHTML(statsSeries,
+    [["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gtwc","GT America","gtwc"],["gte","GT Europe","gte"],["gtas","GT Asia","gtas"],["gtau","GT Australia","gtau"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]]);
+}
+function renderStats(){
+  const st = STATS[statsSeries], c = statsSeries;
+  let h = `<div class="${c}">`;
+  const r = st.race;
+  if (r) h += `<section class="card"><h3>Latest · ${esc(r.name)}</h3><p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>`;
+  if (st.champs) h += `<section class="card"><h3>2026 champions</h3><div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
+  if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
+  if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
+  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
+  document.getElementById("statsBody").innerHTML = h + `</div>`;
+}
+
+// ---------- Race sheet ----------
+let lastFocus = null;
+function openRace(id){
+  const e = events.find(x => x.id === id); if (!e) return;
+  const t = TRACKS[e.circuit], st = STATS[e.series], mk = MAKERS[e.series], c = e.series;
+  const ph = phase(e), [stt, cls] = statusOf(e);
+  const others = events.filter(o => o.circuit === e.circuit && o.id !== e.id && !o.cancelled);
+  const pr = k => !!state[k][e.id];
+  let h = `<div class="sh-head ${c}">${plate(c, 38)}
+      <div><span class="status ${cls}">${esc(stt)}</span> <span class="fine" style="margin:0">${esc(SERIES_FULL[c])}</span>
+      <h2 id="sheetTitle">${esc(e.name)}</h2><div class="m">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}</div></div>
+      <button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <div class="${c}">`;
+  if (!e.cancelled) h += `<div class="mine">
+      <button class="btn star" data-k="starred" data-id="${e.id}" aria-pressed="${pr("starred")}">★ Can't miss</button>
+      <button class="btn" data-k="going" data-id="${e.id}" aria-pressed="${pr("going")}">Going</button>
+      <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button></div>`;
+
+  if (!e.cancelled) {
+    h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
+      <p class="fine">${WATCH[c].map(w => `${esc(w[0])}: ${esc(w[3])}`).join(" · ")}. US options; some need a subscription.</p>`;
+    if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times · Texas time (Central)</h4>${schedHTML(e.id, false)}<p class="fine">Shown in Central time wherever you open this page. US clocks go back an hour on Nov 1, and the times already account for it. Support races in grey. Times can change; check the official timetable on the day.</p>`;
+    h += `</section>`;
+  }
+  if (LIVE[e.id]) {
+    const L = LIVE[e.id];
+    h += `<section class="card"><h3>This weekend so far</h3><p class="lede">Updated ${esc(L.updated)}</p>` +
+      L.blocks.map(b => `<h4>${esc(b.title)}</h4>${b.note ? `<p class="story">${esc(b.note)}</p>` : ""}${tower(b.rows)}`).join("") + `</section>`;
+  }
+  if (RESULT_FOR[e.id]) {
+    const r = STATS[RESULT_FOR[e.id]].race;
+    h += `<section class="card"><h3>Results</h3>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>`;
+  } else if (WINNERS[e.id]) {
+    h += `<section class="card"><h3>Winner</h3><p style="margin:2px 0 0;font-weight:700">🏁 ${esc(WINNERS[e.id])}</p><p class="fine">Full race order isn't loaded for this round.</p></section>`;
+  } else if (!e.cancelled && !LIVE[e.id]) {
+    h += `<section class="card"><h3>Results</h3><p class="lede" style="margin:0">${ph === "past" ? "Results for this round aren't loaded yet." : "Qualifying and race results show here during and after the weekend."}</p></section>`;
+  }
+
+  h += `<section class="card"><h3>The track</h3><p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
+  if (t) {
+    h += `<div class="facts">
+      <div class="fact"><div class="k">Lap</div><div class="v">${t[0] ? t[0].toFixed(2) + " km" : "—"}</div><div class="fine" style="margin:0">${t[0] ? (t[0] * 0.621371).toFixed(2) + " mi" : ""}</div></div>
+      <div class="fact"><div class="k">Corners</div><div class="v">${t[1] ?? "—"}</div></div>
+      <div class="fact"><div class="k">Type</div><div class="v" style="font-size:1rem">${esc(t[2])}</div></div>
+      <div class="fact"><div class="k">Format</div><div class="v" style="font-size:1rem">${e.tags.length ? e.tags.map(esc).join(", ") : "Standard"}</div></div>
+    </div><p class="story" style="margin:10px 0 0">${esc(t[3])}.</p>`;
+  }
+  h += `<div class="mine" style="margin:12px 0 0"><a class="btn" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(e.circuit + " " + e.location.split(",")[0] + " race track")}" target="_blank" rel="noopener">Track photos ↗</a></div>`;
+  if (others.length) h += `<p class="fine">Also here in 2026: ${others.map(o => `${SERIES[o.series]} ${esc(o.name)} (${range(o)})`).join(" · ")}</p>`;
+  h += `</section>`;
+
+  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
+  if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
+  h += `</section>`;
+  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
+  if (st.standings && !e.cancelled && ph !== "past") h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
+  h += `</div>`;
+
+  const sheet = document.getElementById("sheet");
+  sheet.innerHTML = h; sheet.scrollTop = 0;
+  lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("sheetClose").focus();
+}
+function closeRace(){
+  document.getElementById("sheetBg").hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocus) try { lastFocus.focus(); } catch(e){}
+}
+
+// ---------- Tabs & events ----------
+function showTab(name){
+  for (const n of ["weekend","calendar","standings"]) {
+    document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
+    document.getElementById("v-" + n).hidden = n !== name;
+  }
+  try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
+  window.scrollTo(0, 0);
+}
+function renderAll(){ renderWeekend(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
+
+document.querySelector(".tabs").addEventListener("click", ev => {
+  const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
+});
+document.getElementById("calChips").addEventListener("click", ev => {
+  const b = ev.target.closest(".chip"); if (!b) return;
+  calSeries = b.dataset.v; renderCalChips(); renderList();
+});
+document.getElementById("statChips").addEventListener("click", ev => {
+  const b = ev.target.closest(".chip"); if (!b) return;
+  statsSeries = b.dataset.v; renderStatChips(); renderStats();
+});
+document.getElementById("viewSeg").addEventListener("click", ev => {
+  const b = ev.target.closest("button"); if (!b) return;
+  view = b.dataset.v;
+  [...ev.currentTarget.children].forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderList();
+});
+document.getElementById("showCancelled").addEventListener("change", ev => { showCancelled = ev.target.checked; renderList(); });
+
+document.addEventListener("click", ev => {
+  const k = ev.target.closest("[data-k]");
+  if (k) {
+    ev.stopPropagation();
+    const { k: key, id } = k.dataset;
+    if (state[key][id]) delete state[key][id]; else state[key][id] = true;
+    save();
+    document.querySelectorAll(`[data-k="${key}"][data-id="${id}"]`).forEach(b => b.setAttribute("aria-pressed", !!state[key][id]));
+    renderList();
+    return;
+  }
+  if (ev.target.closest("a")) return;
+  if (ev.target.id === "sheetBg" || ev.target.closest("#sheetClose")) { closeRace(); return; }
+  const o = ev.target.closest("[data-open]");
+  if (o) { openRace(o.dataset.open); return; }
+  const sp = ev.target.closest("[data-series]");
+  if (sp) { calSeries = sp.dataset.series; view = "season"; document.querySelectorAll("#viewSeg button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === "season")); renderCalChips(); renderList(); showTab("calendar"); }
+});
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape" && !document.getElementById("sheetBg").hidden) { closeRace(); return; }
+  if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches && ev.target.matches("[data-open],[data-series]")) { ev.preventDefault(); ev.target.click(); }
+});
+
+renderAll();
+(() => {
+  const h = (location.hash || "").slice(1);
+  let t = ["weekend","calendar","standings"].includes(h) ? h : null;
+  if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
+  showTab(["weekend","calendar","standings"].includes(t) ? t : "weekend");
+})();
+setInterval(renderAll, 60 * 60 * 1000);
+
+</script>
+<script>
+// Installable app: offline support
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }
+</script>
+</body>
+</html>
