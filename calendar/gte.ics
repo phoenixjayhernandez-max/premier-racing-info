@@ -1,0 +1,122 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Premier Racing Info//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:GT World Challenge Europe · Premier Racing Info
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:gte-ricard-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260410
+DTEND;VALUE=DATE:20260413
+SUMMARY:GT World Challenge Europe · 6 Hours of Paul Ricard
+LOCATION:Circuit Paul Ricard\, Le Castellet\, France
+DESCRIPTION:Endurance Cup\, 6 hours\nStart times are added about a week be
+ fore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-brands-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260502
+DTEND;VALUE=DATE:20260504
+SUMMARY:GT World Challenge Europe · Brands Hatch
+LOCATION:Brands Hatch\, Kent\, UK
+DESCRIPTION:Sprint Cup\, 2 races\nStart times are added about a week befor
+ e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-monza-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260528
+DTEND;VALUE=DATE:20260601
+SUMMARY:GT World Challenge Europe · 3 Hours of Monza
+LOCATION:Monza\, Monza\, Italy
+DESCRIPTION:Endurance Cup\, 3 hours\nStart times are added about a week be
+ fore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-spa-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260623
+DTEND;VALUE=DATE:20260629
+SUMMARY:GT World Challenge Europe · CrowdStrike 24 Hours of Spa
+LOCATION:Spa-Francorchamps\, Stavelot\, Belgium
+DESCRIPTION:Endurance Cup\, 24 hours\nStart times are added about a week b
+ efore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-misano-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260716
+DTEND;VALUE=DATE:20260720
+SUMMARY:GT World Challenge Europe · Misano
+LOCATION:Misano World Circuit\, Misano Adriatico\, Italy
+DESCRIPTION:Sprint Cup\, 2 races\nStart times are added about a week befor
+ e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-magny-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260730
+DTEND;VALUE=DATE:20260803
+SUMMARY:GT World Challenge Europe · Magny-Cours
+LOCATION:Circuit de Nevers Magny-Cours\, Magny-Cours\, France
+DESCRIPTION:Sprint Cup\, 2 races\nStart times are added about a week befor
+ e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-nring-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260828
+DTEND;VALUE=DATE:20260831
+SUMMARY:GT World Challenge Europe · 3 Hours of Nürburgring
+LOCATION:Nürburgring\, Nürburg\, Germany
+DESCRIPTION:Endurance Cup\, 3 hours\nStart times are added about a week be
+ fore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-zandvoort-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260921
+SUMMARY:GT World Challenge Europe · Zandvoort
+LOCATION:Zandvoort\, Zandvoort\, Netherlands
+DESCRIPTION:Sprint Cup\, 2 races\nStart times are added about a week befor
+ e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-bcn-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261005
+SUMMARY:GT World Challenge Europe · Barcelona
+LOCATION:Circuit de Barcelona-Catalunya\, Montmeló\, Spain
+DESCRIPTION:Sprint Cup\, 2 races\, Sprint finale\nStart times are added ab
+ out a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-rac
+ ing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-portimao-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20261014
+DTEND;VALUE=DATE:20261019
+SUMMARY:GT World Challenge Europe · 3 Hours of Portimão
+LOCATION:Algarve International Circuit\, Portimão\, Portugal
+DESCRIPTION:Endurance Cup\, 3 hours\, Finale\nStart times are added about 
+ a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-
+ info/
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

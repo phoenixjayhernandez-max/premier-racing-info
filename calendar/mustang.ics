@@ -1,0 +1,76 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Premier Racing Info//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Ford Mustang Challenge · Premier Racing Info
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:mustang-sebring-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260318
+DTEND;VALUE=DATE:20260321
+SUMMARY:Ford Mustang Challenge · Sebring
+LOCATION:Sebring International Raceway\, Sebring\, FL
+DESCRIPTION:2 races\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-laguna-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260501
+DTEND;VALUE=DATE:20260504
+SUMMARY:Ford Mustang Challenge · Laguna Seca
+LOCATION:WeatherTech Raceway Laguna Seca\, Monterey\, CA
+DESCRIPTION:2 races\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-midohio-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260605
+DTEND;VALUE=DATE:20260608
+SUMMARY:Ford Mustang Challenge · Mid-Ohio
+LOCATION:Mid-Ohio Sports Car Course\, Lexington\, OH
+DESCRIPTION:2 races\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-glen-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260625
+DTEND;VALUE=DATE:20260628
+SUMMARY:Ford Mustang Challenge · Watkins Glen
+LOCATION:Watkins Glen International\, Watkins Glen\, NY
+DESCRIPTION:2 races\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-vir-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260824
+SUMMARY:Ford Mustang Challenge · VIRginia International Raceway
+LOCATION:VIRginia International Raceway\, Alton\, VA
+DESCRIPTION:2 races\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-cota-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260904
+DTEND;VALUE=DATE:20260907
+SUMMARY:Ford Mustang Challenge · Circuit of The Americas
+LOCATION:Circuit of the Americas\, Austin\, TX
+DESCRIPTION:2 races\, Finale\nStart times are added about a week before.\n
+ https://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

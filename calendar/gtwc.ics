@@ -1,0 +1,88 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Premier Racing Info//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:GT World Challenge America · Premier Racing Info
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:gtwc-sonoma-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260327
+DTEND;VALUE=DATE:20260330
+SUMMARY:GT World Challenge America · Sonoma
+LOCATION:Sonoma Raceway\, Sonoma\, CA
+DESCRIPTION:3 hours\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-cota-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260424
+DTEND;VALUE=DATE:20260427
+SUMMARY:GT World Challenge America · Circuit of The Americas
+LOCATION:Circuit of the Americas\, Austin\, TX
+DESCRIPTION:3 hours\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-sebring-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260508
+DTEND;VALUE=DATE:20260511
+SUMMARY:GT World Challenge America · Sebring
+LOCATION:Sebring International Raceway\, Sebring\, FL
+DESCRIPTION:3 hours\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-roadatl-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260612
+DTEND;VALUE=DATE:20260615
+SUMMARY:GT World Challenge America · Road Atlanta
+LOCATION:Michelin Raceway Road Atlanta\, Braselton\, GA
+DESCRIPTION:3 hours\, Return to Road Atlanta\nStart times are added about 
+ a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-
+ info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-roadam-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260828
+DTEND;VALUE=DATE:20260831
+SUMMARY:GT World Challenge America · Road America
+LOCATION:Road America\, Elkhart Lake\, WI
+DESCRIPTION:3 hours\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-barber-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20260925
+DTEND;VALUE=DATE:20260928
+SUMMARY:GT World Challenge America · Barber
+LOCATION:Barber Motorsports Park\, Birmingham\, AL
+DESCRIPTION:3 hours\nStart times are added about a week before.\nhttps://p
+ hoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtwc-indy-weekend@premier-racing-info
+DTSTAMP:20261027T165000Z
+DTSTART;VALUE=DATE:20261009
+DTEND;VALUE=DATE:20261012
+SUMMARY:GT World Challenge America · Indianapolis 8 Hour
+LOCATION:Indianapolis Motor Speedway\, Indianapolis\, IN
+DESCRIPTION:8 hours\, Finale\nStart times are added about a week before.\n
+ https://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

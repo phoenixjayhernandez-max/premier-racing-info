@@ -121,7 +121,7 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .prog i.now{background:var(--signal)}
 
 /* Buttons */
-.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:6px;background:var(--panel-2);border:1px solid var(--rule);color:var(--ink);text-decoration:none;white-space:nowrap}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:6px;background:var(--panel-2);border:1px solid var(--rule);color:var(--ink);text-decoration:none;white-space:nowrap}
 .btn:hover{border-color:var(--sub)}
 .btn.watch{background:var(--c);border-color:var(--c);color:var(--plate-ink)}
 .btn .free{font-size:.66rem;font-weight:800;background:var(--signal);color:var(--signal-ink);border-radius:3px;padding:0 4px}
@@ -194,6 +194,36 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .maker{background:var(--panel-2);border-radius:6px;padding:5px 10px;font-weight:600;font-size:.88rem}
 .maker small{color:var(--sub);font-weight:500;margin-left:5px}
 
+/* Favorites */
+.hbtns{margin-left:auto;display:flex;gap:6px}
+.hbtn.alt{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.hbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:.8rem;padding:5px 10px;border-radius:999px;background:var(--signal);color:var(--signal-ink);white-space:nowrap;width:34px;height:34px;padding:0;justify-content:center;font-size:1rem}
+.hbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.favs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.fv{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--signal);border-radius:var(--r);padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:2px 12px}
+.fv .pl{grid-row:span 4}
+.fv .t{font-weight:700;font-size:1rem}
+.fv .l{font-size:.84rem;color:var(--sub)}
+.fv .l b{color:var(--ink);font-weight:700}
+.tower tr.fav td:not(.pos){background:color-mix(in srgb,var(--signal) 22%,var(--panel-2))}
+.tower tr.fav .who::before{content:"★ ";color:var(--ink)}
+.team.fav{border-left-color:var(--signal);background:color-mix(in srgb,var(--signal) 18%,var(--panel-2))}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pk{all:unset;cursor:pointer;font-size:.88rem;font-weight:600;padding:6px 11px;border-radius:999px;background:var(--panel-2);border:1px solid var(--rule)}
+.pk[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+.pk[aria-pressed="true"]::before{content:"★ "}
+.pk:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.search{width:100%;font:inherit;padding:9px 12px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);margin:4px 0 12px}
+.feeds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.steps{margin:8px 0 0;padding-left:20px;font-size:.88rem;max-width:65ch}
+.steps li{margin-bottom:4px}
+.more-sec summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);font-size:1.15rem;margin:0}
+.more-sec summary::-webkit-details-marker{display:none}
+.more-sec summary::after{content:"＋";font-family:var(--ui);color:var(--sub)}
+.more-sec[open] summary{margin-bottom:10px}
+.more-sec[open] summary::after{content:"－"}
+.ev .next{grid-column:2;font-size:.85rem;margin-top:6px}
+.ev .next b{background:var(--signal);color:var(--signal-ink);padding:1px 6px;border-radius:4px}
 /* Sheet */
 .sheet-bg[hidden]{display:none}
 .sheet-bg{position:fixed;inset:0;background:rgba(5,8,12,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center}
@@ -243,7 +273,8 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
     <div class="brand">
       <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
       <h1>Premier Racing <span>Info</span></h1>
-      <span class="sync" id="sync"><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
+      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button></span>
+      <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="t-weekend" aria-controls="v-weekend" aria-selected="true">Weekend</button>
@@ -256,11 +287,12 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
     <div id="weekendTop"></div>
-    <div class="sec">
-      <h2 class="h2">Season progress</h2>
+    <div class="sec" id="favSec"></div>
+    <details class="sec more-sec">
+      <summary class="h2">Season progress</summary>
       <p class="kicker">Each block is a round. Tap a series to see its calendar.</p>
       <div class="series-grid" id="seriesGrid"></div>
-    </div>
+    </details>
   </section>
 
   <section class="view" id="v-calendar" role="tabpanel" aria-labelledby="t-calendar" hidden>
@@ -852,10 +884,10 @@ function statusOf(e){
   const ph = phase(e), t = today();
   if (e.cancelled) return ["Cancelled",""];
   if (ph === "past") return ["Finished",""];
-  if (ph === "now") { const ns = nextSession(e.id); return [ns ? `Next: ${ns[0]} ${txTime(ns[1])}` : (+t === +e.end ? "Race day" : "On track"), "live"]; }
+  if (ph === "now") return [+t === +e.end ? "Race day" : "On track", "live"];
   const d = dayDiff(t, e.start);
   const ns = nextSession(e.id);
-  if (ns && d < 7) return [`${ns[0]} ${fmtDow.format(new Date(ns[1]))} ${txTime(ns[1])}`, ""];
+  if (ns && d < 7) return [d === 0 ? "Today" : d === 1 ? "Tomorrow" : `Starts ${DOW[e.start.getDay()]}`, ""];
   return [d === 1 ? "Tomorrow" : d < 7 ? `Starts ${DOW[e.start.getDay()]}` : `In ${d} days`, ""];
 }
 const TX = "America/Chicago";
@@ -891,7 +923,7 @@ function weekendEvents(){
   return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
 }
 function row5(x){
-  return `<tr class="${x[0]==='1'?'p1':''}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
+  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
 }
 function tower(rows, head3){
   return `<div class="scroll"><table class="tower"><thead><tr><th>Pos</th><th>Driver &amp; car</th><th style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
@@ -910,8 +942,114 @@ function pointsTower(list, c){
   return `<div class="scroll"><table class="tower ${c}"><thead><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr></thead><tbody>` +
     list.map((x,i) => {
       const pts = x[x.length-1];
-      return `<tr class="${i===0?'p1':''}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
+      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
     }).join("") + `</tbody></table></div>`;
+}
+
+// ---------- Favorites (saved on this device) ----------
+const FKEY = KEY + "-favs";
+let favs = [];
+try { favs = JSON.parse(localStorage.getItem(FKEY) || "[]"); } catch(e){ favs = []; }
+const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} };
+const isFav = (s, n) => favs.some(f => f.s === s && f.n === n);
+function favHit(text){ text = String(text || ""); return favs.some(f => f.n.length > 2 && text.includes(f.n)); }
+const clean = t => String(t).replace(/^#\S+\s+/, "").trim();
+function candidates(s){
+  const st = STATS[s] || {}, drivers = new Set(), teams = new Set();
+  const addD = str => String(str).split(/\s*[\/·]\s*/).map(x => x.replace(/\(.*?\)|and co\.?|and crew/gi, "").trim()).filter(x => x.length > 3 && !/^\d/.test(x)).forEach(x => drivers.add(x));
+  const addT = str => { const t = clean(String(str).split(" · ")[0]); if (t.length > 2) teams.add(t); };
+  (st.grid || []).forEach(x => { addT(x[0]); addD(x[2]); });
+  (st.standings || []).forEach(x => { addD(x[0]); if (x.length > 2) addT(x[1]); });
+  (st.makers || []).forEach(x => addT(x[0]));
+  (st.extra || []).forEach(x => addD(x[0]));
+  [st.race?.rows, st.race?.quali, st.race?.sprint].forEach(rows => (rows || []).forEach(x => { addD(x[2]); addT(x[3]); }));
+  (MAKERS[s]?.list || []).forEach(m => teams.add(m[0]));
+  for (const t of teams) drivers.delete(t);
+  return { drivers: [...drivers].sort(), teams: [...teams].sort() };
+}
+function favSummary(f){
+  const st = STATS[f.s] || {}, lines = [];
+  const find = (list, idx) => (list || []).findIndex(x => String(idx === 1 ? x[0] + " " + (x.length > 2 ? x[1] : "") : x[0]).includes(f.n));
+  const exact = (st.makers || []).findIndex(x => x[0] === f.n);
+  const order = exact >= 0 ? [[st.makers, st.makersTitle, true]] : [[st.standings, st.standingsTitle], [st.makers, st.makersTitle]];
+  for (const [list, title, ex] of order) {
+    const i = ex ? exact : find(list, 1);
+    if (i >= 0) { const pts = list[i][list[i].length - 1]; lines.push(`<b>P${i + 1}</b> in ${esc((title || "standings").replace(/ \(.*\)/, ""))} · ${pts} pts${i ? ` · ${+(list[0][list[0].length-1] - pts).toFixed(1)} behind` : " · leader"}`); break; }
+  }
+  const champ = (st.champs || []).find(c => String(c[1] + " " + c[2]).includes(f.n));
+  if (champ) lines.push(`🏆 <b>2026 champion</b> · ${esc(champ[0])}`);
+  const r = st.race;
+  if (r && r.rows) {
+    const hit = r.rows.filter(x => String(x[2] + " " + x[3]).includes(f.n)).slice(0, 2);
+    if (hit.length) lines.push(`Latest, ${esc(r.name.replace(/ \(.*\)/, ""))}: ${hit.map(x => `<b>${/^\d+$/.test(x[0]) ? "P" + x[0] : esc(x[0])}</b>${hit.length > 1 ? " " + esc(x[2].split(" ")[0]) : ""}`).join(", ")}`);
+  }
+  const nx = events.filter(e => e.series === f.s && !e.cancelled && phase(e) !== "past").sort((a,b) => a.start - b.start)[0];
+  if (nx) { const gp = (SESSIONS[nx.id] || []).filter(x => !x[2]).slice(-1)[0]; lines.push(`Next: ${esc(nx.name)} · ${gp ? fmtDay.format(new Date(gp[1])) + " " + txTime(gp[1]) : range(nx)}`); }
+  else lines.push("Season complete");
+  return lines;
+}
+function renderFavs(){
+  const el = document.getElementById("favSec");
+  if (!favs.length) {
+    el.innerHTML = `<button class="btn" data-favpick="1" style="width:100%;justify-content:center;padding:12px">★ Follow your drivers and teams</button>`;
+    return;
+  }
+  el.innerHTML = `<h2 class="h2">Your favorites</h2><p class="kicker">Highlighted with ★ in results and standings. <button class="btn" data-favpick="1" style="margin-left:6px">Edit</button></p>
+    <div class="favs">${favs.map(f => `<div class="fv ${f.s}"><div class="pl">${plate(f.s, 30)}</div><div class="t">${esc(f.n)}</div>${favSummary(f).map(l => `<div class="l">${l}</div>`).join("")}</div>`).join("")}</div>`;
+}
+let pickSeries = "f1", pickQuery = "";
+function openFavPicker(){
+  const cands = candidates(pickSeries), q = pickQuery.toLowerCase();
+  const list = (arr) => arr.filter(n => !q || n.toLowerCase().includes(q)).map(n => `<button class="pk" data-fs="${pickSeries}" data-fn="${esc(n)}" aria-pressed="${isFav(pickSeries, n)}">${esc(n)}</button>`).join("") || `<span class="fine">No matches.</span>`;
+  const sheet = document.getElementById("sheet");
+  const fresh = document.getElementById("sheetBg").hidden;
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="8" style="fill:var(--signal)"/><text x="19" y="27" text-anchor="middle" font-size="22" style="fill:var(--signal-ink)">★</text></svg>
+      <div><h2 id="sheetTitle">Your favorites</h2><div class="m">${favs.length ? `${favs.length} followed · saved on this phone` : "Tap names to follow them"}</div></div>
+      <button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <div class="chips" id="pickChips">${chipsHTML(pickSeries, ORDER.map(x => [x, SERIES[x], x]))}</div>
+    <input class="search" id="pickSearch" type="search" placeholder="Search drivers and teams" value="${esc(pickQuery)}" autocomplete="off">
+    <section class="card"><h3>Drivers</h3><div class="pick">${list(cands.drivers)}</div></section>
+    <section class="card"><h3>Teams &amp; makers</h3><div class="pick">${list(cands.teams)}</div></section>
+    <p class="fine">Names come from this season's line-ups and results, so a driver who hasn't scored yet may not be listed.</p>`;
+  if (fresh) {
+    lastFocus = document.activeElement;
+    document.getElementById("sheetBg").hidden = false;
+    document.body.style.overflow = "hidden";
+    sheet.scrollTop = 0;
+    document.getElementById("sheetClose").focus();
+  }
+  const si = document.getElementById("pickSearch");
+  si.addEventListener("input", () => { pickQuery = si.value; const pos = si.selectionStart; openFavPicker(); const n = document.getElementById("pickSearch"); n.focus(); try { n.setSelectionRange(pos, pos); } catch(e){} });
+}
+
+// ---------- Reminders (calendar subscription) ----------
+function openReminders(){
+  renderReminders();
+  const sheet = document.getElementById("sheet");
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="8" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">🔔</text></svg>
+    <div><h2 id="sheetTitle">Race reminders</h2><div class="m">A heads-up 30 minutes before every session</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>` + REMIND_HTML;
+  lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false;
+  document.body.style.overflow = "hidden";
+  sheet.scrollTop = 0;
+  document.getElementById("sheetClose").focus();
+}
+let REMIND_HTML = "";
+function renderReminders(){
+  const base = location.href.replace(/[#?].*$/, "").replace(/index\.html$/, "").replace(/\/?$/, "/");
+  const web = f => base.replace(/^https?:/, "webcal:") + "calendar/" + f + ".ics";
+  const favSeries = [...new Set(favs.map(f => f.s))];
+  const order = favSeries.concat(ORDER.filter(x => !favSeries.includes(x)));
+  REMIND_HTML = `<p class="kicker">Notifications come through your iPhone Calendar, in Texas time, and the calendar keeps itself up to date.</p>
+    <section class="card"><h3>Subscribe</h3>
+      <div class="feeds"><a class="btn star" aria-pressed="true" href="${web("all")}">🔔 All series</a>${order.map(x => `<a class="btn" href="${web(x)}">${plate(x, 18)} ${esc(SERIES[x])}${favSeries.includes(x) ? " ★" : ""}</a>`).join("")}</div>
+      <ol class="steps">
+        <li>Tap a series, then <b>Subscribe</b>, then <b>Add</b>.</li>
+        <li>Turn alerts on: <b>Settings → Apps → Calendar → Calendar Accounts → Subscribed Calendars</b>, open the calendar and switch <b>Remove Alerts</b> off.</li>
+        <li>Allow Calendar notifications in <b>Settings → Notifications → Calendar</b>.</li>
+      </ol>
+      <p class="fine">Sessions show up once start times are published, usually a week before each race. Weekends without times appear as all-day events. Results alerts come from the Claude app after each update.</p>
+    </section>`;
 }
 
 // ---------- Weekend tab ----------
@@ -934,8 +1072,8 @@ function renderWeekend(){
     countLbl = "Next race in";
     countNum = d;
     title = "Coming up";
-    kicker = "No racing this weekend. Here's what's next.";
-    items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).concat(next.filter(e => e.start > new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 2));
+    kicker = "Tap a race for times, results and where to watch.";
+    items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 3);
   }
   el.innerHTML = `
     <h2 class="h2">${esc(title)}</h2><p class="kicker">${esc(kicker)}</p>
@@ -953,8 +1091,8 @@ function evCard(e){
     <h3>${esc(e.name)}</h3>
     <div class="meta">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</div>
     ${resLine ? `<div class="res" style="grid-column:2">${esc(resLine)}</div>` : ""}
-    ${SESSIONS[e.id] && phase(e) !== "past" ? `<div style="grid-column:2;margin-top:8px">${schedHTML(e.id, true)}<div class="fine" style="margin-top:4px">Texas time (Central)</div></div>` : ""}
-    <div class="acts">${watchButtons(e.series, 2)}<button class="btn" data-open="${e.id}">Details</button></div>
+    ${nextSession(e.id) ? `<div class="next">Next up: <b>${esc(nextSession(e.id)[0])} · ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</b></div>` : ""}
+    <div class="acts">${watchButtons(e.series, 1)}</div>
   </article>`;
 }
 function renderSeriesGrid(){
@@ -1001,6 +1139,7 @@ function renderList(){
     if (e.cancelled) tags.push(`<span class="tag">Cancelled</span>`);
     if (WINNERS_LIVE[e.id]) tags.push(`<span class="tag win">${esc(WINNERS_LIVE[e.id])}</span>`);
     if (WINNERS[e.id]) tags.push(`<span class="tag win">🏁 ${esc(WINNERS[e.id])}</span>`);
+    if (WINNERS[e.id] && favHit(WINNERS[e.id])) tags.push(`<span class="tag win">★ Your pick won</span>`);
     e.tags.forEach(t => tags.push(`<span class="tag">${esc(t)}</span>`));
     if (e.clashes.length && ph !== "past") tags.push(`<span class="tag clash">Same weekend: ${e.clashes.map(c => SERIES[c.series]).join(", ")}</span>`);
     if (state.going[e.id]) tags.push(`<span class="tag">Going</span>`);
@@ -1030,7 +1169,7 @@ function renderStats(){
   if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
   if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
   if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
-  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
   if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
@@ -1089,7 +1228,7 @@ function openRace(id){
   h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
   if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
   h += `</section>`;
-  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
+  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
   if (st.standings && !e.cancelled && ph !== "past") h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
   h += `</div>`;
 
@@ -1115,7 +1254,7 @@ function showTab(name){
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderWeekend(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
+function renderAll(){ renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); }
 
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
@@ -1137,6 +1276,19 @@ document.getElementById("viewSeg").addEventListener("click", ev => {
 document.getElementById("showCancelled").addEventListener("change", ev => { showCancelled = ev.target.checked; renderList(); });
 
 document.addEventListener("click", ev => {
+  if (ev.target.closest("#favBtn") || ev.target.closest("[data-favpick]")) { openFavPicker(); return; }
+  if (ev.target.closest("#bellBtn")) { openReminders(); return; }
+  const pc = ev.target.closest("#pickChips .chip");
+  if (pc) { pickSeries = pc.dataset.v; pickQuery = ""; openFavPicker(); return; }
+  const pk = ev.target.closest(".pk");
+  if (pk) {
+    const f = { s: pk.dataset.fs, n: pk.dataset.fn };
+    favs = isFav(f.s, f.n) ? favs.filter(x => !(x.s === f.s && x.n === f.n)) : favs.concat(f);
+    saveFavs(); pk.setAttribute("aria-pressed", isFav(f.s, f.n));
+    renderFavs(); renderReminders(); renderList(); renderStats();
+    const m = document.querySelector("#sheet .sh-head .m"); if (m) m.textContent = favs.length ? `${favs.length} followed · saved on this phone` : "Tap names to follow them";
+    return;
+  }
   const k = ev.target.closest("[data-k]");
   if (k) {
     ev.stopPropagation();
