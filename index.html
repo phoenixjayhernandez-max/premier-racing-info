@@ -288,6 +288,12 @@ html,body{overflow-x:hidden}
 .lvl{display:inline-block;font-size:.7rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;color:var(--sub);margin-left:4px}
 .d-ow{--c:#D7261E} .d-sc{--c:#0F8A6C} .d-gt{--c:#C2410C} .d-om{--c:#6B7280} .d-stk{--c:#1D4ED8} .d-tc{--c:#7C3AED} .d-ral{--c:#B45309} .d-off{--c:#92400E} .d-drg{--c:#BE123C} .d-dft{--c:#DB2777} .d-dirt{--c:#78350F} .d-gr{--c:#4D7C0F} .d-hc{--c:#0369A1} .d-mr{--c:#0E7490} .d-mx{--c:#A16207} .d-mo{--c:#475569}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .d-ow{--c:#FF6B5E} :root:not([data-theme="light"]) .d-sc{--c:#34C79D} :root:not([data-theme="light"]) .d-gt{--c:#FF8A3D} :root:not([data-theme="light"]) .d-om{--c:#9CA3AF} :root:not([data-theme="light"]) .d-stk{--c:#6FA2EE} :root:not([data-theme="light"]) .d-tc{--c:#B39BFF} :root:not([data-theme="light"]) .d-ral{--c:#F59E0B} :root:not([data-theme="light"]) .d-off{--c:#D6A35C} :root:not([data-theme="light"]) .d-drg{--c:#FB7185} :root:not([data-theme="light"]) .d-dft{--c:#F472B6} :root:not([data-theme="light"]) .d-dirt{--c:#C08A5A} :root:not([data-theme="light"]) .d-gr{--c:#A3E635} :root:not([data-theme="light"]) .d-hc{--c:#38BDF8} :root:not([data-theme="light"]) .d-mr{--c:#3FD6EE} :root:not([data-theme="light"]) .d-mx{--c:#FACC15} :root:not([data-theme="light"]) .d-mo{--c:#CBD5E1}}
+.srow{position:relative;padding-right:44px}
+.sstar{all:unset;cursor:pointer;position:absolute;top:6px;right:6px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font-size:1.2rem;color:var(--sub)}
+.sstar[aria-pressed="true"]{color:#D4A400}
+.sstar:focus-visible{outline:2px solid var(--signal)}
+.my-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.my-list .srow .st{font-size:.85rem}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:6px 0 0;font-size:.9rem}
 .kv dt{color:var(--sub);font-size:.8rem;padding-top:2px}
 .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
@@ -342,6 +348,7 @@ html,body{overflow-x:hidden}
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
     <div id="installBox"></div>
     <div id="weekendTop"></div>
+    <div class="sec" id="mySec"></div>
     <div class="sec" id="favSec"></div>
     <details class="sec more-sec">
       <summary class="h2">Season progress</summary>
@@ -1015,6 +1022,11 @@ const FKEY = KEY + "-favs";
 let favs = [];
 try { favs = JSON.parse(localStorage.getItem(FKEY) || "[]"); } catch(e){ favs = []; }
 const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} if (typeof cloudPush === "function") cloudPush(); };
+const MSKEY = KEY + "-myseries";
+let mySeries = [];
+try { mySeries = JSON.parse(localStorage.getItem(MSKEY) || "[]"); } catch(e){ mySeries = []; }
+const saveMySeries = () => { try { localStorage.setItem(MSKEY, JSON.stringify(mySeries)); } catch(e){} if (typeof cloudPush === "function") cloudPush(); };
+const isMine = id => mySeries.includes(id);
 const isFav = (s, n) => favs.some(f => f.s === s && f.n === n);
 function favHit(text){ text = String(text || ""); return favs.some(f => f.n.length > 2 && text.includes(f.n)); }
 const clean = t => String(t).replace(/^#\S+\s+/, "").trim();
@@ -1091,7 +1103,7 @@ function openFavPicker(){
 const SUPABASE_URL = "https://lpedwlvhaqjpeimgpbzx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_jrEOVDLKlOaqmJ_Kut4SSQ_iNoaDcuz";
 let sb = null, me = null, myName = "", pushTimer = null, syncState = "";
-function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs }; }
+function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs, mySeries }; }
 function cloudPush(){
   if (!sb || !me) return;
   clearTimeout(pushTimer);
@@ -1109,7 +1121,8 @@ async function cloudPull(){
   for (const k of ["starred","going","watched"]) state[k] = Object.assign({}, d[k] || {}, state[k]);
   const seen = new Set(favs.map(f => f.s + "|" + f.n));
   (d.favs || []).forEach(f => { if (!seen.has(f.s + "|" + f.n)) favs.push(f); });
-  try { localStorage.setItem(KEY, JSON.stringify(state)); localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){}
+  (d.mySeries || []).forEach(id => { if (!mySeries.includes(id)) mySeries.push(id); });
+  try { localStorage.setItem(KEY, JSON.stringify(state)); localStorage.setItem(FKEY, JSON.stringify(favs)); localStorage.setItem(MSKEY, JSON.stringify(mySeries)); } catch(e){}
   syncState = "Synced";
   cloudPush();
   renderAll();
@@ -1447,7 +1460,7 @@ const DISC = [
   ["Dirt oval","d-dirt"],["Hill climb","d-hc"],["Grassroots","d-gr"],
   ["Motorcycle road racing","d-mr"],["Motocross & supercross","d-mx"],["Motorcycle (other)","d-mo"]];
 const DISC_CLS = Object.fromEntries(DISC);
-const DISC_GROUPS = [["all","All"],["tracked","★ In this app"],["Open-wheel","Open-wheel"],["sportsgt","Sports car & GT"],["stocktour","Stock & touring"],["rallyoff","Rally & off-road"],["dragdrift","Drag, drift & dirt"],["bikes","Motorcycles"]];
+const DISC_GROUPS = [["all","All"],["mine","★ My series"],["tracked","In this app"],["Open-wheel","Open-wheel"],["sportsgt","Sports car & GT"],["stocktour","Stock & touring"],["rallyoff","Rally & off-road"],["dragdrift","Drag, drift & dirt"],["bikes","Motorcycles"]];
 const GROUP_OF = d => ({"Open-wheel":"Open-wheel","Sports car & endurance":"sportsgt","GT":"sportsgt","One-make":"sportsgt","Stock car":"stocktour","Touring car":"stocktour","Rally":"rallyoff","Off-road":"rallyoff","Hill climb":"rallyoff","Drag":"dragdrift","Drift":"dragdrift","Dirt oval":"dragdrift","Grassroots":"dragdrift","Motorcycle road racing":"bikes","Motocross & supercross":"bikes","Motorcycle (other)":"bikes"}[d] || "all");
 let dirGroup = "all", dirQuery = "";
 function dirCode(x){ return x.code || (x.short || x.name).replace(/[^A-Za-z0-9 ]/g,"").split(" ").filter(Boolean).map((w,i,a) => a.length === 1 ? w.slice(0,5) : (/\d/.test(w) ? w : w[0])).join("").slice(0,5).toUpperCase(); }
@@ -1458,12 +1471,12 @@ function dirLine(x){
   return `<span style="color:var(--sub)">${esc(x.season || "")}</span>`;
 }
 function renderDirChips(){
-  const n = g => g === "all" ? WORLD_LIST.length : g === "tracked" ? WORLD_LIST.filter(x => x.app).length : WORLD_LIST.filter(x => GROUP_OF(x.discipline) === g).length;
+  const n = g => g === "all" ? WORLD_LIST.length : g === "tracked" ? WORLD_LIST.filter(x => x.app).length : g === "mine" ? mySeries.length : WORLD_LIST.filter(x => GROUP_OF(x.discipline) === g).length;
   document.getElementById("dirChips").innerHTML = DISC_GROUPS.map(([v, l]) => `<button class="chip txt" data-v="${v}" aria-pressed="${dirGroup === v}">${esc(l)} <span style="color:var(--sub);font-weight:500">${n(v)}</span></button>`).join("");
 }
 function renderDir(){
   const q = dirQuery.trim().toLowerCase();
-  let list = WORLD_LIST.filter(x => dirGroup === "all" || (dirGroup === "tracked" ? x.app : GROUP_OF(x.discipline) === dirGroup));
+  let list = WORLD_LIST.filter(x => dirGroup === "all" || (dirGroup === "tracked" ? x.app : dirGroup === "mine" ? isMine(x.id) : GROUP_OF(x.discipline) === dirGroup));
   if (q) list = list.filter(x => [x.name, x.short, x.region, x.cars, x.discipline, x.level, x.about, x.champion, x.leader].join(" ").toLowerCase().includes(q));
   document.getElementById("dirCount").textContent = `${list.length} series`;
   document.getElementById("dirAsof").textContent = (window.WORLD && window.WORLD.asof) ? `Every series we could verify, worldwide. Champions, leaders and next rounds checked ${window.WORLD.asof}. ★ = full calendar, times and results in this app.` : "";
@@ -1473,9 +1486,22 @@ function renderDir(){
     if (!g.length) continue;
     g.sort((a, b) => (b.app ? 1 : 0) - (a.app ? 1 : 0) || LVL_RANK(a.level) - LVL_RANK(b.level) || a.name.localeCompare(b.name));
     h += `<h3 class="dir-h">${esc(d)} <small>${g.length}</small></h3><div class="dir-list">` + g.map(x =>
-      `<button class="srow ${cls}" data-world="${esc(x.id)}" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div></div></button>`).join("") + `</div>`;
+      srowHTML(x)).join("") + `</div>`;
   }
   document.getElementById("dirBody").innerHTML = h || `<div class="card"><p class="lede" style="margin:0">No series match “${esc(dirQuery)}”.</p></div>`;
+}
+function srowHTML(x){
+  const cls = DISC_CLS[x.discipline] || "d-mo";
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div></div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+}
+function renderMySeries(){
+  const el = document.getElementById("mySec");
+  const list = mySeries.map(id => WORLD_LIST.find(x => x.id === id)).filter(Boolean);
+  if (!list.length) {
+    el.innerHTML = `<button class="btn" data-gotab="series" style="width:100%;justify-content:center;padding:12px">☆ Pick your series to keep them here</button>`;
+    return;
+  }
+  el.innerHTML = `<h2 class="h2">My series</h2><p class="kicker">Tap one for details. <button class="btn" data-gotab="series" style="margin-left:6px">Add more</button></p><div class="my-list">${list.map(srowHTML).join("")}</div>`;
 }
 const LVL_RANK = l => ["World championship","International","National","Feeder","One-make"].indexOf(l) + 1 || 9;
 function openWorld(id){
@@ -1489,7 +1515,8 @@ function openWorld(id){
   h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
   h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   h += `<section class="card"><h3>Watch in the US</h3><p style="margin:2px 0 0">${esc(x.watch_us || "Check the series website")}</p><div class="mine" style="margin:12px 0 0">`;
-  if (x.app) h += `<button class="btn star" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
+  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button>`;
+  if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   const sheet = document.getElementById("sheet");
@@ -1505,6 +1532,18 @@ document.getElementById("dirChips").addEventListener("click", ev => {
 });
 document.getElementById("dirSearch").addEventListener("input", ev => { dirQuery = ev.target.value; renderDir(); });
 document.addEventListener("click", ev => {
+  const ms = ev.target.closest("[data-mystar]");
+  if (ms) {
+    ev.stopPropagation();
+    const id = ms.dataset.mystar;
+    mySeries = isMine(id) ? mySeries.filter(x => x !== id) : mySeries.concat(id);
+    saveMySeries();
+    document.querySelectorAll(`[data-mystar="${id}"]`).forEach(b => { const on = isMine(id); b.setAttribute("aria-pressed", on); b.textContent = b.classList.contains("sstar") ? (on ? "★" : "☆") : (on ? "★ In my series" : "☆ Add to my series"); });
+    renderMySeries(); renderDirChips(); if (dirGroup === "mine") renderDir();
+    return;
+  }
+  const gt = ev.target.closest("[data-gotab]");
+  if (gt) { showTab(gt.dataset.gotab); return; }
   const w = ev.target.closest("[data-world]");
   if (w) { openWorld(w.dataset.world); return; }
   const g = ev.target.closest("[data-goapp]");
@@ -1520,7 +1559,7 @@ function showTab(name){
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); }
+function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); }
 
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
@@ -1577,7 +1616,7 @@ document.addEventListener("click", ev => {
 });
 document.addEventListener("keydown", ev => {
   if (ev.key === "Escape" && !document.getElementById("sheetBg").hidden) { closeRace(); return; }
-  if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches && ev.target.matches("[data-open],[data-series]")) { ev.preventDefault(); ev.target.click(); }
+  if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches && ev.target.matches("[data-open],[data-series],[data-world]")) { ev.preventDefault(); ev.target.click(); }
 });
 
 renderAll();
