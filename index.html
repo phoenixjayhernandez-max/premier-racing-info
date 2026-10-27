@@ -224,6 +224,14 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .more-sec[open] summary::after{content:"－"}
 .ev .next{grid-column:2;font-size:.85rem;margin-top:6px}
 .ev .next b{background:var(--signal);color:var(--signal-ink);padding:1px 6px;border-radius:4px}
+.form{display:grid;gap:8px;max-width:420px}
+.form label{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+.form input{font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
+.form .err{color:var(--f1);font-size:.85rem;min-height:1.2em}
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stats4 div{background:var(--panel-2);border-radius:8px;padding:8px;text-align:center}
+.stats4 b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1}
+.stats4 span{font-size:.72rem;color:var(--sub)}
 /* Sheet */
 .sheet-bg[hidden]{display:none}
 .sheet-bg{position:fixed;inset:0;background:rgba(5,8,12,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center}
@@ -273,7 +281,7 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
     <div class="brand">
       <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
       <h1>Premier Racing <span>Info</span></h1>
-      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button></span>
+      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button><button class="hbtn alt" id="acctBtn" aria-label="Your account" hidden>👤</button></span>
       <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
@@ -847,6 +855,7 @@ try { const s = localStorage.getItem(KEY); if (s) state = Object.assign(state, J
 let remoteRef = null, saveTimer = null;
 function save(){
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+  if (typeof cloudPush === "function") cloudPush();
   if (remoteRef) {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
@@ -950,7 +959,7 @@ function pointsTower(list, c){
 const FKEY = KEY + "-favs";
 let favs = [];
 try { favs = JSON.parse(localStorage.getItem(FKEY) || "[]"); } catch(e){ favs = []; }
-const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} };
+const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} if (typeof cloudPush === "function") cloudPush(); };
 const isFav = (s, n) => favs.some(f => f.s === s && f.n === n);
 function favHit(text){ text = String(text || ""); return favs.some(f => f.n.length > 2 && text.includes(f.n)); }
 const clean = t => String(t).replace(/^#\S+\s+/, "").trim();
@@ -1020,6 +1029,102 @@ function openFavPicker(){
   }
   const si = document.getElementById("pickSearch");
   si.addEventListener("input", () => { pickQuery = si.value; const pos = si.selectionStart; openFavPicker(); const n = document.getElementById("pickSearch"); n.focus(); try { n.setSelectionRange(pos, pos); } catch(e){} });
+}
+
+// ---------- Accounts (Supabase, free tier) ----------
+// Paste the two values from Supabase → Project Settings → API. Leave empty to hide accounts.
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+let sb = null, me = null, myName = "", pushTimer = null, syncState = "";
+function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs }; }
+function cloudPush(){
+  if (!sb || !me) return;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(async () => {
+    const { error } = await sb.from("profiles").upsert({ id: me.id, display_name: myName || null, data: cloudPayload(), updated_at: new Date().toISOString() });
+    syncState = error ? "Couldn't sync. Changes are saved on this phone and will sync next time." : "Synced";
+    const el = document.getElementById("syncLine"); if (el) el.textContent = syncState;
+  }, 600);
+}
+async function cloudPull(){
+  const { data, error } = await sb.from("profiles").select("display_name,data").eq("id", me.id).maybeSingle();
+  if (error) { syncState = "Couldn't load your account data."; return; }
+  const d = (data && data.data) || {};
+  myName = (data && data.display_name) || myName || (me.user_metadata && me.user_metadata.display_name) || "";
+  for (const k of ["starred","going","watched"]) state[k] = Object.assign({}, d[k] || {}, state[k]);
+  const seen = new Set(favs.map(f => f.s + "|" + f.n));
+  (d.favs || []).forEach(f => { if (!seen.has(f.s + "|" + f.n)) favs.push(f); });
+  try { localStorage.setItem(KEY, JSON.stringify(state)); localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){}
+  syncState = "Synced";
+  cloudPush();
+  renderAll();
+}
+async function initAccounts(){
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+  document.getElementById("acctBtn").hidden = false;
+  try {
+    await new Promise((ok, bad) => { const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"; sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc); });
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+    const { data } = await sb.auth.getSession();
+    me = data.session ? data.session.user : null;
+    if (me) await cloudPull();
+    sb.auth.onAuthStateChange((_e, session) => { me = session ? session.user : null; });
+  } catch(e) { sb = null; }
+}
+let acctMode = "signup";
+function openAccount(msg){
+  const sheet = document.getElementById("sheet");
+  const head = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="19" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">👤</text></svg>
+    <div><h2 id="sheetTitle">${me ? esc(myName || "Your account") : "Your account"}</h2><div class="m">${me ? esc(me.email || "") : "Save your favorites and races on every device"}</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
+  let body;
+  if (!sb) body = `<div class="empty">Accounts aren't available right now. Check your connection and try again.</div>`;
+  else if (me) {
+    const n = k => Object.keys(state[k]).length;
+    const been = events.filter(e => state.going[e.id] && phase(e) === "past");
+    body = `<section class="card"><h3>Your season</h3><div class="stats4"><div><b>${favs.length}</b><span>following</span></div><div><b>${n("starred")}</b><span>starred</span></div><div><b>${n("going")}</b><span>going</span></div><div><b>${n("watched")}</b><span>watched</span></div></div>
+        <p class="fine" id="syncLine">${esc(syncState || "Synced")}</p></section>
+      ${been.length ? `<section class="card"><h3>Races you went to</h3><div class="list">${been.map(e => `<div class="team ${e.series}"><div class="a">${esc(e.name)}</div><div class="b">${esc(SERIES_FULL[e.series])} · ${range(e)}</div>${WINNERS[e.id] ? `<div class="d">🏁 ${esc(WINNERS[e.id])}</div>` : ""}</div>`).join("")}</div></section>` : ""}
+      <section class="card"><h3>Profile</h3><form class="form" id="nameForm"><label for="dispName">Display name</label><input id="dispName" maxlength="40" value="${esc(myName)}" autocomplete="nickname"><button class="btn" type="submit">Save name</button></form></section>
+      <button class="btn" id="signOut" style="margin-top:4px">Sign out</button>`;
+  } else {
+    const up = acctMode === "signup";
+    body = `<section class="card"><h3>${up ? "Create your account" : "Sign in"}</h3>
+      <form class="form" id="authForm">
+        ${up ? `<label for="aName">Display name</label><input id="aName" maxlength="40" autocomplete="nickname">` : ""}
+        <label for="aEmail">Email</label><input id="aEmail" type="email" required autocomplete="email" inputmode="email">
+        <label for="aPass">Password</label><input id="aPass" type="password" required minlength="6" autocomplete="${up ? "new-password" : "current-password"}">
+        <div class="err" id="aErr">${esc(msg || "")}</div>
+        <button class="btn star" aria-pressed="true" type="submit">${up ? "Create account" : "Sign in"}</button>
+      </form>
+      <p class="fine">${up ? `Already have one? <a href="#" id="toggleAuth">Sign in</a>` : `New here? <a href="#" id="toggleAuth">Create an account</a>`}. Your favorites, stars, Going and Watched marks will sync to every device you sign in on.</p></section>`;
+  }
+  sheet.innerHTML = head + body;
+  if (document.getElementById("sheetBg").hidden) {
+    lastFocus = document.activeElement;
+    document.getElementById("sheetBg").hidden = false;
+    document.body.style.overflow = "hidden";
+    sheet.scrollTop = 0;
+  }
+  const af = document.getElementById("authForm");
+  if (af) af.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const email = document.getElementById("aEmail").value.trim(), password = document.getElementById("aPass").value;
+    const err = document.getElementById("aErr"); err.textContent = acctMode === "signup" ? "Creating your account…" : "Signing in…";
+    let res;
+    if (acctMode === "signup") {
+      myName = (document.getElementById("aName").value || "").trim();
+      res = await sb.auth.signUp({ email, password, options: { data: { display_name: myName } } });
+      if (!res.error && !res.data.session) { acctMode = "signin"; openAccount("Check your email to confirm your account, then sign in."); return; }
+    } else res = await sb.auth.signInWithPassword({ email, password });
+    if (res.error) { err.textContent = res.error.message === "Invalid login credentials" ? "That email and password don't match. Try again." : res.error.message; return; }
+    me = res.data.user; await cloudPull(); openAccount();
+  });
+  const tg = document.getElementById("toggleAuth");
+  if (tg) tg.addEventListener("click", ev => { ev.preventDefault(); acctMode = acctMode === "signup" ? "signin" : "signup"; openAccount(); });
+  const nf = document.getElementById("nameForm");
+  if (nf) nf.addEventListener("submit", ev => { ev.preventDefault(); myName = document.getElementById("dispName").value.trim(); cloudPush(); openAccount(); });
+  const so = document.getElementById("signOut");
+  if (so) so.addEventListener("click", async () => { await sb.auth.signOut(); me = null; myName = ""; syncState = ""; openAccount(); });
 }
 
 // ---------- Reminders (calendar subscription) ----------
@@ -1278,6 +1383,7 @@ document.getElementById("showCancelled").addEventListener("change", ev => { show
 document.addEventListener("click", ev => {
   if (ev.target.closest("#favBtn") || ev.target.closest("[data-favpick]")) { openFavPicker(); return; }
   if (ev.target.closest("#bellBtn")) { openReminders(); return; }
+  if (ev.target.closest("#acctBtn")) { openAccount(); return; }
   const pc = ev.target.closest("#pickChips .chip");
   if (pc) { pickSeries = pc.dataset.v; pickQuery = ""; openFavPicker(); return; }
   const pk = ev.target.closest(".pk");
@@ -1312,6 +1418,7 @@ document.addEventListener("keydown", ev => {
 });
 
 renderAll();
+initAccounts();
 (() => {
   const h = (location.hash || "").slice(1);
   let t = ["weekend","calendar","standings"].includes(h) ? h : null;
