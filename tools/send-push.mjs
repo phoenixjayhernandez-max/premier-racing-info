@@ -79,14 +79,14 @@ const subs = cfg.subs || [];
 console.log(`${subs.length} phones, ${fresh.length} new alerts, ${freshNews.length} new headlines`);
 
 const gone = [];
-let sentCount = 0;
+let sentCount = 0, failCount = 0;
 async function send(sub, payload){
   try {
     await webpush.sendNotification({ endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } }, JSON.stringify(payload), { TTL: 3600, urgency: "high" });
     sentCount++;
   } catch (e) {
     if (e.statusCode === 404 || e.statusCode === 410) gone.push(sub.endpoint);
-    else console.log("Send failed:", e.statusCode || "", (e.body || e.message || "").toString().slice(0, 120));
+    else { failCount++; state.lastError = String(e.statusCode || "") + " " + String(e.body || e.message || "").slice(0, 200); } console.log("Send failed:", e.statusCode || "", (e.body || e.message || "").toString().slice(0, 120));
   }
 }
 for (const sub of subs) {
@@ -106,6 +106,7 @@ for (const sub of subs) {
 for (const a of fresh) state.sent[a.key] = new Date().toISOString();
 for (const x of freshNews) state.sent["news:" + x.link] = new Date().toISOString();
 if (gone.length) await rpc("drop_push_subs", { p_secret: SECRET, p_endpoints: gone }).catch(e => console.log(e.message));
+state.lastRun = { at: new Date().toISOString(), phones: subs.length, sent: sentCount, failed: failCount, expired: gone.length, test: TEST };
 save();
 console.log(`Sent ${sentCount} notifications; removed ${gone.length} expired phones`);
 
