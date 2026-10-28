@@ -304,10 +304,6 @@ html,body{overflow-x:hidden}
 .tabs::-webkit-scrollbar{display:none}
 
 /* ---------- Logos & photos ---------- */
-.mlogo{display:inline-grid;place-items:center;width:var(--s,22px);height:var(--s,22px);border-radius:5px;background:var(--b);flex:none;vertical-align:-0.3em;margin-right:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.mlogo i{display:block;width:72%;height:72%;background:#fff;-webkit-mask:var(--u) center/contain no-repeat;mask:var(--u) center/contain no-repeat}
-.logos{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.logos .mlogo{margin:0}
 .maker{display:inline-flex;align-items:center;gap:2px}
 .photo{position:relative;background:#fff;border-radius:8px;overflow:hidden;display:none}
 .photo.ok{display:block}
@@ -1023,7 +1019,7 @@ function weekendEvents(){
   return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
 }
 function row5(x){
-  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${firstLogo(x[3], 15)}${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
+  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
 }
 function tower(rows, head3){
   return `<div class="scroll"><table class="tower"><thead><tr><th>Pos</th><th>Driver &amp; car</th><th style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
@@ -1042,31 +1038,10 @@ function pointsTower(list, c){
   return `<div class="scroll"><table class="tower ${c}"><thead><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr></thead><tbody>` +
     list.map((x,i) => {
       const pts = x[x.length-1];
-      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${x.length>2 ? "" : firstLogo(x[0], 18)}${esc(x[0])}</span>${x.length>2?`<div class="sub">${firstLogo(x[1], 15)}${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
+      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
     }).join("") + `</tbody></table></div>`;
 }
 
-
-// ---------- Maker logos (Simple Icons; trademarks of their owners) ----------
-const BRANDS = [[/mercedes|\bamg\b/i,"amg","1A1A1A"],[/ferrari/i,"ferrari","D40000"],[/porsche/i,"porsche","B12B28"],[/\bbmw\b/i,"bmw","0066B1"],
-  [/racing bulls|red bull/i,"redbull","DB0A40"],[/\bford\b|mustang/i,"ford","00274E"],[/chevrolet|chevy|camaro/i,"chevrolet","CD9834"],
-  [/toyota|\bgr ?86\b|\bgr yaris\b|\btgr\b|\bgr supra\b/i,"toyota","EB0A1E"],[/honda|\bhrc\b/i,"honda","E40521"],[/acura/i,"acura","1A1A1A"],
-  [/lamborghini/i,"lamborghini","B6A272"],[/\baudi\b/i,"audi","BB0A30"],[/mclaren/i,"mclaren","FF6A00"],[/aston martin/i,"astonmartin","00665E"],
-  [/cadillac/i,"cadillac","1A1A1A"],[/hyundai/i,"hyundai","002C5E"],[/renault/i,"renault","D4A800"],[/nissan/i,"nissan","C3002F"],[/mazda/i,"mazda","1A1A1A"],
-  [/volkswagen/i,"volkswagen","151F5D"],[/\bRam\b/,"ram","1A1A1A"],[/mitsubishi/i,"mitsubishi","E60012"],[/skoda|škoda/i,"skoda","0E3A2F"],
-  [/peugeot/i,"peugeot","1A1A1A"],[/bentley/i,"bentley","333333"],[/maserati/i,"maserati","0C2340"],[/ducati/i,"ducati","CC0000"],
-  [/yamaha/i,"yamahamotorcorporation","E60012"],[/\bktm\b/i,"ktm","FF6600"],[/suzuki/i,"suzuki","E30613"],[/husqvarna/i,"husqvarna","273A60"]];
-const BRAND_NAME = {amg:"Mercedes-AMG",ferrari:"Ferrari",porsche:"Porsche",bmw:"BMW",redbull:"Red Bull",ford:"Ford",chevrolet:"Chevrolet",toyota:"Toyota",honda:"Honda",acura:"Acura",lamborghini:"Lamborghini",audi:"Audi",mclaren:"McLaren",astonmartin:"Aston Martin",cadillac:"Cadillac",hyundai:"Hyundai",renault:"Renault",nissan:"Nissan",mazda:"Mazda",volkswagen:"Volkswagen",ram:"Ram",mitsubishi:"Mitsubishi",skoda:"Škoda",peugeot:"Peugeot",bentley:"Bentley",maserati:"Maserati",ducati:"Ducati",yamahamotorcorporation:"Yamaha",ktm:"KTM",suzuki:"Suzuki",husqvarna:"Husqvarna"};
-function brandsIn(text, max = 8){
-  text = String(text || ""); const hits = [];
-  for (const [re, slug, hex] of BRANDS) { const m = text.match(re); if (m) hits.push([m.index, slug, hex]); }
-  return hits.sort((a, b) => a[0] - b[0]).slice(0, max).map(h => [h[1], h[2]]);
-}
-function logoHTML(slug, hex, size = 22){
-  return `<span class="mlogo" style="--b:#${hex};--s:${size}px;--u:url(logos/${slug}.svg)" title="${esc(BRAND_NAME[slug] || slug)}" role="img" aria-label="${esc(BRAND_NAME[slug] || slug)}"><i></i></span>`;
-}
-function firstLogo(text, size = 16){ const b = brandsIn(text, 1)[0]; return b ? logoHTML(b[0], b[1], size) : ""; }
-function logoStrip(text, size = 22, max = 8){ const b = brandsIn(text, max); return b.length ? `<div class="logos">${b.map(x => logoHTML(x[0], x[1], size)).join("")}</div>` : ""; }
 
 // ---------- Photos (Wikipedia lead images, loaded on the phone) ----------
 const IMGKEY = KEY + "-img2";
@@ -1477,7 +1452,7 @@ function renderStats(){
   if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
   if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
   if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
-  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${firstLogo(x[0] + " " + x[1], 18)}${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
   if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
@@ -1533,10 +1508,10 @@ function openRace(id){
   if (others.length) h += `<p class="fine">Also here in 2026: ${others.map(o => `${SERIES[o.series]} ${esc(o.name)} (${range(o)})`).join(" · ")}</p>`;
   h += `</section>`;
 
-  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${firstLogo(m[0], 20)}${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
-  if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${firstLogo(m[0], 20)}${esc(m[0])}</span>`).join("")}</div>`;
+  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
+  if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
   h += `</section>`;
-  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${firstLogo(x[0] + " " + x[1], 18)}${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
+  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
   if (st.standings && !e.cancelled && ph !== "past") h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
   h += `</div>`;
 
@@ -1598,7 +1573,7 @@ function worldWatch(x){
 }
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div>${logoStrip(x.cars, 20, 7)}<div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
@@ -1628,7 +1603,7 @@ function openWorld(id){
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   h += seriesNewsHTML(x.id);
   h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
-  h += `<section class="card"><h3>The racing</h3>${logoStrip(x.cars, 30, 10)}<dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
+  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = h; sheet.scrollTop = 0;
   lastFocus = document.activeElement;
