@@ -303,6 +303,23 @@ html,body{overflow-x:hidden}
 @media (max-width:350px){ .tabs .tab{font-size:.8rem !important;letter-spacing:.01em} }
 .tabs::-webkit-scrollbar{display:none}
 
+/* ---------- Logos & photos ---------- */
+.mlogo{display:inline-grid;place-items:center;width:var(--s,22px);height:var(--s,22px);border-radius:5px;background:var(--b);flex:none;vertical-align:-0.3em;margin-right:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.mlogo i{display:block;width:72%;height:72%;background:#fff;-webkit-mask:var(--u) center/contain no-repeat;mask:var(--u) center/contain no-repeat}
+.logos{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.logos .mlogo{margin:0}
+.maker{display:inline-flex;align-items:center;gap:2px}
+.photo{position:relative;background:#fff;border-radius:8px;overflow:hidden;display:none}
+.photo.ok{display:block}
+.photo img{display:block;width:100%;height:100%;object-fit:contain}
+.photo .credit{position:absolute;right:4px;bottom:4px;font-size:.62rem;background:rgba(0,0,0,.55);color:#fff;padding:1px 5px;border-radius:3px;text-decoration:none}
+.ev .photo{grid-column:1/-1;height:130px;margin:-2px 0 8px}
+.sh-photo{height:170px;margin:0 0 12px}
+.card .photo{height:180px;margin:0 0 10px}
+.clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
+.clamp.open{display:block}
+.more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
+
 @media (max-width:440px){ .mark{display:none} }
 @media (max-width:360px){
   .brand h1 span{display:none}
@@ -995,7 +1012,7 @@ function weekendEvents(){
   return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
 }
 function row5(x){
-  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
+  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${firstLogo(x[3], 15)}${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
 }
 function tower(rows, head3){
   return `<div class="scroll"><table class="tower"><thead><tr><th>Pos</th><th>Driver &amp; car</th><th style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
@@ -1014,9 +1031,81 @@ function pointsTower(list, c){
   return `<div class="scroll"><table class="tower ${c}"><thead><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr></thead><tbody>` +
     list.map((x,i) => {
       const pts = x[x.length-1];
-      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
+      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${x.length>2 ? "" : firstLogo(x[0], 18)}${esc(x[0])}</span>${x.length>2?`<div class="sub">${firstLogo(x[1], 15)}${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
     }).join("") + `</tbody></table></div>`;
 }
+
+
+// ---------- Maker logos (Simple Icons; trademarks of their owners) ----------
+const BRANDS = [[/mercedes|\bamg\b/i,"amg","1A1A1A"],[/ferrari/i,"ferrari","D40000"],[/porsche/i,"porsche","B12B28"],[/\bbmw\b/i,"bmw","0066B1"],
+  [/racing bulls|red bull/i,"redbull","DB0A40"],[/\bford\b|mustang/i,"ford","00274E"],[/chevrolet|chevy|camaro/i,"chevrolet","CD9834"],
+  [/toyota|\bgr ?86\b|\bgr yaris\b|\btgr\b|\bgr supra\b/i,"toyota","EB0A1E"],[/honda|\bhrc\b/i,"honda","E40521"],[/acura/i,"acura","1A1A1A"],
+  [/lamborghini/i,"lamborghini","B6A272"],[/\baudi\b/i,"audi","BB0A30"],[/mclaren/i,"mclaren","FF6A00"],[/aston martin/i,"astonmartin","00665E"],
+  [/cadillac/i,"cadillac","1A1A1A"],[/hyundai/i,"hyundai","002C5E"],[/renault/i,"renault","D4A800"],[/nissan/i,"nissan","C3002F"],[/mazda/i,"mazda","1A1A1A"],
+  [/volkswagen/i,"volkswagen","151F5D"],[/\bRam\b/,"ram","1A1A1A"],[/mitsubishi/i,"mitsubishi","E60012"],[/skoda|škoda/i,"skoda","0E3A2F"],
+  [/peugeot/i,"peugeot","1A1A1A"],[/bentley/i,"bentley","333333"],[/maserati/i,"maserati","0C2340"],[/ducati/i,"ducati","CC0000"],
+  [/yamaha/i,"yamahamotorcorporation","E60012"],[/\bktm\b/i,"ktm","FF6600"],[/suzuki/i,"suzuki","E30613"],[/husqvarna/i,"husqvarna","273A60"]];
+const BRAND_NAME = {amg:"Mercedes-AMG",ferrari:"Ferrari",porsche:"Porsche",bmw:"BMW",redbull:"Red Bull",ford:"Ford",chevrolet:"Chevrolet",toyota:"Toyota",honda:"Honda",acura:"Acura",lamborghini:"Lamborghini",audi:"Audi",mclaren:"McLaren",astonmartin:"Aston Martin",cadillac:"Cadillac",hyundai:"Hyundai",renault:"Renault",nissan:"Nissan",mazda:"Mazda",volkswagen:"Volkswagen",ram:"Ram",mitsubishi:"Mitsubishi",skoda:"Škoda",peugeot:"Peugeot",bentley:"Bentley",maserati:"Maserati",ducati:"Ducati",yamahamotorcorporation:"Yamaha",ktm:"KTM",suzuki:"Suzuki",husqvarna:"Husqvarna"};
+function brandsIn(text, max = 8){
+  text = String(text || ""); const hits = [];
+  for (const [re, slug, hex] of BRANDS) { const m = text.match(re); if (m) hits.push([m.index, slug, hex]); }
+  return hits.sort((a, b) => a[0] - b[0]).slice(0, max).map(h => [h[1], h[2]]);
+}
+function logoHTML(slug, hex, size = 22){
+  return `<span class="mlogo" style="--b:#${hex};--s:${size}px;--u:url(logos/${slug}.svg)" title="${esc(BRAND_NAME[slug] || slug)}" role="img" aria-label="${esc(BRAND_NAME[slug] || slug)}"><i></i></span>`;
+}
+function firstLogo(text, size = 16){ const b = brandsIn(text, 1)[0]; return b ? logoHTML(b[0], b[1], size) : ""; }
+function logoStrip(text, size = 22, max = 8){ const b = brandsIn(text, max); return b.length ? `<div class="logos">${b.map(x => logoHTML(x[0], x[1], size)).join("")}</div>` : ""; }
+
+// ---------- Photos (Wikipedia lead images, loaded on the phone) ----------
+const IMGKEY = KEY + "-img2";
+let imgCache = {};
+try { imgCache = JSON.parse(localStorage.getItem(IMGKEY) || "{}"); } catch(e){ imgCache = {}; }
+const imgPending = {};
+function photoSlot(q, cls = ""){ return `<div class="photo ${cls}" data-img="${esc(q)}"></div>`; }
+function wikiImage(q){
+  if (q in imgCache) return Promise.resolve(imgCache[q]);
+  if (imgPending[q]) return imgPending[q];
+  const url = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&prop=pageimages&piprop=thumbnail&pithumbsize=800&gsrsearch=" + encodeURIComponent(q);
+  return imgPending[q] = fetch(url).then(r => r.json()).then(d => {
+    const pages = Object.values((d.query && d.query.pages) || {}).sort((a, b) => a.index - b.index);
+    const pg = pages.find(p => p.thumbnail);
+    const v = pg && pg.thumbnail ? { src: pg.thumbnail.source, page: "https://en.wikipedia.org/wiki/" + encodeURIComponent(pg.title.replace(/ /g, "_")) } : 0;
+    imgCache[q] = v; try { localStorage.setItem(IMGKEY, JSON.stringify(imgCache)); } catch(e){}
+    return v;
+  }).catch(() => null);
+}
+function hydratePhotos(root = document){
+  root.querySelectorAll("[data-img]:not([data-done])").forEach(el => {
+    el.setAttribute("data-done", "1");
+    wikiImage(el.dataset.img).then(v => {
+      if (!v) return;
+      el.innerHTML = `<img src="${esc(v.src)}" alt=""><a class="credit" href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`;
+      const img = el.querySelector("img");
+      img.onload = () => el.classList.add("ok");
+      img.onerror = () => { el.remove(); };
+    });
+  });
+}
+function trackQuery(e){ return `${e.circuit} ${String(e.location || "").split(",")[0]}`.replace(/(\b\w+\b) \1/i, "$1"); }
+
+// ---------- Shorter text: clamp long notes with "More" ----------
+function clampText(root = document){
+  root.querySelectorAll(".card .story:not([data-cl]), .asof:not([data-cl])").forEach(el => {
+    el.setAttribute("data-cl", "1");
+    el.classList.add("clamp");
+    if (el.classList.contains("asof")) el.style.setProperty("--lines", 1);
+    const long = el.textContent.length > (el.classList.contains("asof") ? 90 : 170);
+    if (!long) { el.classList.remove("clamp"); return; }
+    const b = document.createElement("button"); b.className = "more"; b.type = "button"; b.textContent = "More ▾";
+    el.after(b);
+    const toggle = () => { const o = el.classList.toggle("open"); b.textContent = o ? "Less ▴" : "More ▾"; };
+    b.addEventListener("click", ev => { ev.stopPropagation(); toggle(); });
+    el.addEventListener("click", toggle);
+  });
+}
+new MutationObserver(() => { clearTimeout(window.__ph); window.__ph = setTimeout(() => { hydratePhotos(); clampText(); }, 30); })
+  .observe(document.body, { childList: true, subtree: true });
 
 // ---------- Favorites (saved on this device) ----------
 const FKEY = KEY + "-favs";
@@ -1283,7 +1372,7 @@ function renderWeekend(){
     items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 3);
   }
   el.innerHTML = `
-    <h2 class="h2">${esc(title)}</h2><p class="kicker">${esc(kicker)}</p>
+    <h2 class="h2">${esc(title)}</h2>
     <div class="board">
       <div class="count" aria-label="${esc(countLbl)}"><div class="lbl">${esc(countLbl)}</div><div class="num">${countNum}</div><div class="lbl">${wk.length ? (wk.length === 1 ? "race" : "races") : (countNum === 1 ? "day" : "days")}</div></div>
       <div class="stack">${items.map(evCard).join("")}</div>
@@ -1293,6 +1382,7 @@ function evCard(e){
   const [st, cls] = statusOf(e);
   const resLine = WINNERS_LIVE[e.id] || (phase(e) === "past" && WINNERS[e.id] ? `Won by ${WINNERS[e.id]}` : "");
   return `<article class="ev ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
+    ${photoSlot(trackQuery(e))}
     <div class="pl">${plate(e.series, 34)}</div>
     <div><span class="status ${cls}">${esc(st)}</span></div>
     <h3>${esc(e.name)}</h3>
@@ -1376,7 +1466,7 @@ function renderStats(){
   if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
   if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
   if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
-  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${firstLogo(x[0] + " " + x[1], 18)}${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
   if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
@@ -1401,7 +1491,7 @@ function openRace(id){
 
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
-      <p class="fine">${WATCH[c].map(w => `${esc(w[0])}: ${esc(w[3])}`).join(" · ")}. US options; some need a subscription.</p>`;
+      <p class="fine">FREE = no subscription needed.</p>`;
     if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times · Texas time (Central)</h4>${schedHTML(e.id, false)}<p class="fine">Shown in Central time wherever you open this page. US clocks go back an hour on Nov 1, and the times already account for it. Support races in grey. Times can change; check the official timetable on the day.</p>`;
     h += `</section>`;
   }
@@ -1419,7 +1509,7 @@ function openRace(id){
     h += `<section class="card"><h3>Results</h3><p class="lede" style="margin:0">${ph === "past" ? "Results for this round aren't loaded yet." : "Qualifying and race results show here during and after the weekend."}</p></section>`;
   }
 
-  h += `<section class="card"><h3>The track</h3><p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
+  h += `<section class="card"><h3>The track</h3>${photoSlot(trackQuery(e))}<p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
   if (t) {
     h += `<div class="facts">
       <div class="fact"><div class="k">Lap</div><div class="v">${t[0] ? t[0].toFixed(2) + " km" : "—"}</div><div class="fine" style="margin:0">${t[0] ? (t[0] * 0.621371).toFixed(2) + " mi" : ""}</div></div>
@@ -1432,10 +1522,10 @@ function openRace(id){
   if (others.length) h += `<p class="fine">Also here in 2026: ${others.map(o => `${SERIES[o.series]} ${esc(o.name)} (${range(o)})`).join(" · ")}</p>`;
   h += `</section>`;
 
-  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
-  if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
+  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${firstLogo(m[0], 20)}${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
+  if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${firstLogo(m[0], 20)}${esc(m[0])}</span>`).join("")}</div>`;
   h += `</section>`;
-  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
+  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${firstLogo(x[0] + " " + x[1], 18)}${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
   if (st.standings && !e.cancelled && ph !== "past") h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
   h += `</div>`;
 
@@ -1497,7 +1587,7 @@ function worldWatch(x){
 }
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div>${logoStrip(x.cars, 20, 7)}<div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
@@ -1516,16 +1606,17 @@ function openWorld(id){
   let h = `<div class="sh-head ${cls}"><span class="dplate" style="height:38px;min-width:54px;font-size:.95rem">${esc(dirCode(x))}</span>
     <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? " · " + esc(x.level) : ""}</span><h2 id="sheetTitle">${esc(x.name)}</h2><div class="m">${esc(x.region || "")}</div></div>
     <button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
+  h += photoSlot(x.name, "sh-photo");
   if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
-  h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("")}</div>
-    <p class="fine">${ww.filter(w => w[3]).map(w => `${esc(w[0])}: ${esc(w[3])}`).join(" · ")}${ww.length ? ". " : ""}Some need a subscription; TV deals can change.</p><div class="mine" style="margin:12px 0 0">`;
+  h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("")}</div>
+    <p class="fine">FREE = no subscription needed.</p><div class="mine" style="margin:12px 0 0">`;
   h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button>`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
-  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
+  h += `<section class="card"><h3>The racing</h3>${logoStrip(x.cars, 30, 10)}<dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = h; sheet.scrollTop = 0;
   lastFocus = document.activeElement;
