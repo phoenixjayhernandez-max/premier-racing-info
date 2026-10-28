@@ -326,6 +326,26 @@ html,body{overflow-x:hidden}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
 
+/* ---------- Predictions ---------- */
+.fc-row{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule)}
+.fc-row:last-child{border-bottom:0}
+.fc-row .ps{font-family:var(--display);font-weight:800;font-size:1.1rem;text-align:center}
+.fc-row .nm{font-weight:650;line-height:1.15;min-width:0}
+.fc-row .tm{font-size:.75rem;color:var(--sub)}
+.fc-row .pc{font-weight:700;text-align:right;font-variant-numeric:tabular-nums;font-size:.9rem;white-space:nowrap}
+.fc-row .pc small{display:block;font-weight:500;color:var(--sub);font-size:.72rem}
+.fc-bar{height:5px;border-radius:3px;background:var(--panel-2);margin-top:4px;overflow:hidden}
+.fc-bar span{display:block;height:100%;background:var(--c,var(--signal))}
+.pick-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center;margin:8px 0}
+.pick-grid label{font-family:var(--display);font-weight:800;font-size:1.05rem}
+.pick-grid select{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
+.lb-row{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule)}
+.lb-row:last-child{border-bottom:0}
+.lb-row.me{font-weight:700}
+.lb-row .pts{font-family:var(--display);font-weight:800;font-size:1.15rem}
+.pk-line{font-size:.85rem;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.pk-line:last-child{border-bottom:0}
+
 @media (max-width:440px){ .mark{display:none} }
 @media (max-width:360px){
   .brand h1 span{display:none}
@@ -673,6 +693,10 @@ const SESSIONS = {
 
 const LIVE = {};
 const WINNERS_LIVE = {};
+// Top three finishers of each race, used to score prediction picks. Add one line per finished race.
+const PODIUMS = {
+  "f1-usa":["Kimi Antonelli","Charles Leclerc","Max Verstappen"],
+};
 
 // Races that have full results in the stats snapshot
 const RESULT_FOR = { "f1-usa":"f1", "imsa-petit":"imsa", "wec-fuji":"wec", "gtwc-indy":"gtwc" };
@@ -1212,7 +1236,7 @@ async function initAccounts(){
     const { data } = await sb.auth.getSession();
     me = data.session ? data.session.user : null;
     if (me) await cloudPull();
-    sb.auth.onAuthStateChange((_e, session) => { me = session ? session.user : null; });
+    sb.auth.onAuthStateChange((_e, session) => { const was = me && me.id; me = session ? session.user : null; if ((me && me.id) !== was) { picksRows = null; if (statsSeries === "predict") renderStats(); } });
   } catch(e) { sb = null; acctError = "The sign-in service didn't load. Check your connection and reopen the app."; }
 }
 let acctError = "";
@@ -1375,7 +1399,7 @@ function evCard(e){
     <div class="meta">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</div>
     ${resLine ? `<div class="res" style="grid-column:2">${esc(resLine)}</div>` : ""}
     ${nextSession(e.id) ? `<div class="next">Next up: <b>${esc(nextSession(e.id)[0])} · ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</b></div>` : ""}
-    <div class="acts">${watchButtons(e.series, 1)}</div>
+    <div class="acts">${watchButtons(e.series, 1)}${e.series === "f1" && phase(e) !== "past" ? `<button class="btn" data-gopredict="1">🔮 Make your pick</button>` : ""}</div>
   </article>`;
 }
 function renderSeriesGrid(){
@@ -1441,9 +1465,15 @@ function renderList(){
 let statsSeries = "f1";
 function renderStatChips(){
   document.getElementById("statChips").innerHTML = chipsHTML(statsSeries,
-    [["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gtwc","GT America","gtwc"],["gte","GT Europe","gte"],["gtas","GT Asia","gtas"],["gtau","GT Australia","gtau"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]]);
+    [["f1","F1","f1"],["predict","F1 Predictions","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gtwc","GT America","gtwc"],["gte","GT Europe","gte"],["gtas","GT Asia","gtas"],["gtau","GT Australia","gtau"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]]);
 }
 function renderStats(){
+  if (statsSeries === "predict") {
+    const el = document.getElementById("statsBody");
+    renderPredict(el);
+    if (me && picksRows === null && !window.__pl) { window.__pl = loadPicks().finally(() => { window.__pl = null; if (statsSeries === "predict") renderPredict(el); }); }
+    return;
+  }
   const st = STATS[statsSeries], c = statsSeries;
   let h = `<div class="${c}">`;
   const r = st.race;
@@ -1772,6 +1802,212 @@ document.addEventListener("click", ev => {
 document.addEventListener("change", ev => {
   const pt = ev.target.closest("[data-ptype]");
   if (pt) { pushPrefs.types[pt.dataset.ptype] = pt.checked; pushSave(); }
+});
+
+// ---------- Predictions: app forecast + picks game (F1) ----------
+// Forecast: each driver's strength = points per race this season (75%) blended with their last race (25%).
+// 4,000 simulated finishes of every remaining race (with a small chance of a DNF) give title odds,
+// projected final points and the predicted order for the next race. Seeded, so numbers only change when results do.
+const F1_PTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+const SPRINT_PTS = [8, 7, 6, 5, 4, 3, 2, 1];
+const SEASON_LOCK_RACE = "f1-mex"; // season picks lock when this race starts
+let fcCache = null, picksRows = null, picksErr = "";
+function f1Field(){
+  const st = STATS.f1, pts = Object.fromEntries(st.standings.map(x => [x[0], x[2]]));
+  const list = [];
+  (st.grid || []).forEach(g => String(g[2]).split(" · ").forEach(n => { n = n.trim(); if (n) list.push({ name: n, team: g[0], pts: pts[n] || 0 }); }));
+  return list;
+}
+function mulberry(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function f1Remaining(){ return events.filter(e => e.series === "f1" && !e.cancelled && phase(e) !== "past"); }
+function f1Forecast(){
+  const field = f1Field();
+  const key = JSON.stringify(STATS.f1.standings) + JSON.stringify(STATS.f1.race && STATS.f1.race.rows && STATS.f1.race.rows.slice(0, 22)) + f1Remaining().map(e => e.id).join();
+  if (fcCache && fcCache.key === key) return fcCache;
+  const past = events.filter(e => e.series === "f1" && !e.cancelled && phase(e) === "past");
+  const sprintsDone = past.filter(e => e.tags.includes("Sprint")).length;
+  const denom = Math.max(1, past.length + 0.35 * sprintsDone);
+  const last = {}; ((STATS.f1.race && STATS.f1.race.rows) || []).forEach(r => { const p = parseInt(r[0], 10); last[r[2]] = p >= 1 && p <= 10 ? F1_PTS[p - 1] : 0; });
+  field.forEach(d => { const ppr = d.pts / denom; d.str = 0.75 * ppr + 0.25 * (d.name in last ? last[d.name] : ppr); d.lw = 1.7 * Math.log(d.str + 0.4); });
+  const races = f1Remaining(), N = 2500, n = field.length;
+  const rnd = mulberry(key.length * 7919 + n);
+  const acc = field.map(() => ({ nextPos: 0, win: 0, pod: 0, final: 0, champ: 0, rank: new Array(n).fill(0) }));
+  const teams = [...new Set(field.map(d => d.team))];
+  const teamStart = Object.fromEntries(STATS.f1.makers.map(m => [m[0], m[m.length - 1]]));
+  const tacc = Object.fromEntries(teams.map(t => [t, { final: 0, champ: 0 }]));
+  const order = field.map((_, i) => i), score = new Float64Array(n), tot = new Float64Array(n);
+  for (let s = 0; s < N; s++) {
+    for (let i = 0; i < n; i++) tot[i] = field[i].pts;
+    const tpts = Object.assign({}, teamStart);
+    races.forEach((e, ri) => {
+      const sessions = e.tags.includes("Sprint") ? [SPRINT_PTS, F1_PTS] : [F1_PTS];
+      sessions.forEach(table => {
+        for (let i = 0; i < n; i++) score[i] = rnd() < 0.06 ? -1e9 + rnd() : field[i].lw - Math.log(-Math.log(rnd() || 1e-12));
+        order.sort((a, b) => score[b] - score[a]);
+        order.forEach((i, pos) => { const p = table[pos] || 0; tot[i] += p; tpts[field[i].team] = (tpts[field[i].team] || 0) + p;
+          if (ri === 0 && table === F1_PTS) { acc[i].nextPos += pos + 1; if (pos === 0) acc[i].win++; if (pos < 3) acc[i].pod++; } });
+      });
+    });
+    const fin = field.map((_, i) => i).sort((a, b) => tot[b] - tot[a] || rnd() - 0.5);
+    fin.forEach((i, r) => { acc[i].rank[r]++; acc[i].final += tot[i]; });
+    acc[fin[0]].champ++;
+    let bt = null; for (const t of teams) { tacc[t].final += tpts[t] || 0; if (!bt || (tpts[t] || 0) > (tpts[bt] || 0)) bt = t; }
+    tacc[bt].champ++;
+  }
+  const drivers = field.map((d, i) => ({ ...d, nextPos: races.length ? acc[i].nextPos / N : null, win: acc[i].win / N, pod: acc[i].pod / N,
+    final: acc[i].final / N, champ: acc[i].champ / N, top3: (acc[i].rank[0] + acc[i].rank[1] + acc[i].rank[2]) / N,
+    likelyRank: acc[i].rank.indexOf(Math.max(...acc[i].rank)) + 1 }));
+  const teamList = teams.map(t => ({ team: t, final: tacc[t].final / N, champ: tacc[t].champ / N, now: teamStart[t] || 0 }));
+  fcCache = { key, drivers, teams: teamList, races, next: races[0] || null };
+  return fcCache;
+}
+const pct = p => p >= 0.995 ? ">99%" : p > 0 && p < 0.005 ? "<1%" : Math.round(p * 100) + "%";
+
+// ---- Picks (stored in Supabase "picks"; readable by signed-in friends) ----
+function raceLock(id){
+  const gp = (SESSIONS[id] || []).find(x => /grand prix/i.test(x[0]) && !x[2]);
+  if (gp) return Date.parse(gp[1]);
+  const e = events.find(x => x.id === id); if (!e) return 0;
+  const d = new Date(e.end); d.setHours(12, 0, 0, 0); return +d;
+}
+const seasonLock = () => raceLock(SEASON_LOCK_RACE);
+function podiumFor(id){
+  if (PODIUMS[id]) return PODIUMS[id];
+  if (RESULT_FOR[id] === "f1" && STATS.f1.race && STATS.f1.race.rows) { const r = STATS.f1.race.rows; if (r.length >= 3 && r[0][0] === "1") return [r[0][2], r[1][2], r[2][2]]; }
+  return null;
+}
+function scoreRace(pick, pod){
+  if (!pick || !pod) return 0;
+  let s = 0, exact = 0;
+  ["p1", "p2", "p3"].forEach((k, i) => { if (!pick[k]) return; if (pick[k] === pod[i]) { s += 5; exact++; } else if (pod.includes(pick[k])) s += 2; });
+  return s + (exact === 3 ? 3 : 0);
+}
+function seasonFinal(){
+  if (f1Remaining().length) return null;
+  return STATS.f1.standings.slice(0, 3).map(x => x[0]);
+}
+function scoreSeason(pick, fin){
+  if (!pick || !fin) return 0;
+  let s = 0;
+  [["p1", 10], ["p2", 15], ["p3", 15]].forEach(([k, v], i) => { if (!pick[k]) return; if (pick[k] === fin[i]) s += v; else if (fin.includes(pick[k])) s += 5; });
+  return s;
+}
+function leaderboard(rows){
+  const users = {};
+  (rows || []).forEach(r => {
+    const u = users[r.user_id] || (users[r.user_id] = { id: r.user_id, name: r.display_name || "Player", pts: 0, picks: 0 });
+    if (r.display_name) u.name = r.display_name;
+    const t = Date.parse(r.updated_at);
+    if (r.key === "f1:season") { if (t <= seasonLock()) { u.picks++; u.pts += scoreSeason(r.pick, seasonFinal()); } return; }
+    const id = r.key.replace(/^f1:/, "");
+    if (t > raceLock(id)) return; // changed after the race started: doesn't count
+    u.picks++; u.pts += scoreRace(r.pick, podiumFor(id));
+  });
+  return Object.values(users).sort((a, b) => b.pts - a.pts || b.picks - a.picks);
+}
+async function loadPicks(){
+  if (!sb || !me) { picksRows = null; return; }
+  const { data, error } = await sb.from("picks").select("user_id,key,pick,display_name,updated_at").like("key", "f1:%");
+  if (error) { picksErr = /relation|does not exist|schema cache/i.test(error.message) ? "setup" : error.message; picksRows = []; }
+  else { picksErr = ""; picksRows = data || []; }
+}
+async function savePick(key, pick){
+  if (!sb || !me) return "Sign in to save picks.";
+  const name = myName || (me.email || "").split("@")[0];
+  const { error } = await sb.from("picks").upsert({ user_id: me.id, key, pick, display_name: name });
+  if (error) return /relation|does not exist|schema cache/i.test(error.message) ? "Picks aren't set up yet (Supabase step)." : "Couldn't save: " + error.message;
+  await loadPicks();
+  return "";
+}
+const myRow = key => (picksRows || []).find(r => me && r.user_id === me.id && r.key === key);
+
+function pickSelects(prefix, names, cur, locked){
+  return `<div class="pick-grid">${["p1", "p2", "p3"].map((k, i) => `<label for="${prefix}-${k}">P${i + 1}</label>
+    <select id="${prefix}-${k}" ${locked ? "disabled" : ""}><option value="">Choose a driver</option>${names.map(n => `<option ${cur && cur[k] === n ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>`).join("")}</div>`;
+}
+function othersPicks(key, lock){
+  if (Date.now() < lock) return `<p class="fine">Friends' picks show here once it locks.</p>`;
+  const rows = (picksRows || []).filter(r => r.key === key && Date.parse(r.updated_at) <= lock);
+  if (!rows.length) return `<p class="fine">No picks were made for this one.</p>`;
+  return `<h4>Everyone's picks</h4>` + rows.map(r => `<div class="pk-line"><b>${esc(r.display_name || "Player")}</b>: ${["p1", "p2", "p3"].map(k => esc(r.pick[k] || "—")).join(" · ")}</div>`).join("");
+}
+let predMsg = {}, predDraft = {};
+function renderPredict(el){
+  const fc = f1Forecast();
+  const byNext = fc.drivers.filter(d => d.nextPos != null).sort((a, b) => a.nextPos - b.nextPos);
+  const byTitle = fc.drivers.slice().sort((a, b) => b.final - a.final);
+  const names = byNext.length ? byNext.map(d => d.name) : byTitle.map(d => d.name);
+  const nx = fc.next;
+  let h = `<div class="f1">`;
+  // 1. Next race forecast
+  if (nx) {
+    h += `<section class="card"><h3>Prediction · ${esc(nx.name)}</h3><p class="lede">${esc(nx.circuit)} · ${range(nx)}</p>
+      ${byNext.slice(0, 10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div>
+        <div class="pc">${pct(d.win)} win<small>${pct(d.pod)} podium</small></div></div>`).join("")}
+      <details style="margin-top:6px"><summary class="fine" style="cursor:pointer">Rest of the field</summary>${byNext.slice(10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 11}</div><div><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div><div class="pc">${pct(d.pod)}<small>podium</small></div></div>`).join("")}</details>
+    </section>`;
+  }
+  // 2. Your race pick
+  if (nx) {
+    const key = "f1:" + nx.id, lock = raceLock(nx.id), locked = Date.now() >= lock, mine = myRow(key);
+    h += `<section class="card"><h3>Your podium pick</h3><p class="lede" style="margin:0">${locked ? "Locked" : "Locks"} ${fmtDay.format(new Date(lock))} ${txTime(new Date(lock).toISOString())} · 5 pts exact, 2 pts on the podium, +3 for all three</p>`;
+    if (!me) h += `<button class="btn star" aria-pressed="true" id="pickSignIn" style="margin-top:10px">👤 Sign in to play</button>`;
+    else {
+      h += pickSelects("rp", names, (!locked && predDraft.race) || (mine && mine.pick), locked);
+      if (!locked) h += `<button class="btn star" aria-pressed="true" data-savepick="${nx.id}">${mine ? "Update pick" : "Save pick"}</button>`;
+      if (predMsg.race) h += `<p class="fine" style="font-weight:600">${esc(predMsg.race)}</p>`;
+      h += othersPicks(key, lock);
+    }
+    h += `</section>`;
+  }
+  // 3. Title odds
+  h += `<section class="card"><h3>Championship forecast</h3><p class="lede">Chance of the title and of a top-3 finish · projected final points</p>
+    ${byTitle.slice(0, 8).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div style="min-width:0"><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)} · now ${d.pts} pts</div><div class="fc-bar"><span style="width:${Math.max(1, d.top3 * 100)}%"></span></div></div>
+      <div class="pc">${d.champ >= 0.005 ? pct(d.champ) + " title" : pct(d.top3) + " top 3"}<small>${d.champ >= 0.005 && d.top3 < 0.995 ? pct(d.top3) + " top 3 · " : ""}~${Math.round(d.final)} pts</small></div></div>`).join("")}
+  </section>`;
+  const tl = fc.teams.slice().sort((a, b) => b.final - a.final);
+  h += `<section class="card"><h3>Constructors forecast</h3>${tl.slice(0, 6).map((t, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div><div class="nm">${esc(t.team)}</div><div class="tm">now ${t.now} pts</div></div><div class="pc">${pct(t.champ)}<small>~${Math.round(t.final)} pts</small></div></div>`).join("")}</section>`;
+  // 4. Season pick
+  const sKey = "f1:season", sLock = seasonLock(), sLocked = Date.now() >= sLock, sMine = myRow(sKey);
+  h += `<section class="card"><h3>Season pick: final top 3</h3><p class="lede" style="margin:0">${sLocked ? "Locked" : "Locks when the " + esc((events.find(e => e.id === SEASON_LOCK_RACE) || {}).name || "next race") + " starts"} · champion 10 pts, 2nd and 3rd 15 pts each, 5 pts for a top-3 driver in the wrong spot</p>`;
+  if (me) {
+    h += pickSelects("sp", byTitle.map(d => d.name), (!sLocked && predDraft.season) || (sMine && sMine.pick), sLocked);
+    if (!sLocked) h += `<button class="btn star" aria-pressed="true" data-saveseason="1">${sMine ? "Update season pick" : "Save season pick"}</button>`;
+    if (predMsg.season) h += `<p class="fine" style="font-weight:600">${esc(predMsg.season)}</p>`;
+    h += othersPicks(sKey, sLock);
+  } else h += `<p class="fine">Sign in to make a season pick.</p>`;
+  h += `</section>`;
+  // 5. Leaderboard
+  h += `<section class="card"><h3>Leaderboard</h3>`;
+  if (!me) h += `<p class="lede" style="margin:0">Sign in to see how you and your friends rank.</p>`;
+  else if (picksErr === "setup") h += `<p class="lede" style="margin:0">The picks game needs a one-time setup in Supabase (setup/picks.sql).</p>`;
+  else if (picksRows === null) h += `<p class="lede" style="margin:0">Loading…</p>`;
+  else {
+    const lb = leaderboard(picksRows);
+    h += lb.length ? lb.map((u, i) => `<div class="lb-row ${me && u.id === me.id ? "me" : ""}"><div class="ps" style="font-family:var(--display);font-weight:800;text-align:center">${i + 1}</div><div>${esc(u.name)}<div class="tm" style="font-size:.75rem;color:var(--sub);font-weight:500">${u.picks} pick${u.picks === 1 ? "" : "s"}</div></div><div class="pts">${u.pts}</div></div>`).join("")
+      : `<p class="lede" style="margin:0">No picks yet. Be the first!</p>`;
+  }
+  h += `<p class="fine">Picks changed after a race starts don't count. Share the app so friends can join; they just need an account.</p></section>`;
+  h += `<p class="fine">How the forecast works: each driver's strength comes from points per race this season (75%) and their last race (25%). The app plays out the rest of the season 2,500 times, with a small chance of a retirement each race. It updates after every race. It's a guide, not a sure thing.</p></div>`;
+  el.innerHTML = h;
+}
+async function onSavePick(kind, id){
+  const pfx = kind === "season" ? "sp" : "rp";
+  const pick = Object.fromEntries(["p1", "p2", "p3"].map(k => [k, document.getElementById(`${pfx}-${k}`).value]));
+  predDraft[kind] = pick;
+  const vals = Object.values(pick);
+  if (vals.some(v => !v)) { predMsg[kind] = "Pick a driver for P1, P2 and P3."; renderStats(); return; }
+  if (new Set(vals).size < 3) { predMsg[kind] = "Pick three different drivers."; renderStats(); return; }
+  predMsg[kind] = "Saving…"; renderStats();
+  const err = await savePick(kind === "season" ? "f1:season" : "f1:" + id, pick);
+  if (!err) delete predDraft[kind];
+  predMsg[kind] = err || "Saved ✓"; renderStats();
+}
+document.addEventListener("click", ev => {
+  const sp = ev.target.closest("[data-savepick]"); if (sp) { onSavePick("race", sp.dataset.savepick); return; }
+  if (ev.target.closest("[data-saveseason]")) { onSavePick("season"); return; }
+  if (ev.target.closest("#pickSignIn")) { openAccount(); return; }
+  if (ev.target.closest("[data-gopredict]")) { ev.stopImmediatePropagation(); statsSeries = "predict"; renderStatChips(); renderStats(); showTab("standings"); return; }
 });
 
 // ---------- Tabs & events ----------
