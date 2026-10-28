@@ -9,7 +9,7 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:gte-ricard-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260410
 DTEND;VALUE=DATE:20260413
 SUMMARY:GT World Challenge Europe · 6 Hours of Paul Ricard
@@ -20,7 +20,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-brands-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260502
 DTEND;VALUE=DATE:20260504
 SUMMARY:GT World Challenge Europe · Brands Hatch
@@ -31,7 +31,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-monza-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260528
 DTEND;VALUE=DATE:20260601
 SUMMARY:GT World Challenge Europe · 3 Hours of Monza
@@ -42,7 +42,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-spa-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260623
 DTEND;VALUE=DATE:20260629
 SUMMARY:GT World Challenge Europe · CrowdStrike 24 Hours of Spa
@@ -53,7 +53,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-misano-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260716
 DTEND;VALUE=DATE:20260720
 SUMMARY:GT World Challenge Europe · Misano
@@ -64,7 +64,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-magny-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260730
 DTEND;VALUE=DATE:20260803
 SUMMARY:GT World Challenge Europe · Magny-Cours
@@ -75,7 +75,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-nring-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260831
 SUMMARY:GT World Challenge Europe · 3 Hours of Nürburgring
@@ -86,7 +86,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-zandvoort-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260921
 SUMMARY:GT World Challenge Europe · Zandvoort
@@ -97,7 +97,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-bcn-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20261001
 DTEND;VALUE=DATE:20261005
 SUMMARY:GT World Challenge Europe · Barcelona
@@ -109,7 +109,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gte-portimao-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20261014
 DTEND;VALUE=DATE:20261019
 SUMMARY:GT World Challenge Europe · 3 Hours of Portimão
@@ -117,6 +117,120 @@ LOCATION:Algarve International Circuit\, Portimão\, Portugal
 DESCRIPTION:Endurance Cup\, 3 hours\, Finale\nStart times are added about 
  a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-
  info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-ricard-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270416
+DTEND;VALUE=DATE:20270419
+SUMMARY:GT World Challenge Europe · Paul Ricard
+LOCATION:Circuit Paul Ricard\, Le Castellet\, France
+DESCRIPTION:Provisional\, Endurance Cup\nStart times are added about a wee
+ k before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-brands-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270501
+DTEND;VALUE=DATE:20270503
+SUMMARY:GT World Challenge Europe · Brands Hatch
+LOCATION:Brands Hatch\, Kent\, UK
+DESCRIPTION:Provisional\, Sprint Cup\nStart times are added about a week b
+ efore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-imola-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270521
+DTEND;VALUE=DATE:20270524
+SUMMARY:GT World Challenge Europe · Imola
+LOCATION:Autodromo Enzo e Dino Ferrari\, Imola\, Italy
+DESCRIPTION:Provisional\, Endurance Cup\, Subject to final agreement\nStar
+ t times are added about a week before.\nhttps://phoenixjayhernandez-max.g
+ ithub.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-spa-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270623
+DTEND;VALUE=DATE:20270628
+SUMMARY:GT World Challenge Europe · CrowdStrike 24 Hours of Spa
+LOCATION:Spa-Francorchamps\, Stavelot\, Belgium
+DESCRIPTION:Provisional\, 24 hours\, Endurance Cup\nStart times are added 
+ about a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-r
+ acing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-misano-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270716
+DTEND;VALUE=DATE:20270719
+SUMMARY:GT World Challenge Europe · Misano
+LOCATION:Misano World Circuit\, Misano Adriatico\, Italy
+DESCRIPTION:Provisional\, Sprint Cup\nStart times are added about a week b
+ efore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-magny-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270730
+DTEND;VALUE=DATE:20270802
+SUMMARY:GT World Challenge Europe · Magny-Cours
+LOCATION:Circuit de Nevers Magny-Cours\, Magny-Cours\, France
+DESCRIPTION:Provisional\, Sprint Cup\nStart times are added about a week b
+ efore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-nring-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270827
+DTEND;VALUE=DATE:20270830
+SUMMARY:GT World Challenge Europe · Nürburgring
+LOCATION:Nürburgring\, Nürburg\, Germany
+DESCRIPTION:Provisional\, Endurance Cup\nStart times are added about a wee
+ k before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-zandvoort-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270917
+DTEND;VALUE=DATE:20270920
+SUMMARY:GT World Challenge Europe · Zandvoort
+LOCATION:Zandvoort\, Zandvoort\, Netherlands
+DESCRIPTION:Provisional\, Sprint Cup\nStart times are added about a week b
+ efore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-hungary-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20271001
+DTEND;VALUE=DATE:20271004
+SUMMARY:GT World Challenge Europe · Hungaroring
+LOCATION:Hungaroring\, Budapest\, Hungary
+DESCRIPTION:Provisional\, Sprint Cup\, Returns\nStart times are added abou
+ t a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-racin
+ g-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gte-bcn-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20271022
+DTEND;VALUE=DATE:20271025
+SUMMARY:GT World Challenge Europe · Barcelona
+LOCATION:Circuit de Barcelona-Catalunya\, Montmeló\, Spain
+DESCRIPTION:Provisional\, Endurance Cup\, Finale\nStart times are added ab
+ out a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-rac
+ ing-info/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR

@@ -9,7 +9,7 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:mustang-sebring-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260318
 DTEND;VALUE=DATE:20260321
 SUMMARY:Ford Mustang Challenge · Sebring
@@ -20,7 +20,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:mustang-laguna-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260501
 DTEND;VALUE=DATE:20260504
 SUMMARY:Ford Mustang Challenge · Laguna Seca
@@ -31,7 +31,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:mustang-midohio-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260605
 DTEND;VALUE=DATE:20260608
 SUMMARY:Ford Mustang Challenge · Mid-Ohio
@@ -42,7 +42,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:mustang-glen-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260625
 DTEND;VALUE=DATE:20260628
 SUMMARY:Ford Mustang Challenge · Watkins Glen
@@ -53,7 +53,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:mustang-vir-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260821
 DTEND;VALUE=DATE:20260824
 SUMMARY:Ford Mustang Challenge · VIRginia International Raceway
@@ -64,13 +64,80 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:mustang-cota-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260907
 SUMMARY:Ford Mustang Challenge · Circuit of The Americas
 LOCATION:Circuit of the Americas\, Austin\, TX
 DESCRIPTION:2 races\, Finale\nStart times are added about a week before.\n
  https://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-daytona-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270122
+DTEND;VALUE=DATE:20270125
+SUMMARY:Ford Mustang Challenge · Daytona
+LOCATION:Daytona International Speedway\, Daytona Beach\, FL
+DESCRIPTION:Provisional\, Roar Before the 24\nStart times are added about 
+ a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-
+ info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-sebring-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270317
+DTEND;VALUE=DATE:20270321
+SUMMARY:Ford Mustang Challenge · Sebring
+LOCATION:Sebring International Raceway\, Sebring\, FL
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-laguna-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270430
+DTEND;VALUE=DATE:20270503
+SUMMARY:Ford Mustang Challenge · Laguna Seca
+LOCATION:WeatherTech Raceway Laguna Seca\, Monterey\, CA
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-vir-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270820
+DTEND;VALUE=DATE:20270823
+SUMMARY:Ford Mustang Challenge · VIRginia International Raceway
+LOCATION:VIRginia International Raceway\, Alton\, VA
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-cota-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270910
+DTEND;VALUE=DATE:20270913
+SUMMARY:Ford Mustang Challenge · Circuit of The Americas
+LOCATION:Circuit of the Americas\, Austin\, TX
+DESCRIPTION:Provisional\, With WEC\nStart times are added about a week bef
+ ore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:mustang-atlanta-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20271006
+DTEND;VALUE=DATE:20271010
+SUMMARY:Ford Mustang Challenge · Road Atlanta
+LOCATION:Michelin Raceway Road Atlanta\, Braselton\, GA
+DESCRIPTION:Provisional\, Finale\nStart times are added about a week befor
+ e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR

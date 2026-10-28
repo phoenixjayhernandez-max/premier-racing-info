@@ -9,7 +9,7 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:gtau-phillip-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260327
 DTEND;VALUE=DATE:20260330
 SUMMARY:GT World Challenge Australia · Phillip Island
@@ -20,7 +20,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtau-bend-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260508
 DTEND;VALUE=DATE:20260511
 SUMMARY:GT World Challenge Australia · The Bend
@@ -31,7 +31,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtau-qld-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260612
 DTEND;VALUE=DATE:20260615
 SUMMARY:GT World Challenge Australia · Queensland Raceway
@@ -42,7 +42,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtau-darwin-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260724
 DTEND;VALUE=DATE:20260727
 SUMMARY:GT World Challenge Australia · Hidden Valley
@@ -53,7 +53,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtau-sydney-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20260918
 DTEND;VALUE=DATE:20260921
 SUMMARY:GT World Challenge Australia · Sydney Motorsport Park
@@ -64,7 +64,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtau-adelaide-weekend@premier-racing-info
-DTSTAMP:20261027T165000Z
+DTSTAMP:20261028T210200Z
 DTSTART;VALUE=DATE:20261126
 DTEND;VALUE=DATE:20261130
 SUMMARY:GT World Challenge Australia · Adelaide
@@ -72,6 +72,62 @@ LOCATION:Adelaide Street Circuit\, Adelaide\, SA
 DESCRIPTION:Street circuit\, Finale\, Supercars support\nStart times are a
  dded about a week before.\nhttps://phoenixjayhernandez-max.github.io/prem
  ier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtau-phillip-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270416
+DTEND;VALUE=DATE:20270419
+SUMMARY:GT World Challenge Australia · Phillip Island
+LOCATION:Phillip Island Grand Prix Circuit\, Phillip Island\, VIC
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtau-bend-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270528
+DTEND;VALUE=DATE:20270531
+SUMMARY:GT World Challenge Australia · The Bend
+LOCATION:The Bend Motorsport Park\, Tailem Bend\, SA
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtau-sydney-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270723
+DTEND;VALUE=DATE:20270726
+SUMMARY:GT World Challenge Australia · Sydney Motorsport Park
+LOCATION:Sydney Motorsport Park\, Eastern Creek\, NSW
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtau-qld-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20270917
+DTEND;VALUE=DATE:20270920
+SUMMARY:GT World Challenge Australia · Queensland Raceway
+LOCATION:Queensland Raceway\, Ipswich\, QLD
+DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
+ ://phoenixjayhernandez-max.github.io/premier-racing-info/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gtau-bathurst-27-weekend@premier-racing-info
+DTSTAMP:20261028T210200Z
+DTSTART;VALUE=DATE:20271029
+DTEND;VALUE=DATE:20271101
+SUMMARY:GT World Challenge Australia · Bathurst
+LOCATION:Mount Panorama\, Bathurst\, NSW
+DESCRIPTION:Provisional\, Returns\, Round 6 still to be announced\nStart t
+ imes are added about a week before.\nhttps://phoenixjayhernandez-max.gith
+ ub.io/premier-racing-info/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
