@@ -322,6 +322,23 @@ html,body{overflow-x:hidden}
 .ntag{font-size:.66rem;font-weight:700;border-radius:3px;padding:0 4px;background:var(--panel-2);color:var(--ink)}
 .nhead{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .nhead .btn{flex:none}
+.av{display:inline-grid;place-items:center;width:var(--avs,34px);height:var(--avs,34px);border-radius:50%;flex:none;background:var(--panel-2) center 18%/cover no-repeat;border:2px solid var(--panel);box-shadow:0 0 0 1px var(--rule);vertical-align:middle;margin-right:8px;overflow:hidden}
+.av i{font-style:normal;font-family:var(--display);font-weight:800;font-size:calc(var(--avs,34px) * .38);color:var(--sub)}
+.av.ok i{display:none}
+.who-wrap{display:flex;align-items:center;min-width:0}
+.tower .av{margin-right:6px}
+.tower.fx{table-layout:fixed}
+.tower.fx .c1{width:2.6rem}
+.tower.fx .c3{width:6.6rem}
+.tower.fx td{overflow-wrap:break-word}
+.tower.fx .num{white-space:nowrap}
+@media (max-width:360px){ .tower.fx .c1{width:2.2rem} .tower.fx .c3{width:5.9rem} }
+@media (max-width:375px){ .tower .av{--avs:22px;margin-right:4px} .tower .pos{font-size:1rem} }
+@media (max-width:420px){ .tower td{padding-left:5px;padding-right:5px} .tower .num{font-size:.85rem} .tower .who{font-size:.88rem} .tower .carno{font-size:.72rem} }
+.sthumb{position:relative;display:block;width:60px;height:60px;border-radius:10px;background:var(--c) center/cover no-repeat;overflow:hidden;flex:none}
+.sthumb .dplate{position:absolute;left:0;right:0;bottom:0;min-width:0;height:auto;border-radius:0;padding:2px 3px;font-size:.66rem;background:var(--c);transition:none}
+.sthumb:not(.ok) .dplate{top:0;font-size:.8rem}
+.fv .avrow{display:flex;align-items:center;gap:8px}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -1043,10 +1060,10 @@ function weekendEvents(){
   return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
 }
 function row5(x){
-  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></td><td class="num">${esc(x[4])}</td></tr>`;
+  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<div class="who-wrap">${avatar(x[2], 26)}<div style="min-width:0"><span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></div></div></td><td class="num">${esc(x[4]).replace(/ · /g, '<small style="display:block;font-weight:500;color:var(--sub);white-space:normal;font-size:.72rem;line-height:1.2">').replace(/(<small[^>]*>)(.*)$/, "$1$2</small>")}</td></tr>`;
 }
 function tower(rows, head3){
-  return `<div class="scroll"><table class="tower"><thead><tr><th>Pos</th><th>Driver &amp; car</th><th style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
+  return `<div class="scroll"><table class="tower fx"><thead><tr><th class="c1">Pos</th><th>Driver &amp; car</th><th class="c3" style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
 }
 function resultsBlock(r){
   if (!r || !r.rows) return "";
@@ -1059,10 +1076,10 @@ function resultsBlock(r){
 function pointsTower(list, c){
   const max = Math.max(1, ...list.map(x => x[x.length-1]));
   const lead = list[0][list[0].length-1];
-  return `<div class="scroll"><table class="tower ${c}"><thead><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr></thead><tbody>` +
+  return `<div class="scroll"><table class="tower fx ${c}"><thead><tr><th class="c1">Pos</th><th>Name</th><th class="c3" style="text-align:right">Pts</th></tr></thead><tbody>` +
     list.map((x,i) => {
       const pts = x[x.length-1];
-      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}<div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
+      return `<tr class="${i===0?'p1':''} ${favHit(x[0] + " " + (x.length > 2 ? x[1] : "")) ? "fav" : ""}"><td class="pos">${i+1}</td><td><div class="who-wrap">${x.length>2 ? avatar(x[0], 28) : ""}<div style="min-width:0;flex:1"><span class="who">${esc(x[0])}</span>${x.length>2?`<div class="sub">${esc(x[1])}</div>`:''}</div></div><div class="pbar"><span style="width:${pts/max*100}%"></span></div></td><td class="num">${pts}${i>0?`<div class="gap">−${+(lead-pts).toFixed(1)}</div>`:''}</td></tr>`;
     }).join("") + `</tbody></table></div>`;
 }
 
@@ -1073,29 +1090,50 @@ let imgCache = {};
 try { imgCache = JSON.parse(localStorage.getItem(IMGKEY) || "{}"); } catch(e){ imgCache = {}; }
 const imgPending = {};
 function photoSlot(q, cls = ""){ return `<div class="photo ${cls}" data-img="${esc(q)}"></div>`; }
-function wikiImage(q){
-  if (q in imgCache) return Promise.resolve(imgCache[q]);
-  if (imgPending[q]) return imgPending[q];
-  const url = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&prop=pageimages&piprop=thumbnail&pithumbsize=800&gsrsearch=" + encodeURIComponent(q);
-  return imgPending[q] = fetch(url).then(r => r.json()).then(d => {
+function wikiImage(q, size = 800, photoOnly = false){
+  const ck = q + "|" + size + (photoOnly ? "|p" : "");
+  if (ck in imgCache) return Promise.resolve(imgCache[ck]);
+  if (imgPending[ck]) return imgPending[ck];
+  const url = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&prop=pageimages&piprop=thumbnail&pithumbsize=" + size + "&gsrsearch=" + encodeURIComponent(q);
+  return imgPending[ck] = fetch(url).then(r => r.json()).then(d => {
     const pages = Object.values((d.query && d.query.pages) || {}).sort((a, b) => a.index - b.index);
-    const pg = pages.find(p => p.thumbnail);
+    // Photo-only: just the top search result, and only a real photo (no logos, maps or drawings).
+    const pg = photoOnly ? (pages[0] && pages[0].thumbnail && /\.jpe?g($|\/|\?)/i.test(pages[0].thumbnail.source) && !/\.svg/i.test(pages[0].thumbnail.source) ? pages[0] : null) : pages.find(p => p.thumbnail);
     const v = pg && pg.thumbnail ? { src: pg.thumbnail.source, page: "https://en.wikipedia.org/wiki/" + encodeURIComponent(pg.title.replace(/ /g, "_")) } : 0;
-    imgCache[q] = v; try { localStorage.setItem(IMGKEY, JSON.stringify(imgCache)); } catch(e){}
+    imgCache[ck] = v; try { localStorage.setItem(IMGKEY, JSON.stringify(imgCache)); } catch(e){}
     return v;
   }).catch(() => null);
 }
-function hydratePhotos(root = document){
-  root.querySelectorAll("[data-img]:not([data-done])").forEach(el => {
-    el.setAttribute("data-done", "1");
-    wikiImage(el.dataset.img).then(v => {
-      if (!v) return;
+const photoIO = "IntersectionObserver" in window ? new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { photoIO.unobserve(en.target); loadPhoto(en.target); } }), { rootMargin: "300px" }) : null;
+function loadPhoto(el){
+  const size = +(el.dataset.sz || 800), photoOnly = el.hasAttribute("data-photo");
+  wikiImage(el.dataset.img, size, photoOnly).then(v => {
+    if (!v) return;
+    if (el.classList.contains("photo")) {
       el.innerHTML = `<img src="${esc(v.src)}" alt=""><a class="credit" href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`;
       const img = el.querySelector("img");
       img.onload = () => el.classList.add("ok");
       img.onerror = () => { el.remove(); };
-    });
+    } else {
+      const img = new Image();
+      img.onload = () => { el.style.backgroundImage = `url("${v.src.replace(/"/g, "%22")}")`; el.classList.add("ok"); };
+      img.src = v.src;
+    }
   });
+}
+function hydratePhotos(root = document){
+  root.querySelectorAll("[data-img]:not([data-done])").forEach(el => {
+    el.setAttribute("data-done", "1");
+    if (photoIO) photoIO.observe(el); else loadPhoto(el);
+  });
+}
+// Round driver headshot with initials underneath until (or unless) a photo loads.
+const SKIP_AV = /[\/·#&]|\bteam\b|\d/i;
+function avatar(name, size = 34){
+  name = String(name || "").trim();
+  if (!name || SKIP_AV.test(name) || name.split(" ").length > 4) return "";
+  const ini = name.split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  return `<span class="av" style="--avs:${size}px" data-img="${esc(name)} racing driver" data-sz="160" data-photo><i>${esc(ini)}</i></span>`;
 }
 function trackQuery(e){ return `${e.circuit} ${String(e.location || "").split(",")[0]}`.replace(/(\b\w+\b) \1/i, "$1"); }
 
@@ -1171,7 +1209,7 @@ function renderFavs(){
     return;
   }
   el.innerHTML = `<h2 class="h2">Your favorites</h2><p class="kicker">Highlighted with ★ in results and standings. <button class="btn" data-favpick="1" style="margin-left:6px">Edit</button></p>
-    <div class="favs">${favs.map(f => `<div class="fv ${f.s}"><div class="pl">${plate(f.s, 30)}</div><div class="t">${esc(f.n)}</div>${favSummary(f).map(l => `<div class="l">${l}</div>`).join("")}</div>`).join("")}</div>`;
+    <div class="favs">${favs.map(f => `<div class="fv ${f.s}"><div class="pl">${plate(f.s, 30)}</div><div class="t avrow">${avatar(f.n, 40)}${esc(f.n)}</div>${favSummary(f).map(l => `<div class="l">${l}</div>`).join("")}</div>`).join("")}</div>`;
 }
 let pickSeries = "f1", pickQuery = "";
 function openFavPicker(){
@@ -1482,7 +1520,7 @@ function renderStats(){
   if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
   if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
   if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
-  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div></section>`;
+  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div></section>`;
   if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
@@ -1541,7 +1579,7 @@ function openRace(id){
   h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
   if (mk.extra) h += `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
   h += `</section>`;
-  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
+  if (st.grid) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
   if (st.standings && !e.cancelled && ph !== "past") h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
   h += `</div>`;
 
@@ -1603,7 +1641,7 @@ function worldWatch(x){
 }
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="sthumb" data-img="${esc(x.name)}" data-sz="240" data-photo><span class="dplate">${esc(dirCode(x))}</span></span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
@@ -1942,9 +1980,9 @@ function renderPredict(el){
   // 1. Next race forecast
   if (nx) {
     h += `<section class="card"><h3>Prediction · ${esc(nx.name)}</h3><p class="lede">${esc(nx.circuit)} · ${range(nx)}</p>
-      ${byNext.slice(0, 10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div>
+      ${byNext.slice(0, 10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div class="who-wrap">${avatar(d.name, 34)}<div style="min-width:0"><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div></div>
         <div class="pc">${pct(d.win)} win<small>${pct(d.pod)} podium</small></div></div>`).join("")}
-      <details style="margin-top:6px"><summary class="fine" style="cursor:pointer">Rest of the field</summary>${byNext.slice(10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 11}</div><div><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div><div class="pc">${pct(d.pod)}<small>podium</small></div></div>`).join("")}</details>
+      <details style="margin-top:6px"><summary class="fine" style="cursor:pointer">Rest of the field</summary>${byNext.slice(10).map((d, i) => `<div class="fc-row"><div class="ps">${i + 11}</div><div class="who-wrap">${avatar(d.name, 34)}<div style="min-width:0"><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)}</div></div></div><div class="pc">${pct(d.pod)}<small>podium</small></div></div>`).join("")}</details>
     </section>`;
   }
   // 2. Your race pick
@@ -1962,7 +2000,7 @@ function renderPredict(el){
   }
   // 3. Title odds
   h += `<section class="card"><h3>Championship forecast</h3><p class="lede">Chance of the title and of a top-3 finish · projected final points</p>
-    ${byTitle.slice(0, 8).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div style="min-width:0"><div class="nm">${esc(d.name)}</div><div class="tm">${esc(d.team)} · now ${d.pts} pts</div><div class="fc-bar"><span style="width:${Math.max(1, d.top3 * 100)}%"></span></div></div>
+    ${byTitle.slice(0, 8).map((d, i) => `<div class="fc-row"><div class="ps">${i + 1}</div><div style="min-width:0"><div class="who-wrap">${avatar(d.name, 34)}<div class="nm">${esc(d.name)}</div></div><div class="tm">${esc(d.team)} · now ${d.pts} pts</div><div class="fc-bar"><span style="width:${Math.max(1, d.top3 * 100)}%"></span></div></div>
       <div class="pc">${d.champ >= 0.005 ? pct(d.champ) + " title" : pct(d.top3) + " top 3"}<small>${d.champ >= 0.005 && d.top3 < 0.995 ? pct(d.top3) + " top 3 · " : ""}~${Math.round(d.final)} pts</small></div></div>`).join("")}
   </section>`;
   const tl = fc.teams.slice().sort((a, b) => b.final - a.final);
