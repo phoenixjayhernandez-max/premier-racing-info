@@ -1437,7 +1437,7 @@ function evCard(e){
     <div class="meta">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</div>
     ${resLine ? `<div class="res" style="grid-column:2">${esc(resLine)}</div>` : ""}
     ${nextSession(e.id) ? `<div class="next">Next up: <b>${esc(nextSession(e.id)[0])} · ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</b></div>` : ""}
-    <div class="acts">${watchButtons(e.series, 1)}${e.series === "f1" && phase(e) !== "past" ? `<button class="btn" data-gopredict="1">🔮 Make your pick</button>` : ""}</div>
+    <div class="acts">${watchButtons(e.series, 1)}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="btn" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="btn" data-gopredict="1">🔮 Make your pick</button>` : ""}</div>
   </article>`;
 }
 function renderSeriesGrid(){
@@ -1525,6 +1525,35 @@ function renderStats(){
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
 
+// ---------- Tickets ----------
+// Official sellers checked Oct 28, 2026; other rounds link to the circuit's own site, then a ticket search.
+const TICKETS = {
+  "wec-monza": ["TicketOne (official)", "https://www.ticketone.it/en/artist/world-endurance-championship/wec-6-hours-of-monza-2026-4204139/"],
+  "gtau-adelaide": ["Supercars (official)", "https://www.supercars.com/events/2026-adelaide"],
+};
+const CIRCUIT_SITES = {
+  "Daytona International Speedway":"https://www.daytonainternationalspeedway.com", "Sebring International Raceway":"https://www.sebringraceway.com",
+  "Streets of Long Beach":"https://gplb.com", "WeatherTech Raceway Laguna Seca":"https://www.weathertechraceway.com", "Streets of Detroit":"https://detroitgp.com",
+  "Watkins Glen International":"https://www.theglen.com", "Road America":"https://www.roadamerica.com", "VIRginia International Raceway":"https://virnow.com",
+  "Indianapolis Motor Speedway":"https://www.indianapolismotorspeedway.com", "Michelin Raceway Road Atlanta":"https://www.michelinracewayroadatlanta.com",
+  "Circuit of the Americas":"https://circuitoftheamericas.com", "Sonoma Raceway":"https://www.sonomaraceway.com", "Barber Motorsports Park":"https://www.barbermotorsports.com",
+  "Mid-Ohio Sports Car Course":"https://www.midohio.com", "Canadian Tire Motorsport Park":"https://www.ctmp.ca", "Circuit de la Sarthe":"https://www.24h-lemans.com",
+  "Spa-Francorchamps":"https://www.spa-francorchamps.be", "Nürburgring":"https://nuerburgring.de", "Brands Hatch":"https://www.brandshatch.co.uk",
+  "Fuji Speedway":"https://www.fsw.tv/en/", "Circuit de Barcelona-Catalunya":"https://www.circuitcat.com", "Algarve International Circuit":"https://www.autodromodoalgarve.com",
+  "Misano World Circuit":"https://www.misanocircuit.com", "Circuit Paul Ricard":"https://www.circuitpaulricard.com", "Sepang International Circuit":"https://www.sepangcircuit.com",
+  "Phillip Island Grand Prix Circuit":"https://www.phillipislandcircuit.com.au", "Sydney Motorsport Park":"https://www.sydneymotorsportpark.com.au", "The Bend Motorsport Park":"https://www.thebend.com.au",
+  "Red Bull Ring":"https://www.redbullring.com", "Hungaroring":"https://hungaroring.hu", "Autodromo Enzo e Dino Ferrari":"https://www.autodromoimola.it",
+};
+function ticketLinks(e){
+  if (!e || e.cancelled || phase(e) === "past") return [];
+  const out = [];
+  if (TICKETS[e.id]) out.push(TICKETS[e.id]);
+  if (e.series === "f1") out.push(["F1 official tickets", "https://tickets.formula1.com/en"]);
+  else if (CIRCUIT_SITES[e.circuit]) out.push(["Circuit website", CIRCUIT_SITES[e.circuit]]);
+  out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.end.getFullYear()} tickets`)]);
+  return out;
+}
+
 // ---------- Race sheet ----------
 let lastFocus = null;
 function openRace(id){
@@ -1549,6 +1578,8 @@ function openRace(id){
     if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times · Texas time (Central)</h4>${schedHTML(e.id, false)}<p class="fine">Shown in Central time wherever you open this page. US clocks go back an hour on Nov 1, and the times already account for it. Support races in grey. Times can change; check the official timetable on the day.</p>`;
     h += `</section>`;
   }
+  const tk = ticketLinks(e);
+  if (tk.length) h += `<section class="card"><h3>🎟 Tickets</h3><div class="mine" style="margin:8px 0 0">${tk.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])} ↗</a>`).join("")}</div><p class="fine">Buy from the official seller where you can; resale prices vary.</p></section>`;
   if (LIVE[e.id]) {
     const L = LIVE[e.id];
     h += `<section class="card"><h3>This weekend so far</h3><p class="lede">Updated ${esc(L.updated)}</p>` +
@@ -1668,6 +1699,7 @@ function openWorld(id){
   h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button>`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
+  if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">🎟 Tickets ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   h += seriesNewsHTML(x.id);
   h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
