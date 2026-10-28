@@ -1097,7 +1097,7 @@ new MutationObserver(() => { clearTimeout(window.__ph); window.__ph = setTimeout
 const FKEY = KEY + "-favs";
 let favs = [];
 try { favs = JSON.parse(localStorage.getItem(FKEY) || "[]"); } catch(e){ favs = []; }
-const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} if (typeof cloudPush === "function") cloudPush(); };
+const saveFavs = () => { try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch(e){} if (typeof cloudPush === "function") cloudPush(); if (typeof pushSave === "function") pushSave(); };
 const MSKEY = KEY + "-myseries";
 let mySeries = [];
 try { mySeries = JSON.parse(localStorage.getItem(MSKEY) || "[]"); } catch(e){ mySeries = []; }
@@ -1309,7 +1309,8 @@ function openReminders(){
   renderReminders();
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="8" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">🔔</text></svg>
-    <div><h2 id="sheetTitle">Race reminders</h2><div class="m">A heads-up 30 minutes before every session</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>` + REMIND_HTML;
+    <div><h2 id="sheetTitle">Alerts &amp; reminders</h2><div class="m">Lock screen alerts and calendar reminders</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div><div id="pushBox"></div>` + REMIND_HTML;
+  renderPush();
   lastFocus = document.activeElement;
   document.getElementById("sheetBg").hidden = false;
   document.body.style.overflow = "hidden";
@@ -1322,15 +1323,14 @@ function renderReminders(){
   const web = f => base.replace(/^https?:/, "webcal:") + "calendar/" + f + ".ics";
   const favSeries = [...new Set(favs.map(f => f.s))];
   const order = favSeries.concat(ORDER.filter(x => !favSeries.includes(x)));
-  REMIND_HTML = `<p class="kicker">Notifications come through your iPhone Calendar, in Texas time, and the calendar keeps itself up to date.</p>
-    <section class="card"><h3>Subscribe</h3>
+  REMIND_HTML = `<section class="card"><h3>Calendar reminders</h3><p class="fine" style="margin:0 0 8px">Every session in your phone's calendar, in Texas time, with a 30-minute alert.</p>
       <div class="feeds"><a class="btn star" aria-pressed="true" href="${web("all")}">🔔 All series</a>${order.map(x => `<a class="btn" href="${web(x)}">${plate(x, 18)} ${esc(SERIES[x])}${favSeries.includes(x) ? " ★" : ""}</a>`).join("")}</div>
       <ol class="steps">
         <li>Tap a series, then <b>Subscribe</b>, then <b>Add</b>.</li>
         <li>Turn alerts on: <b>Settings → Apps → Calendar → Calendar Accounts → Subscribed Calendars</b>, open the calendar and switch <b>Remove Alerts</b> off.</li>
         <li>Allow Calendar notifications in <b>Settings → Notifications → Calendar</b>.</li>
       </ol>
-      <p class="fine">Sessions show up once start times are published, usually a week before each race. Weekends without times appear as all-day events. Results alerts come from the Claude app after each update.</p>
+      <p class="fine">Sessions show up once start times are published, usually a week before each race. Weekends without times appear as all-day events.</p>
     </section>`;
 }
 
@@ -1701,6 +1701,79 @@ document.addEventListener("click", ev => {
   if (nf) { newsFilter = nf.dataset.newsf; openNews(); return; }
 });
 
+// ---------- Lock-screen notifications (Web Push) ----------
+const VAPID_PUBLIC = "BD4h-3AEuLOTSx84cDe5cVF_OJMN6QvzN7HlXgn3txL2ayo1ookp6P3mMzHI7qMjtGqMl1y0tSgdzSKThfZu1oY";
+const PKEY = KEY + "-push";
+let pushPrefs = { types: { soon: true, live: true, result: true, news: false }, series: [] };
+try { pushPrefs = Object.assign(pushPrefs, JSON.parse(localStorage.getItem(PKEY) || "{}")); } catch(e){}
+let pushSub = null, pushMsg = "";
+const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+function b64ToBytes(b64){ const p = "=".repeat((4 - b64.length % 4) % 4); const s = atob((b64 + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...s].map(c => c.charCodeAt(0))); }
+async function pushRpc(fn, body){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${SUPABASE_ANON_KEY}`, "content-type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+}
+function pushPayloadPrefs(){ return { types: pushPrefs.types, series: pushPrefs.series, favs: favs.map(f => f.n) }; }
+async function pushSave(){
+  try { localStorage.setItem(PKEY, JSON.stringify(pushPrefs)); } catch(e){}
+  if (!pushSub) return;
+  const j = pushSub.toJSON();
+  try { await pushRpc("save_push_sub", { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_prefs: pushPayloadPrefs() }); pushMsg = ""; }
+  catch(e) { pushMsg = "Couldn't save your alert settings. Check your connection and try again."; }
+}
+async function pushInit(){
+  if (!pushSupported()) return;
+  try { const reg = await navigator.serviceWorker.ready; pushSub = await reg.pushManager.getSubscription(); if (pushSub) pushSave(); } catch(e){}
+}
+async function pushEnable(){
+  pushMsg = "";
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") { pushMsg = "Notifications are blocked. Turn them on in your phone's Settings → Notifications → Racing Info, then try again."; renderPush(); return; }
+    const reg = await navigator.serviceWorker.ready;
+    pushSub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
+    if (!pushPrefs.series.length) pushPrefs.series = [...new Set(favs.map(f => f.s).concat(mySeries.map(id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id)).filter(Boolean)))];
+    await pushSave();
+    if (!pushMsg) pushMsg = "Alerts are on. You'll get them on your lock screen.";
+  } catch(e) { pushMsg = "Couldn't turn on alerts on this device (" + (e.message || e) + ")."; }
+  renderPush();
+}
+async function pushDisable(){
+  try { if (pushSub) { const ep = pushSub.endpoint; await pushSub.unsubscribe(); await pushRpc("delete_push_sub", { p_endpoint: ep }).catch(() => {}); } } catch(e){}
+  pushSub = null; pushMsg = "Alerts are off."; renderPush();
+}
+function renderPush(){
+  const el = document.getElementById("pushBox"); if (!el) return;
+  const p = platform();
+  let h = `<section class="card"><h3>Lock screen alerts</h3>`;
+  if (!pushSupported() || (p === "ios" && !isStandalone())) {
+    h += p === "ios" && !isStandalone()
+      ? `<p style="margin:2px 0 0">On iPhone, alerts work from the app on your Home Screen. Tap Share → <b>Add to Home Screen</b>, open Racing Info from that icon, then come back here.</p>`
+      : `<p style="margin:2px 0 0">This browser can't show alerts. Try Chrome, Edge or Safari, or the app on your phone.</p>`;
+  } else if (!pushSub) {
+    h += `<p style="margin:2px 0 10px">Get a notification before sessions start, when the race goes live, and when results come in.</p><button class="btn star" aria-pressed="true" id="pushOn">🔔 Turn on alerts</button>`;
+  } else {
+    const t = pushPrefs.types, sel = new Set(pushPrefs.series);
+    const tog = (k, label) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${t[k] ? "checked" : ""}> ${label}</label>`;
+    h += tog("soon", "⏱ Starting soon (about 30 min before)") + tog("live", "🟢 Race is live") + tog("result", "🏁 Results, pole and winners") + tog("news", "📰 News about your favorite drivers and teams");
+    h += `<h4>Series</h4><div class="feeds">${ORDER.map(x => `<button class="btn" data-pseries="${x}" aria-pressed="${sel.has(x)}">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
+      <p class="fine">${sel.size ? `${sel.size} selected.` : "None selected, so you'll get alerts for all of them."} Start times and results come from the series this app follows in full.</p>
+      <div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
+  }
+  if (pushMsg) h += `<p class="fine" style="font-weight:600">${esc(pushMsg)}</p>`;
+  el.innerHTML = h + `</section>`;
+}
+document.addEventListener("click", ev => {
+  if (ev.target.closest("#pushOn")) { pushEnable(); return; }
+  if (ev.target.closest("#pushOff")) { pushDisable(); return; }
+  const ps = ev.target.closest("[data-pseries]");
+  if (ps) { const x = ps.dataset.pseries; pushPrefs.series = pushPrefs.series.includes(x) ? pushPrefs.series.filter(y => y !== x) : pushPrefs.series.concat(x); pushSave(); renderPush(); }
+});
+document.addEventListener("change", ev => {
+  const pt = ev.target.closest("[data-ptype]");
+  if (pt) { pushPrefs.types[pt.dataset.ptype] = pt.checked; pushSave(); }
+});
+
 // ---------- Tabs & events ----------
 function showTab(name){
   for (const n of ["weekend","calendar","standings","series"]) {
@@ -1773,6 +1846,7 @@ document.addEventListener("keydown", ev => {
 renderAll();
 initAccounts();
 loadNews();
+pushInit();
 setInterval(loadNews, 15 * 60 * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) loadNews(); });
 (() => {
