@@ -289,6 +289,7 @@ html,body{overflow-x:hidden}
 .d-ow{--c:#D7261E} .d-sc{--c:#0F8A6C} .d-gt{--c:#C2410C} .d-om{--c:#6B7280} .d-stk{--c:#1D4ED8} .d-tc{--c:#7C3AED} .d-ral{--c:#B45309} .d-off{--c:#92400E} .d-drg{--c:#BE123C} .d-dft{--c:#DB2777} .d-dirt{--c:#78350F} .d-gr{--c:#4D7C0F} .d-hc{--c:#0369A1} .d-mr{--c:#0E7490} .d-mx{--c:#A16207} .d-mo{--c:#475569}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .d-ow{--c:#FF6B5E} :root:not([data-theme="light"]) .d-sc{--c:#34C79D} :root:not([data-theme="light"]) .d-gt{--c:#FF8A3D} :root:not([data-theme="light"]) .d-om{--c:#9CA3AF} :root:not([data-theme="light"]) .d-stk{--c:#6FA2EE} :root:not([data-theme="light"]) .d-tc{--c:#B39BFF} :root:not([data-theme="light"]) .d-ral{--c:#F59E0B} :root:not([data-theme="light"]) .d-off{--c:#D6A35C} :root:not([data-theme="light"]) .d-drg{--c:#FB7185} :root:not([data-theme="light"]) .d-dft{--c:#F472B6} :root:not([data-theme="light"]) .d-dirt{--c:#C08A5A} :root:not([data-theme="light"]) .d-gr{--c:#A3E635} :root:not([data-theme="light"]) .d-hc{--c:#38BDF8} :root:not([data-theme="light"]) .d-mr{--c:#3FD6EE} :root:not([data-theme="light"]) .d-mx{--c:#FACC15} :root:not([data-theme="light"]) .d-mo{--c:#CBD5E1}}
 .srow{position:relative;padding-right:44px}
+.swatch{margin-top:8px;padding:5px 10px;font-size:.8rem;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .sstar{all:unset;cursor:pointer;position:absolute;top:6px;right:6px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font-size:1.2rem;color:var(--sub)}
 .sstar[aria-pressed="true"]{color:#D4A400}
 .sstar:focus-visible{outline:2px solid var(--signal)}
@@ -1490,9 +1491,13 @@ function renderDir(){
   }
   document.getElementById("dirBody").innerHTML = h || `<div class="card"><p class="lede" style="margin:0">No series match “${esc(dirQuery)}”.</p></div>`;
 }
+function worldWatch(x){
+  if (x.app && WATCH[x.app]) return WATCH[x.app];
+  return x.watch || (x.site ? [["Official site", x.site, false, ""]] : []);
+}
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div></div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="dplate">${esc(dirCode(x))}</span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}${x.level ? ` <span class="lvl">${esc(x.level)}</span>` : ""}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
@@ -1512,13 +1517,15 @@ function openWorld(id){
     <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? " · " + esc(x.level) : ""}</span><h2 id="sheetTitle">${esc(x.name)}</h2><div class="m">${esc(x.region || "")}</div></div>
     <button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
   if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
-  h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
-  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
-  h += `<section class="card"><h3>Watch in the US</h3><p style="margin:2px 0 0">${esc(x.watch_us || "Check the series website")}</p><div class="mine" style="margin:12px 0 0">`;
+  const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
+  h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("")}</div>
+    <p class="fine">${ww.filter(w => w[3]).map(w => `${esc(w[0])}: ${esc(w[3])}`).join(" · ")}${ww.length ? ". " : ""}Some need a subscription; TV deals can change.</p><div class="mine" style="margin:12px 0 0">`;
   h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button>`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
+  h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
+  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = h; sheet.scrollTop = 0;
   lastFocus = document.activeElement;
@@ -1532,6 +1539,7 @@ document.getElementById("dirChips").addEventListener("click", ev => {
 });
 document.getElementById("dirSearch").addEventListener("input", ev => { dirQuery = ev.target.value; renderDir(); });
 document.addEventListener("click", ev => {
+  if (ev.target.closest(".srow a")) return;
   const ms = ev.target.closest("[data-mystar]");
   if (ms) {
     ev.stopPropagation();
