@@ -32,3 +32,7 @@ Your stars and Going/Watched marks are saved on each phone.
 ## Series directory
 
 The **Series** tab lists racing series from around the world (open-wheel, sports cars and GT, stock and touring cars, rally and off-road, drag, drift and motorcycles). The data is in `world.js`: one entry per series with its 2026 champion or leader, next round, where to watch in the US and the official site. Series marked ★ In app have full calendars, times and results in the app.
+
+## News
+
+`news.json` holds the latest racing headlines. GitHub Actions runs `tools/fetch-news.mjs` every 30 minutes (`.github/workflows/news.yml`), which reads public RSS feeds (Formula1.com, Motorsport.com, Autosport, RACER, Sportscar365, DirtFish, Crash.net), tags each story by series and saves it. Only headlines, links, times and thumbnails are stored; stories open on the original site. To add a source, add a line to `FEEDS` in the script. You can also run it by hand from the repo's Actions tab → Update news → Run workflow.
