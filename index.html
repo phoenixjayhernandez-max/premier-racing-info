@@ -305,6 +305,9 @@ html,body{overflow-x:hidden}
 @media (max-width:360px){ .seg button{padding-left:7px;padding-right:7px;font-size:.8rem} .hide-s{display:none} }
 @media (max-width:640px){ .tabs{display:flex} .tabs .tab{flex:1 1 auto;text-align:center;padding:8px 2px 10px !important;font-size:.9rem !important;letter-spacing:.03em} }
 @media (max-width:350px){ .tabs .tab{font-size:.8rem !important;letter-spacing:.01em} }
+@media (max-width:430px){ .tabs .tab{font-size:.8rem !important;letter-spacing:.02em;padding:8px 1px 10px !important} }
+@media (max-width:360px){ .tabs .tab{font-size:.72rem !important;letter-spacing:0} }
+@media (max-width:340px){ .tabs .tab{font-size:.66rem !important} .tabs{gap:0} }
 .tabs::-webkit-scrollbar{display:none}
 
 /* ---------- Logos & photos ---------- */
@@ -343,6 +346,20 @@ html,body{overflow-x:hidden}
 .sthumb .dplate{position:absolute;left:0;right:0;bottom:0;min-width:0;height:auto;border-radius:0;padding:2px 3px;font-size:.66rem;background:var(--c);transition:none}
 .sthumb:not(.ok) .dplate{top:0;font-size:.8rem}
 .fv .avrow{display:flex;align-items:center;gap:8px}
+.tk-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 4px}
+.tk-sel{font:inherit;font-size:.9rem;padding:8px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
+.tk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px}
+.tk{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--c);border-radius:var(--r);padding:10px 12px;min-width:0}
+.tk-top{display:grid;grid-template-columns:52px auto 1fr;gap:10px;align-items:start;cursor:pointer}
+.tk .dt{text-align:center;line-height:1.05}
+.tk .dt b{display:block;font-family:var(--display);font-weight:800;font-size:1.15rem;white-space:nowrap}
+.tk .dt span{font-size:.72rem;color:var(--sub);text-transform:uppercase;font-weight:700}
+.tk .nm{font-weight:700;line-height:1.2}
+.tk .loc{font-size:.8rem;color:var(--sub);margin-top:2px;overflow-wrap:anywhere;white-space:normal;overflow:visible;text-overflow:clip}
+.tk-top{grid-template-columns:40px auto 1fr !important}
+.tk-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tk-btns .btn{max-width:100%;white-space:normal}
+@media (max-width:420px){ .tk-list{grid-template-columns:1fr} }
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -405,6 +422,7 @@ html,body{overflow-x:hidden}
       <button class="tab" role="tab" id="t-calendar" aria-controls="v-calendar" aria-selected="false">Calendar</button>
       <button class="tab" role="tab" id="t-standings" aria-controls="v-standings" aria-selected="false">Standings</button>
       <button class="tab" role="tab" id="t-series" aria-controls="v-series" aria-selected="false">Series</button>
+      <button class="tab" role="tab" id="t-tickets" aria-controls="v-tickets" aria-selected="false">Tickets</button>
     </nav>
   </div>
 </header>
@@ -441,6 +459,13 @@ html,body{overflow-x:hidden}
     <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
     <p class="asof">Updated Wednesday, October 28, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Europe final results; GT World Challenge Asia after Beijing (Shanghai finale this weekend). Other series as of their last race.</p>
     <div id="statsBody"></div>
+  </section>
+
+  <section class="view" id="v-tickets" role="tabpanel" aria-labelledby="t-tickets" hidden>
+    <div id="tkFilters"></div>
+    <p class="asof" id="tkCount" style="margin:8px 0 0"></p>
+    <div id="tkList"></div>
+    <p class="fine" style="margin-top:14px">Links go to F1's official store, the series' official seller or the circuit's own site, plus a ticket search for every race. Support races on an F1 weekend are included with F1 tickets. Prices and availability are on the seller's site.</p>
   </section>
 
   <section class="view" id="v-series" role="tabpanel" aria-labelledby="t-series" hidden>
@@ -1585,7 +1610,7 @@ const CIRCUIT_SITES = {
   "Fuji Speedway":"https://www.fsw.tv/en/", "Circuit de Barcelona-Catalunya":"https://www.circuitcat.com", "Algarve International Circuit":"https://www.autodromodoalgarve.com",
   "Misano World Circuit":"https://www.misanocircuit.com", "Circuit Paul Ricard":"https://www.circuitpaulricard.com", "Sepang International Circuit":"https://www.sepangcircuit.com",
   "Phillip Island Grand Prix Circuit":"https://www.phillipislandcircuit.com.au", "Sydney Motorsport Park":"https://www.sydneymotorsportpark.com.au", "The Bend Motorsport Park":"https://www.thebend.com.au",
-  "Red Bull Ring":"https://www.redbullring.com", "Hungaroring":"https://hungaroring.hu", "Autodromo Enzo e Dino Ferrari":"https://www.autodromoimola.it",
+  "Red Bull Ring":"https://www.redbullring.com", "Silverstone":"https://www.silverstone.co.uk", "Suzuka":"https://www.suzukacircuit.jp/en/", "Monza":"https://www.monzanet.it", "Hungaroring":"https://hungaroring.hu", "Autodromo Enzo e Dino Ferrari":"https://www.autodromoimola.it",
 };
 function ticketLinks(e){
   if (!e || e.cancelled || phase(e) === "past") return [];
@@ -2124,16 +2149,97 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("[data-gopredict]")) { ev.stopImmediatePropagation(); statsSeries = "predict"; renderStatChips(); renderStats(); showTab("standings"); return; }
 });
 
+// ---------- Tickets tab: every upcoming race with ticket links, filter by location, series and month ----------
+const VENUE = { // circuit → [country, region]
+  "Autódromo Hermanos Rodríguez":["Mexico","Americas"], "Interlagos":["Brazil","Americas"], "Las Vegas Strip Circuit":["USA","USA"],
+  "Lusail International Circuit":["Qatar","Middle East"], "Yas Marina":["UAE","Middle East"], "Monza":["Italy","Europe"],
+  "Shanghai International Circuit":["China","Asia"], "Adelaide Street Circuit":["Australia","Australia"], "Bahrain International Circuit":["Bahrain","Middle East"],
+  "Jeddah Corniche Circuit":["Saudi Arabia","Middle East"], "Albert Park":["Australia","Australia"], "Suzuka":["Japan","Asia"],
+  "Miami International Autodrome":["USA","USA"], "Circuit Gilles Villeneuve":["Canada","Americas"], "Circuit de Monaco":["Monaco","Europe"],
+  "Algarve International Circuit":["Portugal","Europe"], "Silverstone":["UK","Europe"], "Red Bull Ring":["Austria","Europe"], "Spa-Francorchamps":["Belgium","Europe"],
+  "Hungaroring":["Hungary","Europe"], "Madring":["Spain","Europe"], "Baku City Circuit":["Azerbaijan","Europe"], "Istanbul Park":["Turkey","Europe"],
+  "Marina Bay":["Singapore","Asia"], "Circuit of the Americas":["USA","USA"], "Daytona International Speedway":["USA","USA"], "Sebring International Raceway":["USA","USA"],
+  "Streets of Long Beach":["USA","USA"], "WeatherTech Raceway Laguna Seca":["USA","USA"], "Streets of Detroit":["USA","USA"], "Watkins Glen International":["USA","USA"],
+  "Canadian Tire Motorsport Park":["Canada","Americas"], "Road America":["USA","USA"], "VIRginia International Raceway":["USA","USA"], "Indianapolis Motor Speedway":["USA","USA"],
+  "Michelin Raceway Road Atlanta":["USA","USA"], "Autodromo Enzo e Dino Ferrari":["Italy","Europe"], "Circuit de la Sarthe":["France","Europe"], "Fuji Speedway":["Japan","Asia"],
+  "Sonoma Raceway":["USA","USA"], "Barber Motorsports Park":["USA","USA"], "Circuit Paul Ricard":["France","Europe"], "Brands Hatch":["UK","Europe"],
+  "Misano World Circuit":["Italy","Europe"], "Circuit de Nevers Magny-Cours":["France","Europe"], "Nürburgring":["Germany","Europe"], "Zandvoort":["Netherlands","Europe"],
+  "Circuit de Barcelona-Catalunya":["Spain","Europe"], "Sepang International Circuit":["Malaysia","Asia"], "Chang International Circuit":["Thailand","Asia"],
+  "Beijing Street Circuit":["China","Asia"], "Phillip Island Grand Prix Circuit":["Australia","Australia"], "The Bend Motorsport Park":["Australia","Australia"],
+  "Sydney Motorsport Park":["Australia","Australia"], "Queensland Raceway":["Australia","Australia"], "Mount Panorama":["Australia","Australia"],
+};
+const LOCS = [["all","Anywhere"],["tx","Texas"],["usa","USA"],["americas","Canada, Mexico & Brazil"],["europe","Europe"],["me","Middle East"],["asia","Asia"],["aus","Australia"]];
+function venueOf(e){ return VENUE[e.circuit] || ["", ""]; }
+function locMatch(e, loc){
+  const [country, region] = venueOf(e);
+  if (loc === "all") return true;
+  if (loc === "tx") return /, TX$/.test(e.location);
+  if (loc === "usa") return country === "USA";
+  return { americas: "Americas", europe: "Europe", me: "Middle East", asia: "Asia", aus: "Australia" }[loc] === region;
+}
+let tkLoc = "all", tkSeries = "all", tkMonth = "all", tkQuery = "";
+function tkEvents(){ return events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start); }
+function tkMonthKey(e){ return e.start.getFullYear() + "-" + String(e.start.getMonth() + 1).padStart(2, "0"); }
+function tkMonthLabel(k){ const [y, m] = k.split("-"); return MONTHS[+m - 1] + " " + y; }
+function ticketLinksFull(e){
+  const out = ticketLinks(e).filter(t => t[0] !== "Search tickets");
+  // Support races on an F1 weekend: an F1 ticket gets you in.
+  if (e.series !== "f1" && events.some(o => o.series === "f1" && o.circuit === e.circuit && !o.cancelled && o.start <= e.end && o.end >= e.start))
+    out.unshift(["F1 weekend tickets", "https://tickets.formula1.com/en"]);
+  out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.circuit} ${e.end.getFullYear()} tickets`)]);
+  const seen = new Set(); return out.filter(t => !seen.has(t[1]) && seen.add(t[1]));
+}
+function renderTicketFilters(){
+  const all = tkEvents();
+  const months = [...new Set(all.map(tkMonthKey))];
+  const sel = (id, cur, opts) => `<select id="${id}" class="tk-sel">${opts.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
+  document.getElementById("tkFilters").innerHTML =
+    `<input class="search" id="tkSearch" type="search" placeholder="Search a city, track or race" value="${esc(tkQuery)}" autocomplete="off">
+     <div class="chips" id="tkLocChips">${LOCS.map(([v, l]) => `<button class="chip txt" data-tkloc="${v}" aria-pressed="${tkLoc === v}">${v === "tx" ? "📍 " : ""}${esc(l)}</button>`).join("")}</div>
+     <div class="tk-row">${sel("tkSeries", tkSeries, [["all", "All series"]].concat(ORDER.map(s => [s, SERIES_FULL[s]])))}${sel("tkMonth", tkMonth, [["all", "Any month"]].concat(months.map(k => [k, tkMonthLabel(k)])))}</div>`;
+  document.getElementById("tkSearch").addEventListener("input", ev => { tkQuery = ev.target.value; renderTicketList(); });
+  document.getElementById("tkSeries").addEventListener("change", ev => { tkSeries = ev.target.value; renderTicketList(); });
+  document.getElementById("tkMonth").addEventListener("change", ev => { tkMonth = ev.target.value; renderTicketList(); });
+}
+function renderTicketList(){
+  const q = tkQuery.trim().toLowerCase();
+  const list = tkEvents().filter(e => locMatch(e, tkLoc) && (tkSeries === "all" || e.series === tkSeries) && (tkMonth === "all" || tkMonthKey(e) === tkMonth) &&
+    (!q || [e.name, e.circuit, e.location, SERIES_FULL[e.series], SERIES[e.series], venueOf(e)[0]].join(" ").toLowerCase().includes(q)));
+  document.getElementById("tkCount").textContent = `${list.length} race${list.length === 1 ? "" : "s"} with tickets`;
+  if (!list.length) { document.getElementById("tkList").innerHTML = `<div class="empty" style="margin-top:14px">No upcoming races match. Try another place or month.</div>`; return; }
+  let h = "", m = "";
+  for (const e of list) {
+    const k = tkMonthKey(e);
+    if (k !== m) { if (m) h += `</div>`; m = k; h += `<div class="month">${tkMonthLabel(k)}</div><div class="tk-list">`; }
+    const links = ticketLinksFull(e);
+    h += `<article class="tk ${e.series}">
+      <div class="tk-top" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
+        <div class="dt"><b>${e.start.getDate()}</b><span>${MON[e.start.getMonth()]}</span></div>
+        ${plate(e.series, 26)}
+        <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">🗓 ${range(e)}</div><div class="loc">📍 ${esc(e.circuit)} · ${esc(e.location)}${venueOf(e)[0] && !e.location.includes(venueOf(e)[0]) && venueOf(e)[0] !== "USA" ? ", " + esc(venueOf(e)[0]) : ""}</div>
+        ${e.tags.includes("Provisional") ? `<div class="loc" style="color:var(--sub)">Provisional date</div>` : ""}</div>
+      </div>
+      <div class="tk-btns">${links.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">🎟 ${esc(t[0])}</a>`).join("")}</div>
+    </article>`;
+  }
+  document.getElementById("tkList").innerHTML = h + `</div>`;
+}
+function renderTickets(){ renderTicketFilters(); renderTicketList(); }
+document.addEventListener("click", ev => {
+  const l = ev.target.closest("[data-tkloc]");
+  if (l) { tkLoc = l.dataset.tkloc; document.querySelectorAll("[data-tkloc]").forEach(b => b.setAttribute("aria-pressed", b.dataset.tkloc === tkLoc)); renderTicketList(); }
+});
+
 // ---------- Tabs & events ----------
 function showTab(name){
-  for (const n of ["weekend","calendar","standings","series"]) {
+  for (const n of ["weekend","calendar","standings","series","tickets"]) {
     document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
     document.getElementById("v-" + n).hidden = n !== name;
   }
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); }
+function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
 
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
@@ -2202,9 +2308,9 @@ setInterval(loadNews, 15 * 60 * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) loadNews(); });
 (() => {
   const h = (location.hash || "").slice(1);
-  let t = ["weekend","calendar","standings","series"].includes(h) ? h : null;
+  let t = ["weekend","calendar","standings","series","tickets"].includes(h) ? h : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
-  showTab(["weekend","calendar","standings","series"].includes(t) ? t : "weekend");
+  showTab(["weekend","calendar","standings","series","tickets"].includes(t) ? t : "weekend");
 })();
 setInterval(renderAll, 60 * 60 * 1000);
 
