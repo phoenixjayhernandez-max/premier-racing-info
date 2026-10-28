@@ -439,7 +439,7 @@ html,body{overflow-x:hidden}
 
   <section class="view" id="v-standings" role="tabpanel" aria-labelledby="t-standings" hidden>
     <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
-    <p class="asof">Standings updated Tuesday, October 27, 2026, after the United States Grand Prix (F1 result matches the official classification). WEC Monza session times added Oct 27. Porsche Supercup, Carrera Cup North America and Mustang Challenge added with final 2026 results. Other series last updated October 11. Ask Claude to refresh it after each race weekend.</p>
+    <p class="asof">Updated Wednesday, October 28, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Europe final results; GT World Challenge Asia after Beijing (Shanghai finale this weekend). Other series as of their last race.</p>
     <div id="statsBody"></div>
   </section>
 
@@ -539,7 +539,8 @@ const RAW = [
   ["gtas-shanghai","gtas","Shanghai","Shanghai International Circuit","Shanghai, China","2026-06-05","2026-06-06",["2 × 1 hour"]],
   ["gtas-fuji","gtas","Fuji","Fuji Speedway","Oyama, Japan","2026-07-11","2026-07-12",["2 × 1 hour"]],
   ["gtas-okayama","gtas","Okayama","Okayama International Circuit","Mimasaka, Japan","2026-08-29","2026-08-30",["2 × 1 hour"]],
-  ["gtas-beijing","gtas","Beijing","Beijing Street Circuit","Beijing, China","2026-10-17","2026-10-18",["2 × 1 hour","Street circuit","Finale"]],
+  ["gtas-beijing","gtas","Beijing","Beijing Street Circuit","Beijing, China","2026-10-03","2026-10-04",["2 × 1 hour","Street circuit"]],
+  ["gtas-shanghai-fin","gtas","Shanghai finale","Shanghai International Circuit","Shanghai, China","2026-10-30","2026-11-01",["2 × 1 hour","Finale"]],
 
   // GT World Challenge Australia
   ["gtau-phillip","gtau","Phillip Island","Phillip Island Grand Prix Circuit","Phillip Island, VIC","2026-03-27","2026-03-29",[]],
@@ -682,6 +683,7 @@ const events = RAW.map(([id,series,name,circuit,location,start,end,tags,status])
 
 // Known winners (overall / top class)
 const WINNERS = {
+  "wec-bcn":"#8 Toyota (Buemi / Hartley / Hirakawa)", "gte-portimao":"#17 GetSpeed Mercedes-AMG", "gtas-beijing":"R1 Liu / Shinohara · R2 Huang / Ghiretti",
   "f1-chn":"Kimi Antonelli, Mercedes", "f1-bhr-mys":"Max Verstappen, Red Bull",
   "imsa-daytona":"#7 Porsche Penske 963", "imsa-sebring":"#7 Porsche Penske 963", "imsa-petit":"#6 Porsche Penske 963",
   "wec-cota":"Ferrari", "wec-fuji":"#8 Toyota",
@@ -796,6 +798,7 @@ const WATCH = {
 };
 // Session times in US Central, where known
 const SESSIONS = {
+  "gtas-shanghai-fin":[["Race 1","2026-10-31T04:50Z"],["Race 2","2026-11-01T05:05Z"]],
   // [session, start time in UTC, 1 = support race]. Shown in Texas (Central) time.
   "f1-sgp":[["Practice","2026-10-09T08:30Z"],["Sprint qualifying","2026-10-09T12:30Z"],["Sprint","2026-10-10T09:00Z"],["Qualifying","2026-10-10T13:00Z"],["Grand Prix","2026-10-11T12:00Z"]],
   "f1-usa":[["Practice 1","2026-10-23T17:30Z"],["Practice 2","2026-10-23T21:00Z"],["F1 Academy race 1","2026-10-23T22:50Z",1],["Practice 3","2026-10-24T17:30Z"],
@@ -815,7 +818,7 @@ const PODIUMS = {
 };
 
 // Races that have full results in the stats snapshot
-const RESULT_FOR = { "f1-usa":"f1", "imsa-petit":"imsa", "wec-fuji":"wec", "gtwc-indy":"gtwc" };
+const RESULT_FOR = { "f1-usa":"f1", "imsa-petit":"imsa", "wec-bcn":"wec", "gtwc-indy":"gtwc", "gte-portimao":"gte", "gtas-beijing":"gtas"};
 
 
 // ---------- Stats snapshot (Oct 4, 2026) ----------
@@ -880,72 +883,9 @@ const STATS = {
       ["#24 BMW M Team WRT","BMW M Hybrid V8","Sheldon van der Linde"],["#60 Acura MSR","Acura ARX-06","Tom Blomqvist · pole at Acura's final GTP race"]],
     notes:["Porsche swept Daytona, Sebring and Petit Le Mans, a first for one manufacturer in a single season.","Aitken clinched the GTP title just by starting Petit Le Mans.","GTD: the #57 Winward Mercedes won Petit Le Mans from pole.","Season complete. The 2027 season opens with the Rolex 24 in January."]
   },
-  wec: {
-    race: { name:"6 Hours of Fuji", where:"Fuji Speedway · Sep 27 · Hypercar",
-      note:"Toyota's late strategy call jumped the #8 ahead of the pole-sitting #36 Alpine, winning by 0.591s.",
-      rows:[["1","8","Buemi / Hartley / Hirakawa","Toyota","6:01:01.299"],["2","36","Gounon / Martins / Makowiecki","Alpine A424","+0.591"],
-        ["3","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8","+6.415"],["4","35","Milesi / Habsburg / Félix da Costa","Alpine A424","+7.699"],
-        ["5","38","Bamber / Bourdais","Cadillac V-Series.R","+8.142"],["6","94","Duval / Jakobsen / Pourchaire","Peugeot 9X8","+10.176"],
-        ["7","12","Nato / Stevens / Lynn","Cadillac V-Series.R","+13.497"],["8","7","Conway / Kobayashi / de Vries","Toyota","+14.206"],
-        ["9","009","Riberas / Sørensen","Aston Martin Valkyrie","+24.237"],["10","51","Pier Guidi / Calado / Giovinazzi","Ferrari 499P",""],
-        ["11","19","Jaminet / Chatin / Juncadella","Genesis GMR-001",""],["12","83","Hanson / Kubica / Ye","Ferrari 499P",""],
-        ["13","20","Rast / Frijns","BMW M Hybrid V8",""],["14","007","Tincknell / Gamble","Aston Martin Valkyrie","+1 lap"],
-        ["15","17","Lotterer / Derani / Jaubert","Genesis GMR-001","+1 lap"],["DNF","93","Di Resta / Vandoorne / Cassidy","Peugeot 9X8","Out after 67 laps"]],
-      quali:[["1","36","Gounon / Martins","Alpine A424","Pole"],["2","35","Milesi / Habsburg","Alpine A424",""],["3","19","Jaminet / Chatin / Juncadella","Genesis GMR-001",""],
-        ["4","007","Tincknell / Gamble","Aston Martin Valkyrie","2-place penalty"],["5","17","Lotterer / Derani / Jaubert","Genesis GMR-001",""],
-        ["6","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["7","38","Bamber / Bourdais","Cadillac V-Series.R",""],["8","8","Buemi / Hartley / Hirakawa","Toyota",""],
-        ["9","93","Di Resta / Vandoorne / Cassidy","Peugeot 9X8",""]],
-      qualiNote:"Qualifying was cancelled for weather. The grid was set from each car's best lap of the weekend.",
-      partial:true },
-    champs:null,
-    standingsTitle:"Hypercar drivers' championship",
-    standings:[["Buemi / Hartley / Hirakawa","#8 Toyota",89],["Conway / Kobayashi / de Vries","#7 Toyota",79],["Rast / Frijns","#20 BMW",75],
-      ["Magnussen / Marciello","#15 BMW",69],["Sheldon van der Linde","#20 BMW",65],["Dries Vanthoor","#15 BMW",63],
-      ["Pier Guidi / Calado / Giovinazzi","#51 Ferrari",59],["Milesi / Habsburg","#35 Alpine",56],["Fuoco / Molina / Nielsen","#50 Ferrari",54],["Nato / Stevens","#12 Cadillac",50]],
-    makersTitle:"Hypercar manufacturers",
-    makers:[["Toyota",169],["BMW",146],["Ferrari",115],["Alpine",96],["Cadillac",96],["Aston Martin",54],["Peugeot",24],["Genesis",12]],
-    extraTitle:"LMGT3 drivers",
-    extra:[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],
-      ["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],
-    gridTitle:"Hypercar grid",
-    grid:[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],
-      ["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],
-      ["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],
-      ["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],
-      ["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],
-      ["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],
-      ["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],
-      ["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],
-      ["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],
-    notes:["Two rounds left: Barcelona (Oct 16–18) and Monza (Nov 6–8).","Toyota leads BMW by 23 in the manufacturers' fight.","Ferrari won the Lone Star Le Mans at COTA but scored one point at Fuji.","LMGT3 at Fuji went to the #32 WRT BMW after Farfus charged from sixth on the final restart."]
-  },
-  gte: {
-    race: { name:"CrowdStrike 24 Hours of Spa", where:"Spa-Francorchamps · Jun 28 · class winners",
-      note:"The biggest GT3 race of the year. Lionspeed GP's Porsche won overall.",
-      rows:[["1","80","Buus / Feller / Preining","Porsche 911 GT3 R (992.2) · Lionspeed GP · overall","Winner"],
-        ["Gold","998","De Wilde / Klingmann / Tramnitz","BMW M4 GT3 Evo · ROWE Racing","Class win"],
-        ["Silver","45","Balzan / Durán / Medler / Perel","Ferrari 296 GT3 Evo · Rinaldi","Class win"],
-        ["Bronze","74","Blattner / Jaubert / Marschall / Tuck","Ferrari 296 GT3 Evo · Kessel","Class win"],
-        ["Pro-Am","0","Green / Abu Bakar / Jefri / Love","Corvette Z06 GT3.R · Johor Motorsports","Class win"]] },
-    champs:null,
-    standingsTitle:"Endurance Cup Pro (before Portimão)",
-    standings:[["Auer / Engel / Stolz","#48 Mercedes-AMG Team Mann-Filter",74],["Drudi / Sørensen / Thiim","#7 Comtoyou Aston Martin",33]],
-    makersTitle:null, makers:null,
-    extraTitle:"Sprint Cup leaders (after Zandvoort)",
-    extra:[["Bastian Buus / Ricardo Feller","Overall · #80 Lionspeed Porsche",59],["Team WRT","Teams",67],["Mosca / Zagazeta","Gold Cup · AF Corse",96.5],["Lismont / Montenegro","Silver Cup · Team WRT",120],["Dienst / Salikhov","Bronze Cup · Winward",56.5]],
-    gridTitle:"Crews to know",
-    grid:[["#80 Lionspeed GP","Porsche 911 GT3 R","Bastian Buus · Ricardo Feller · Thomas Preining"],["#48 Mercedes-AMG Team Mann-Filter","Mercedes-AMG GT3 Evo","Lucas Auer · Maro Engel · Luca Stolz"],
-      ["#32 Team WRT","BMW M4 GT3 Evo","Kelvin van der Linde · Charles Weerts"],["#7 Comtoyou Racing","Aston Martin Vantage AMR GT3 Evo","Mattia Drudi · Marco Sørensen · Nicki Thiim"],
-      ["#3 Verstappen Racing","Mercedes-AMG GT3 Evo","Jules Gounon · Daniel Juncadella"],["#69 Emil Frey Racing","Ferrari 296 GT3 Evo","Ben Green · Thierry Vermeulen"],
-      ["#58 Garage 59","McLaren 720S GT3 Evo","Tom Fleming · Louis Prette"],["#50 AF Corse","Ferrari 296 GT3 Evo","Arthur Leclerc · Thomas Neubauer"]],
-    notes:["Two championships in one: the Endurance Cup (Ricard, Monza, Spa, Nürburgring, Portimão) and the Sprint Cup (Brands Hatch, Misano, Magny-Cours, Zandvoort, Barcelona).","Portimão this weekend is the Endurance Cup finale.","Lionspeed's Buus and Feller won the Spa 24 Hours and twice in the Sprint Cup.","Final Sprint Cup and overall champions weren't published when this was updated."]
-  },
-  gtas: {
-    race: null, champs:null, standingsTitle:null, standings:null, makersTitle:null, makers:null,
-    gridTitle:"Format",
-    grid:[["6 rounds","2 one-hour races each","Sepang, Mandalika, Shanghai, Fuji, Okayama, Beijing"],["Classes","Pro-Am, Silver-Am, Am","Most cars share a pro with an amateur driver"]],
-    notes:["The Beijing Street Circuit finale runs this weekend, Oct 17–18.","Results and standings aren't loaded yet. Ask Claude to add them."]
-  },
+  wec: {"race":{"name":"6 Hours of Barcelona","where":"Circuit de Barcelona-Catalunya · Oct 18 · Hypercar","note":"Toyota scored a 1-2, the #8 beating the #7 by 0.583s, and clinched its eighth manufacturers' world title. The drivers' title goes to Monza between the two Toyota crews. The #92 Manthey Porsche won LMGT3.","rows":[["1","8","Buemi / Hartley / Hirakawa","Toyota","Winner"],["2","7","Conway / Kobayashi / de Vries","Toyota","+0.583"],["3","50","Fuoco / Molina / Nielsen","Ferrari 499P","+39.725"],["4","38","Bamber / Bourdais / Aitken","Cadillac V-Series.R","+52.811"],["5","83","Ye / Kubica / Hanson","Ferrari 499P","+53.353"],["6","12","Lynn / Stevens / Nato","Cadillac V-Series.R","+1:20.751"],["7","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8",""],["8","36","Gounon / Martins","Alpine A424",""],["9","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["10","35","Milesi / Habsburg","Alpine A424",""]],"partial":true},"champs":[["Hypercar manufacturers","Toyota","Clinched at Barcelona · 8th world title"]],"standingsTitle":"Hypercar drivers' championship (top two after Barcelona; others as of Fuji)","standings":[["Buemi / Hartley / Hirakawa","#8 Toyota",114],["Conway / Kobayashi / de Vries","#7 Toyota",97],["Rast / Frijns","#20 BMW",75],["Magnussen / Marciello","#15 BMW",69],["Sheldon van der Linde","#20 BMW",65],["Dries Vanthoor","#15 BMW",63],["Pier Guidi / Calado / Giovinazzi","#51 Ferrari",59],["Milesi / Habsburg","#35 Alpine",56],["Fuoco / Molina / Nielsen","#50 Ferrari",54],["Nato / Stevens","#12 Cadillac",50]],"makersTitle":"Hypercar manufacturers (as of Fuji; Toyota has clinched)","makers":[["Toyota",169],["BMW",146],["Ferrari",115],["Alpine",96],["Cadillac",96],["Aston Martin",54],["Peugeot",24],["Genesis",12]],"extraTitle":"LMGT3 drivers","extra":[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],"gridTitle":"Hypercar grid","grid":[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],"notes":["Monza (Nov 6–8) decides the drivers' title: the #8 Toyota leads the #7 by 17 points.","Toyota clinched the manufacturers' title with its 1-2 at Barcelona.","LMGT3 at Barcelona went to the #92 Manthey Porsche (Shahin / Pera / Lietz)."]},
+  gte: {"race":{"name":"3 Hours of Portimão","where":"Algarve International Circuit · Oct 17 · Endurance Cup finale","note":"Mercedes-AMG Team GetSpeed won the finale, ahead of Lionspeed GP's Porsche and Boutsen VDS's pole-sitting Porsche. Max Verstappen finished ninth on his series debut after starting 24th.","rows":[["1","17","Ralf Aron / Maximilian Götz / Fabian Schiller","Mercedes-AMG · GetSpeed","Winner"],["2","","Lionspeed GP","Porsche 911 GT3 R",""],["3","","Boutsen VDS","Porsche 911 GT3 R",""],["9","3","Max Verstappen and crew","Mercedes-AMG · Verstappen Racing",""]],"partial":true},"champs":[["Overall Pro drivers","Lucas Auer / Maro Engel","#48 Mercedes-AMG Mann-Filter (Winward) · 131.5 pts"],["Gold Cup","ROWE Racing",""],["Silver Cup","Team WRT",""]],"standingsTitle":null,"standings":null,"makersTitle":null,"makers":null,"extraTitle":null,"extra":null,"gridTitle":"Crews to know","grid":[["#80 Lionspeed GP","Porsche 911 GT3 R","Bastian Buus · Ricardo Feller · Thomas Preining"],["#48 Mercedes-AMG Team Mann-Filter","Mercedes-AMG GT3 Evo","Lucas Auer · Maro Engel · Luca Stolz"],["#32 Team WRT","BMW M4 GT3 Evo","Kelvin van der Linde · Charles Weerts"],["#7 Comtoyou Racing","Aston Martin Vantage AMR GT3 Evo","Mattia Drudi · Marco Sørensen · Nicki Thiim"],["#3 Verstappen Racing","Mercedes-AMG GT3 Evo","Jules Gounon · Daniel Juncadella"],["#69 Emil Frey Racing","Ferrari 296 GT3 Evo","Ben Green · Thierry Vermeulen"],["#58 Garage 59","McLaren 720S GT3 Evo","Tom Fleming · Louis Prette"],["#50 AF Corse","Ferrari 296 GT3 Evo","Arthur Leclerc · Thomas Neubauer"]],"notes":["Season complete. Auer and Engel are the 2026 overall champions.","Max Verstappen made his GT World Challenge debut at Portimão and finished ninth.","2027 starts at Paul Ricard, April 16–18."]},
+  gtas: {"race":{"name":"Beijing","where":"Beijing Street Circuit · Oct 3–4 · Pro-Am","note":"Liu Kaishun and Takuro Shinohara (Harmony Racing) won Race 1 from pole. Huang Ruohan and Alessandro Ghiretti (Absolute Racing) won Race 2 in a replacement Porsche, after their car was badly damaged by fire earlier in the weekend.","rows":[["R1","96","Liu Kaishun / Takuro Shinohara","Ferrari 296 GT3 · Harmony Racing","Winner"],["R2","911","Huang Ruohan / Alessandro Ghiretti","Porsche 911 GT3 R · Absolute Racing","Winner"]],"partial":true},"champs":null,"standingsTitle":"Drivers' championship going into Shanghai","standings":[["Lu Wei","#11 Origine Porsche",124],["Huang Ruohan / Alessandro Ghiretti","#911 Absolute Porsche",119],["Cheng Congfu / Yu Kuai","#16 Phantom Audi",98],["Anthony Liu","#37 Phantom Porsche",96],["Liu Kaishun","#96 Harmony Ferrari",95]],"makersTitle":null,"makers":null,"gridTitle":"Format","grid":[["6 rounds","2 one-hour races each","Sepang, Mandalika, Fuji, Okayama, Beijing, Shanghai"],["Classes","Pro-Am, Silver-Am, Am","Most cars share a pro with an amateur driver"]],"notes":["The title is decided at Shanghai this weekend (Oct 30–Nov 1). Five crews can still win it.","Lu Wei leads by 5 points over Huang and Ghiretti."]},
   psc: {
     race: { name:"Monza (season finale)", where:"Autodromo Nazionale Monza · Sep 6",
       note:"Andrea Bristot won the finale for Dinamic Motorsport. Flynt Schuring had already wrapped up the title with three wins.",
