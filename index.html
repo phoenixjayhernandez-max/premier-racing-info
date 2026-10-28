@@ -1984,7 +1984,7 @@ document.addEventListener("change", ev => {
 const F1_PTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 const SPRINT_PTS = [8, 7, 6, 5, 4, 3, 2, 1];
 const SEASON_LOCK_RACE = "f1-mex"; // season picks lock when this race starts
-let fcCache = null, picksRows = null, picksErr = "";
+let fcCache = null, picksRows = null, picksErr = "", picksErrText = "";
 function f1Field(){
   const st = STATS.f1, pts = Object.fromEntries(st.standings.map(x => [x[0], x[2]]));
   const list = [];
@@ -2081,14 +2081,14 @@ function leaderboard(rows){
 async function loadPicks(){
   if (!sb || !me) { picksRows = null; return; }
   const { data, error } = await sb.from("picks").select("user_id,key,pick,display_name,updated_at").like("key", "f1:%");
-  if (error) { picksErr = /relation|does not exist|schema cache/i.test(error.message) ? "setup" : error.message; picksRows = []; }
+  if (error) { picksErr = /relation|does not exist|schema cache/i.test(error.message) ? "setup" : error.message; picksErrText = (error.code ? error.code + " " : "") + error.message; picksRows = []; }
   else { picksErr = ""; picksRows = data || []; }
 }
 async function savePick(key, pick){
   if (!sb || !me) return "Sign in to save picks.";
   const name = myName || (me.email || "").split("@")[0];
   const { error } = await sb.from("picks").upsert({ user_id: me.id, key, pick, display_name: name });
-  if (error) return /relation|does not exist|schema cache/i.test(error.message) ? "Picks aren't set up yet (Supabase step)." : "Couldn't save: " + error.message;
+  if (error) return (/relation|does not exist|schema cache/i.test(error.message) ? "Picks aren't set up yet (Supabase step). " : "Couldn't save. ") + "Supabase says: " + (error.code ? error.code + " " : "") + error.message;
   await loadPicks();
   return "";
 }
@@ -2153,7 +2153,8 @@ function renderPredict(el){
   // 5. Leaderboard
   h += `<section class="card"><h3>Leaderboard</h3>`;
   if (!me) h += `<p class="lede" style="margin:0">Sign in to see how you and your friends rank.</p>`;
-  else if (picksErr === "setup") h += `<p class="lede" style="margin:0">The picks game needs a one-time setup in Supabase (setup/picks.sql).</p>`;
+  else if (picksErr === "setup") h += `<p class="lede" style="margin:0">The picks game needs a one-time setup in Supabase.</p><p class="fine">Supabase says: ${esc(picksErrText)}</p>`;
+  else if (picksErr) h += `<p class="lede" style="margin:0">Couldn't load the leaderboard.</p><p class="fine">Supabase says: ${esc(picksErrText)}</p>`;
   else if (picksRows === null) h += `<p class="lede" style="margin:0">Loading…</p>`;
   else {
     const lb = leaderboard(picksRows);

@@ -25,3 +25,7 @@ create or replace function public.picks_stamp() returns trigger language plpgsql
 begin new.updated_at := now(); return new; end $$;
 drop trigger if exists picks_stamp on public.picks;
 create trigger picks_stamp before insert or update on public.picks for each row execute function public.picks_stamp();
+
+-- Make sure signed-in users can use the table, and tell the API about it right away.
+grant select, insert, update, delete on public.picks to authenticated;
+notify pgrst, 'reload schema';
