@@ -8,14 +8,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Racing Info">
-<meta name="description" content="Race weekends in Central (Texas) time: F1, IMSA, WEC, GT World Challenge and 90+ series worldwide. Start times, how to watch in the US, tickets, standings, lock-screen alerts and a friends' picks game.">
+<meta name="description" content="Race weekends in your time zone: F1, IMSA, WEC, GT World Challenge and 90+ series worldwide. Start times, how to watch in the US, tickets, standings, lock-screen alerts and a friends' picks game.">
 <link rel="canonical" href="https://premierracinginfo.com/">
 <meta name="msvalidate.01" content="39499259BA78204D8885CFD2FC9AF31C">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:url" content="https://premierracinginfo.com/">
-<meta property="og:title" content="Premier Racing Info – Race Times, How to Watch & Tickets"><meta property="og:description" content="Every race weekend in Central time: F1, IMSA, WEC, GT World Challenge and more. Start times, where to watch, tickets, standings and alerts.">
+<meta property="og:title" content="Premier Racing Info – Race Times, How to Watch & Tickets"><meta property="og:description" content="Every race weekend in your time zone: F1, IMSA, WEC, GT World Challenge and more. Start times, where to watch, tickets, standings and alerts.">
 <meta property="og:image" content="https://premierracinginfo.com/icons/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Premier Racing Info","url":"https://premierracinginfo.com/","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Race weekends in Central time: start times, how to watch in the US, tickets, standings, alerts and picks for F1, IMSA, WEC, GT World Challenge and more."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Premier Racing Info","url":"https://premierracinginfo.com/","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Race weekends in your time zone: start times, how to watch in the US, tickets, standings, alerts and picks for F1, IMSA, WEC, GT World Challenge and more."}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -357,6 +357,11 @@ html,body{overflow-x:hidden}
 .sthumb:not(.ok) .dplate{top:0;font-size:.8rem}
 .fv .avrow{display:flex;align-items:center;gap:8px}
 .tk-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 4px}
+.tk-row.three{grid-template-columns:1.2fr 1fr 1fr}
+@media (max-width:400px){.tk-row.three{grid-template-columns:1fr 1fr}.tk-row.three>:first-child{grid-column:1/-1}}
+.chip.ghost{background:transparent;border-style:dashed}
+.chip small{opacity:.65;font-weight:600;margin-left:2px}
+.fld{display:block;font-size:.85rem;font-weight:700;color:var(--sub);margin-top:12px}.fld select{margin-top:6px;font-size:1rem;padding:10px}
 .tk-sel{font:inherit;font-size:.9rem;padding:8px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
 .tk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px}
 .tk{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--c);border-radius:var(--r);padding:10px 12px;min-width:0}
@@ -525,7 +530,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
+<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -1391,7 +1396,7 @@ function openFavPicker(){
 const SUPABASE_URL = "https://lpedwlvhaqjpeimgpbzx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_jrEOVDLKlOaqmJ_Kut4SSQ_iNoaDcuz";
 let sb = null, me = null, myName = "", pushTimer = null, syncState = "";
-function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs, mySeries, tz: tzPref }; }
+function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs, mySeries, tz: tzPref, home }; }
 function cloudPush(){
   if (!sb || !me) return;
   clearTimeout(pushTimer);
@@ -1410,6 +1415,7 @@ async function cloudPull(){
   const seen = new Set(favs.map(f => f.s + "|" + f.n));
   (d.favs || []).forEach(f => { if (!seen.has(f.s + "|" + f.n)) favs.push(f); });
   (d.mySeries || []).forEach(id => { if (!mySeries.includes(id)) mySeries.push(id); });
+  if (d.home && d.home.country && !home.country) { home = d.home; try { localStorage.setItem(HOMEKEY, JSON.stringify(home)); } catch(e){} }
   if (d.tz && d.tz !== tzPref) { let local = null; try { local = localStorage.getItem(TZKEY); } catch(e){} if (!local) { setTZ(d.tz); try { localStorage.setItem(TZKEY, tzPref); } catch(e){} } }
   try { localStorage.setItem(KEY, JSON.stringify(state)); localStorage.setItem(FKEY, JSON.stringify(favs)); localStorage.setItem(MSKEY, JSON.stringify(mySeries)); } catch(e){}
   syncState = "Synced";
@@ -2321,35 +2327,93 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("[data-gopredict]")) { ev.stopImmediatePropagation(); statsSeries = "predict"; renderStatChips(); renderStats(); showTab("standings"); return; }
 });
 
-// ---------- Tickets tab: every upcoming race with ticket links, filter by location, series and month ----------
-const VENUE = { // circuit → [country, region]
-  "Autódromo Hermanos Rodríguez":["Mexico","Americas"], "Interlagos":["Brazil","Americas"], "Las Vegas Strip Circuit":["USA","USA"],
-  "Lusail International Circuit":["Qatar","Middle East"], "Yas Marina":["UAE","Middle East"], "Monza":["Italy","Europe"],
-  "Shanghai International Circuit":["China","Asia"], "Adelaide Street Circuit":["Australia","Australia"], "Bahrain International Circuit":["Bahrain","Middle East"],
-  "Jeddah Corniche Circuit":["Saudi Arabia","Middle East"], "Albert Park":["Australia","Australia"], "Suzuka":["Japan","Asia"],
-  "Miami International Autodrome":["USA","USA"], "Circuit Gilles Villeneuve":["Canada","Americas"], "Circuit de Monaco":["Monaco","Europe"],
-  "Algarve International Circuit":["Portugal","Europe"], "Silverstone":["UK","Europe"], "Red Bull Ring":["Austria","Europe"], "Spa-Francorchamps":["Belgium","Europe"],
-  "Hungaroring":["Hungary","Europe"], "Madring":["Spain","Europe"], "Baku City Circuit":["Azerbaijan","Europe"], "Istanbul Park":["Turkey","Europe"],
-  "Marina Bay":["Singapore","Asia"], "Circuit of the Americas":["USA","USA"], "Daytona International Speedway":["USA","USA"], "Sebring International Raceway":["USA","USA"],
-  "Streets of Long Beach":["USA","USA"], "WeatherTech Raceway Laguna Seca":["USA","USA"], "Streets of Detroit":["USA","USA"], "Watkins Glen International":["USA","USA"],
-  "Canadian Tire Motorsport Park":["Canada","Americas"], "Road America":["USA","USA"], "VIRginia International Raceway":["USA","USA"], "Indianapolis Motor Speedway":["USA","USA"],
-  "Michelin Raceway Road Atlanta":["USA","USA"], "Autodromo Enzo e Dino Ferrari":["Italy","Europe"], "Circuit de la Sarthe":["France","Europe"], "Fuji Speedway":["Japan","Asia"],
-  "Sonoma Raceway":["USA","USA"], "Barber Motorsports Park":["USA","USA"], "Circuit Paul Ricard":["France","Europe"], "Brands Hatch":["UK","Europe"],
-  "Misano World Circuit":["Italy","Europe"], "Circuit de Nevers Magny-Cours":["France","Europe"], "Nürburgring":["Germany","Europe"], "Zandvoort":["Netherlands","Europe"],
-  "Circuit de Barcelona-Catalunya":["Spain","Europe"], "Sepang International Circuit":["Malaysia","Asia"], "Chang International Circuit":["Thailand","Asia"],
-  "Beijing Street Circuit":["China","Asia"], "Phillip Island Grand Prix Circuit":["Australia","Australia"], "The Bend Motorsport Park":["Australia","Australia"],
-  "Sydney Motorsport Park":["Australia","Australia"], "Queensland Raceway":["Australia","Australia"], "Mount Panorama":["Australia","Australia"],
+// ---------- Tickets tab: every upcoming race with ticket links, filter by place (your state, country, region or anywhere), series and month ----------
+const GEO = {
+  // circuit → [country, state/province code or ""]
+  places: {
+    "Daytona International Speedway":["United States","FL"], "Sebring International Raceway":["United States","FL"], "Miami International Autodrome":["United States","FL"],
+    "Streets of Long Beach":["United States","CA"], "WeatherTech Raceway Laguna Seca":["United States","CA"], "Sonoma Raceway":["United States","CA"],
+    "Streets of Detroit":["United States","MI"], "Watkins Glen International":["United States","NY"], "Road America":["United States","WI"],
+    "VIRginia International Raceway":["United States","VA"], "Indianapolis Motor Speedway":["United States","IN"], "Michelin Raceway Road Atlanta":["United States","GA"],
+    "Circuit of the Americas":["United States","TX"], "Las Vegas Strip Circuit":["United States","NV"], "Barber Motorsports Park":["United States","AL"], "Mid-Ohio Sports Car Course":["United States","OH"],
+    "Canadian Tire Motorsport Park":["Canada","ON"], "Circuit Gilles Villeneuve":["Canada","QC"],
+    "Autódromo Hermanos Rodríguez":["Mexico",""], "Interlagos":["Brazil",""],
+    "Albert Park":["Australia","VIC"], "Phillip Island Grand Prix Circuit":["Australia","VIC"], "The Bend Motorsport Park":["Australia","SA"], "Adelaide Street Circuit":["Australia","SA"],
+    "Queensland Raceway":["Australia","QLD"], "Hidden Valley Raceway":["Australia","NT"], "Sydney Motorsport Park":["Australia","NSW"], "Mount Panorama":["Australia","NSW"],
+    "Shanghai International Circuit":["China",""], "Beijing Street Circuit":["China",""], "Suzuka":["Japan",""], "Fuji Speedway":["Japan",""], "Okayama International Circuit":["Japan",""],
+    "Sepang International Circuit":["Malaysia",""], "Marina Bay":["Singapore",""], "Chang International Circuit":["Thailand",""], "Mandalika International Circuit":["Indonesia",""],
+    "Bahrain International Circuit":["Bahrain",""], "Jeddah Corniche Circuit":["Saudi Arabia",""], "Lusail International Circuit":["Qatar",""], "Yas Marina":["UAE",""],
+    "Circuit de Monaco":["Monaco",""], "Circuit de Barcelona-Catalunya":["Spain",""], "Madring":["Spain",""], "Red Bull Ring":["Austria",""],
+    "Silverstone":["United Kingdom","England"], "Brands Hatch":["United Kingdom","England"], "Spa-Francorchamps":["Belgium",""], "Hungaroring":["Hungary",""],
+    "Zandvoort":["Netherlands",""], "Monza":["Italy",""], "Autodromo Enzo e Dino Ferrari":["Italy",""], "Misano World Circuit":["Italy",""],
+    "Baku City Circuit":["Azerbaijan",""], "Istanbul Park":["Turkey",""], "Circuit de la Sarthe":["France",""], "Circuit Paul Ricard":["France",""],
+    "Circuit de Nevers Magny-Cours":["France",""], "Nürburgring":["Germany",""], "Algarve International Circuit":["Portugal",""],
+  },
+  region: {
+    "United States":"North America", "Canada":"North America", "Mexico":"North America", "Brazil":"South America", "Argentina":"South America",
+    "Australia":"Oceania", "New Zealand":"Oceania", "China":"Asia", "Japan":"Asia", "Malaysia":"Asia", "Singapore":"Asia", "Thailand":"Asia", "Indonesia":"Asia", "India":"Asia", "South Korea":"Asia",
+    "Bahrain":"Middle East", "Saudi Arabia":"Middle East", "Qatar":"Middle East", "UAE":"Middle East", "South Africa":"Africa", "Morocco":"Africa",
+    "Monaco":"Europe", "Spain":"Europe", "Austria":"Europe", "United Kingdom":"Europe", "Ireland":"Europe", "Belgium":"Europe", "Hungary":"Europe", "Netherlands":"Europe", "Italy":"Europe",
+    "Azerbaijan":"Europe", "Turkey":"Europe", "France":"Europe", "Germany":"Europe", "Portugal":"Europe", "Switzerland":"Europe", "Sweden":"Europe", "Finland":"Europe", "Poland":"Europe",
+    "Czechia":"Europe", "Denmark":"Europe", "Norway":"Europe", "Greece":"Europe",
+  },
+  // states/provinces people can pick (races or not), by country
+  states: {
+    "United States": {AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",DC:"Washington, D.C.",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming"},
+    "Canada": {AB:"Alberta",BC:"British Columbia",MB:"Manitoba",NB:"New Brunswick",NL:"Newfoundland and Labrador",NS:"Nova Scotia",ON:"Ontario",PE:"Prince Edward Island",QC:"Quebec",SK:"Saskatchewan"},
+    "Australia": {ACT:"Australian Capital Territory",NSW:"New South Wales",NT:"Northern Territory",QLD:"Queensland",SA:"South Australia",TAS:"Tasmania",VIC:"Victoria",WA:"Western Australia"},
+    "United Kingdom": {England:"England",Scotland:"Scotland",Wales:"Wales","Northern Ireland":"Northern Ireland"},
+  },
 };
-const LOCS = [["all","Anywhere"],["tx","Texas"],["usa","USA"],["americas","Canada, Mexico & Brazil"],["europe","Europe"],["me","Middle East"],["asia","Asia"],["aus","Australia"]];
-function venueOf(e){ return VENUE[e.circuit] || ["", ""]; }
-function locMatch(e, loc){
-  const [country, region] = venueOf(e);
-  if (loc === "all") return true;
-  if (loc === "tx") return /, TX$/.test(e.location);
-  if (loc === "usa") return country === "USA";
-  return { americas: "Americas", europe: "Europe", me: "Middle East", asia: "Asia", aus: "Australia" }[loc] === region;
+const REGIONS = ["North America","South America","Europe","Middle East","Asia","Oceania","Africa"];
+const FLAG = {"United States":"🇺🇸","Canada":"🇨🇦","Mexico":"🇲🇽","Brazil":"🇧🇷","Argentina":"🇦🇷","Australia":"🇦🇺","New Zealand":"🇳🇿","China":"🇨🇳","Japan":"🇯🇵","Malaysia":"🇲🇾","Singapore":"🇸🇬","Thailand":"🇹🇭","Indonesia":"🇮🇩","India":"🇮🇳","South Korea":"🇰🇷","Bahrain":"🇧🇭","Saudi Arabia":"🇸🇦","Qatar":"🇶🇦","UAE":"🇦🇪","South Africa":"🇿🇦","Morocco":"🇲🇦","Monaco":"🇲🇨","Spain":"🇪🇸","Austria":"🇦🇹","United Kingdom":"🇬🇧","Ireland":"🇮🇪","Belgium":"🇧🇪","Hungary":"🇭🇺","Netherlands":"🇳🇱","Italy":"🇮🇹","Azerbaijan":"🇦🇿","Turkey":"🇹🇷","France":"🇫🇷","Germany":"🇩🇪","Portugal":"🇵🇹","Switzerland":"🇨🇭","Sweden":"🇸🇪","Finland":"🇫🇮","Poland":"🇵🇱","Czechia":"🇨🇿","Denmark":"🇩🇰","Norway":"🇳🇴","Greece":"🇬🇷"};
+const COUNTRY_SHORT = { "United States": "USA", "United Kingdom": "UK" };
+const cShort = c => COUNTRY_SHORT[c] || c;
+function venueOf(e){ const p = GEO.places[e.circuit] || ["", ""]; return [p[0], GEO.region[p[0]] || "", p[1]]; } // [country, region, state]
+const stateName = (c, s) => (GEO.states[c] || {})[s] || s;
+
+// Your area: saved on the phone (and account). Country is guessed from the time zone until you pick.
+const HOMEKEY = KEY + "-home";
+let home = { country: "", state: "" };
+try { home = Object.assign(home, JSON.parse(localStorage.getItem(HOMEKEY) || "{}")); } catch(e){}
+function guessCountry(){
+  const z = deviceTZ();
+  const au = { "Australia/Sydney":"NSW","Australia/Melbourne":"VIC","Australia/Brisbane":"QLD","Australia/Adelaide":"SA","Australia/Darwin":"NT","Australia/Perth":"WA","Australia/Hobart":"TAS" };
+  if (au[z]) return { country: "Australia", state: au[z] };
+  const map = [[/^America\/(New_York|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Detroit|Boise|Indiana|Kentucky|North_Dakota|Juneau|Menominee)|^Pacific\/Honolulu/,"United States"],
+    [/^America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns|Montreal)/,"Canada"],[/^America\/(Mexico_City|Monterrey|Tijuana|Cancun|Merida|Chihuahua|Hermosillo)/,"Mexico"],
+    [/^America\/Sao_Paulo/,"Brazil"],[/^America\/Argentina/,"Argentina"],[/^Europe\/London/,"United Kingdom"],[/^Europe\/Dublin/,"Ireland"],[/^Europe\/Paris/,"France"],[/^Europe\/Berlin/,"Germany"],
+    [/^Europe\/Madrid/,"Spain"],[/^Europe\/Rome/,"Italy"],[/^Europe\/Amsterdam/,"Netherlands"],[/^Europe\/Brussels/,"Belgium"],[/^Europe\/Vienna/,"Austria"],[/^Europe\/Lisbon/,"Portugal"],
+    [/^Europe\/Zurich/,"Switzerland"],[/^Europe\/Budapest/,"Hungary"],[/^Europe\/Monaco/,"Monaco"],[/^Europe\/Istanbul/,"Turkey"],[/^Asia\/Tokyo/,"Japan"],[/^Asia\/Shanghai/,"China"],
+    [/^Asia\/Singapore/,"Singapore"],[/^Asia\/Kuala_Lumpur/,"Malaysia"],[/^Asia\/Bangkok/,"Thailand"],[/^Asia\/(Kolkata|Calcutta)/,"India"],[/^Asia\/Dubai/,"UAE"],[/^Asia\/Qatar/,"Qatar"],
+    [/^Asia\/Bahrain/,"Bahrain"],[/^Asia\/Riyadh/,"Saudi Arabia"],[/^Asia\/Baku/,"Azerbaijan"],[/^Pacific\/Auckland/,"New Zealand"],[/^Africa\/Johannesburg/,"South Africa"]];
+  for (const [re, c] of map) if (re.test(z)) return { country: c, state: "" };
+  return { country: "", state: "" };
 }
+function myArea(){ return home.country ? home : guessCountry(); }
+function saveHome(country, state){
+  home = { country: country || "", state: state || "" };
+  try { localStorage.setItem(HOMEKEY, JSON.stringify(home)); } catch(e){}
+  if (typeof cloudPush === "function") cloudPush();
+}
+// tkLoc: "all" | "s:<country>|<state>" | "c:<country>" | "r:<region>"
 let tkLoc = "all", tkSeries = "all", tkMonth = "all", tkQuery = "";
+function locMatch(e, loc){
+  if (loc === "all") return true;
+  const [country, region, st] = venueOf(e);
+  const [k, v] = [loc.slice(0, 1), loc.slice(2)];
+  if (k === "s") { const [c, s] = v.split("|"); return country === c && st === s; }
+  if (k === "c") return country === v;
+  if (k === "r") return region === v;
+  return true;
+}
+function locLabel(loc){
+  if (loc === "all") return "Anywhere";
+  const [k, v] = [loc.slice(0, 1), loc.slice(2)];
+  if (k === "s") { const [c, s] = v.split("|"); return stateName(c, s); }
+  if (k === "c") return cShort(v);
+  return v;
+}
 function tkEvents(){ return events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start); }
 function tkMonthKey(e){ return e.start.getFullYear() + "-" + String(e.start.getMonth() + 1).padStart(2, "0"); }
 function tkMonthLabel(k){ const [y, m] = k.split("-"); return MONTHS[+m - 1] + " " + y; }
@@ -2364,21 +2428,51 @@ function ticketLinksFull(e){
 function renderTicketFilters(){
   const all = tkEvents();
   const months = [...new Set(all.map(tkMonthKey))];
+  const a = myArea();
+  const count = loc => all.filter(e => locMatch(e, loc)).length;
+  // Quick chips: Anywhere, then your state, your country, your region
+  const quick = [["all", "🌍 Anywhere"]];
+  if (a.country && a.state) quick.push([`s:${a.country}|${a.state}`, `📍 ${stateName(a.country, a.state)}`]);
+  if (a.country) quick.push([`c:${a.country}`, `${FLAG[a.country] || ""} ${cShort(a.country)}`.trim()]);
+  if (a.country && GEO.region[a.country]) quick.push([`r:${GEO.region[a.country]}`, GEO.region[a.country]]);
+  const quickHTML = quick.map(([v, l]) => `<button class="chip txt" data-tkloc="${esc(v)}" aria-pressed="${tkLoc === v}">${esc(l)}${v === "all" ? "" : ` <small>${count(v)}</small>`}</button>`).join("") +
+    `<button class="chip txt ghost" data-sethome="1">${a.country ? (a.state || !GEO.states[a.country] ? "✎ Change" : `📍 Add your ${{ Canada: "province", "United Kingdom": "nation" }[a.country] || "state"}`) : "📍 Set your location"}</button>`;
+  // Every place that has races: regions, countries, states
+  const places = all.map(venueOf);
+  const regions = REGIONS.filter(r => places.some(p => p[1] === r));
+  const countries = [...new Set(places.map(p => p[0]).filter(Boolean))].sort((x, y) => cShort(x).localeCompare(cShort(y)));
+  const states = [...new Set(places.filter(p => p[2]).map(p => p[0] + "|" + p[2]))].map(k => k.split("|")).sort((x, y) => stateName(...x).localeCompare(stateName(...y)));
+  const opt = (v, l) => `<option value="${esc(v)}" ${v === tkLoc ? "selected" : ""}>${esc(l)}</option>`;
+  const where = `<select id="tkWhere" class="tk-sel" aria-label="Where">${opt("all", "Anywhere in the world")}
+      <optgroup label="Regions">${regions.map(r => opt("r:" + r, r)).join("")}</optgroup>
+      <optgroup label="Countries">${countries.map(c => opt("c:" + c, `${FLAG[c] || ""} ${cShort(c)}`.trim())).join("")}</optgroup>
+      <optgroup label="States & provinces">${states.map(([c, s]) => opt(`s:${c}|${s}`, `${stateName(c, s)}, ${cShort(c)}`)).join("")}</optgroup></select>`;
   const sel = (id, cur, opts) => `<select id="${id}" class="tk-sel">${opts.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
   document.getElementById("tkFilters").innerHTML =
     `<input class="search" id="tkSearch" type="search" placeholder="Search a city, track or race" value="${esc(tkQuery)}" autocomplete="off">
-     <div class="chips" id="tkLocChips">${LOCS.map(([v, l]) => `<button class="chip txt" data-tkloc="${v}" aria-pressed="${tkLoc === v}">${v === "tx" ? "📍 " : ""}${esc(l)}</button>`).join("")}</div>
-     <div class="tk-row">${sel("tkSeries", tkSeries, [["all", "All series"]].concat(ORDER.map(s => [s, SERIES_FULL[s]])))}${sel("tkMonth", tkMonth, [["all", "Any month"]].concat(months.map(k => [k, tkMonthLabel(k)])))}</div>`;
+     <div class="chips" id="tkLocChips">${quickHTML}</div>
+     <div class="tk-row three">${where}${sel("tkSeries", tkSeries, [["all", "All series"]].concat(ORDER.map(s => [s, SERIES_FULL[s]])))}${sel("tkMonth", tkMonth, [["all", "Any month"]].concat(months.map(k => [k, tkMonthLabel(k)])))}</div>`;
   document.getElementById("tkSearch").addEventListener("input", ev => { tkQuery = ev.target.value; renderTicketList(); });
+  document.getElementById("tkWhere").addEventListener("change", ev => { tkLoc = ev.target.value; renderTicketFilters(); renderTicketList(); });
   document.getElementById("tkSeries").addEventListener("change", ev => { tkSeries = ev.target.value; renderTicketList(); });
   document.getElementById("tkMonth").addEventListener("change", ev => { tkMonth = ev.target.value; renderTicketList(); });
+}
+function placeLine(e){
+  const [country, , st] = venueOf(e);
+  let s = e.location;
+  if (country === "Australia" && st && !s.endsWith(st)) s += ", " + st;
+  if (country && country !== "United States" && !s.includes(country) && !s.includes(cShort(country)) && !(country === "Australia" && st)) s += ", " + cShort(country);
+  return s;
 }
 function renderTicketList(){
   const q = tkQuery.trim().toLowerCase();
   const list = tkEvents().filter(e => locMatch(e, tkLoc) && (tkSeries === "all" || e.series === tkSeries) && (tkMonth === "all" || tkMonthKey(e) === tkMonth) &&
-    (!q || [e.name, e.circuit, e.location, SERIES_FULL[e.series], SERIES[e.series], venueOf(e)[0]].join(" ").toLowerCase().includes(q)));
-  document.getElementById("tkCount").textContent = `${list.length} race${list.length === 1 ? "" : "s"} with tickets`;
-  if (!list.length) { document.getElementById("tkList").innerHTML = `<div class="empty" style="margin-top:14px">No upcoming races match. Try another place or month.</div>`; return; }
+    (!q || [e.name, e.circuit, e.location, SERIES_FULL[e.series], SERIES[e.series], ...venueOf(e), stateName(venueOf(e)[0], venueOf(e)[2])].join(" ").toLowerCase().includes(q)));
+  document.getElementById("tkCount").textContent = `${list.length} race${list.length === 1 ? "" : "s"} with tickets${tkLoc === "all" ? "" : " in " + locLabel(tkLoc)}`;
+  if (!list.length) {
+    const near = tkLoc.startsWith("s:") ? "c:" + tkLoc.slice(2).split("|")[0] : tkLoc.startsWith("c:") && GEO.region[tkLoc.slice(2)] ? "r:" + GEO.region[tkLoc.slice(2)] : "all";
+    document.getElementById("tkList").innerHTML = `<div class="empty" style="margin-top:14px">No upcoming races in ${esc(locLabel(tkLoc))}${tkSeries !== "all" || tkMonth !== "all" ? " with these filters" : ""}.<br><button class="btn" style="margin-top:10px" data-tkloc="${esc(near)}">Show ${esc(locLabel(near))} instead</button></div>`; return;
+  }
   let h = "", m = "";
   for (const e of list) {
     const k = tkMonthKey(e);
@@ -2388,7 +2482,7 @@ function renderTicketList(){
       <div class="tk-top" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
         <div class="dt"><b>${e.start.getDate()}</b><span>${MON[e.start.getMonth()]}</span></div>
         ${plate(e.series, 26)}
-        <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">🗓 ${range(e)}</div><div class="loc">📍 ${esc(e.circuit)} · ${esc(e.location)}${venueOf(e)[0] && !e.location.includes(venueOf(e)[0]) && venueOf(e)[0] !== "USA" ? ", " + esc(venueOf(e)[0]) : ""}</div>
+        <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">🗓 ${range(e)}</div><div class="loc">📍 ${esc(e.circuit)} · ${esc(placeLine(e))}</div>
         ${e.tags.includes("Provisional") ? `<div class="loc" style="color:var(--sub)">Provisional date</div>` : ""}</div>
       </div>
       <div class="tk-btns">${links.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">🎟 ${esc(t[0])}</a>`).join("")}</div>
@@ -2397,9 +2491,34 @@ function renderTicketList(){
   document.getElementById("tkList").innerHTML = h + `</div>`;
 }
 function renderTickets(){ renderTicketFilters(); renderTicketList(); }
+// Location picker: country, then state/province
+function openHome(){
+  const sheet = document.getElementById("sheet");
+  const fresh = document.getElementById("sheetBg").hidden;
+  const a = myArea();
+  const countries = Object.keys(GEO.region).sort((x, y) => x.localeCompare(y));
+  const stOpts = c => GEO.states[c] ? `<option value="">Whole country</option>` + Object.entries(GEO.states[c]).sort((x, y) => x[1].localeCompare(y[1])).map(([k, n]) => `<option value="${esc(k)}" ${k === a.state ? "selected" : ""}>${esc(n)}</option>`).join("") : "";
+  const stLbl = c => ({ Canada: "Province", "United Kingdom": "Nation" })[c] || "State";
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:46px">📍</span>
+    <div><h2 id="sheetTitle">Your location</h2><div class="m">Shows races in your state, country and region first</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <label class="fld">Country<select id="homeCountry" class="tk-sel"><option value="">Choose a country</option>${countries.map(c => `<option value="${esc(c)}" ${c === a.country ? "selected" : ""}>${esc(`${FLAG[c] || ""} ${c}`.trim())}</option>`).join("")}</select></label>
+    <label class="fld" id="homeStateWrap" ${GEO.states[a.country] ? "" : "hidden"}><span id="homeStateLbl">${stLbl(a.country)}</span><select id="homeState" class="tk-sel">${stOpts(a.country)}</select></label>
+    <button class="btn star" aria-pressed="true" id="homeSave" style="margin-top:14px;width:100%;justify-content:center">Save location</button>
+    <p class="fine">We never use GPS. Saved on this phone${me ? " and your account" : ""}.</p>`;
+  const cSel = document.getElementById("homeCountry"), sSel = document.getElementById("homeState"), wrap = document.getElementById("homeStateWrap");
+  cSel.addEventListener("change", () => { sSel.innerHTML = stOpts(cSel.value); wrap.hidden = !GEO.states[cSel.value]; document.getElementById("homeStateLbl").textContent = stLbl(cSel.value); });
+  document.getElementById("homeSave").addEventListener("click", () => {
+    saveHome(cSel.value, GEO.states[cSel.value] ? sSel.value : "");
+    const h = myArea(); tkLoc = h.state ? `s:${h.country}|${h.state}` : h.country ? `c:${h.country}` : "all";
+    closeRace(); renderTickets();
+  });
+  if (fresh) { lastFocus = document.activeElement; document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; }
+  sheet.scrollTop = 0;
+}
 document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-sethome]")) { ev.stopPropagation(); openHome(); return; }
   const l = ev.target.closest("[data-tkloc]");
-  if (l) { tkLoc = l.dataset.tkloc; document.querySelectorAll("[data-tkloc]").forEach(b => b.setAttribute("aria-pressed", b.dataset.tkloc === tkLoc)); renderTicketList(); }
+  if (l) { tkLoc = l.dataset.tkloc; renderTicketFilters(); renderTicketList(); }
 });
 
 // ---------- Full series hub (for the series this app follows in full) ----------

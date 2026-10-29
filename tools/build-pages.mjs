@@ -15,7 +15,7 @@ const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/sc
 const data = new Function("window", "document", "localStorage",
   src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
-const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), VENUE = grabObj("VENUE");
+const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS } = data;
@@ -68,6 +68,10 @@ td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex
 .btn.p{background:var(--sig);color:#111;border-color:var(--sig)}ul.list{list-style:none;padding:0;margin:0}ul.list li{padding:8px 0;border-bottom:1px solid var(--rule)}ul.list li:last-child{border-bottom:0}
 ul.list small{display:block;color:var(--sub)}.tag{display:inline-block;font-size:.72rem;font-weight:700;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-left:4px;color:var(--sub)}
 footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:12px}.cols{columns:2 260px;column-gap:24px}`;
+// Converts the Central-time start times (what search engines see) into the visitor's own time zone.
+const LOCAL_TIME = `<script>(function(){try{var d=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"}),t=new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
+document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});document.querySelectorAll("[data-time]").forEach(function(e){e.textContent=t.format(new Date(e.dataset.time))});
+var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent="your time · "+z.replace(/_/g," ").split("/").pop()})}catch(e){}})()</script>`;
 function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/" }){
   const canon = SITE + url;
   const ld = [].concat(jsonld || []);
@@ -80,7 +84,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/">Premier Racing <span>Info</span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
 <main class="wrap">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1>${body}</main>
-<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><p>All times US Central (Texas). Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site.</p></footer></body></html>`;
+<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site.</p></footer>${LOCAL_TIME}</body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -92,8 +96,8 @@ for (const e of EV) {
   const full = SERIES_FULL[e.s], sess = SESSIONS[e.id] || [], tr = TRACKS[e.circuit], past = e.end < today;
   const mainRace = sess.filter(x => !x[2]).slice(-1)[0];
   let body = `<p class="lede">${esc(full)} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</p>`;
-  if (sess.length) body += `<section class="card"><h2>Start times (Central / Texas time)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}</td><td>${fDay.format(new Date(x[1]))}</td><td class="r">${fTime.format(new Date(x[1]))}</td></tr>`).join("")}</table></section>`;
-  else if (!past) body += `<section class="card"><h2>Start times</h2><p>Session times are usually published about a week before the race. They'll show here in Central time as soon as they're out.</p></section>`;
+  if (sess.length) body += `<section class="card"><h2>Start times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}">${fTime.format(new Date(x[1]))}</td></tr>`).join("")}</table></section>`;
+  else if (!past) body += `<section class="card"><h2>Start times</h2><p>Session times are usually published about a week before the race. They'll show here in your time zone as soon as they're out.</p></section>`;
   if (RESULT_FOR[e.id] && STATS[RESULT_FOR[e.id]]?.race?.rows) {
     const r = STATS[RESULT_FOR[e.id]].race;
     body += `<section class="card"><h2>Results</h2>${r.note ? `<p>${esc(r.note)}</p>` : ""}<table><tr><th>Pos</th><th>Driver</th><th>Team / car</th></tr>${r.rows.slice(0, 10).map(x => `<tr><td>${esc(x[0])}</td><td>${esc(x[2])}</td><td>${esc(x[3])}</td></tr>`).join("")}</table></section>`;
@@ -105,8 +109,8 @@ for (const e of EV) {
   const same = EV.filter(o => o.circuit === e.circuit && o.id !== e.id && o.start <= e.end && o.end >= e.start);
   if (same.length) body += `<section class="card"><h2>Also racing this weekend</h2><ul class="list">${same.map(o => `<li>${raceLink(o)} <small>${esc(SERIES_FULL[o.s])}</small></li>`).join("")}</ul></section>`;
   body += `<p><a class="btn p" href="/?race=${e.id}">Open in the app for live updates, alerts and picks ›</a> <a class="btn" href="/series/${APP_TO_WORLD[e.s]}/">${esc(full)} calendar &amp; standings</a></p>`;
-  const title = `${e.name} ${e.year}${e.s === "f1" ? "" : " – " + SERIES[e.s]}: Start Times (Central), How to Watch & Tickets`;
-  const desc = `${full} ${e.name} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in Texas time, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
+  const title = `${e.name} ${e.year}${e.s === "f1" ? "" : " – " + SERIES[e.s]}: Start Times, How to Watch & Tickets`;
+  const desc = `${full} ${e.name} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
   const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${e.name} ${e.year}`, sport: "Motorsport",
     startDate: mainRace ? mainRace[1] : e.start, endDate: e.end, eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: e.circuit, address: e.location }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png", description: desc };
@@ -156,7 +160,7 @@ const circuits = [...new Set(EV.map(e => e.circuit))];
 for (const c of circuits) {
   const list = EV.filter(e => e.circuit === c).sort((a, b) => a.start.localeCompare(b.start));
   const loc = list[0].location, tr = TRACKS[c], up = list.filter(e => e.end >= today);
-  let body = `<p class="lede">${esc(loc)}${VENUE[c] && !loc.includes(VENUE[c][0]) && VENUE[c][0] !== "USA" ? ", " + esc(VENUE[c][0]) : ""}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km (" + (tr[0] * 0.621371).toFixed(2) + " mi)" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}` : ""}</p>`;
+  let body = `<p class="lede">${esc(loc)}${GEO.places?.[c] && !loc.includes(GEO.places[c][0]) && GEO.places[c][0] !== "United States" ? ", " + esc(GEO.places[c][0]) : ""}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km (" + (tr[0] * 0.621371).toFixed(2) + " mi)" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}` : ""}</p>`;
   if (tr && tr[3]) body += `<p>${esc(tr[3])}.</p>`;
   if (up.length) body += `<section class="card"><h2>Upcoming races</h2><ul class="list">${up.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
   const past = list.filter(e => e.end < today);
@@ -180,11 +184,38 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
     Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}</small></li>`).join("")}</ul></section>`).join("");
   write("/calendar/", page({ url: "/calendar/", title: "Racing Calendar 2026–2027: F1, IMSA, WEC & GT Race Dates", desc: `${up.length} upcoming races: F1, IMSA, WEC, GT World Challenge, Porsche Supercup, Carrera Cup NA and Mustang Challenge, with dates and start times in Central time.`, h1: "Racing calendar", crumbs: [{ name: "Calendar", item: SITE + "/calendar/" }], body }));
 }
-{ // Texas
-  const tx = EV.filter(e => /, TX$/.test(e.location) && e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
-  const body = `<p class="lede">Every upcoming race in Texas — all at Circuit of the Americas in Austin — with dates and tickets.</p><section class="card"><ul class="list">${tx.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}</small></li>`).join("")}</ul></section>
-  <p><a class="btn" href="/tracks/${trackSlug("Circuit of the Americas")}/">Circuit of the Americas schedule</a></p>`;
-  write("/texas/", page({ url: "/texas/", title: "Races in Texas 2026–2027: COTA Race Schedule & Tickets", desc: `Upcoming races in Texas: ${[...new Set(tx.map(e => SERIES_FULL[e.s]))].join(", ")} at Circuit of the Americas in Austin. Dates and tickets.`, h1: "Races in Texas", crumbs: [{ name: "Races in Texas", item: SITE + "/texas/" }], body }));
+{ // /texas/ moved to /races-in/united-states/texas/ (kept so old links and search results still work)
+  const to = SITE + "/races-in/united-states/texas/";
+  fs.mkdirSync(path.join(root, "texas"), { recursive: true });
+  fs.writeFileSync(path.join(root, "texas", "index.html"), `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Races in Texas</title><link rel="canonical" href="${to}"><meta http-equiv="refresh" content="0; url=${to}"><meta name="robots" content="noindex"></head><body><a href="${to}">Races in Texas</a></body></html>`);
+}
+{ // Races by place: region → country → state/province
+  const places = GEO.places || {}, REG = GEO.region || {}, STN = GEO.states || {};
+  const short = c => ({ "United States": "USA", "United Kingdom": "UK" })[c] || c;
+  const stN = (c, st) => (STN[c] || {})[st] || st;
+  const up = EV.filter(e => e.end >= today && places[e.circuit]).sort((a, b) => a.start.localeCompare(b.start));
+  const listOf = l => Object.entries(byMonth(l)).map(([k, x]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${x.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}</small></li>`).join("")}</ul></section>`).join("");
+  const seriesOf = l => [...new Set(l.map(e => SERIES_FULL[e.s]))].slice(0, 5).join(", ");
+  const countries = [...new Set(up.map(e => places[e.circuit][0]))].sort();
+  const regions = ["North America","South America","Europe","Middle East","Asia","Oceania","Africa"].filter(r => countries.some(c => REG[c] === r));
+  const cURL = c => `/races-in/${slug(c)}/`, sURL = (c, st) => `/races-in/${slug(c)}/${slug(stN(c, st))}/`;
+  const idx = regions.map(r => `<section class="card"><h2>${esc(r)}</h2><ul class="list">${countries.filter(c => REG[c] === r).map(c => {
+      const l = up.filter(e => places[e.circuit][0] === c), sts = [...new Set(l.map(e => places[e.circuit][1]).filter(Boolean))].sort((a, b) => stN(c, a).localeCompare(stN(c, b)));
+      return `<li><a href="${cURL(c)}">${esc(c)}</a> <small>${l.length} race${l.length === 1 ? "" : "s"}${sts.length ? " · " + sts.map(st => `<a href="${sURL(c, st)}">${esc(stN(c, st))}</a>`).join(", ") : ""}</small></li>`; }).join("")}</ul></section>`).join("");
+  write("/races-in/", page({ url: "/races-in/", title: "Races Near You 2026–2027: Racing by Country, State & Region", desc: `Find upcoming races near you: ${up.length} races in ${countries.length} countries, sorted by region, country and state, with dates and tickets.`, h1: "Races near you", crumbs: [{ name: "Races near you", item: SITE + "/races-in/" }],
+    body: `<p class="lede">Pick your country or state to see every upcoming race there, with dates and ticket links. The app's Tickets tab can remember your location.</p>${idx}` }));
+  for (const c of countries) {
+    const l = up.filter(e => places[e.circuit][0] === c), sts = [...new Set(l.map(e => places[e.circuit][1]).filter(Boolean))];
+    const stLinks = sts.length > 1 || (sts.length && STN[c]) ? `<p class="btns">${sts.sort((a, b) => stN(c, a).localeCompare(stN(c, b))).map(st => `<a class="btn" href="${sURL(c, st)}">${esc(stN(c, st))}</a>`).join("")}</p>` : "";
+    write(cURL(c), page({ url: cURL(c), title: `Races in ${c} 2026–2027: Schedule, Dates & Tickets`, desc: `Every upcoming race in ${c}: ${seriesOf(l)}. ${l.length} races with dates, start times and tickets.`, h1: `Races in ${short(c)}`,
+      crumbs: [{ name: "Races near you", item: SITE + "/races-in/" }, { name: short(c), item: SITE + cURL(c) }], body: `<p class="lede">${l.length} upcoming race${l.length === 1 ? "" : "s"} in ${esc(c)} (${esc(REG[c] || "")}).</p>${stLinks}${listOf(l)}` }));
+    for (const st of sts) {
+      const ls = l.filter(e => places[e.circuit][1] === st), n = stN(c, st);
+      write(sURL(c, st), page({ url: sURL(c, st), title: `Races in ${n} 2026–2027: Schedule, Dates & Tickets`, desc: `Every upcoming race in ${n}, ${short(c)}: ${seriesOf(ls)} at ${[...new Set(ls.map(e => e.circuit))].join(", ")}. Dates and tickets.`, h1: `Races in ${n}`,
+        crumbs: [{ name: "Races near you", item: SITE + "/races-in/" }, { name: short(c), item: SITE + cURL(c) }, { name: n, item: SITE + sURL(c, st) }],
+        body: `<p class="lede">${ls.length} upcoming race${ls.length === 1 ? "" : "s"} in ${esc(n)}, ${esc(short(c))}.</p>${listOf(ls)}<p><a class="btn" href="${cURL(c)}">All races in ${esc(short(c))}</a></p>` }));
+    }
+  }
 }
 { // How to watch
   const rows = WORLD.series.map(x => { const app = appOf[x.id]; const w = app ? WATCH[app] : (x.watch || []); return [x, w.filter(v => v[0] !== "Official site")]; });

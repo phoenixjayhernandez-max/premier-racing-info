@@ -28,7 +28,7 @@ jobs:
         run: node tools/build-pages.mjs
       - name: Save if anything changed
         run: |
-          git add -A races series tracks calendar/index.html watch tickets texas about privacy 404.html sitemap.xml robots.txt
+          git add -A races series tracks calendar/index.html watch tickets texas races-in about privacy 404.html sitemap.xml robots.txt
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git config user.name "pages-bot"
           git config user.email "pages-bot@users.noreply.github.com"
