@@ -377,6 +377,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 .subtabs button{all:unset;cursor:pointer;flex:1 1 auto;text-align:center;padding:6px 5px;border-radius:999px;font-weight:700;font-size:.8rem;color:var(--sub);background:var(--panel);border:1px solid var(--rule);white-space:nowrap}
 @media (max-width:360px){ .subtabs button{padding:6px 3px;font-size:.7rem} }
 .subtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.st-tabs{margin:0 0 10px}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -474,7 +475,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 
   <section class="view" id="v-standings" role="tabpanel" aria-labelledby="t-standings" hidden>
     <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
-    <p class="asof">Updated Wednesday, October 28, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Europe final results; GT World Challenge Asia after Beijing (Shanghai finale this weekend). Other series as of their last race.</p>
+    <p class="asof" id="statsAsof" hidden>Updated Wednesday, October 28, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Europe final results; GT World Challenge Asia after Beijing (Shanghai finale this weekend). Other series as of their last race.</p>
     <div id="statsBody"></div>
   </section>
 
@@ -1141,7 +1142,7 @@ function weekendEvents(){
   return events.filter(e => !e.cancelled && (phase(e) === "now" || (ws && e.start <= we && e.end >= ws && phase(e) !== "past")));
 }
 function row5(x){
-  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td>${x[1]?`<span class="carno">${esc(x[1])}</span>`:''}<div class="who-wrap">${avatar(x[2], 26)}<div style="min-width:0"><span class="who">${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></div></div></td><td class="num">${esc(x[4]).replace(/ · /g, '<small style="display:block;font-weight:500;color:var(--sub);white-space:normal;font-size:.72rem;line-height:1.2">').replace(/(<small[^>]*>)(.*)$/, "$1$2</small>")}</td></tr>`;
+  return `<tr class="${x[0]==='1'?'p1':''} ${favHit(x[2] + " " + x[3]) ? "fav" : ""}"><td class="pos">${esc(x[0])}</td><td><div class="who-wrap">${avatar(x[2], 26)}<div style="min-width:0"><span class="who">${x[1]?`<span class="carno">${esc(x[1])}</span> `:''}${esc(x[2])}</span><div class="sub">${esc(x[3])}</div></div></div></td><td class="num">${esc(x[4]).replace(/ · /g, '<small style="display:block;font-weight:500;color:var(--sub);white-space:normal;font-size:.72rem;line-height:1.2">').replace(/(<small[^>]*>)(.*)$/, "$1$2</small>")}</td></tr>`;
 }
 function tower(rows, head3){
   return `<div class="scroll"><table class="tower fx"><thead><tr><th class="c1">Pos</th><th>Driver &amp; car</th><th class="c3" style="text-align:right">${head3 || "Time / gap"}</th></tr></thead><tbody>${rows.map(row5).join("")}</tbody></table></div>`;
@@ -1220,7 +1221,7 @@ function trackQuery(e){ return `${e.circuit} ${String(e.location || "").split(",
 
 // ---------- Shorter text: clamp long notes with "More" ----------
 function clampText(root = document){
-  root.querySelectorAll(".card .story:not([data-cl]), .asof:not([data-cl])").forEach(el => {
+  root.querySelectorAll(".card .story:not([data-cl]), .asof:not([data-cl]):not([hidden])").forEach(el => {
     el.setAttribute("data-cl", "1");
     el.classList.add("clamp");
     if (el.classList.contains("asof")) el.style.setProperty("--lines", 1);
@@ -1585,7 +1586,13 @@ function renderList(){
 }
 
 // ---------- Standings tab ----------
-let statsSeries = "f1";
+let statsSeries = "f1", statsPane = "pts";
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-spane]"); if (!t) return;
+  statsPane = t.dataset.spane;
+  document.querySelectorAll("[data-spane]").forEach(b => b.setAttribute("aria-selected", b === t));
+  document.querySelectorAll("[data-spanebody]").forEach(p => p.hidden = p.dataset.spanebody !== statsPane);
+});
 function renderStatChips(){
   document.getElementById("statChips").innerHTML = chipsHTML(statsSeries,
     [["f1","F1","f1"],["predict","F1 Predictions","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gtwc","GT America","gtwc"],["gte","GT Europe","gte"],["gtas","GT Asia","gtas"],["gtau","GT Australia","gtau"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]]);
@@ -1597,16 +1604,28 @@ function renderStats(){
     if (me && picksRows === null && !window.__pl) { window.__pl = loadPicks().finally(() => { window.__pl = null; if (statsSeries === "predict") renderPredict(el); }); }
     return;
   }
-  const st = STATS[statsSeries], c = statsSeries;
-  let h = `<div class="${c}">`;
-  const r = st.race;
-  if (r) h += `<section class="card"><h3>Latest · ${esc(r.name)}</h3><p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>`;
-  if (st.champs) h += `<section class="card"><h3>2026 champions</h3><div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div></section>`;
-  if (st.standings) h += `<section class="card"><h3>${esc(st.standingsTitle)}</h3>${pointsTower(st.standings, c)}</section>`;
-  if (st.makers) h += `<section class="card"><h3>${esc(st.makersTitle)}</h3>${pointsTower(st.makers, c)}</section>`;
-  if (st.extra) h += `<section class="card"><h3>${esc(st.extraTitle)}</h3><div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div></section>`;
-  if (st.grid) h += `<section class="card"><h3>${esc(st.gridTitle)}</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div></section>`;
-  if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
+  const st = STATS[statsSeries], c = statsSeries, r = st.race;
+  const card = (t, body) => `<section class="card"><h3>${esc(t)}</h3>${body}</section>`;
+  // Points tables first. Hide "before the finale" tables once the champions are known.
+  const stale = t => st.champs && /before/i.test(t || "");
+  let pts = "";
+  if (st.champs) pts += card(`${SEASON} champions`, `<div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div>`);
+  if (st.standings && !stale(st.standingsTitle)) pts += card(st.standingsTitle, pointsTower(st.standings, c));
+  if (st.makers && !stale(st.makersTitle)) pts += card(st.makersTitle, pointsTower(st.makers, c));
+  if (st.extra && !stale(st.extraTitle)) pts += card(st.extraTitle, `<div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div>`);
+  if (!pts) pts = `<div class="card"><p class="lede" style="margin:0">Standings aren't loaded for this series yet.</p></div>`;
+  { const ao = document.getElementById("statsAsof"); if (ao && ao.textContent.trim()) pts += `<p class="fine">${esc(ao.textContent.trim())}</p>`; }
+  const race = r ? `<section class="card"><h3>${esc(r.name)}</h3><p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>` : "";
+  const grid = st.grid ? card(st.gridTitle || "Teams", `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`) : "";
+  const notes = st.notes ? card("Storylines", `<ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`) : "";
+  const panes = [["pts", "Standings", pts]];
+  if (race) panes.push(["race", "Latest race", race]);
+  if (grid) panes.push(["grid", c === "f1" ? "Teams" : "Drivers", grid]);
+  if (notes) panes.push(["notes", "Storylines", notes]);
+  if (!panes.some(p => p[0] === statsPane)) statsPane = "pts";
+  let h = `<div class="${c}"><div class="subtabs st-tabs" role="tablist">${panes.map(p => `<button role="tab" data-spane="${p[0]}" aria-selected="${p[0] === statsPane}">${p[1]}</button>`).join("")}</div>`
+    + (r ? `<p class="asof" style="margin:0 0 10px">Latest: ${esc(r.name)}${r.where ? " · " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}</p>` : "")
+    + panes.map(p => `<div data-spanebody="${p[0]}" ${p[0] === statsPane ? "" : "hidden"}>${p[2]}</div>`).join("");
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
 
