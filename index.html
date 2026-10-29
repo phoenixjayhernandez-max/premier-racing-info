@@ -372,6 +372,11 @@ html,body{overflow-x:hidden}
 .hub-cal.past{opacity:.75}
 .hub-cal.now .w,.hub-cal .w:not(:empty){font-weight:600}
 summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text-transform:uppercase;cursor:pointer}
+.subtabs{grid-column:1/-1;display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;margin-top:4px}
+.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{all:unset;cursor:pointer;flex:1 1 auto;text-align:center;padding:6px 5px;border-radius:999px;font-weight:700;font-size:.8rem;color:var(--sub);background:var(--panel);border:1px solid var(--rule);white-space:nowrap}
+@media (max-width:360px){ .subtabs button{padding:6px 3px;font-size:.7rem} }
+.subtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -1764,13 +1769,22 @@ function renderMySeries(){
   el.innerHTML = `<h2 class="h2">My series</h2><p class="kicker">Tap one for details. <button class="btn" data-gotab="series" style="margin-left:6px">Add more</button></p><div class="my-list">${list.map(srowHTML).join("")}</div>`;
 }
 const LVL_RANK = l => ["World championship","International","National","Feeder","One-make"].indexOf(l) + 1 || 9;
+let worldPane = "overview";
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-pane]"); if (!t) return;
+  worldPane = t.dataset.pane;
+  document.querySelectorAll("#sheet [data-pane]").forEach(b => b.setAttribute("aria-selected", b === t));
+  document.querySelectorAll("#sheet [data-panebody]").forEach(p => p.hidden = p.dataset.panebody !== worldPane);
+  document.getElementById("sheet").scrollTop = 0;
+});
 function openWorld(id){
   const x = WORLD_LIST.find(s => s.id === id); if (!x) return;
   const cls = DISC_CLS[x.discipline] || "d-mo";
   const row = (k, v) => v || v === 0 ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : "";
   let h = `<div class="sh-head ${cls}"><span class="dplate" style="height:38px;min-width:54px;font-size:.95rem">${esc(dirCode(x))}</span>
-    <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? " · " + esc(x.level) : ""}</span><h2 id="sheetTitle">${esc(x.name)}</h2><div class="m">${esc(x.region || "")}</div></div>
+    <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? " · " + esc(x.level) : ""}</span><h2 id="sheetTitle">${esc(x.short && x.short.length < x.name.length ? x.short : x.name)}</h2><div class="m">${esc(x.short && x.short.length < x.name.length ? x.name : (x.region || ""))}</div></div>
     <button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
+  const head = h; h = "";
   h += photoSlot(x.name, "sh-photo");
   if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
@@ -1781,10 +1795,24 @@ function openWorld(id){
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">🎟 Tickets ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
-  if (x.app && STATS[x.app]) h += seriesHubHTML(x.app);
-  h += seriesNewsHTML(x.id);
-  if (!x.app) h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
-  h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
+  const P = x.app && STATS[x.app] ? seriesHubHTML(x.app) : null;
+  const wrap = t => `<div class="${x.app || ""}">${t}</div>`;
+  const news = seriesNewsHTML(x.id);
+  const racing = `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
+  const panes = [];
+  if (P) {
+    panes.push(["overview", "Overview", wrap(P.next) + h + (P.notes ? wrap(P.notes) : "")]);
+    if (P.cal) panes.push(["cal", "Calendar", wrap(P.cal)]);
+    if (P.stand) panes.push(["stand", "Standings", wrap(P.stand)]);
+    panes.push(["drivers", x.discipline.startsWith("Moto") ? "Riders" : "Drivers", wrap(P.drivers) + racing]);
+  } else {
+    panes.push(["overview", "Overview", h + `<section class="card"><h3>${SEASON} season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>` + racing]);
+  }
+  if (news) panes.push(["news", "News", news]);
+  const startPane = panes.some(p => p[0] === worldPane) ? worldPane : "overview";
+  const bar = panes.length > 1 ? `<div class="subtabs" role="tablist">${panes.map(p => `<button role="tab" data-pane="${p[0]}" aria-selected="${p[0] === startPane}">${p[1]}</button>`).join("")}</div>` : "";
+  h = head.replace(/<\/div>\s*$/, bar + "</div>")
+    + panes.map(p => `<div class="pane" data-panebody="${p[0]}" ${p[0] === startPane ? "" : "hidden"}>${p[2]}</div>`).join("");
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = h; sheet.scrollTop = 0;
   lastFocus = document.activeElement;
@@ -2249,38 +2277,40 @@ function seriesHubHTML(c){
   const list = events.filter(e => e.series === c && !e.cancelled);
   const cur = list.filter(inSeason), nextYr = list.filter(e => e.start.getFullYear() === SEASON + 1);
   const nx = list.find(e => phase(e) === "now") || list.find(e => phase(e) === "future");
-  let h = `<div class="${c}">`;
+  const P = { next: "", stand: "", cal: "", drivers: "", notes: "" };
   // Next race
   if (nx) {
     const ns = nextSession(nx.id), tk = ticketLinks(nx);
-    h += `<section class="card"><h3>${phase(nx) === "now" ? "🟢 On track now" : "Next race"}</h3>
+    P.next += `<section class="card"><h3>${phase(nx) === "now" ? "🟢 On track now" : "Next race"}</h3>
       <div class="hub-next" data-open="${nx.id}" role="button" tabindex="0"><div class="nm">${esc(nx.name)}</div><div class="loc">${esc(nx.circuit)} · ${esc(nx.location)} · ${range(nx)}${!inSeason(nx) ? " " + nx.start.getFullYear() : ""}</div>
       ${nx.tags.length ? `<div class="tags" style="margin-top:4px">${nx.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}</div>
       ${SESSIONS[nx.id] ? `<h4>Session times · Texas time</h4>${schedHTML(nx.id, true)}` : `<p class="fine">Session times are added about a week before the race.</p>`}
       <div class="mine" style="margin:10px 0 0"><button class="btn star" aria-pressed="true" data-open="${nx.id}">Race details ›</button>${tk[0] ? `<a class="btn" href="${esc(tk[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}</div></section>`;
-  } else h += `<section class="card"><h3>Next race</h3><p class="lede" style="margin:0">No more races announced yet.</p></section>`;
+  } else P.next += `<section class="card"><h3>Next race</h3><p class="lede" style="margin:0">No more races announced yet.</p></section>`;
   // Standings
   if (st.champs || st.standings || st.makers) {
-    h += `<section class="card"><h3>Standings</h3>`;
+    let h = `<section class="card"><h3>Standings</h3>`;
     if (st.champs) h += `<div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div>`;
     if (st.standings) h += `<h4>${esc(st.standingsTitle || "Drivers")}</h4>${pointsTower(st.standings.slice(0, 10), c)}${st.standings.length > 10 ? `<p class="fine">Top 10 of ${st.standings.length}. Full table on the Standings tab.</p>` : ""}`;
     if (st.makers) h += `<h4>${esc(st.makersTitle || "Teams")}</h4>${pointsTower(st.makers, c)}`;
     h += `<div class="mine" style="margin:10px 0 0"><button class="btn" data-gostats="${c}">Full standings &amp; latest results ›</button></div></section>`;
+    P.stand = h;
   }
   // Calendar
   const calRows = arr => arr.map(e => { const ph = phase(e);
     return `<div class="hub-cal ${ph}" data-open="${e.id}" role="button" tabindex="0"><span class="d">${MON[e.start.getMonth()]} ${e.start.getDate()}</span><span class="n">${esc(e.name)}<small>${esc(e.circuit)}</small></span><span class="w">${WINNERS[e.id] ? "🏁 " + esc(String(WINNERS[e.id]).split(/[,(]/)[0]) : ph === "now" ? "🟢 Now" : ph === "past" ? "Done" : nx && e.id === nx.id ? "Next" : ""}</span></div>`; }).join("");
-  if (cur.length) h += `<section class="card"><h3>${SEASON} calendar · ${cur.filter(e => phase(e) === "past").length} of ${cur.length} done</h3>${calRows(cur)}</section>`;
-  if (nextYr.length) h += `<section class="card"><details><summary class="h3like">${SEASON + 1} calendar · ${nextYr.length} rounds${nextYr.some(e => e.tags.includes("Provisional")) ? " (provisional)" : ""}</summary>${calRows(nextYr)}</details></section>`;
+  if (cur.length) P.cal += `<section class="card"><h3>${SEASON} calendar · ${cur.filter(e => phase(e) === "past").length} of ${cur.length} done</h3>${calRows(cur)}</section>`;
+  if (nextYr.length) P.cal += `<section class="card"><details><summary class="h3like">${SEASON + 1} calendar · ${nextYr.length} rounds${nextYr.some(e => e.tags.includes("Provisional")) ? " (provisional)" : ""}</summary>${calRows(nextYr)}</details></section>`;
   // Drivers & cars
   if (st.grid || mk) {
-    h += `<section class="card"><h3>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Drivers & cars")}</h3>`;
+    let h = `<section class="card"><h3>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Drivers & cars")}</h3>`;
     if (st.grid) h += `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`;
     if (mk) h += `<h4>${esc(mk.title)}</h4><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>${mk.extra ? `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>` : ""}`;
     h += `</section>`;
+    P.drivers = h;
   }
-  if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
-  return h + `</div>`;
+  if (st.notes) P.notes = `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
+  return P;
 }
 document.addEventListener("click", ev => {
   const g = ev.target.closest("[data-gostats]");
