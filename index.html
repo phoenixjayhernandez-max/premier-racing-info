@@ -397,6 +397,12 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 .ev .acts .btn{max-width:100%}
 .site-foot{max-width:1100px;margin:30px auto 0;padding:16px 16px calc(30px + env(safe-area-inset-bottom));border-top:1px solid var(--rule);color:var(--sub);font-size:.8rem}
 .site-foot nav{display:flex;flex-wrap:wrap;gap:6px 14px}.site-foot a{color:var(--sub)}
+.linkbtn{all:unset;cursor:pointer;text-decoration:underline;font-weight:600;color:var(--ink)}
+.tzline{white-space:normal}
+.tzlist{display:grid;gap:6px}
+.tzopt{all:unset;cursor:pointer;box-sizing:border-box;padding:11px 14px;border-radius:10px;background:var(--panel);border:1px solid var(--rule);font-weight:600}
+.tzopt small{display:block;font-weight:500;color:var(--sub);font-size:.78rem}
+.tzopt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -513,7 +519,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav><p>Premier Racing Info is an independent fan site. All times US Central.</p></footer>
+<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -1130,10 +1136,45 @@ function statusOf(e){
   if (ns && d < 7) return [d === 0 ? "Today" : d === 1 ? "Tomorrow" : `Starts ${DOW[e.start.getDay()]}`, ""];
   return [d === 1 ? "Tomorrow" : d < 7 ? `Starts ${DOW[e.start.getDay()]}` : `In ${d} days`, ""];
 }
-const TX = "America/Chicago";
-const fmtDay = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short", month: "short", day: "numeric" });
-const fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: TX, hour: "numeric", minute: "2-digit", timeZoneName: "short" });
-const fmtDow = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short" });
+// ---- Time zone: defaults to the phone's own zone; anyone can pick another (saved on the device and to the account) ----
+const TZKEY = KEY + "-tz";
+const TZ_LIST = [["auto","Use my phone's time zone"],["America/New_York","Eastern (New York, Miami)"],["America/Chicago","Central (Texas, Chicago)"],["America/Denver","Mountain (Denver)"],["America/Phoenix","Arizona"],["America/Los_Angeles","Pacific (Los Angeles, Las Vegas)"],["America/Anchorage","Alaska"],["Pacific/Honolulu","Hawaii"],["America/Toronto","Toronto, Montréal"],["America/Mexico_City","Mexico City"],["America/Sao_Paulo","São Paulo, Brazil"],["America/Argentina/Buenos_Aires","Buenos Aires"],["Europe/London","UK, Ireland, Portugal"],["Europe/Paris","Central Europe (Paris, Madrid, Rome, Berlin)"],["Europe/Athens","Eastern Europe (Athens, Helsinki)"],["Europe/Istanbul","Turkey"],["Asia/Dubai","Gulf (Dubai, Abu Dhabi)"],["Asia/Qatar","Qatar, Bahrain, Saudi Arabia"],["Asia/Kolkata","India"],["Asia/Shanghai","China, Singapore, Malaysia"],["Asia/Tokyo","Japan"],["Australia/Adelaide","Adelaide"],["Australia/Sydney","Sydney, Melbourne"],["Australia/Brisbane","Brisbane"],["Pacific/Auckland","New Zealand"],["UTC","UTC / GMT"]];
+let tzPref = "auto";
+try { tzPref = localStorage.getItem(TZKEY) || "auto"; } catch(e){}
+const deviceTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Chicago"; } catch(e){ return "America/Chicago"; } };
+let TX, fmtDay, fmtTime, fmtDow;
+function setTZ(pref){
+  tzPref = pref || "auto";
+  let z = tzPref === "auto" ? deviceTZ() : tzPref;
+  try { new Intl.DateTimeFormat("en-US", { timeZone: z }); } catch(e){ z = "America/Chicago"; }
+  TX = z;
+  fmtDay = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short", month: "short", day: "numeric" });
+  fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: TX, hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+  fmtDow = new Intl.DateTimeFormat("en-US", { timeZone: TX, weekday: "short" });
+}
+setTZ(tzPref);
+function tzLabel(){
+  const hit = TZ_LIST.find(t => t[0] === TX);
+  let long = "";
+  try { long = new Intl.DateTimeFormat("en-US", { timeZone: TX, timeZoneName: "long" }).formatToParts(new Date()).find(p => p.type === "timeZoneName").value.replace(/ (Standard|Daylight) Time$/, " Time"); } catch(e){}
+  return hit ? hit[1].split(" (")[0] + (/^(Eastern|Central|Mountain|Pacific)$/.test(hit[1].split(" (")[0]) ? " time" : "") : (long || TX.replace(/_/g, " "));
+}
+function tzLine(){ return `<span class="tzline">🕒 ${esc(tzLabel())}${tzPref === "auto" ? " (your phone)" : ""} · <button class="linkbtn" data-tz="1">Change</button></span>`; }
+function openTZ(){
+  const sheet = document.getElementById("sheet");
+  const fresh = document.getElementById("sheetBg").hidden;
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:46px">🕒</span>
+    <div><h2 id="sheetTitle">Time zone</h2><div class="m">All start times, countdowns and lock times use this</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <div class="tzlist">${TZ_LIST.map(([v, l]) => `<button class="tzopt" data-tzset="${esc(v)}" aria-pressed="${tzPref === v}">${tzPref === v ? "✓ " : ""}${esc(l)}${v === "auto" ? `<small>${esc(deviceTZ().replace(/_/g, " "))}</small>` : ""}</button>`).join("")}</div>
+    <p class="fine">Daylight saving is handled automatically. Saved on this phone${me ? " and your account" : ""}.</p>`;
+  if (fresh) { lastFocus = document.activeElement; document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; }
+  sheet.scrollTop = 0;
+}
+document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-tz]")) { ev.stopPropagation(); openTZ(); return; }
+  const t = ev.target.closest("[data-tzset]");
+  if (t) { setTZ(t.dataset.tzset); try { localStorage.setItem(TZKEY, tzPref); } catch(e){} if (typeof cloudPush === "function") cloudPush(); closeRace(); renderAll(); }
+});
 const txTime = iso => fmtTime.format(new Date(iso)).replace(":00 ", " ");
 function nextSession(id){
   const L = SESSIONS[id]; if (!L) return null;
@@ -1344,7 +1385,7 @@ function openFavPicker(){
 const SUPABASE_URL = "https://lpedwlvhaqjpeimgpbzx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_jrEOVDLKlOaqmJ_Kut4SSQ_iNoaDcuz";
 let sb = null, me = null, myName = "", pushTimer = null, syncState = "";
-function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs, mySeries }; }
+function cloudPayload(){ return { starred: state.starred, going: state.going, watched: state.watched, favs, mySeries, tz: tzPref }; }
 function cloudPush(){
   if (!sb || !me) return;
   clearTimeout(pushTimer);
@@ -1363,6 +1404,7 @@ async function cloudPull(){
   const seen = new Set(favs.map(f => f.s + "|" + f.n));
   (d.favs || []).forEach(f => { if (!seen.has(f.s + "|" + f.n)) favs.push(f); });
   (d.mySeries || []).forEach(id => { if (!mySeries.includes(id)) mySeries.push(id); });
+  if (d.tz && d.tz !== tzPref) { let local = null; try { local = localStorage.getItem(TZKEY); } catch(e){} if (!local) { setTZ(d.tz); try { localStorage.setItem(TZKEY, tzPref); } catch(e){} } }
   try { localStorage.setItem(KEY, JSON.stringify(state)); localStorage.setItem(FKEY, JSON.stringify(favs)); localStorage.setItem(MSKEY, JSON.stringify(mySeries)); } catch(e){}
   syncState = "Synced";
   cloudPush();
@@ -1400,6 +1442,7 @@ function openAccount(msg){
         <p class="fine" id="syncLine">${esc(syncState || "Synced")}</p></section>
       ${been.length ? `<section class="card"><h3>Races you went to</h3><div class="list">${been.map(e => `<div class="team ${e.series}"><div class="a">${esc(e.name)}</div><div class="b">${esc(SERIES_FULL[e.series])} · ${range(e)}</div>${WINNERS[e.id] ? `<div class="d">🏁 ${esc(WINNERS[e.id])}</div>` : ""}</div>`).join("")}</div></section>` : ""}
       <section class="card"><h3>Profile</h3><form class="form" id="nameForm"><label for="dispName">Display name</label><input id="dispName" maxlength="40" value="${esc(myName)}" autocomplete="nickname"><button class="btn" type="submit">Save name</button></form></section>
+      <section class="card"><h3>Time zone</h3><p style="margin:2px 0 0">${tzLine()}</p></section>
       <button class="btn" id="signOut" style="margin-top:4px">Sign out</button>`;
   } else {
     const up = acctMode === "signup";
@@ -1493,7 +1536,7 @@ function renderReminders(){
   const web = f => base.replace(/^https?:/, "webcal:") + "calendar/" + f + ".ics";
   const favSeries = [...new Set(favs.map(f => f.s))];
   const order = favSeries.concat(ORDER.filter(x => !favSeries.includes(x)));
-  REMIND_HTML = `<section class="card"><h3>Calendar reminders</h3><p class="fine" style="margin:0 0 8px">Every session in your phone's calendar, in Texas time, with a 30-minute alert.</p>
+  REMIND_HTML = `<section class="card"><h3>Calendar reminders</h3><p class="fine" style="margin:0 0 8px">Every session in your phone's calendar (your calendar shows them in your own time zone), with a 30-minute alert.</p>
       <div class="feeds"><a class="btn star" aria-pressed="true" href="${web("all")}">🔔 All series</a>${order.map(x => `<a class="btn" href="${web(x)}">${plate(x, 18)} ${esc(SERIES[x])}${favSeries.includes(x) ? " ★" : ""}</a>`).join("")}</div>
       <ol class="steps">
         <li>Tap a series, then <b>Subscribe</b>, then <b>Add</b>.</li>
@@ -1528,7 +1571,7 @@ function renderWeekend(){
     items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 3);
   }
   el.innerHTML = `
-    <h2 class="h2">${esc(title)}</h2>
+    <h2 class="h2">${esc(title)}</h2><p class="fine" style="margin:-6px 0 10px">${tzLine()}</p>
     <div class="board">
       <div class="count" aria-label="${esc(countLbl)}"><div class="lbl">${esc(countLbl)}</div><div class="num">${countNum}</div><div class="lbl">${wk.length ? (wk.length === 1 ? "race" : "races") : (countNum === 1 ? "day" : "days")}</div></div>
       <div class="stack">${items.map(evCard).join("")}</div>
@@ -1706,7 +1749,7 @@ function openRace(id){
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
       <p class="fine">FREE = no subscription needed.</p>`;
-    if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times · Texas time (Central)</h4>${schedHTML(e.id, false)}<p class="fine">Shown in Central time wherever you open this page. US clocks go back an hour on Nov 1, and the times already account for it. Support races in grey. Times can change; check the official timetable on the day.</p>`;
+    if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times</h4><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(e.id, false)}<p class="fine">Daylight saving is handled automatically. Support races in grey. Times can change; check the official timetable on the day.</p>`;
     h += `</section>`;
   }
   const tk = ticketLinks(e);
@@ -2345,7 +2388,7 @@ function seriesHubHTML(c){
     P.next += `<section class="card"><h3>${phase(nx) === "now" ? "🟢 On track now" : "Next race"}</h3>
       <div class="hub-next" data-open="${nx.id}" role="button" tabindex="0"><div class="nm">${esc(nx.name)}</div><div class="loc">${esc(nx.circuit)} · ${esc(nx.location)} · ${range(nx)}${!inSeason(nx) ? " " + nx.start.getFullYear() : ""}</div>
       ${nx.tags.length ? `<div class="tags" style="margin-top:4px">${nx.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}</div>
-      ${SESSIONS[nx.id] ? `<h4>Session times · Texas time</h4>${schedHTML(nx.id, true)}` : `<p class="fine">Session times are added about a week before the race.</p>`}
+      ${SESSIONS[nx.id] ? `<h4>Session times</h4><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(nx.id, true)}` : `<p class="fine">Session times are added about a week before the race.</p>`}
       <div class="mine" style="margin:10px 0 0"><button class="btn star" aria-pressed="true" data-open="${nx.id}">Race details ›</button>${tk[0] ? `<a class="btn" href="${esc(tk[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}</div></section>`;
   } else P.next += `<section class="card"><h3>Next race</h3><p class="lede" style="margin:0">No more races announced yet.</p></section>`;
   // Standings
