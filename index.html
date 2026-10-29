@@ -8,12 +8,18 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Racing Info">
-<meta name="description" content="F1, IMSA, WEC, GT World Challenge, Porsche Cups and Mustang Challenge: race weekends, results, standings and start times in Texas time.">
+<meta name="description" content="Race weekends in Central (Texas) time: F1, IMSA, WEC, GT World Challenge and 90+ series worldwide. Start times, how to watch in the US, tickets, standings, lock-screen alerts and a friends' picks game.">
+<link rel="canonical" href="https://premierracinginfo.com/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:url" content="https://premierracinginfo.com/">
+<meta property="og:title" content="Premier Racing Info – Race Times, How to Watch & Tickets"><meta property="og:description" content="Every race weekend in Central time: F1, IMSA, WEC, GT World Challenge and more. Start times, where to watch, tickets, standings and alerts.">
+<meta property="og:image" content="https://premierracinginfo.com/icons/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Premier Racing Info","url":"https://premierracinginfo.com/","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Race weekends in Central time: start times, how to watch in the US, tickets, standings, alerts and picks for F1, IMSA, WEC, GT World Challenge and more."}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Premier Racing Info</title>
+<title>Premier Racing Info – Race Times in Central Time, How to Watch & Tickets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Saira:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -388,6 +394,8 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 .board > *, .stack > *{min-width:0}
 .ev .next b{white-space:normal;display:inline}
 .ev .acts .btn{max-width:100%}
+.site-foot{max-width:1100px;margin:30px auto 0;padding:16px 16px calc(30px + env(safe-area-inset-bottom));border-top:1px solid var(--rule);color:var(--sub);font-size:.8rem}
+.site-foot nav{display:flex;flex-wrap:wrap;gap:6px 14px}.site-foot a{color:var(--sub)}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -503,6 +511,8 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
     <div id="dirBody"></div>
   </section>
 </main>
+
+<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav><p>Premier Racing Info is an independent fan site. All times US Central.</p></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -2450,6 +2460,12 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   showTab(["weekend","calendar","standings","series","tickets"].includes(t) ? t : "weekend");
 })();
 setInterval(renderAll, 60 * 60 * 1000);
+// Deep links from the search pages: /?race=<id> or /?series=<id>
+(() => { try {
+  const q = new URLSearchParams(location.search);
+  if (q.get("race") && events.some(e => e.id === q.get("race"))) openRace(q.get("race"));
+  else if (q.get("series") && WORLD_LIST.some(x => x.id === q.get("series"))) { showTab("series"); openWorld(q.get("series")); }
+} catch(e){} })();
 
 </script>
 <script>
