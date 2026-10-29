@@ -9,91 +9,91 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:wec-imola-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260417
 DTEND;VALUE=DATE:20260420
 SUMMARY:World Endurance · 6 Hours of Imola
 LOCATION:Autodromo Enzo e Dino Ferrari\, Imola
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-spa-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260507
 DTEND;VALUE=DATE:20260510
 SUMMARY:World Endurance · 6 Hours of Spa-Francorchamps
 LOCATION:Spa-Francorchamps\, Stavelot
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-lm-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260610
 DTEND;VALUE=DATE:20260615
 SUMMARY:World Endurance · 24 Hours of Le Mans
 LOCATION:Circuit de la Sarthe\, Le Mans
 DESCRIPTION:24 hours\nStart times are added about a week before.\nhttps://
- phoenixjayhernandez-max.github.io/premier-racing-info/
+ premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-sp-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260710
 DTEND;VALUE=DATE:20260713
 SUMMARY:World Endurance · 6 Hours of São Paulo
 LOCATION:Interlagos\, São Paulo
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-cota-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260907
 SUMMARY:World Endurance · Lone Star Le Mans
 LOCATION:Circuit of the Americas\, Austin\, TX
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-fuji-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260925
 DTEND;VALUE=DATE:20260928
 SUMMARY:World Endurance · 6 Hours of Fuji
 LOCATION:Fuji Speedway\, Oyama
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-bcn-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261016
 DTEND;VALUE=DATE:20261019
 SUMMARY:World Endurance · 6 Hours of Barcelona
 LOCATION:Circuit de Barcelona-Catalunya\, Barcelona
 DESCRIPTION:6 hours\, New to WEC\nStart times are added about a week befor
- e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ e.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261106T093000Z
 DTEND:20261106T103000Z
 SUMMARY:🏁 Free Practice 1 · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Free Practice 1 starts in 30 minutes · 6 Hours of Monza
@@ -102,14 +102,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261106T133000Z
 DTEND:20261106T143000Z
 SUMMARY:🏁 Free Practice 2 · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Free Practice 2 starts in 30 minutes · 6 Hours of Monza
@@ -118,14 +118,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-2@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T093000Z
 DTEND:20261107T103000Z
 SUMMARY:🏁 Free Practice 3 · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Free Practice 3 starts in 30 minutes · 6 Hours of Monza
@@ -134,14 +134,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-3@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T132000Z
 DTEND:20261107T142000Z
 SUMMARY:🏁 LMGT3 qualifying · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:LMGT3 qualifying starts in 30 minutes · 6 Hours of Monza
@@ -150,14 +150,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-4@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T134000Z
 DTEND:20261107T144000Z
 SUMMARY:🏁 LMGT3 Hyperpole · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:LMGT3 Hyperpole starts in 30 minutes · 6 Hours of Monza
@@ -166,14 +166,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-5@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T140000Z
 DTEND:20261107T150000Z
 SUMMARY:🏁 Hypercar qualifying · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Hypercar qualifying starts in 30 minutes · 6 Hours of Monza
@@ -182,14 +182,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-6@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T142000Z
 DTEND:20261107T152000Z
 SUMMARY:🏁 Hypercar Hyperpole · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Hypercar Hyperpole starts in 30 minutes · 6 Hours of Monza
@@ -198,14 +198,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-monza-7@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261108T100000Z
 DTEND:20261108T160000Z
 SUMMARY:🏁 6 Hours of Monza · 6 Hours of Monza
 LOCATION:Monza\, Monza
-DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:World Endurance · 6 Hours of Monza\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:6 Hours of Monza starts in 30 minutes · 6 Hours of Monza
@@ -214,101 +214,101 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-qat-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270325
 DTEND;VALUE=DATE:20270328
 SUMMARY:World Endurance · Qatar 1812km
 LOCATION:Lusail International Circuit\, Lusail
 DESCRIPTION:Season opener\nStart times are added about a week before.\nhtt
- ps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-imola-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270409
 DTEND;VALUE=DATE:20270412
 SUMMARY:World Endurance · 6 Hours of Imola
 LOCATION:Autodromo Enzo e Dino Ferrari\, Imola
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-silverstone-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270423
 DTEND;VALUE=DATE:20270426
 SUMMARY:World Endurance · 6 Hours of Silverstone
 LOCATION:Silverstone\, Silverstone
 DESCRIPTION:6 hours\, Returns\nStart times are added about a week before.\
- nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-spa-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270513
 DTEND;VALUE=DATE:20270516
 SUMMARY:World Endurance · 6 Hours of Spa-Francorchamps
 LOCATION:Spa-Francorchamps\, Stavelot
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-lemans-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270609
 DTEND;VALUE=DATE:20270614
 SUMMARY:World Endurance · 24 Hours of Le Mans
 LOCATION:Circuit de la Sarthe\, Le Mans
 DESCRIPTION:24 hours\nStart times are added about a week before.\nhttps://
- phoenixjayhernandez-max.github.io/premier-racing-info/
+ premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-sp-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270709
 DTEND;VALUE=DATE:20270712
 SUMMARY:World Endurance · 6 Hours of São Paulo
 LOCATION:Interlagos\, São Paulo
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-cota-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270910
 DTEND;VALUE=DATE:20270913
 SUMMARY:World Endurance · Lone Star Le Mans
 LOCATION:Circuit of the Americas\, Austin\, TX
 DESCRIPTION:6 hours\, Texas\nStart times are added about a week before.\nh
- ttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-fuji-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270924
 DTEND;VALUE=DATE:20270927
 SUMMARY:World Endurance · 6 Hours of Fuji
 LOCATION:Fuji Speedway\, Oyama
 DESCRIPTION:6 hours\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:wec-bhr-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271104
 DTEND;VALUE=DATE:20271107
 SUMMARY:World Endurance · 8 Hours of Bahrain
 LOCATION:Bahrain International Circuit\, Sakhir
 DESCRIPTION:8 hours\, Finale\nStart times are added about a week before.\n
- https://phoenixjayhernandez-max.github.io/premier-racing-info/
+ https://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR

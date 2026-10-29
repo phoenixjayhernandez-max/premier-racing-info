@@ -9,191 +9,190 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:f1-aus-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260306
 DTEND;VALUE=DATE:20260309
 SUMMARY:Formula 1 · Australian Grand Prix
 LOCATION:Albert Park\, Melbourne
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-chn-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260313
 DTEND;VALUE=DATE:20260316
 SUMMARY:Formula 1 · Chinese Grand Prix
 LOCATION:Shanghai International Circuit\, Shanghai
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-jpn-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260327
 DTEND;VALUE=DATE:20260330
 SUMMARY:Formula 1 · Japanese Grand Prix
 LOCATION:Suzuka\, Suzuka
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mia-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260501
 DTEND;VALUE=DATE:20260504
 SUMMARY:Formula 1 · Miami Grand Prix
 LOCATION:Miami International Autodrome\, Miami\, FL
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-can-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260522
 DTEND;VALUE=DATE:20260525
 SUMMARY:Formula 1 · Canadian Grand Prix
 LOCATION:Circuit Gilles Villeneuve\, Montréal
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mon-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260605
 DTEND;VALUE=DATE:20260608
 SUMMARY:Formula 1 · Monaco Grand Prix
 LOCATION:Circuit de Monaco\, Monte Carlo
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bcn-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260612
 DTEND;VALUE=DATE:20260615
 SUMMARY:Formula 1 · Barcelona-Catalunya Grand Prix
 LOCATION:Circuit de Barcelona-Catalunya\, Barcelona
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-aut-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260626
 DTEND;VALUE=DATE:20260629
 SUMMARY:Formula 1 · Austrian Grand Prix
 LOCATION:Red Bull Ring\, Spielberg
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-gbr-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260703
 DTEND;VALUE=DATE:20260706
 SUMMARY:Formula 1 · British Grand Prix
 LOCATION:Silverstone\, Silverstone
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bel-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260717
 DTEND;VALUE=DATE:20260720
 SUMMARY:Formula 1 · Belgian Grand Prix
 LOCATION:Spa-Francorchamps\, Stavelot
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-hun-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260724
 DTEND;VALUE=DATE:20260727
 SUMMARY:Formula 1 · Hungarian Grand Prix
 LOCATION:Hungaroring\, Budapest
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-ned-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260821
 DTEND;VALUE=DATE:20260824
 SUMMARY:Formula 1 · Dutch Grand Prix
 LOCATION:Zandvoort\, Zandvoort
 DESCRIPTION:Sprint\, Final Zandvoort race\nStart times are added about a w
- eek before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-inf
- o/
+ eek before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-ita-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260907
 SUMMARY:Formula 1 · Italian Grand Prix
 LOCATION:Monza\, Monza
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mad-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260911
 DTEND;VALUE=DATE:20260914
 SUMMARY:Formula 1 · Spanish Grand Prix
 LOCATION:Madring\, Madrid
 DESCRIPTION:New circuit\nStart times are added about a week before.\nhttps
- ://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-aze-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260924
 DTEND;VALUE=DATE:20260927
 SUMMARY:Formula 1 · Azerbaijan Grand Prix
 LOCATION:Baku City Circuit\, Baku
 DESCRIPTION:Saturday race\nStart times are added about a week before.\nhtt
- ps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bhr-mys-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261002
 DTEND;VALUE=DATE:20261005
 SUMMARY:Formula 1 · Bahrain Grand Prix in Malaysia
 LOCATION:Sepang International Circuit\, Sepang
 DESCRIPTION:Relocated\nStart times are added about a week before.\nhttps:/
- /phoenixjayhernandez-max.github.io/premier-racing-info/
+ /premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261009T083000Z
 DTEND:20261009T093000Z
 SUMMARY:🏁 Practice · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
-DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice starts in 30 minutes · Singapore Grand Prix
@@ -202,14 +201,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261009T123000Z
 DTEND:20261009T133000Z
 SUMMARY:🏁 Sprint qualifying · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
-DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Sprint qualifying starts in 30 minutes · Singapore Grand Prix
@@ -218,14 +217,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-2@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261010T090000Z
 DTEND:20261010T100000Z
 SUMMARY:🏁 Sprint · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
-DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Sprint starts in 30 minutes · Singapore Grand Prix
@@ -234,14 +233,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-3@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261010T130000Z
 DTEND:20261010T140000Z
 SUMMARY:🏁 Qualifying · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
-DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Qualifying starts in 30 minutes · Singapore Grand Prix
@@ -250,14 +249,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-4@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261011T120000Z
 DTEND:20261011T140000Z
 SUMMARY:🏁 Grand Prix · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
-DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Singapore Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Grand Prix starts in 30 minutes · Singapore Grand Prix
@@ -266,14 +265,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261023T173000Z
 DTEND:20261023T183000Z
 SUMMARY:🏁 Practice 1 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 1 starts in 30 minutes · United States Grand Prix
@@ -282,14 +281,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261023T210000Z
 DTEND:20261023T220000Z
 SUMMARY:🏁 Practice 2 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 2 starts in 30 minutes · United States Grand Prix
@@ -298,25 +297,25 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-2@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261023T225000Z
 DTEND:20261024T005000Z
 SUMMARY:F1 Academy race 1 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-3@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261024T173000Z
 DTEND:20261024T183000Z
 SUMMARY:🏁 Practice 3 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 3 starts in 30 minutes · United States Grand Prix
@@ -325,14 +324,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-4@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261024T210000Z
 DTEND:20261024T220000Z
 SUMMARY:🏁 Qualifying · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Qualifying starts in 30 minutes · United States Grand Prix
@@ -341,36 +340,36 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-5@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261024T230000Z
 DTEND:20261025T010000Z
 SUMMARY:F1 Academy race 2 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-6@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261025T170000Z
 DTEND:20261025T190000Z
 SUMMARY:F1 Academy feature race · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-7@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261025T200000Z
 DTEND:20261025T220000Z
 SUMMARY:🏁 Grand Prix · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://phoenix
- jayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · United States Grand Prix\nDetails: https://premier
+ racinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Grand Prix starts in 30 minutes · United States Grand Prix
@@ -379,14 +378,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261030T183000Z
 DTEND:20261030T193000Z
 SUMMARY:🏁 Practice 1 · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 1 starts in 30 minutes · Mexico City Grand Prix
@@ -395,14 +394,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261030T220000Z
 DTEND:20261030T230000Z
 SUMMARY:🏁 Practice 2 · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 2 starts in 30 minutes · Mexico City Grand Prix
@@ -411,14 +410,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-2@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261031T173000Z
 DTEND:20261031T183000Z
 SUMMARY:🏁 Practice 3 · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 3 starts in 30 minutes · Mexico City Grand Prix
@@ -427,14 +426,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-3@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261031T210000Z
 DTEND:20261031T220000Z
 SUMMARY:🏁 Qualifying · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Qualifying starts in 30 minutes · Mexico City Grand Prix
@@ -443,14 +442,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-4@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261101T200000Z
 DTEND:20261101T220000Z
 SUMMARY:🏁 Grand Prix · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://phoenixja
- yhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · Mexico City Grand Prix\nDetails: https://premierra
+ cinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Grand Prix starts in 30 minutes · Mexico City Grand Prix
@@ -459,14 +458,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261106T153000Z
 DTEND:20261106T163000Z
 SUMMARY:🏁 Practice 1 · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 1 starts in 30 minutes · São Paulo Grand Prix
@@ -475,14 +474,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261106T190000Z
 DTEND:20261106T200000Z
 SUMMARY:🏁 Practice 2 · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 2 starts in 30 minutes · São Paulo Grand Prix
@@ -491,14 +490,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-2@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T143000Z
 DTEND:20261107T153000Z
 SUMMARY:🏁 Practice 3 · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Practice 3 starts in 30 minutes · São Paulo Grand Prix
@@ -507,14 +506,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-3@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261107T180000Z
 DTEND:20261107T190000Z
 SUMMARY:🏁 Qualifying · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Qualifying starts in 30 minutes · São Paulo Grand Prix
@@ -523,14 +522,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-4@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261108T170000Z
 DTEND:20261108T190000Z
 SUMMARY:🏁 Grand Prix · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://phoenixjayh
- ernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Formula 1 · São Paulo Grand Prix\nDetails: https://premierraci
+ nginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Grand Prix starts in 30 minutes · São Paulo Grand Prix
@@ -539,299 +538,299 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-lv-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261119
 DTEND;VALUE=DATE:20261122
 SUMMARY:Formula 1 · Las Vegas Grand Prix
 LOCATION:Las Vegas Strip Circuit\, Las Vegas\, NV
 DESCRIPTION:Saturday race\, Night race\nStart times are added about a week
-  before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+  before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-qat-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261127
 DTEND;VALUE=DATE:20261130
 SUMMARY:Formula 1 · Qatar Grand Prix
 LOCATION:Lusail International Circuit\, Lusail
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-abu-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261204
 DTEND;VALUE=DATE:20261207
 SUMMARY:Formula 1 · Abu Dhabi Grand Prix
 LOCATION:Yas Marina\, Abu Dhabi
-DESCRIPTION:Finale\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Finale\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bhr-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270312
 DTEND;VALUE=DATE:20270315
 SUMMARY:Formula 1 · Bahrain Grand Prix
 LOCATION:Bahrain International Circuit\, Sakhir
 DESCRIPTION:Sprint\, Season opener\nStart times are added about a week bef
- ore.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ore.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sau-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270319
 DTEND;VALUE=DATE:20270322
 SUMMARY:Formula 1 · Saudi Arabian Grand Prix
 LOCATION:Jeddah Corniche Circuit\, Jeddah
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-aus-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270402
 DTEND;VALUE=DATE:20270405
 SUMMARY:Formula 1 · Australian Grand Prix
 LOCATION:Albert Park\, Melbourne
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-jpn-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270409
 DTEND;VALUE=DATE:20270412
 SUMMARY:Formula 1 · Japanese Grand Prix
 LOCATION:Suzuka\, Suzuka
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-chn-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270416
 DTEND;VALUE=DATE:20270419
 SUMMARY:Formula 1 · Chinese Grand Prix
 LOCATION:Shanghai International Circuit\, Shanghai
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mia-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270430
 DTEND;VALUE=DATE:20270503
 SUMMARY:Formula 1 · Miami Grand Prix
 LOCATION:Miami International Autodrome\, Miami\, FL
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-can-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270521
 DTEND;VALUE=DATE:20270524
 SUMMARY:Formula 1 · Canadian Grand Prix
 LOCATION:Circuit Gilles Villeneuve\, Montréal
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mon-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270604
 DTEND;VALUE=DATE:20270607
 SUMMARY:Formula 1 · Monaco Grand Prix
 LOCATION:Circuit de Monaco\, Monte Carlo
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-por-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270618
 DTEND;VALUE=DATE:20270621
 SUMMARY:Formula 1 · Portuguese Grand Prix
 LOCATION:Algarve International Circuit\, Portimão
 DESCRIPTION:Returns\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-gbr-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270702
 DTEND;VALUE=DATE:20270705
 SUMMARY:Formula 1 · British Grand Prix
 LOCATION:Silverstone\, Silverstone
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-aut-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270709
 DTEND;VALUE=DATE:20270712
 SUMMARY:Formula 1 · Austrian Grand Prix
 LOCATION:Red Bull Ring\, Spielberg
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bel-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270723
 DTEND;VALUE=DATE:20270726
 SUMMARY:Formula 1 · Belgian Grand Prix
 LOCATION:Spa-Francorchamps\, Stavelot
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-hun-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270730
 DTEND;VALUE=DATE:20270802
 SUMMARY:Formula 1 · Hungarian Grand Prix
 LOCATION:Hungaroring\, Budapest
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-ita-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270903
 DTEND;VALUE=DATE:20270906
 SUMMARY:Formula 1 · Italian Grand Prix
 LOCATION:Monza\, Monza
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mad-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270910
 DTEND;VALUE=DATE:20270913
 SUMMARY:Formula 1 · Spanish Grand Prix
 LOCATION:Madring\, Madrid
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-aze-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270924
 DTEND;VALUE=DATE:20270927
 SUMMARY:Formula 1 · Azerbaijan Grand Prix
 LOCATION:Baku City Circuit\, Baku
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-tur-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271001
 DTEND;VALUE=DATE:20271004
 SUMMARY:Formula 1 · Turkish Grand Prix
 LOCATION:Istanbul Park\, Istanbul
 DESCRIPTION:Returns\nStart times are added about a week before.\nhttps://p
- hoenixjayhernandez-max.github.io/premier-racing-info/
+ remierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-sgp-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271008
 DTEND;VALUE=DATE:20271011
 SUMMARY:Formula 1 · Singapore Grand Prix
 LOCATION:Marina Bay\, Singapore
 DESCRIPTION:Night race\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-usa-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271022
 DTEND;VALUE=DATE:20271025
 SUMMARY:Formula 1 · United States Grand Prix
 LOCATION:Circuit of the Americas\, Austin\, TX
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-mex-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271029
 DTEND;VALUE=DATE:20271101
 SUMMARY:Formula 1 · Mexico City Grand Prix
 LOCATION:Autódromo Hermanos Rodríguez\, Mexico City
-DESCRIPTION:\nStart times are added about a week before.\nhttps://phoenixj
- ayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-bra-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271105
 DTEND;VALUE=DATE:20271108
 SUMMARY:Formula 1 · São Paulo Grand Prix
 LOCATION:Interlagos\, São Paulo
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-lv-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271118
 DTEND;VALUE=DATE:20271121
 SUMMARY:Formula 1 · Las Vegas Grand Prix
 LOCATION:Las Vegas Strip Circuit\, Las Vegas\, NV
 DESCRIPTION:Saturday race\, Night race\nStart times are added about a week
-  before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+  before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-qat-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271203
 DTEND;VALUE=DATE:20271206
 SUMMARY:Formula 1 · Qatar Grand Prix
 LOCATION:Lusail International Circuit\, Lusail
-DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:Sprint\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:f1-abu-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271210
 DTEND;VALUE=DATE:20271213
 SUMMARY:Formula 1 · Abu Dhabi Grand Prix
 LOCATION:Yas Marina\, Abu Dhabi
 DESCRIPTION:Sprint\, Finale\nStart times are added about a week before.\nh
- ttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR

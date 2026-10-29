@@ -12,7 +12,7 @@ This is an installable web app (PWA). It needs no app store and costs nothing to
 3. "uploading an existing file" → drag in everything from this folder (index.html, manifest.webmanifest,
    sw.js, the icons folder, README.md) → Commit.
 4. Settings → Pages → Source: "Deploy from a branch" → Branch: `main` / root → Save.
-5. After a minute it's live at `https://YOUR-USERNAME.github.io/premier-racing-info/`.
+5. After a minute it is live at `https://premierracinginfo.com/` (custom domain; the github.io address forwards there).
 
 ## Install it on iPhone
 Open that link in Safari → Share → Add to Home Screen → Add. It opens full-screen with its own icon

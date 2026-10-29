@@ -9,146 +9,145 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:psc-monaco-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260605
 DTEND;VALUE=DATE:20260608
 SUMMARY:Porsche Mobil 1 Supercup · Monaco
 LOCATION:Circuit de Monaco\, Monte Carlo
 DESCRIPTION:F1 support\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-bcn-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260612
 DTEND;VALUE=DATE:20260615
 SUMMARY:Porsche Mobil 1 Supercup · Barcelona
 LOCATION:Circuit de Barcelona-Catalunya\, Barcelona
 DESCRIPTION:F1 support\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-austria-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260626
 DTEND;VALUE=DATE:20260629
 SUMMARY:Porsche Mobil 1 Supercup · Red Bull Ring
 LOCATION:Red Bull Ring\, Spielberg
 DESCRIPTION:F1 support\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-spa-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260717
 DTEND;VALUE=DATE:20260720
 SUMMARY:Porsche Mobil 1 Supercup · Spa-Francorchamps
 LOCATION:Spa-Francorchamps\, Stavelot
 DESCRIPTION:F1 support\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-hungary-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260724
 DTEND;VALUE=DATE:20260727
 SUMMARY:Porsche Mobil 1 Supercup · Hungaroring
 LOCATION:Hungaroring\, Budapest
 DESCRIPTION:F1 support\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-zandvoort-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260821
 DTEND;VALUE=DATE:20260824
 SUMMARY:Porsche Mobil 1 Supercup · Zandvoort
 LOCATION:Zandvoort\, Zandvoort
 DESCRIPTION:F1 support\, 2 races\nStart times are added about a week befor
- e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ e.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-monza-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260907
 SUMMARY:Porsche Mobil 1 Supercup · Monza
 LOCATION:Monza\, Monza
 DESCRIPTION:F1 support\, Finale\nStart times are added about a week before
- .\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ .\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-monaco-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270604
 DTEND;VALUE=DATE:20270607
 SUMMARY:Porsche Mobil 1 Supercup · Monaco
 LOCATION:Circuit de Monaco\, Monte Carlo
 DESCRIPTION:Provisional\, Full calendar not out yet\nStart times are added
-  about a week before.\nhttps://phoenixjayhernandez-max.github.io/premier-
- racing-info/
+  about a week before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-portimao-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270618
 DTEND;VALUE=DATE:20270621
 SUMMARY:Porsche Mobil 1 Supercup · Portimão
 LOCATION:Algarve International Circuit\, Portimão
 DESCRIPTION:Provisional\, New\nStart times are added about a week before.\
- nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-spa-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270723
 DTEND;VALUE=DATE:20270726
 SUMMARY:Porsche Mobil 1 Supercup · Spa-Francorchamps
 LOCATION:Spa-Francorchamps\, Stavelot
 DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
- ://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-monza-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270903
 DTEND;VALUE=DATE:20270906
 SUMMARY:Porsche Mobil 1 Supercup · Monza
 LOCATION:Monza\, Monza
 DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
- ://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-madrid-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270910
 DTEND;VALUE=DATE:20270913
 SUMMARY:Porsche Mobil 1 Supercup · Madrid
 LOCATION:Madring\, Madrid
 DESCRIPTION:Provisional\, New\nStart times are added about a week before.\
- nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:psc-istanbul-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271001
 DTEND;VALUE=DATE:20271004
 SUMMARY:Porsche Mobil 1 Supercup · Istanbul
 LOCATION:Istanbul Park\, Istanbul
 DESCRIPTION:Provisional\, New\nStart times are added about a week before.\
- nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR

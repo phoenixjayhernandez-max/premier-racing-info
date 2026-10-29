@@ -20,7 +20,7 @@ const nextDay = s => { const d = new Date(s + "T00:00:00Z"); d.setUTCDate(d.getU
 const esc = s => String(s).replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\;").replace(/\n/g, "\\n");
 const fold = line => { const out = []; while (line.length > 74) { out.push(line.slice(0, 74)); line = " " + line.slice(74); } out.push(line); return out.join("\r\n"); };
 const stamp = utc(new Date());
-const SITE = "https://phoenixjayhernandez-max.github.io/premier-racing-info/";
+const SITE = "https://premierracinginfo.com/";
 
 function hoursFor(name){
   const m = name.match(/(\d+)\s*Hours?/i); if (m) return +m[1];

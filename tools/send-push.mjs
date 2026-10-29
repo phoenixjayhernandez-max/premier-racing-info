@@ -22,7 +22,7 @@ const WINNERS = grab(/const WINNERS = (\{[\s\S]*?\n\});/, "WINNERS", {});
 const WINNERS_LIVE = grab(/const WINNERS_LIVE = (\{[\s\S]*?\});/, "WINNERS_LIVE", {});
 const SUPABASE_URL = process.env.SUPABASE_URL_TEST || grab(/const SUPABASE_URL = ("[^"]*");/, "SUPABASE_URL");
 const SUPABASE_KEY = grab(/const SUPABASE_ANON_KEY = ("[^"]*");/, "SUPABASE_ANON_KEY");
-const SITE = "https://phoenixjayhernandez-max.github.io/premier-racing-info/";
+const SITE = "https://premierracinginfo.com/";
 const SECRET = process.env.PUSH_SECRET;
 const TEST = process.env.PUSH_TEST === "true";
 if (!SECRET) { console.log("PUSH_SECRET isn't set yet. Add it in GitHub → Settings → Secrets and variables → Actions."); process.exit(0); }

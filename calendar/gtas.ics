@@ -9,80 +9,80 @@ REFRESH-INTERVAL;VALUE=DURATION:PT6H
 X-PUBLISHED-TTL:PT6H
 BEGIN:VEVENT
 UID:gtas-sepang-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260404
 DTEND;VALUE=DATE:20260406
 SUMMARY:GT World Challenge Asia · Sepang
 LOCATION:Sepang International Circuit\, Sepang\, Malaysia
 DESCRIPTION:2 × 1 hour\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-mandalika-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260502
 DTEND;VALUE=DATE:20260504
 SUMMARY:GT World Challenge Asia · Mandalika
 LOCATION:Mandalika International Circuit\, Lombok\, Indonesia
 DESCRIPTION:2 × 1 hour\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-shanghai-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260605
 DTEND;VALUE=DATE:20260607
 SUMMARY:GT World Challenge Asia · Shanghai
 LOCATION:Shanghai International Circuit\, Shanghai\, China
 DESCRIPTION:2 × 1 hour\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-fuji-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260711
 DTEND;VALUE=DATE:20260713
 SUMMARY:GT World Challenge Asia · Fuji
 LOCATION:Fuji Speedway\, Oyama\, Japan
 DESCRIPTION:2 × 1 hour\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-okayama-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20260829
 DTEND;VALUE=DATE:20260831
 SUMMARY:GT World Challenge Asia · Okayama
 LOCATION:Okayama International Circuit\, Mimasaka\, Japan
 DESCRIPTION:2 × 1 hour\nStart times are added about a week before.\nhttps:
- //phoenixjayhernandez-max.github.io/premier-racing-info/
+ //premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-beijing-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261005
 SUMMARY:GT World Challenge Asia · Beijing
 LOCATION:Beijing Street Circuit\, Beijing\, China
 DESCRIPTION:2 × 1 hour\, Street circuit\nStart times are added about a wee
- k before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ k before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-shanghai-fin-0@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261031T045000Z
 DTEND:20261031T065000Z
 SUMMARY:🏁 Race 1 · Shanghai finale
 LOCATION:Shanghai International Circuit\, Shanghai\, China
-DESCRIPTION:GT World Challenge Asia · Shanghai finale\nDetails: https://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:GT World Challenge Asia · Shanghai finale\nDetails: https://pr
+ emierracinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Race 1 starts in 30 minutes · Shanghai finale
@@ -91,14 +91,14 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-shanghai-fin-1@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART:20261101T050500Z
 DTEND:20261101T070500Z
 SUMMARY:🏁 Race 2 · Shanghai finale
 LOCATION:Shanghai International Circuit\, Shanghai\, China
-DESCRIPTION:GT World Challenge Asia · Shanghai finale\nDetails: https://ph
- oenixjayhernandez-max.github.io/premier-racing-info/
-URL:https://phoenixjayhernandez-max.github.io/premier-racing-info/
+DESCRIPTION:GT World Challenge Asia · Shanghai finale\nDetails: https://pr
+ emierracinginfo.com/
+URL:https://premierracinginfo.com/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Race 2 starts in 30 minutes · Shanghai finale
@@ -107,69 +107,68 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-sepang-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270403
 DTEND;VALUE=DATE:20270405
 SUMMARY:GT World Challenge Asia · Sepang
 LOCATION:Sepang International Circuit\, Sepang\, Malaysia
 DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
- ://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-chang-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270501
 DTEND;VALUE=DATE:20270503
 SUMMARY:GT World Challenge Asia · Buriram
 LOCATION:Chang International Circuit\, Buriram\, Thailand
 DESCRIPTION:Provisional\, Returns\nStart times are added about a week befo
- re.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ re.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-suzuka-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270612
 DTEND;VALUE=DATE:20270614
 SUMMARY:GT World Challenge Asia · Suzuka
 LOCATION:Suzuka\, Suzuka\, Japan
 DESCRIPTION:Provisional\, Returns\nStart times are added about a week befo
- re.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ re.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-fuji-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20270710
 DTEND;VALUE=DATE:20270712
 SUMMARY:GT World Challenge Asia · Fuji
 LOCATION:Fuji Speedway\, Oyama\, Japan
 DESCRIPTION:Provisional\nStart times are added about a week before.\nhttps
- ://phoenixjayhernandez-max.github.io/premier-racing-info/
+ ://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-beijing-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271002
 DTEND;VALUE=DATE:20271004
 SUMMARY:GT World Challenge Asia · Beijing
 LOCATION:Beijing Street Circuit\, Beijing\, China
 DESCRIPTION:Provisional\, Street circuit\nStart times are added about a we
- ek before.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info
- /
+ ek before.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:gtas-shanghai-27-weekend@premier-racing-info
-DTSTAMP:20261028T223000Z
+DTSTAMP:20261029T183700Z
 DTSTART;VALUE=DATE:20271023
 DTEND;VALUE=DATE:20271025
 SUMMARY:GT World Challenge Asia · Shanghai
 LOCATION:Shanghai International Circuit\, Shanghai\, China
 DESCRIPTION:Provisional\, Finale\nStart times are added about a week befor
- e.\nhttps://phoenixjayhernandez-max.github.io/premier-racing-info/
+ e.\nhttps://premierracinginfo.com/
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
