@@ -83,8 +83,9 @@ try {
   const seasonRace = (html.match(/const SEASON_LOCK_RACE = "([^"]+)"/) || [])[1];
   if (seasonRace && locks["f1:" + seasonRace]) locks["f1:season"] = locks["f1:" + seasonRace];
   const n = await rpc("set_pick_locks", { p_secret: SECRET, p_locks: locks });
+  state.lockSync = { at: new Date().toISOString(), result: n, races: Object.keys(locks).length };
   if (n === -1) console.log("Lock sync: secret not accepted");
-} catch (e) { console.log("Lock sync skipped:", String(e.message).slice(0, 120)); }
+} catch (e) { state.lockSync = { at: new Date().toISOString(), error: String(e.message).slice(0, 160) }; console.log("Lock sync skipped:", String(e.message).slice(0, 120)); }
 if (!fresh.length && !freshNews.length && !TEST) { save(); console.log("Nothing new to send"); process.exit(0); }
 const cfg = await rpc("get_push_config", { p_secret: SECRET });
 if (!cfg || !cfg.vapid_private) { console.log("Supabase didn't return the push settings. Check that setup/push.sql was run and PUSH_SECRET matches."); process.exit(1); }
