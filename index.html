@@ -403,6 +403,11 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 .tzopt{all:unset;cursor:pointer;box-sizing:border-box;padding:11px 14px;border-radius:10px;background:var(--panel);border:1px solid var(--rule);font-weight:600}
 .tzopt small{display:block;font-weight:500;color:var(--sub);font-size:.78rem}
 .tzopt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.perso{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px}
+.perso b{display:block;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:1.1rem}
+.perso span{display:block;color:var(--sub);font-size:.88rem;margin:2px 0 10px}
+.perso-btns{display:flex;flex-wrap:wrap;gap:8px}
+.share-app .btn{width:100%;justify-content:center;padding:11px}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -477,6 +482,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
     <div class="sec" id="newsSec"></div>
     <div class="sec" id="mySec"></div>
     <div class="sec" id="favSec"></div>
+    <div class="sec share-app"><button class="btn" data-share="app">📤 Share Premier Racing Info with friends</button></div>
     <details class="sec more-sec">
       <summary class="h2">Season progress</summary>
       <p class="kicker">Each block is a round. Tap a series to see its calendar.</p>
@@ -519,7 +525,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
+<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -1349,7 +1355,7 @@ function favSummary(f){
 function renderFavs(){
   const el = document.getElementById("favSec");
   if (!favs.length) {
-    el.innerHTML = `<button class="btn" data-favpick="1" style="width:100%;justify-content:center;padding:12px">★ Follow your drivers and teams</button>`;
+    el.innerHTML = mySeries.length ? `<button class="btn" data-favpick="1" style="width:100%;justify-content:center;padding:12px">★ Follow your drivers and teams</button>` : "";
     return;
   }
   el.innerHTML = `<h2 class="h2">Your favorites</h2><p class="kicker">Highlighted with ★ in results and standings. <button class="btn" data-favpick="1" style="margin-left:6px">Edit</button></p>
@@ -1699,6 +1705,26 @@ function renderStats(){
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
 
+// ---------- Sharing ----------
+const slugify = t => String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const SITE_URL = "https://premierracinginfo.com";
+const raceURL = e => `${SITE_URL}/races/${slugify(`${SERIES[e.series]} ${e.name} ${e.start.getFullYear()}`)}/`;
+async function shareIt(title, text, url, btn){
+  try {
+    if (navigator.share) { await navigator.share({ title, text, url }); return; }
+    await navigator.clipboard.writeText(url);
+    if (btn) { const o = btn.textContent; btn.textContent = "✓ Link copied"; setTimeout(() => btn.textContent = o, 1800); }
+  } catch(e){}
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-share]"); if (!b) return;
+  ev.stopPropagation();
+  const [kind, id] = b.dataset.share.split(":");
+  if (kind === "race") { const e = events.find(x => x.id === id); if (e) { const s = nextSession(e.id); shareIt(`${e.name} ${e.start.getFullYear()}`, `${SERIES_FULL[e.series]} ${e.name}${s ? ` · ${s[0]} ${fmtDow.format(new Date(s[1]))} ${txTime(s[1])}` : ""} · start times, how to watch & tickets`, raceURL(e), b); } }
+  else if (kind === "series") { const x = WORLD_LIST.find(w => w.id === id); if (x) shareIt(x.name, `${x.name}: calendar, standings & how to watch`, `${SITE_URL}/series/${x.id}/`, b); }
+  else shareIt("Premier Racing Info", "Race times in your time zone, how to watch, tickets, standings, alerts and a picks game with friends.", SITE_URL + "/", b);
+});
+
 // ---------- Tickets ----------
 // Official sellers checked Oct 28, 2026; other rounds link to the circuit's own site, then a ticket search.
 const TICKETS = {
@@ -1744,7 +1770,8 @@ function openRace(id){
   if (!e.cancelled) h += `<div class="mine">
       <button class="btn star" data-k="starred" data-id="${e.id}" aria-pressed="${pr("starred")}">★ Can't miss</button>
       <button class="btn" data-k="going" data-id="${e.id}" aria-pressed="${pr("going")}">Going</button>
-      <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button></div>`;
+      <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
+      <button class="btn" data-share="race:${e.id}">📤 Share</button></div>`;
 
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
@@ -1852,7 +1879,7 @@ function renderMySeries(){
   const el = document.getElementById("mySec");
   const list = mySeries.map(id => WORLD_LIST.find(x => x.id === id)).filter(Boolean);
   if (!list.length) {
-    el.innerHTML = `<button class="btn" data-gotab="series" style="width:100%;justify-content:center;padding:12px">☆ Pick your series to keep them here</button>`;
+    el.innerHTML = `<div class="perso"><b>Make it yours</b><span>Star your series and follow drivers to get their news, alerts and results first.</span><div class="perso-btns"><button class="btn star" aria-pressed="true" data-gotab="series">☆ Pick series</button>${favs.length ? "" : `<button class="btn" data-favpick="1">★ Follow drivers</button>`}</div></div>`;
     return;
   }
   el.innerHTML = `<h2 class="h2">My series</h2><p class="kicker">Tap one for details. <button class="btn" data-gotab="series" style="margin-left:6px">Add more</button></p><div class="my-list">${list.map(srowHTML).join("")}</div>`;
@@ -1879,7 +1906,7 @@ function openWorld(id){
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
   h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("")}</div>
     <p class="fine">FREE = no subscription needed.</p><div class="mine" style="margin:12px 0 0">`;
-  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button>`;
+  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">📤 Share</button>`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">🎟 Tickets ↗</a>`;
@@ -1923,7 +1950,7 @@ document.addEventListener("click", ev => {
     mySeries = isMine(id) ? mySeries.filter(x => x !== id) : mySeries.concat(id);
     saveMySeries();
     document.querySelectorAll(`[data-mystar="${id}"]`).forEach(b => { const on = isMine(id); b.setAttribute("aria-pressed", on); b.textContent = b.classList.contains("sstar") ? (on ? "★" : "☆") : (on ? "★ In my series" : "☆ Add to my series"); });
-    renderMySeries(); renderNews(); renderDirChips(); if (dirGroup === "mine") renderDir();
+    renderMySeries(); renderFavs(); renderNews(); renderDirChips(); if (dirGroup === "mine") renderDir();
     return;
   }
   const gt = ev.target.closest("[data-gotab]");

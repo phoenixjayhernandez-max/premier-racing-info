@@ -80,7 +80,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/">Premier Racing <span>Info</span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
 <main class="wrap">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1>${body}</main>
-<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><p>All times US Central (Texas). Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site.</p></footer></body></html>`;
+<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/texas/">Races in Texas</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><p>All times US Central (Texas). Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site.</p></footer></body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -197,6 +197,26 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
     Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => { const t = ticketLinks(e)[0]; return `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}${t ? ` · <a href="${esc(t[1])}" rel="noopener">🎟 ${esc(t[0])}</a>` : ""}</small></li>`; }).join("")}</ul></section>`).join("");
   write("/tickets/", page({ url: "/tickets/", title: "Race Tickets 2026–2027: F1, IMSA, WEC & GT Races", desc: "Where to buy tickets for every upcoming F1, IMSA, WEC, GT World Challenge, Porsche Cup and Mustang Challenge race, from the official sellers.", h1: "Race tickets", crumbs: [{ name: "Tickets", item: SITE + "/tickets/" }], body }));
 }
+
+// ---- About, Privacy, 404 ----
+const CONTACT = "contact@premierracinginfo.com";
+write("/about/", page({ url: "/about/", title: "About Premier Racing Info", desc: "Premier Racing Info is a free, independent fan site and app for following racing: start times in your time zone, how to watch, tickets, standings, alerts and a picks game.", h1: "About", crumbs: [{ name: "About", item: SITE + "/about/" }],
+  body: `<section class="card"><p>Premier Racing Info started as a way for a few friends in San Antonio, Texas to keep up with F1, IMSA and WEC race weekends without doing time-zone math. It grew into a free app and site covering ${WORLD.series.length} racing series worldwide.</p>
+  <p>What you get: start times in your own time zone, where to watch in the US, ticket links, results and standings, lock-screen alerts, news, and a season-long picks game to play with friends.</p>
+  <p>It's an independent fan project and isn't affiliated with any series, team, circuit or broadcaster. Series and team names belong to their owners. Results and dates are checked against official sources but can change, so confirm with the official site before you travel.</p>
+  <p>Questions, corrections or ideas: <a href="mailto:${CONTACT}">${CONTACT}</a></p></section><p><a class="btn p" href="/">Open the app ›</a></p>` }));
+write("/privacy/", page({ url: "/privacy/", title: "Privacy Policy – Premier Racing Info", desc: "What Premier Racing Info stores, why, and how to delete it.", h1: "Privacy policy", crumbs: [{ name: "Privacy", item: SITE + "/privacy/" }],
+  body: `<section class="card"><p><b>Last updated:</b> ${today}</p>
+  <h2>What we store</h2><ul>
+  <li><b>On your device:</b> your favorites, starred series, races marked Going/Watched, time zone and settings, saved in your browser so the app remembers them.</li>
+  <li><b>If you create an account:</b> your email address, display name, those same preferences, and your prediction picks. Picks and display names are visible to other signed-in players on the leaderboard.</li>
+  <li><b>If you turn on alerts:</b> a push address from your browser and which series and alert types you chose, so we can send notifications. Turning alerts off deletes it.</li></ul>
+  <h2>What we don't do</h2><p>We don't sell your data, and there's no advertising tracking. We don't ask for your location; times use your phone's time zone setting.</p>
+  <h2>Services we use</h2><p>Hosting by GitHub Pages; accounts, picks and alert settings stored with Supabase; fonts from Google Fonts; some photos loaded from Wikipedia; news headlines link to the original publishers. Links to tickets, streaming services and official sites take you to those companies' sites, which have their own policies.${""}</p>
+  <h2>Your choices</h2><p>You can sign out, turn alerts off, or clear the app's data in your browser at any time. To delete your account and everything linked to it, email <a href="mailto:${CONTACT}">${CONTACT}</a> from the address you signed up with.</p>
+  <h2>Changes</h2><p>If this policy changes, the date above will change too.</p></section>` }));
+fs.writeFileSync(path.join(root, "404.html"), page({ url: "/404.html", title: "Page not found – Premier Racing Info", desc: "This page doesn't exist.", h1: "Page not found",
+  body: `<section class="card"><p>That page doesn't exist, or the race may have moved. Try one of these:</p><div class="btns"><a class="btn p" href="/">Open the app</a><a class="btn" href="/calendar/">Race calendar</a><a class="btn" href="/series/">All series</a><a class="btn" href="/tickets/">Tickets</a></div></section>` }).replace('<link rel="canonical" href="https://premierracinginfo.com/404.html">', '<meta name="robots" content="noindex">'));
 
 // ---- Sitemap & robots ----
 const all = ["/"].concat(pages);
