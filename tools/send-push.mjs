@@ -71,6 +71,20 @@ async function rpc(fn, body){
   if (!r.ok) throw new Error(`${fn}: HTTP ${r.status} ${await r.text()}`);
   return r.status === 204 ? null : r.json();
 }
+// Keep prediction lock times in Supabase in sync with race start times (picks lock when the Grand Prix starts).
+try {
+  const locks = {};
+  for (const [id, ser, name, circ, loc, start, end, tags, status] of RAW) {
+    if (ser !== "f1" || status === "cancelled") continue;
+    const gp = (SESSIONS[id] || []).find(x => /grand prix/i.test(x[0]) && !x[2]);
+    const t = gp ? new Date(gp[1]) : new Date(end + "T12:00:00Z");
+    if (t.getTime() > now) locks["f1:" + id] = t.toISOString();
+  }
+  const seasonRace = (html.match(/const SEASON_LOCK_RACE = "([^"]+)"/) || [])[1];
+  if (seasonRace && locks["f1:" + seasonRace]) locks["f1:season"] = locks["f1:" + seasonRace];
+  const n = await rpc("set_pick_locks", { p_secret: SECRET, p_locks: locks });
+  if (n === -1) console.log("Lock sync: secret not accepted");
+} catch (e) { console.log("Lock sync skipped:", String(e.message).slice(0, 120)); }
 if (!fresh.length && !freshNews.length && !TEST) { save(); console.log("Nothing new to send"); process.exit(0); }
 const cfg = await rpc("get_push_config", { p_secret: SECRET });
 if (!cfg || !cfg.vapid_private) { console.log("Supabase didn't return the push settings. Check that setup/push.sql was run and PUSH_SECRET matches."); process.exit(1); }

@@ -201,6 +201,9 @@ main{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 56px}
 .sh-head > div{min-width:0}
 html,body{overflow-x:hidden}
 .hbtn.alt{background:var(--panel);color:var(--ink);border:1px solid var(--rule)}
+.hbtn.acct{width:auto !important;padding:0 11px 0 9px !important;font-size:.82rem !important;gap:4px}
+@media (max-width:420px){ .brand h1 span{display:none} .brand h1{font-size:1.12rem !important} .hbtns{gap:4px !important} }
+@media (max-width:350px){ .brand h1{font-size:.95rem !important} .hbtn.acct{padding:0 8px !important;font-size:.76rem !important} .hbtn.acct .ico{display:none} .hbtn:not(.acct){width:30px !important;height:30px !important} }
 .hbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:.8rem;padding:5px 10px;border-radius:999px;background:var(--signal);color:var(--signal-ink);white-space:nowrap;width:34px;height:34px;padding:0;justify-content:center;font-size:1rem}
 .hbtn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .favs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
@@ -378,6 +381,10 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
 @media (max-width:360px){ .subtabs button{padding:6px 3px;font-size:.7rem} }
 .subtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .st-tabs{margin:0 0 10px}
+.locked-in{margin:10px 0 6px;padding:10px 12px;border-radius:8px;background:var(--panel-2);border:1px solid var(--rule)}
+.locked-in > div{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.locked-in span b{display:inline-block;width:2.2em;font-family:var(--display)}
+.locked-in.off{color:var(--sub)}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -432,7 +439,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
     <div class="brand">
       <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
       <h1>Premier Racing <span>Info</span></h1>
-      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button><button class="hbtn alt" id="acctBtn" aria-label="Your account" hidden>👤</button></span>
+      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico">👤</span> <span id="acctLbl">Log in</span></button></span>
       <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
@@ -1347,6 +1354,10 @@ async function cloudPull(){
   cloudPush();
   renderAll();
 }
+function acctLabel(){
+  const l = document.getElementById("acctLbl"), b = document.getElementById("acctBtn"); if (!l) return;
+  l.textContent = me ? "Account" : "Log in"; b.setAttribute("aria-label", me ? "Your account" : "Log in");
+}
 async function initAccounts(){
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
   document.getElementById("acctBtn").hidden = false;
@@ -1356,7 +1367,8 @@ async function initAccounts(){
     const { data } = await sb.auth.getSession();
     me = data.session ? data.session.user : null;
     if (me) await cloudPull();
-    sb.auth.onAuthStateChange((_e, session) => { const was = me && me.id; me = session ? session.user : null; if ((me && me.id) !== was) { picksRows = null; if (statsSeries === "predict") renderStats(); } });
+    acctLabel();
+    sb.auth.onAuthStateChange((_e, session) => { const was = me && me.id; me = session ? session.user : null; acctLabel(); if ((me && me.id) !== was) { picksRows = null; if (statsSeries === "predict") renderStats(); } });
   } catch(e) { sb = null; acctError = "The sign-in service didn't load. Check your connection and reopen the app."; }
 }
 let acctError = "";
@@ -1600,6 +1612,7 @@ function renderStatChips(){
 function renderStats(){
   if (statsSeries === "predict") {
     const el = document.getElementById("statsBody");
+    if (!window.__locksLoaded) { window.__locksLoaded = true; loadLocks().then(() => { if (statsSeries === "predict") renderPredict(el); }); }
     renderPredict(el);
     if (me && picksRows === null && !window.__pl) { window.__pl = loadPicks().finally(() => { window.__pl = null; if (statsSeries === "predict") renderPredict(el); }); }
     return;
@@ -2062,13 +2075,21 @@ function f1Forecast(){
 const pct = p => p >= 0.995 ? ">99%" : p > 0 && p < 0.005 ? "<1%" : Math.round(p * 100) + "%";
 
 // ---- Picks (stored in Supabase "picks"; readable by signed-in friends) ----
+// Lock times come from the server (pick_locks) so everyone sees the same lock; fallback = Grand Prix start, or noon UTC on race day.
+let LOCKS = {};
+function loadLocks(){
+  if (!SUPABASE_URL) return Promise.resolve();
+  return fetch(`${SUPABASE_URL}/rest/v1/pick_locks?select=key,locks_at`, { headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${SUPABASE_ANON_KEY}` } })
+    .then(r => r.ok ? r.json() : []).then(rows => { LOCKS = Object.fromEntries((rows || []).map(r => [r.key, Date.parse(r.locks_at)])); }).catch(() => {});
+}
 function raceLock(id){
+  if (LOCKS["f1:" + id]) return LOCKS["f1:" + id];
   const gp = (SESSIONS[id] || []).find(x => /grand prix/i.test(x[0]) && !x[2]);
   if (gp) return Date.parse(gp[1]);
-  const e = events.find(x => x.id === id); if (!e) return 0;
-  const d = new Date(e.end); d.setHours(12, 0, 0, 0); return +d;
+  const e = RAW.find(x => x[0] === id); if (!e) return 0;
+  return Date.parse(e[6] + "T12:00:00Z");
 }
-const seasonLock = () => raceLock(SEASON_LOCK_RACE);
+const seasonLock = () => LOCKS["f1:season"] || raceLock(SEASON_LOCK_RACE);
 function podiumFor(id){
   if (PODIUMS[id]) return PODIUMS[id];
   if (RESULT_FOR[id] === "f1" && STATS.f1.race && STATS.f1.race.rows) { const r = STATS.f1.race.rows; if (r.length >= 3 && r[0][0] === "1") return [r[0][2], r[1][2], r[2][2]]; }
@@ -2113,6 +2134,7 @@ async function savePick(key, pick){
   if (!sb || !me) return "Sign in to save picks.";
   const name = myName || (me.email || "").split("@")[0];
   const { error } = await sb.from("picks").upsert({ user_id: me.id, key, pick, display_name: name });
+  if (error && /locked|not open yet/i.test(error.message)) return error.message + ".";
   if (error) return (/relation|does not exist|schema cache/i.test(error.message) ? "Picks aren't set up yet (Supabase step). " : "Couldn't save. ") + "Supabase says: " + (error.code ? error.code + " " : "") + error.message;
   await loadPicks();
   return "";
@@ -2120,6 +2142,8 @@ async function savePick(key, pick){
 const myRow = key => (picksRows || []).find(r => me && r.user_id === me.id && r.key === key);
 
 function pickSelects(prefix, names, cur, locked){
+  if (locked) return cur && cur.p1 ? `<div class="locked-in">🔒 <b>Locked in</b><div>${["p1", "p2", "p3"].map((k, i) => `<span><b>P${i + 1}</b> ${esc(cur[k] || "—")}</span>`).join("")}</div></div>`
+    : `<div class="locked-in off">🔒 Locked. You didn't make a pick for this one.</div>`;
   return `<div class="pick-grid">${["p1", "p2", "p3"].map((k, i) => `<label for="${prefix}-${k}">P${i + 1}</label>
     <select id="${prefix}-${k}" ${locked ? "disabled" : ""}><option value="">Choose a driver</option>${names.map(n => `<option ${cur && cur[k] === n ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>`).join("")}</div>`;
 }
@@ -2151,6 +2175,7 @@ function renderPredict(el){
     h += `<section class="card"><h3>Your podium pick</h3><p class="lede" style="margin:0">${locked ? "Locked" : "Locks"} ${fmtDay.format(new Date(lock))} ${txTime(new Date(lock).toISOString())} · 5 pts exact, 2 pts on the podium, +3 for all three</p>`;
     if (!me) h += `<button class="btn star" aria-pressed="true" id="pickSignIn" style="margin-top:10px">👤 Sign in to play</button>`;
     else {
+      if (!locked && mine && !predDraft.race) h += `<p class="fine" style="font-weight:600;margin:8px 0 0">✓ Saved: ${["p1", "p2", "p3"].map(k => esc(mine.pick[k])).join(" · ")}. You can change it until it locks.</p>`;
       h += pickSelects("rp", names, (!locked && predDraft.race) || (mine && mine.pick), locked);
       if (!locked) h += `<button class="btn star" aria-pressed="true" data-savepick="${nx.id}">${mine ? "Update pick" : "Save pick"}</button>`;
       if (predMsg.race) h += `<p class="fine" style="font-weight:600">${esc(predMsg.race)}</p>`;
@@ -2169,6 +2194,7 @@ function renderPredict(el){
   const sKey = "f1:season", sLock = seasonLock(), sLocked = Date.now() >= sLock, sMine = myRow(sKey);
   h += `<section class="card"><h3>Season pick: final top 3</h3><p class="lede" style="margin:0">${sLocked ? "Locked" : "Locks when the " + esc((events.find(e => e.id === SEASON_LOCK_RACE) || {}).name || "next race") + " starts"} · champion 10 pts, 2nd and 3rd 15 pts each, 5 pts for a top-3 driver in the wrong spot</p>`;
   if (me) {
+    if (!sLocked && sMine && !predDraft.season) h += `<p class="fine" style="font-weight:600;margin:8px 0 0">✓ Saved: ${["p1", "p2", "p3"].map(k => esc(sMine.pick[k])).join(" · ")}. You can change it until it locks.</p>`;
     h += pickSelects("sp", byTitle.map(d => d.name), (!sLocked && predDraft.season) || (sMine && sMine.pick), sLocked);
     if (!sLocked) h += `<button class="btn star" aria-pressed="true" data-saveseason="1">${sMine ? "Update season pick" : "Save season pick"}</button>`;
     if (predMsg.season) h += `<p class="fine" style="font-weight:600">${esc(predMsg.season)}</p>`;
@@ -2191,6 +2217,8 @@ function renderPredict(el){
   el.innerHTML = h;
 }
 async function onSavePick(kind, id){
+  await loadLocks();
+  if (Date.now() >= (kind === "season" ? seasonLock() : raceLock(id))) { predMsg[kind] = "Too late: picks are locked for this one."; renderStats(); return; }
   const pfx = kind === "season" ? "sp" : "rp";
   const pick = Object.fromEntries(["p1", "p2", "p3"].map(k => [k, document.getElementById(`${pfx}-${k}`).value]));
   predDraft[kind] = pick;
