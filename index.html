@@ -360,6 +360,18 @@ html,body{overflow-x:hidden}
 .tk-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .tk-btns .btn{max-width:100%;white-space:normal}
 @media (max-width:420px){ .tk-list{grid-template-columns:1fr} }
+.hub-next{cursor:pointer;margin-bottom:6px}
+.hub-next .nm{font-family:var(--display);font-weight:800;font-size:1.35rem;line-height:1.1;text-transform:uppercase}
+.hub-next .loc{color:var(--sub);font-size:.85rem;margin-top:2px}
+.hub-cal{display:grid;grid-template-columns:52px 1fr auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule);cursor:pointer;font-size:.88rem}
+.hub-cal:last-child{border-bottom:0}
+.hub-cal .d{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hub-cal .n{min-width:0;font-weight:600;line-height:1.2}
+.hub-cal .n small{display:block;font-weight:500;color:var(--sub);font-size:.76rem}
+.hub-cal .w{font-size:.76rem;color:var(--sub);text-align:right;max-width:9.5em;line-height:1.2}
+.hub-cal.past{opacity:.75}
+.hub-cal.now .w,.hub-cal .w:not(:empty){font-weight:600}
+summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text-transform:uppercase;cursor:pointer}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,2);overflow:hidden;cursor:pointer}
 .clamp.open{display:block}
 .more{all:unset;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--sub);margin:-4px 0 10px;display:inline-block}
@@ -1769,8 +1781,9 @@ function openWorld(id){
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">🎟 Tickets ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
+  if (x.app && STATS[x.app]) h += seriesHubHTML(x.app);
   h += seriesNewsHTML(x.id);
-  h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
+  if (!x.app) h += `<section class="card"><h3>2026 season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>`;
   h += `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = h; sheet.scrollTop = 0;
@@ -2228,6 +2241,50 @@ function renderTickets(){ renderTicketFilters(); renderTicketList(); }
 document.addEventListener("click", ev => {
   const l = ev.target.closest("[data-tkloc]");
   if (l) { tkLoc = l.dataset.tkloc; document.querySelectorAll("[data-tkloc]").forEach(b => b.setAttribute("aria-pressed", b.dataset.tkloc === tkLoc)); renderTicketList(); }
+});
+
+// ---------- Full series hub (for the series this app follows in full) ----------
+function seriesHubHTML(c){
+  const st = STATS[c] || {}, mk = MAKERS[c];
+  const list = events.filter(e => e.series === c && !e.cancelled);
+  const cur = list.filter(inSeason), nextYr = list.filter(e => e.start.getFullYear() === SEASON + 1);
+  const nx = list.find(e => phase(e) === "now") || list.find(e => phase(e) === "future");
+  let h = `<div class="${c}">`;
+  // Next race
+  if (nx) {
+    const ns = nextSession(nx.id), tk = ticketLinks(nx);
+    h += `<section class="card"><h3>${phase(nx) === "now" ? "🟢 On track now" : "Next race"}</h3>
+      <div class="hub-next" data-open="${nx.id}" role="button" tabindex="0"><div class="nm">${esc(nx.name)}</div><div class="loc">${esc(nx.circuit)} · ${esc(nx.location)} · ${range(nx)}${!inSeason(nx) ? " " + nx.start.getFullYear() : ""}</div>
+      ${nx.tags.length ? `<div class="tags" style="margin-top:4px">${nx.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}</div>
+      ${SESSIONS[nx.id] ? `<h4>Session times · Texas time</h4>${schedHTML(nx.id, true)}` : `<p class="fine">Session times are added about a week before the race.</p>`}
+      <div class="mine" style="margin:10px 0 0"><button class="btn star" aria-pressed="true" data-open="${nx.id}">Race details ›</button>${tk[0] ? `<a class="btn" href="${esc(tk[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}</div></section>`;
+  } else h += `<section class="card"><h3>Next race</h3><p class="lede" style="margin:0">No more races announced yet.</p></section>`;
+  // Standings
+  if (st.champs || st.standings || st.makers) {
+    h += `<section class="card"><h3>Standings</h3>`;
+    if (st.champs) h += `<div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div>`;
+    if (st.standings) h += `<h4>${esc(st.standingsTitle || "Drivers")}</h4>${pointsTower(st.standings.slice(0, 10), c)}${st.standings.length > 10 ? `<p class="fine">Top 10 of ${st.standings.length}. Full table on the Standings tab.</p>` : ""}`;
+    if (st.makers) h += `<h4>${esc(st.makersTitle || "Teams")}</h4>${pointsTower(st.makers, c)}`;
+    h += `<div class="mine" style="margin:10px 0 0"><button class="btn" data-gostats="${c}">Full standings &amp; latest results ›</button></div></section>`;
+  }
+  // Calendar
+  const calRows = arr => arr.map(e => { const ph = phase(e);
+    return `<div class="hub-cal ${ph}" data-open="${e.id}" role="button" tabindex="0"><span class="d">${MON[e.start.getMonth()]} ${e.start.getDate()}</span><span class="n">${esc(e.name)}<small>${esc(e.circuit)}</small></span><span class="w">${WINNERS[e.id] ? "🏁 " + esc(String(WINNERS[e.id]).split(/[,(]/)[0]) : ph === "now" ? "🟢 Now" : ph === "past" ? "Done" : nx && e.id === nx.id ? "Next" : ""}</span></div>`; }).join("");
+  if (cur.length) h += `<section class="card"><h3>${SEASON} calendar · ${cur.filter(e => phase(e) === "past").length} of ${cur.length} done</h3>${calRows(cur)}</section>`;
+  if (nextYr.length) h += `<section class="card"><details><summary class="h3like">${SEASON + 1} calendar · ${nextYr.length} rounds${nextYr.some(e => e.tags.includes("Provisional")) ? " (provisional)" : ""}</summary>${calRows(nextYr)}</details></section>`;
+  // Drivers & cars
+  if (st.grid || mk) {
+    h += `<section class="card"><h3>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Drivers & cars")}</h3>`;
+    if (st.grid) h += `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`;
+    if (mk) h += `<h4>${esc(mk.title)}</h4><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>${mk.extra ? `<h4>${esc(mk.extraTitle)}</h4><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>` : ""}`;
+    h += `</section>`;
+  }
+  if (st.notes) h += `<section class="card"><h3>Storylines</h3><ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
+  return h + `</div>`;
+}
+document.addEventListener("click", ev => {
+  const g = ev.target.closest("[data-gostats]");
+  if (g) { ev.stopImmediatePropagation(); closeRace(); statsSeries = g.dataset.gostats; renderStatChips(); renderStats(); showTab("standings"); }
 });
 
 // ---------- Tabs & events ----------
