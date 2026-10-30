@@ -1015,6 +1015,31 @@ main{max-width:1200px}
 .hh-credit{margin:0;color:var(--color-muted)}
 .hh-credit a{color:inherit;text-decoration:none}
 .hh-credit a:hover{text-decoration:underline}
+
+.sched tr.nx .status,.sched tr.nx .status.live{color:inherit}
+.sched tr.nx .status.live::before{background:currentColor}
+/* standings: one series dropdown, collapsible sections */
+#statChips{display:block;overflow:visible;padding:0;margin-bottom:var(--space-md)}
+.sdrop{position:relative;display:block}
+.sdrop summary{list-style:none;display:flex;align-items:center;gap:var(--space-sm);cursor:pointer;padding:var(--space-sm) var(--space-md);border:var(--rule-bar) solid var(--color-ink);border-radius:var(--radius-card);background:var(--color-paper);min-height:48px}
+.sdrop summary::-webkit-details-marker{display:none}
+.sd-name{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-xl);text-transform:uppercase;line-height:1.05;flex:1;min-width:0}
+.sd-caret,.acc-caret{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-3px);flex:none;transition:transform var(--dur-short) var(--ease-out)}
+.sdrop[open] .sd-caret,.acc[open] .acc-caret{transform:rotate(225deg) translateY(-2px)}
+.sd-list{position:absolute;left:0;right:0;top:calc(100% + var(--space-2xs));z-index:var(--z-dropdown);background:var(--color-paper);border:1px solid var(--color-ink);border-radius:var(--radius-card);padding:var(--space-2xs);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:var(--space-3xs);max-height:70vh;overflow:auto}
+.sd-item{border:0 !important;justify-content:flex-start;width:100%;padding:var(--space-xs) var(--space-sm) !important;border-radius:var(--radius-card)}
+.sd-item[aria-pressed="true"]{background:var(--color-paper-2) !important;color:var(--color-ink) !important;font-weight:600}
+.sd-item:hover{background:var(--color-paper-2)}
+.sdrop summary:focus-visible,.acc summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.acc{border-top:var(--rule-bar) solid var(--color-ink)}
+.acc + .acc{border-top-width:1px;border-top-color:var(--color-rule)}
+.acc summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--space-md);cursor:pointer;padding:var(--space-md) 0}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary h3{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-title);text-transform:uppercase;line-height:1.05;margin:0;max-width:none}
+.acc summary:hover h3{text-decoration:underline;text-decoration-thickness:2px;text-decoration-color:var(--color-accent-deep)}
+.acc-body{padding-bottom:var(--space-lg)}
+.acc-wrap{border-bottom:1px solid var(--color-rule)}
+@media (prefers-reduced-motion:reduce){ .sd-caret,.acc-caret{transition:none} }
 </style>
 </head>
 <body>
@@ -1068,7 +1093,7 @@ main{max-width:1200px}
 
   <section class="view" id="v-standings" role="tabpanel" aria-labelledby="t-standings" hidden>
     <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
-    <p class="asof" id="statsAsof" hidden>Updated Wednesday, October 28, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Europe final results; GT World Challenge Asia after Beijing (Shanghai finale this weekend). Other series as of their last race.</p>
+    <p class="asof" id="statsAsof" hidden>Updated Friday, October 30, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Australia after Sydney (Round 5); GT World Challenge Asia after Beijing (Shanghai finale this weekend). IMSA, GT America, GT Europe, Supercup, Carrera Cup NA and Mustang Challenge seasons are complete.</p>
     <div id="statsBody"></div>
   </section>
 
@@ -1524,7 +1549,7 @@ const STATS = {
       ["#24 BMW M Team WRT","BMW M Hybrid V8","Sheldon van der Linde"],["#60 Acura MSR","Acura ARX-06","Tom Blomqvist · pole at Acura's final GTP race"]],
     notes:["Porsche swept Daytona, Sebring and Petit Le Mans, a first for one manufacturer in a single season.","Aitken clinched the GTP title just by starting Petit Le Mans.","GTD: the #57 Winward Mercedes won Petit Le Mans from pole.","Season complete. The 2027 season opens with the Rolex 24 in January."]
   },
-  wec: {"race":{"name":"6 Hours of Barcelona","where":"Circuit de Barcelona-Catalunya · Oct 18 · Hypercar","note":"Toyota scored a 1-2, the #8 beating the #7 by 0.583s, and clinched its eighth manufacturers' world title. The drivers' title goes to Monza between the two Toyota crews. The #92 Manthey Porsche won LMGT3.","rows":[["1","8","Buemi / Hartley / Hirakawa","Toyota","Winner"],["2","7","Conway / Kobayashi / de Vries","Toyota","+0.583"],["3","50","Fuoco / Molina / Nielsen","Ferrari 499P","+39.725"],["4","38","Bamber / Bourdais / Aitken","Cadillac V-Series.R","+52.811"],["5","83","Ye / Kubica / Hanson","Ferrari 499P","+53.353"],["6","12","Lynn / Stevens / Nato","Cadillac V-Series.R","+1:20.751"],["7","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8",""],["8","36","Gounon / Martins","Alpine A424",""],["9","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["10","35","Milesi / Habsburg","Alpine A424",""]],"partial":true},"champs":[["Hypercar manufacturers","Toyota","Clinched at Barcelona · 8th world title"]],"standingsTitle":"Hypercar drivers' championship (top two after Barcelona; others as of Fuji)","standings":[["Buemi / Hartley / Hirakawa","#8 Toyota",114],["Conway / Kobayashi / de Vries","#7 Toyota",97],["Rast / Frijns","#20 BMW",75],["Magnussen / Marciello","#15 BMW",69],["Sheldon van der Linde","#20 BMW",65],["Dries Vanthoor","#15 BMW",63],["Pier Guidi / Calado / Giovinazzi","#51 Ferrari",59],["Milesi / Habsburg","#35 Alpine",56],["Fuoco / Molina / Nielsen","#50 Ferrari",54],["Nato / Stevens","#12 Cadillac",50]],"makersTitle":"Hypercar manufacturers (as of Fuji; Toyota has clinched)","makers":[["Toyota",169],["BMW",146],["Ferrari",115],["Alpine",96],["Cadillac",96],["Aston Martin",54],["Peugeot",24],["Genesis",12]],"extraTitle":"LMGT3 drivers","extra":[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],"gridTitle":"Hypercar grid","grid":[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],"notes":["Monza (Nov 6–8) decides the drivers' title: the #8 Toyota leads the #7 by 17 points.","Toyota clinched the manufacturers' title with its 1-2 at Barcelona.","LMGT3 at Barcelona went to the #92 Manthey Porsche (Shahin / Pera / Lietz)."]},
+  wec: {"race":{"name":"6 Hours of Barcelona","where":"Circuit de Barcelona-Catalunya · Oct 18 · Hypercar","note":"Toyota scored a 1-2, the #8 beating the #7 by 0.583s, and clinched its eighth manufacturers' world title. The drivers' title goes to Monza between the two Toyota crews. The #92 Manthey Porsche won LMGT3.","rows":[["1","8","Buemi / Hartley / Hirakawa","Toyota","Winner"],["2","7","Conway / Kobayashi / de Vries","Toyota","+0.583"],["3","50","Fuoco / Molina / Nielsen","Ferrari 499P","+39.725"],["4","38","Bamber / Bourdais / Aitken","Cadillac V-Series.R","+52.811"],["5","83","Ye / Kubica / Hanson","Ferrari 499P","+53.353"],["6","12","Lynn / Stevens / Nato","Cadillac V-Series.R","+1:20.751"],["7","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8",""],["8","36","Gounon / Martins","Alpine A424",""],["9","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["10","35","Milesi / Habsburg","Alpine A424",""]],"partial":true},"champs":[["Hypercar manufacturers","Toyota","Clinched at Barcelona · 8th world title"]],"standingsTitle":"Hypercar drivers' championship (after Barcelona)","standings":[["Buemi / Hartley / Hirakawa","#8 Toyota",114],["Conway / Kobayashi / de Vries","#7 Toyota",97],["Magnussen / Marciello","#15 BMW",75],["Rast / Frijns","#20 BMW",75],["Dries Vanthoor","#15 BMW",69],["Fuoco / Molina / Nielsen","#50 Ferrari",69]],"makersTitle":"Hypercar manufacturers (after Barcelona; Toyota has clinched)","makers":[["Toyota",212],["BMW",154],["Ferrari",130]],"extraTitle":"LMGT3 drivers","extra":[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],"gridTitle":"Hypercar grid","grid":[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],"notes":["Monza (Nov 6–8) decides the drivers' title: the #8 Toyota leads the #7 by 17 points.","Toyota clinched the manufacturers' title with its 1-2 at Barcelona.","LMGT3 at Barcelona went to the #92 Manthey Porsche (Shahin / Pera / Lietz)."]},
   gte: {"race":{"name":"3 Hours of Portimão","where":"Algarve International Circuit · Oct 17 · Endurance Cup finale","note":"Mercedes-AMG Team GetSpeed won the finale, ahead of Lionspeed GP's Porsche and Boutsen VDS's pole-sitting Porsche. Max Verstappen finished ninth on his series debut after starting 24th.","rows":[["1","17","Ralf Aron / Maximilian Götz / Fabian Schiller","Mercedes-AMG · GetSpeed","Winner"],["2","","Lionspeed GP","Porsche 911 GT3 R",""],["3","","Boutsen VDS","Porsche 911 GT3 R",""],["9","3","Max Verstappen and crew","Mercedes-AMG · Verstappen Racing",""]],"partial":true},"champs":[["Overall Pro drivers","Lucas Auer / Maro Engel","#48 Mercedes-AMG Mann-Filter (Winward) · 131.5 pts"],["Gold Cup","ROWE Racing",""],["Silver Cup","Team WRT",""]],"standingsTitle":null,"standings":null,"makersTitle":null,"makers":null,"extraTitle":null,"extra":null,"gridTitle":"Crews to know","grid":[["#80 Lionspeed GP","Porsche 911 GT3 R","Bastian Buus · Ricardo Feller · Thomas Preining"],["#48 Mercedes-AMG Team Mann-Filter","Mercedes-AMG GT3 Evo","Lucas Auer · Maro Engel · Luca Stolz"],["#32 Team WRT","BMW M4 GT3 Evo","Kelvin van der Linde · Charles Weerts"],["#7 Comtoyou Racing","Aston Martin Vantage AMR GT3 Evo","Mattia Drudi · Marco Sørensen · Nicki Thiim"],["#3 Verstappen Racing","Mercedes-AMG GT3 Evo","Jules Gounon · Daniel Juncadella"],["#69 Emil Frey Racing","Ferrari 296 GT3 Evo","Ben Green · Thierry Vermeulen"],["#58 Garage 59","McLaren 720S GT3 Evo","Tom Fleming · Louis Prette"],["#50 AF Corse","Ferrari 296 GT3 Evo","Arthur Leclerc · Thomas Neubauer"]],"notes":["Season complete. Auer and Engel are the 2026 overall champions.","Max Verstappen made his GT World Challenge debut at Portimão and finished ninth.","2027 starts at Paul Ricard, April 16–18."]},
   gtas: {"race":{"name":"Beijing","where":"Beijing Street Circuit · Oct 3–4 · Pro-Am","note":"Liu Kaishun and Takuro Shinohara (Harmony Racing) won Race 1 from pole. Huang Ruohan and Alessandro Ghiretti (Absolute Racing) won Race 2 in a replacement Porsche, after their car was badly damaged by fire earlier in the weekend.","rows":[["R1","96","Liu Kaishun / Takuro Shinohara","Ferrari 296 GT3 · Harmony Racing","Winner"],["R2","911","Huang Ruohan / Alessandro Ghiretti","Porsche 911 GT3 R · Absolute Racing","Winner"]],"partial":true},"champs":null,"standingsTitle":"Drivers' championship going into Shanghai","standings":[["Lu Wei","#11 Origine Porsche",124],["Huang Ruohan / Alessandro Ghiretti","#911 Absolute Porsche",119],["Cheng Congfu / Yu Kuai","#16 Phantom Audi",98],["Anthony Liu","#37 Phantom Porsche",96],["Liu Kaishun","#96 Harmony Ferrari",95]],"makersTitle":null,"makers":null,"gridTitle":"Format","grid":[["6 rounds","2 one-hour races each","Sepang, Mandalika, Fuji, Okayama, Beijing, Shanghai"],["Classes","Pro-Am, Silver-Am, Am","Most cars share a pro with an amateur driver"]],"notes":["The title is decided at Shanghai this weekend (Oct 30–Nov 1). Five crews can still win it.","Lu Wei leads by 5 points over Huang and Ghiretti."]},
   psc: {
@@ -1570,12 +1595,12 @@ const STATS = {
     notes:["Season complete: Loftsgard and Tait are the 2026 champions.","Every car is a Ford Mustang Dark Horse R. Dark Horse is the top class; Dark Horse Legends is for older drivers.","Six weekends, two races each, all on IMSA race weekends."]
   },
   gtau: {
-    race: { name:"Hidden Valley (Round 4)", where:"Darwin · Jul 26 · Pro-Am",
-      note:"Team BRM won race 1 and Team MPC won race 2 to strengthen its title lead.",
-      rows:[["R1","268","Alex Peroni / Mark Rosser","Team BRM · Pro-Am","Winner"],["R2","1","Broc Feeney / Brad Schumacher","Team MPC · Pro-Am","Winner"]], partial:true },
+    race: { name:"Sydney Motorsport Park (Round 5)", where:"Eastern Creek, NSW · Sep 20 · Pro-Am",
+      note:"Tigani Motorsport's Shane Smollen and Oscar Targett won race 1. Broc Feeney and Brad Schumacher won race 2 for Team MPC and stretched their title lead to 14 points before the Adelaide finale.",
+      rows:[["R1","56","Shane Smollen / Oscar Targett","Tigani Motorsport · Pro-Am","Winner"],["R2","1","Broc Feeney / Brad Schumacher","Team MPC · Pro-Am","Winner"],["R1, R2","45","Brett Hobson / Michael Sheargold","GWR Australia/RAM Motorsport · Am Cup","Class wins"],["R1, R2","24","Paul Stokell / Matt Stoupas","Melbourne Performance Centre · Trophy","Class wins"]], partial:true },
     champs:null,
-    standingsTitle:"Pro-Am drivers (after Round 4)",
-    standings:[["Broc Feeney / Brad Schumacher","Melbourne Performance Centre",111],["Brendon Leitch / Sergio Pires","Tigani Motorsport",101],["Mark Rosser","Team BRM",101]],
+    standingsTitle:"Drivers (after Round 5)",
+    standings:[["Broc Feeney / Brad Schumacher","Melbourne Performance Centre",146],["Mark Rosser","Team BRM",132],["Brendon Leitch / Sergio Pires","Tigani Motorsport",119],["Paul Lucchitti / Jayden Ojeda","Tigani Motorsport",106],["Jaxon Evans / Elliott Schutte","ARGT",100],["Steve Brooks / Ryan Wood","Team BRM",95],["Oscar Targett","Tigani Motorsport",93],["Alex Peroni","Team BRM",82]],
     makersTitle:"Teams (after Round 4)",
     makers:[["Tigani Motorsport",171],["Team BRM",136],["Melbourne Performance Centre",133]],
     extraTitle:"Trophy class",
@@ -1583,7 +1608,7 @@ const STATS = {
     gridTitle:"Crews to know",
     grid:[["#1 Team MPC","GT3","Broc Feeney · Brad Schumacher"],["#44 Tigani Motorsport","GT3","Sergio Pires · Brendon Leitch"],["#66 Tigani Motorsport","GT3","Paul Lucchitti · Jayden Ojeda"],
       ["#268 Team BRM","GT3","Alex Peroni · Mark Rosser"],["#56 Tigani Motorsport","GT3","Oscar Targett"],["#181 OnlyFans Racing","GT3","Will Davison · Renee Gracie"]],
-    notes:["Supercars champion Broc Feeney leads the Pro-Am title fight.","The finale is at the Adelaide street circuit, Nov 26–29, alongside the Supercars season finale.","Round 5 at Sydney (Sep 18–20) results aren't fully loaded yet."]
+    notes:["Supercars champion Broc Feeney leads the Pro-Am title fight.","The finale is at the Adelaide street circuit, Nov 26–29, alongside the Supercars season finale.","Team standings and the Trophy class are as of Round 4."]
   },
   gtwc: {
     race: { name:"Indianapolis 8 Hour (season finale)", where:"Indianapolis Motor Speedway · Oct 11 · overall",
@@ -2453,9 +2478,11 @@ document.addEventListener("click", ev => {
   document.querySelectorAll("[data-spane]").forEach(b => b.setAttribute("aria-selected", b === t));
   document.querySelectorAll("[data-spanebody]").forEach(p => p.hidden = p.dataset.spanebody !== statsPane);
 });
+const STAT_SERIES = [["f1","Formula 1","f1"],["predict","F1 predictions","f1"],["imsa","IMSA","imsa"],["wec","FIA WEC","wec"],["gtwc","GT World Challenge America","gtwc"],["gte","GT World Challenge Europe","gte"],["gtas","GT World Challenge Asia","gtas"],["gtau","GT World Challenge Australia","gtau"],["psc","Porsche Supercup","psc"],["pccna","Porsche Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]];
 function renderStatChips(){
-  document.getElementById("statChips").innerHTML = chipsHTML(statsSeries,
-    [["f1","F1","f1"],["predict","F1 Predictions","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gtwc","GT America","gtwc"],["gte","GT Europe","gte"],["gtas","GT Asia","gtas"],["gtau","GT Australia","gtau"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]]);
+  const cur = STAT_SERIES.find(x => x[0] === statsSeries) || STAT_SERIES[0];
+  document.getElementById("statChips").innerHTML = `<details class="sdrop"><summary aria-label="Choose a series">${plate(cur[2], 26)}<span class="sd-name">${esc(cur[1])}</span><span class="sd-caret" aria-hidden="true"></span></summary>
+    <div class="sd-list" role="list">${STAT_SERIES.map(([v, l, pl]) => `<button class="chip sd-item" role="listitem" data-v="${v}" aria-pressed="${v === statsSeries}">${plate(pl, 22)}<span>${esc(l)}</span></button>`).join("")}</div></details>`;
 }
 function renderStats(){
   if (statsSeries === "predict") {
@@ -2466,7 +2493,8 @@ function renderStats(){
     return;
   }
   const st = STATS[statsSeries], c = statsSeries, r = st.race;
-  const card = (t, body) => `<section class="card"><h3>${esc(t)}</h3>${body}</section>`;
+  let shown = 0;
+  const card = (t, body, open) => { const o = open === undefined ? shown++ < 1 : open; return `<details class="acc"${o ? " open" : ""}><summary><h3>${esc(t)}</h3><span class="acc-caret" aria-hidden="true"></span></summary><div class="acc-body">${body}</div></details>`; };
   // Points tables first. Hide "before the finale" tables once the champions are known.
   const stale = t => st.champs && /before/i.test(t || "");
   let pts = "";
@@ -2476,17 +2504,12 @@ function renderStats(){
   if (st.extra && !stale(st.extraTitle)) pts += card(st.extraTitle, `<div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div>`);
   if (!pts) pts = `<div class="card"><p class="lede" style="margin:0">Standings aren't loaded for this series yet.</p></div>`;
   { const ao = document.getElementById("statsAsof"); if (ao && ao.textContent.trim()) pts += `<p class="fine">${esc(ao.textContent.trim())}</p>`; }
-  const race = r ? `<section class="card"><h3>${esc(r.name)}</h3><p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>` : "";
-  const grid = st.grid ? card(st.gridTitle || "Teams", `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`) : "";
-  const notes = st.notes ? card("Storylines", `<ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`) : "";
-  const panes = [["pts", "Standings", pts]];
-  if (race) panes.push(["race", "Latest race", race]);
-  if (grid) panes.push(["grid", c === "f1" ? "Teams" : "Drivers", grid]);
-  if (notes) panes.push(["notes", "Storylines", notes]);
-  if (!panes.some(p => p[0] === statsPane)) statsPane = "pts";
-  let h = `<div class="${c}"><div class="subtabs st-tabs" role="tablist">${panes.map(p => `<button role="tab" data-spane="${p[0]}" aria-selected="${p[0] === statsPane}">${p[1]}</button>`).join("")}</div>`
-    + (r ? `<p class="asof" style="margin:0 0 10px">Latest: ${esc(r.name)}${r.where ? ", " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}</p>` : "")
-    + panes.map(p => `<div data-spanebody="${p[0]}" ${p[0] === statsPane ? "" : "hidden"}>${p[2]}</div>`).join("");
+  const race = r ? card(`Latest race: ${r.name}`, `<p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}`, false) : "";
+  const grid = st.grid ? card(c === "f1" ? "Teams and drivers" : (st.gridTitle || "Drivers"), `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`) : "";
+  const notes = st.notes ? card("Storylines", `<ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`, false) : "";
+  let h = `<div class="${c} acc-wrap">`
+    + (r ? `<p class="asof" style="margin:0 0 var(--space-sm)">Latest: ${esc(r.name)}${r.where ? ", " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}</p>` : "")
+    + pts + race + grid.replace("<details class=\"acc\" open>", "<details class=\"acc\">") + notes;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
 }
 
