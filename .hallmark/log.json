@@ -1,0 +1,13 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "polish",
+  "scope": "app",
+  "prompt": "race-weekend tracker app: times in your time zone, where to watch, tickets, standings",
+  "waived": [
+   "39b"
+  ],
+  "signature": "session timing rows with the next session lit in marshal yellow",
+  "date": "2026-10-30"
+ }
+]
