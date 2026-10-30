@@ -937,6 +937,9 @@ main{max-width:1200px}
 @media (prefers-reduced-motion:reduce){ .hh-copy{transform:none !important} }
 
 /* finish review fixes */
+.n-lead h3{line-height:1.12;padding-bottom:var(--space-3xs)}
+.n-src{margin-top:var(--space-sm);position:relative}
+.wk-more h2.h4{font-size:var(--text-title);max-width:none}
 .ticker{margin-top:var(--space-2xl)}
 .np-fb{position:absolute;inset:0;display:grid;place-items:center;background:var(--color-ink);color:var(--color-paper);font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-2xl);text-transform:uppercase}
 .np:has(img) .np-fb{display:none}
@@ -2129,7 +2132,7 @@ function renderWeekend(){
     <section class="feat-sec" aria-label="Featured race">
       <p class="fine hh-tz">${tzLine()}</p>
       ${featHTML(feat)}
-      ${items.length > 1 ? `<div class="wk-more"><h3 class="h4">Also this weekend</h3><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
+      ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">Also this weekend</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
     </section>
     ${tickerHTML()}
     <section class="guide" aria-labelledby="guideTitle">

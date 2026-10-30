@@ -30,8 +30,12 @@ jobs:
             git config user.email "news-bot@users.noreply.github.com"
             git add news.json
             git commit -m "Update news"
-            git pull --rebase origin main
-            git push origin HEAD:main
+            # Several robots save at the same moment; retry a few times instead of failing
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin HEAD:main && exit 0
+              sleep $((RANDOM % 15 + 5))
+            done
+            exit 1
           else
             echo "No changes"
           fi
