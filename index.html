@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F9FB">
+<script>(function(){try{var t=localStorage.getItem("raceweekends-2026-theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");document.querySelector('meta[name="theme-color"]').setAttribute("content","#141A22")}}catch(e){}})()</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -62,7 +63,7 @@
 :root{
   --bg:var(--color-paper); --panel:var(--color-paper); --panel-2:var(--color-paper-2); --ink:var(--color-ink); --sub:var(--color-muted); --rule:var(--color-rule); --rule-strong:var(--color-rule-2);
   --signal:var(--color-accent); --signal-ink:var(--color-accent-ink); --plate-ink:oklch(99% 0.003 250); --done:oklch(68% 0.012 250); --green:oklch(55% 0.16 150);
-  --container:1200px; --display:var(--font-display); --ui:var(--font-body); --mono:var(--font-outlier); --r:var(--radius-card);
+  --band:oklch(16% 0.080 260); --band-ink:oklch(98% 0.005 250); --container:1200px; --display:var(--font-display); --ui:var(--font-body); --mono:var(--font-outlier); --r:var(--radius-card);
   --scrim:oklch(16% 0.080 260 / 0.55); --scrim-strong:oklch(16% 0.080 260 / 0.82); --scrim-mid:oklch(16% 0.080 260 / 0.45); --scrim-soft:oklch(16% 0.080 260 / 0.15); --scrim-foot:oklch(16% 0.080 260 / 0.6); --photo-bg:var(--color-paper-2); --credit-bg:oklch(16% 0.080 260 / 0.6); --credit-ink:var(--color-paper);
   --f1:#D7261E; --imsa:#2563B8; --wec:#0F8A6C; --gtwc:#C2410C; --gte:#6D28D9; --gtas:#BE185D; --gtau:#0E7490; --psc:#4B5563; --pccna:#3F6212; --mustang:#7F1D1D;
   --d-ow:#D7261E; --d-sc:#0F8A6C; --d-gt:#C2410C; --d-om:#6B7280; --d-stk:#1D4ED8; --d-tc:#7C3AED; --d-ral:#B45309; --d-off:#92400E; --d-drg:#BE123C; --d-dft:#DB2777; --d-dirt:#78350F; --d-gr:#4D7C0F; --d-hc:#0369A1; --d-mr:#0E7490; --d-mx:#A16207; --d-mo:#475569;
@@ -878,7 +879,7 @@ main{max-width:1200px}
 .home-hero{align-items:end}
 .feat{order:0}
 /* ticker: upcoming races slide sideways as you scroll */
-.ticker{margin:0 calc(50% - 50vw);border-top:var(--rule-bar) solid var(--color-ink);border-bottom:var(--rule-bar) solid var(--color-ink);background:var(--color-ink);color:var(--color-paper);overflow:hidden;padding:var(--space-sm) 0}
+.ticker{margin:0 calc(50% - 50vw);border-top:var(--rule-bar) solid var(--band);border-bottom:var(--rule-bar) solid var(--band);background:var(--band);color:var(--band-ink);overflow:hidden;padding:var(--space-sm) 0}
 .tick-row{overflow:hidden;white-space:nowrap}
 .tick-row + .tick-row{margin-top:var(--space-xs)}
 .tick-track{display:inline-flex;gap:var(--space-xl);will-change:transform}
@@ -892,7 +893,7 @@ main{max-width:1200px}
 .up-ph{position:relative;aspect-ratio:4/3;border-radius:var(--radius-card);background:var(--c) 50% 50%/cover no-repeat;overflow:hidden}
 .up-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--scrim),transparent 55%)}
 .up-ph:not(.ok){background-image:none}
-.up-days{position:absolute;left:var(--space-sm);bottom:var(--space-sm);z-index:1;color:var(--color-paper);font-size:var(--text-sm)}
+.up-days{position:absolute;left:var(--space-sm);bottom:var(--space-sm);z-index:1;color:var(--band-ink);font-size:var(--text-sm)}
 .up-days b{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-2xl);line-height:1;margin-right:var(--space-3xs)}
 .up-body{padding-top:var(--space-sm)}
 .up-body h3{font-size:var(--text-title);text-transform:uppercase;margin-top:var(--space-xs);line-height:1.02}
@@ -920,14 +921,14 @@ main{max-width:1200px}
 
 /* hero: the race photograph with the promise over it */
 .home-hero{display:block;padding:0}
-.hh-band{position:relative;margin:0 calc(50% - 50vw);min-height:clamp(420px,calc(72svh - var(--top-h,100px)),620px);margin-top:calc(-1 * var(--space-md));display:flex;align-items:flex-end;background:var(--color-ink);color:var(--color-paper);overflow:hidden;isolation:isolate}
+.hh-band{position:relative;margin:0 calc(50% - 50vw);min-height:clamp(420px,calc(72svh - var(--top-h,100px)),620px);margin-top:calc(-1 * var(--space-md));display:flex;align-items:flex-end;background:var(--band);color:var(--band-ink);overflow:hidden;isolation:isolate}
 .hh-ph{position:absolute;inset:-8% 0;z-index:-2;background:50% 50%/cover no-repeat}
 .hh-band::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--scrim-strong) 0%,var(--scrim-mid) 55%,var(--scrim-soft) 100%),linear-gradient(to top,var(--scrim-foot),transparent 50%)}
 .hh-copy{width:100%;max-width:1200px;margin:0 auto;padding:var(--space-2xl) var(--space-md) var(--space-xl);will-change:transform}
-.hh-band h1{color:var(--color-paper);font-size:var(--text-display);line-height:.94;max-width:10ch}
-.hh-band .lead{color:var(--color-paper);opacity:.92;max-width:40ch}
-.hh-band .cta-secondary{border-color:var(--color-paper);color:var(--color-paper)}
-.hh-band .credit{position:absolute;right:var(--space-md);bottom:var(--space-sm);font-size:var(--text-xs);color:var(--color-paper);opacity:.8;text-decoration:none}
+.hh-band h1{color:var(--band-ink);font-size:var(--text-display);line-height:.94;max-width:10ch}
+.hh-band .lead{color:var(--band-ink);opacity:.92;max-width:40ch}
+.hh-band .cta-secondary{border-color:var(--band-ink);color:var(--band-ink)}
+.hh-band .credit{position:absolute;right:var(--space-md);bottom:var(--space-sm);font-size:var(--text-xs);color:var(--band-ink);opacity:.8;text-decoration:none}
 .hh-tz{margin-top:var(--space-md)}
 .feat{margin-top:var(--space-lg)}
 .feat-in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--space-xl);align-items:start;padding-top:var(--space-md)}
@@ -941,7 +942,7 @@ main{max-width:1200px}
 .n-src{margin-top:var(--space-sm);position:relative}
 .wk-more h2.h4{font-size:var(--text-title);max-width:none}
 .ticker{margin-top:var(--space-2xl)}
-.np-fb{position:absolute;inset:0;display:grid;place-items:center;background:var(--color-ink);color:var(--color-paper);font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-2xl);text-transform:uppercase}
+.np-fb{position:absolute;inset:0;display:grid;place-items:center;background:var(--band);color:var(--band-ink);font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-2xl);text-transform:uppercase}
 .np:has(img) .np-fb{display:none}
 .np img{z-index:1}
 .np-tag{z-index:2}
@@ -954,12 +955,28 @@ main{max-width:1200px}
 .dt span,.tk .dt span{font-size:var(--text-xs);font-weight:600;font-family:var(--font-body);color:var(--color-muted)}
 .month,.dir-h,.card h4,.card .h4,.g-dh,.wk-more .h4{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-title);text-transform:uppercase;letter-spacing:var(--tracking-display);color:var(--color-ink)}
 .dir-h small{text-transform:none;font-family:var(--font-body)}
-.tick-row[data-dir="-1"] .tk-item{color:var(--color-paper);opacity:.6;-webkit-text-stroke:0}
+.tick-row[data-dir="-1"] .tk-item{color:var(--band-ink);opacity:.6;-webkit-text-stroke:0}
 .feat .sched.compact{max-width:none}
 .wk-more{margin-top:var(--space-xl)}
 .wk-rows{background:transparent;border:0;border-top:1px solid var(--color-ink);border-radius:0}
 .wk-row{padding-left:0;padding-right:0}
 .wk-row:hover{background:var(--color-paper-2)}
+
+/* Dark mode: night session. Same system, the paper and ink swap; volt stays the one light. */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --color-paper:oklch(17% 0.030 258); --color-paper-2:oklch(21% 0.034 258); --color-paper-3:oklch(25% 0.036 258);
+  --color-ink:oklch(95% 0.008 250); --color-ink-2:oklch(88% 0.010 250); --color-muted:oklch(71% 0.020 250);
+  --color-rule:oklch(33% 0.030 255); --color-rule-2:oklch(80% 0.020 250);
+  --color-accent-deep:oklch(82% 0.170 125); --color-focus:oklch(82% 0.170 125);
+  --done:oklch(52% 0.015 250); --green:oklch(72% 0.17 150); --plate-ink:oklch(99% 0.003 250);
+  --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
+  --scrim-mid:oklch(8% 0.03 260 / 0.6);
+}
+:root[data-theme="dark"] .plate text{fill:oklch(14% 0.03 258)}
+.hbtn svg.sun{display:none}
+:root[data-theme="dark"] .hbtn svg.sun{display:block}
+:root[data-theme="dark"] .hbtn svg.moon{display:none}
 </style>
 </head>
 <body>
@@ -970,7 +987,7 @@ main{max-width:1200px}
     <div class="brand">
       <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
       <a class="wm" href="./" aria-label="Premier Racing Info home">Premier Racing <span>Info</span></a>
-      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg></button><button class="hbtn alt" id="bellBtn" aria-label="Alerts and reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico"><svg class="ico-sv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span> <span id="acctLbl">Log in</span></button></span>
+      <span class="hbtns"><button class="hbtn alt" id="themeBtn" aria-label="Switch to dark mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg></button><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg></button><button class="hbtn alt" id="bellBtn" aria-label="Alerts and reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico"><svg class="ico-sv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span> <span id="acctLbl">Log in</span></button></span>
       <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
@@ -3246,6 +3263,15 @@ function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderRemi
 
 { const top = document.querySelector(".top"), setTop = () => document.documentElement.style.setProperty("--top-h", top.offsetHeight + "px"); setTop(); if ("ResizeObserver" in window) new ResizeObserver(setTop).observe(top); }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-alerts]")) { openReminders(); return; } });
+// Light / dark switch: remembered on this phone; first visit follows the phone's setting
+function syncThemeBtn(){ const d = document.documentElement.getAttribute("data-theme") === "dark", b = document.getElementById("themeBtn"); if (b) { b.setAttribute("aria-label", d ? "Switch to light mode" : "Switch to dark mode"); b.title = d ? "Light mode" : "Dark mode"; } const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", d ? "#141A22" : "#F7F9FB"); }
+document.getElementById("themeBtn").addEventListener("click", () => {
+  const d = document.documentElement.getAttribute("data-theme") !== "dark";
+  if (d) document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
+  try { localStorage.setItem(KEY + "-theme", d ? "dark" : "light"); } catch(e){}
+  syncThemeBtn();
+});
+syncThemeBtn();
 document.addEventListener("click", ev => { const j = ev.target.closest("[data-mjump]"); if (j) { const t = document.getElementById(j.dataset.mjump); if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); } });
 document.querySelector(".tabs").addEventListener("click", ev => {
   const b = ev.target.closest(".tab"); if (b) showTab(b.id.slice(2));
