@@ -1,6 +1,33 @@
 [
  {
   "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "theme": "sport",
+  "shape": "app home",
+  "hero": "Poster",
+  "nav": "masthead with tabs",
+  "footer": "colophon",
+  "imagery": "track photographs, news photographs",
+  "signature": "race-programme timing sheet with the next session on volt and a live countdown",
+  "sections": [
+   "hero",
+   "featured race",
+   "ticker",
+   "weekend guide",
+   "up next",
+   "figures",
+   "news"
+  ],
+  "waived": [
+   "44c",
+   "39b"
+  ],
+  "prompt": "motorsport race-weekend schedule and TV guide, RACER-style light sports data",
+  "date": "2026-10-30"
+ },
+ {
+  "mode": "redesign",
   "depth": "polish",
   "scope": "app",
   "prompt": "race-weekend tracker app: times in your time zone, where to watch, tickets, standings",
