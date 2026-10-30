@@ -56,3 +56,10 @@ Left aligned throughout. Radius 8px on panels, 6px on buttons, no shadows.
 - "Make it yours" card → one quiet line; "Share with friends" card → footer link
 - Arrows (›, →) on buttons
 - Yellow on badges, buttons, tab underline, tickets, picks
+
+## Round 2 — references (Oct 30, 2026)
+- **Lamborghini / Porsche (via Inspo archive):** a race name set huge in a condensed face over a full-bleed photo of the place. → Featured race: track photo behind, name at display size.
+- **Morgen (Inspo):** the product's real calendar UI is the hero. → The session timing panel sits beside the name, not under a click.
+- **F1 app / live timing screens:** a countdown in big tabular figures to the next session. → Ticking countdown, the one moving element.
+- **Apple Sports:** secondary games as dense one-line rows. → "Also this weekend" rows: plate, name, next session, watch.
+- Calendar gets a sticky month jump; Tickets becomes one ruled list with links on the right.
