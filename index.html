@@ -922,7 +922,6 @@ main{max-width:1200px}
 /* hero: the race photograph with the promise over it */
 .home-hero{display:block;padding:0}
 .hh-band{position:relative;margin:0 calc(50% - 50vw);min-height:clamp(420px,calc(72svh - var(--top-h,100px)),620px);margin-top:calc(-1 * var(--space-md));display:flex;align-items:flex-end;background:var(--band);color:var(--band-ink);overflow:hidden;isolation:isolate}
-.hh-ph{position:absolute;inset:-8% 0;z-index:-2;background:50% 50%/cover no-repeat}
 .hh-band::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--scrim-strong) 0%,var(--scrim-mid) 55%,var(--scrim-soft) 100%),linear-gradient(to top,var(--scrim-foot),transparent 50%)}
 .hh-copy{width:100%;max-width:1200px;margin:0 auto;padding:var(--space-2xl) var(--space-md) var(--space-xl);will-change:transform}
 .hh-band h1{color:var(--band-ink);font-size:var(--text-display);line-height:.94;max-width:10ch}
@@ -979,9 +978,6 @@ main{max-width:1200px}
 :root[data-theme="dark"] .hbtn svg.moon{display:none}
 
 /* hero slideshow */
-.hh-ph{opacity:0;transition:opacity var(--dur-long) var(--ease-out)}
-.hh-ph.on,.hh-ph.ok:only-of-type{opacity:1}
-.hh-ph:not(.from-news).ok{opacity:1}
 .hh-pause{all:unset;cursor:pointer;position:absolute;right:var(--space-md);top:var(--space-md);width:36px;height:36px;display:grid;place-items:center;border-radius:var(--radius-card);background:var(--scrim);color:var(--band-ink)}
 .hh-pause svg{width:16px;height:16px;fill:currentColor}
 .hh-pause .pl{display:none}
@@ -989,7 +985,7 @@ main{max-width:1200px}
 .hh-pause[aria-pressed="true"] .ps{display:none}
 .hh-pause:hover{background:var(--scrim-strong)}
 .hh-pause:focus-visible{outline:2px solid var(--band-ink);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){ .hh-ph{transition:none} .hh-pause{display:none} }
+@media (prefers-reduced-motion:reduce){ .hh-pause{display:none} }
 
 /* photos everywhere */
 .pic{position:relative;display:block;background:var(--c, var(--color-paper-3)) 50% 40%/cover no-repeat;border-radius:var(--radius-card);overflow:hidden}
@@ -1006,6 +1002,13 @@ main{max-width:1200px}
 .up-ph{display:block;aspect-ratio:4/3}
 .sthumb.pic{width:60px;height:60px;border-radius:var(--radius-card)}
 .sthumb.pic.ok .dplate{display:none}
+
+/* hero photos: smooth crossfade with a slow settle */
+.hh-media{position:absolute;inset:-10% 0 -10% 0;z-index:-2;will-change:transform}
+.hh-media .hh-ph{position:absolute;inset:0;z-index:auto;background:50% 50%/cover no-repeat;opacity:0;transform:scale(1.06);transition:opacity 900ms var(--ease-in-out),transform 9s var(--ease-out);will-change:opacity,transform}
+.hh-media .hh-ph.on{opacity:1;transform:scale(1)}
+.hh-media .hh-ph.on:not(.ok){opacity:0}
+@media (prefers-reduced-motion:reduce){ .hh-media .hh-ph{transition:none;transform:none} }
 </style>
 </head>
 <body>
@@ -1826,28 +1829,39 @@ function heroPoolFrom(first){
   const pool = []; for (let i = 0; pool.length < 16 && i < 6; i++) for (const t of tags) { const x = byTag.get(t)[i]; if (x && pool.length < 16) pool.push(x); }
   return pool;
 }
+const heroReady = new Map(); // url -> decoded src
+function heroLoad(x){
+  if (heroReady.has(x.img)) return heroReady.get(x.img);
+  const p = new Promise(res => {
+    const img = new Image(), big = x.img.replace(/\/s6\//, "/s8/");
+    img.decoding = "async";
+    img.onload = () => { if (img.naturalWidth < 400 && img.src !== x.img) { img.src = x.img; return; } (img.decode ? img.decode() : Promise.resolve()).catch(() => {}).then(() => res(img.src)); };
+    img.onerror = () => { if (img.src !== x.img) img.src = x.img; else res(null); };
+    img.src = big;
+  });
+  heroReady.set(x.img, p); return p;
+}
 function heroShow(i){
   const band = document.querySelector(".hh-band"); if (!band || !heroPool.length) return;
-  const x = heroPool[i % heroPool.length], src = x.img.replace(/\/s6\//, "/s8/"), img = new Image();
-  img.onload = () => {
-    if (img.naturalWidth < 400 && img.src !== x.img) { img.src = x.img; return; }
+  const x = heroPool[i % heroPool.length];
+  heroLoad(heroPool[(i + 1) % heroPool.length]); // warm the next one
+  const img = { src: "" };
+  heroLoad(x).then(src => { if (!src) return; img.src = src; show(); });
+  const show = () => {
     const layers = band.querySelectorAll(".hh-ph"), cur = band.querySelector(".hh-ph.on") || layers[0], next = [...layers].find(l => l !== cur) || cur;
     next.style.backgroundImage = `url("${img.src.replace(/"/g, "%22")}")`; next.classList.add("ok", "from-news", "on"); if (next !== cur) cur.classList.remove("on");
     const w = worldById(x.tags[0]), html = `<a class="credit" href="${esc(x.link)}" target="_blank" rel="noopener">Photo: ${esc(x.source)}${w ? ", " + esc(w.short || w.name) : ""}</a>`;
     const cr = band.querySelector(".credit"); if (cr) cr.outerHTML = html; else band.insertAdjacentHTML("beforeend", html);
   };
-  img.onerror = () => { if (img.src !== x.img) img.src = x.img; };
-  img.src = src;
 }
 function heroStart(){
   clearInterval(heroTimer);
   if (heroPool.length < 2 || heroPaused || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  heroTimer = setInterval(() => { if (!document.hidden) heroShow(++heroIdx); }, 40000);
+  heroTimer = setInterval(() => { if (!document.hidden) heroShow(++heroIdx); }, 30000);
 }
 function heroSetup(){
   const band = document.querySelector(".hh-band"); if (!band || !NEWS || !NEWS.items) return;
   const ph = band.querySelector(".hh-ph"); if (!ph) return;
-  if (!band.querySelector(".hh-ph.b")) { ph.classList.add("on"); ph.insertAdjacentHTML("afterend", `<div class="hh-ph b" aria-hidden="true"></div>`); }
   heroPool = heroPoolFrom(APP_TO_WORLD[ph.dataset.sphoto]); heroIdx = 0;
   if (heroPool.length > 1 && !band.querySelector(".hh-pause")) {
     band.insertAdjacentHTML("beforeend", `<button class="hh-pause" type="button" aria-label="${heroPaused ? "Play" : "Pause"} photos" aria-pressed="${heroPaused}"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ps" d="M8 5h3v14H8zM13 5h3v14h-3z"/><path class="pl" d="M8 5l11 7-11 7z"/></svg></button>`);
@@ -1917,7 +1931,7 @@ function loadPhoto(el){
     } else {
       const img = new Image();
       img.onload = () => { el.style.backgroundImage = `url("${v.src.replace(/"/g, "%22")}")`; el.classList.add("ok");
-        if (el.classList.contains("hh-ph") && !el.parentNode.querySelector(".credit")) el.insertAdjacentHTML("afterend", `<a class="credit" href="${esc(v.page)}" target="_blank" rel="noopener">Photo: Wikipedia</a>`); };
+        if (el.classList.contains("hh-ph") && !el.closest(".hh-band").querySelector(".credit")) el.closest(".hh-band").insertAdjacentHTML("beforeend", `<a class="credit" href="${esc(v.page)}" target="_blank" rel="noopener">Photo: Wikipedia</a>`); };
       img.src = v.src;
     }
   });
@@ -2236,7 +2250,7 @@ function renderWeekend(){
   el.innerHTML = `
     <section class="home-hero" aria-labelledby="homeTitle">
       <div class="hh-band">
-      <div class="hh-ph" data-sphoto="${feat.series}" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo aria-hidden="true"></div>
+      <div class="hh-media" aria-hidden="true"><div class="hh-ph on" data-sphoto="${feat.series}" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo></div><div class="hh-ph b"></div></div>
       <div class="hh-copy">
         <h1 id="homeTitle">Never miss a start</h1>
         <p class="lead">Every session of ${WORLD_LIST.length} racing series, in your time zone, with where to watch it.</p>
@@ -2313,7 +2327,8 @@ function upNextHTML(skip){
     const y = window.scrollY;
     document.querySelectorAll(".tick-row").forEach(r => { const tr = r.firstElementChild, w = tr.scrollWidth / 2 || 1, dir = +r.dataset.dir; const x = ((y * 0.6 * dir) % w + w) % w; tr.style.transform = `translate3d(${-x}px,0,0)`; });
     document.querySelectorAll(".hh-copy").forEach(c => { const b = c.parentNode.getBoundingClientRect(); if (b.bottom > 0) c.style.transform = `translate3d(0,${Math.min(0, b.top) * -0.25}px,0)`; });
-    document.querySelectorAll(".hh-ph.ok, .up-ph.ok").forEach(p => { const b = p.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight) return; const k = (b.top + b.height / 2 - innerHeight / 2) / innerHeight; p.style.backgroundPosition = `50% ${50 + k * 30}%`; });
+    document.querySelectorAll(".hh-media").forEach(m => { const b = m.parentNode.getBoundingClientRect(); if (b.bottom > 0) m.style.transform = `translate3d(0,${Math.min(0, b.top) * -0.3}px,0)`; });
+    document.querySelectorAll(".up-ph.ok").forEach(p => { const b = p.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight) return; const k = (b.top + b.height / 2 - innerHeight / 2) / innerHeight; p.style.backgroundPosition = `50% ${50 + k * 30}%`; });
   };
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(run); }, { passive: true });
   addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(run); });
