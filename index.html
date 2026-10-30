@@ -134,6 +134,9 @@ main{max-width:1200px;margin:0 auto;padding-inline:var(--space-md);padding-block
 /* Chips (filters) */
 .chips{display:flex;gap:var(--space-xs);overflow-x:auto;padding:var(--space-2xs) 0 var(--space-xs);scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .chips::-webkit-scrollbar{display:none}
+/* Mouse screens can't swipe a hidden-scrollbar row: wrap the chips instead */
+@media (min-width:760px){.chips{flex-wrap:wrap;overflow-x:visible}}
+@media (max-width:759px){.chips{mask-image:linear-gradient(to right,#000 calc(100% - 32px),transparent);-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 32px),transparent);padding-right:var(--space-xl)}}
 .chip{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:var(--space-xs);flex:none;background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:var(--space-2xs) var(--space-sm) var(--space-2xs) var(--space-2xs);font-weight:600;font-size:.85rem;white-space:nowrap}
 .chip.txt{padding:var(--space-xs) var(--space-md)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
