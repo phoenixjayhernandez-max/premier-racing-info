@@ -1765,10 +1765,32 @@ function wikiImage(q, size = 800, photoOnly = false){
   }).catch(() => null);
 }
 const photoIO = "IntersectionObserver" in window ? new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { photoIO.unobserve(en.target); loadPhoto(en.target); } }), { rootMargin: "300px" }) : null;
+// Race photographs from this week's news (press photos from Motorsport.com, Crash.net, RACER, Sportscar365),
+// matched to each slot's series and never repeated; each links back to its story. Falls back to Wikipedia.
+function applyNewsPhotos(root = document){
+  if (!NEWS || !NEWS.items) return;
+  const used = new Set();
+  root.querySelectorAll("[data-sphoto]").forEach(el => {
+    const wid = APP_TO_WORLD[el.dataset.sphoto];
+    const x = NEWS.items.find(n => n.img && !used.has(n.img) && n.tags.includes(wid) && !/logo|headshot|portrait/i.test(n.img));
+    if (!x) return;
+    used.add(x.img);
+    const src = x.img.replace(/\/s6\//, "/s8/");
+    const img = new Image();
+    img.onload = () => { if (img.naturalWidth < 400) { if (img.src !== x.img) img.src = x.img; return; } el.style.backgroundImage = `url("${img.src.replace(/"/g, "%22")}")`; el.classList.add("ok", "from-news");
+      const cr = el.parentNode.querySelector(".credit");
+      const html = `<a class="credit" href="${esc(x.link)}" target="_blank" rel="noopener">Photo: ${esc(x.source)}</a>`;
+      if (el.classList.contains("hh-ph")) { if (cr) cr.outerHTML = html; else el.insertAdjacentHTML("afterend", html); }
+      else el.title = `Photo: ${x.source}`;
+    };
+    img.onerror = () => { if (src !== x.img) { img.onerror = null; img.src = x.img; } };
+    img.src = src;
+  });
+}
 function loadPhoto(el){
   const size = +(el.dataset.sz || 800), photoOnly = el.hasAttribute("data-photo");
   wikiImage(el.dataset.img, size, photoOnly).then(v => {
-    if (!v) return;
+    if (!v || el.classList.contains("from-news")) return;
     if (el.classList.contains("photo")) {
       el.innerHTML = `<img src="${esc(v.src)}" alt=""><a class="credit" href="${esc(v.page)}" target="_blank" rel="noopener">Wikipedia</a>`;
       const img = el.querySelector("img");
@@ -2096,7 +2118,7 @@ function renderWeekend(){
   el.innerHTML = `
     <section class="home-hero" aria-labelledby="homeTitle">
       <div class="hh-band">
-      <div class="hh-ph" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo aria-hidden="true"></div>
+      <div class="hh-ph" data-sphoto="${feat.series}" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo aria-hidden="true"></div>
       <div class="hh-copy">
         <h1 id="homeTitle">Never miss a start</h1>
         <p class="lead">Every session of ${WORLD_LIST.length} racing series, in your time zone, with where to watch it.</p>
@@ -2121,7 +2143,7 @@ function renderWeekend(){
       <div class="fig"><b>${left}</b><span>Races left in ${SEASON}</span></div>
       ${nextOther ? `<div class="fig" data-open="${nextOther.id}" role="button" tabindex="0"><b>${dayDiff(t, nextOther.start)}</b><span>Days to ${esc(nextOther.name)}</span></div>` : ""}
     </section>`;
-  hydratePhotos(el); tickCountdowns();
+  hydratePhotos(el); applyNewsPhotos(el); tickCountdowns();
 }
 let LIT_ID = null;
 // Countdown to a session: "02:14:33" under a day, "3d 04h" beyond
@@ -2161,7 +2183,7 @@ function upNextHTML(skip){
   if (!list.length) return "";
   return `<section class="upnext" aria-labelledby="upTitle"><div class="sec-head"><h2 id="upTitle">Up next</h2><button class="tlink" data-gotab="calendar">Full calendar</button></div>
     <div class="up-strip">${list.map(e => { const d = dayDiff(t, e.start); return `<article class="up-card ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
-      <div class="up-ph" data-img="${esc(trackQuery(e))}" data-sz="640" data-photo><span class="up-days"><b>${d}</b> ${d === 1 ? "day" : "days"}</span></div>
+      <div class="up-ph" data-sphoto="${e.series}" data-img="${esc(trackQuery(e))}" data-sz="640" data-photo><span class="up-days"><b>${d}</b> ${d === 1 ? "day" : "days"}</span></div>
       <div class="up-body">${plate(e.series, 24)}<h3>${esc(e.name)}</h3><p>${esc(e.circuit)}<br>${range(e)}</p></div>
     </article>`; }).join("")}</div></section>`;
 }
@@ -2664,7 +2686,7 @@ function seriesNewsHTML(id){
   return list.length ? `<section class="card"><h3>Latest news</h3><div class="nlist">${list.map(newsItemHTML).join("")}</div></section>` : "";
 }
 function loadNews(){
-  fetch("news.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(d => { if (d) { NEWS = d; renderNews(); } }).catch(() => {});
+  fetch("news.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(d => { if (d) { NEWS = d; renderNews(); applyNewsPhotos(); } }).catch(() => {});
 }
 document.addEventListener("click", ev => {
   if (ev.target.closest("[data-allnews]")) { newsFilter = "all"; newsQuery = ""; openNews(); return; }
