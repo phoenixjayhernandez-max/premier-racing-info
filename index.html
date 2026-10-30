@@ -419,6 +419,11 @@ html,body{overflow-x:clip}
 .chip small{opacity:.65;font-weight:600;margin-left:var(--space-2xs)}
 .fld{display:block;font-size:.85rem;font-weight:600;color:var(--sub);margin-top:var(--space-sm)}.fld select{margin-top:var(--space-xs);font-size:1rem;padding:var(--space-xs)}
 .tk-sel{font:inherit;font-size:.9rem;padding:var(--space-xs) var(--space-xs);border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
+.tk-all{margin-top:var(--space-xl)}
+.tks-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:var(--space-xs)}
+.tks{display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-xs);background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:var(--space-xs) var(--space-sm);min-width:0}
+.tks .nm{font-weight:600;line-height:1.2}.tks .loc{font-size:.82rem;color:var(--sub);overflow-wrap:anywhere;white-space:normal;overflow:visible;text-overflow:clip}
+.tks .tk-btns{margin-top:0}
 .tk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-xs)}
 .tk{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:var(--space-xs) var(--space-sm);min-width:0}
 .tk-top{display:grid;grid-template-columns:52px auto 1fr;gap:var(--space-xs);align-items:start;cursor:pointer}
@@ -1107,7 +1112,7 @@ main{max-width:1200px}
     <div id="tkFilters"></div>
     <p class="asof" id="tkCount" style="margin:8px 0 0"></p>
     <div id="tkList"></div>
-    <p class="fine" style="margin-top:14px">Links go to F1’s official store, the series’ official seller or the circuit’s own site, plus a ticket search for every race. Support races on an F1 weekend are included with F1 tickets. Prices and availability are on the seller’s site.</p>
+    <p class="fine" style="margin-top:14px">Links go to F1’s official store, the series’ official seller or the circuit’s own site, plus a ticket search for every race. Below the races, every series we follow has its own ticket links. Support races on an F1 weekend are included with F1 tickets. Prices and availability are on the seller’s site.</p>
   </section>
 
   <section class="view" id="v-series" role="tabpanel" aria-labelledby="t-series" hidden>
@@ -2657,7 +2662,7 @@ const CIRCUIT_SITES = {
   "Fuji Speedway":"https://www.fsw.tv/en/", "Circuit de Barcelona-Catalunya":"https://www.circuitcat.com", "Algarve International Circuit":"https://www.autodromodoalgarve.com",
   "Misano World Circuit":"https://www.misanocircuit.com", "Circuit Paul Ricard":"https://www.circuitpaulricard.com", "Sepang International Circuit":"https://www.sepangcircuit.com",
   "Phillip Island Grand Prix Circuit":"https://www.phillipislandcircuit.com.au", "Sydney Motorsport Park":"https://www.sydneymotorsportpark.com.au", "The Bend Motorsport Park":"https://www.thebend.com.au",
-  "Red Bull Ring":"https://www.redbullring.com", "Silverstone":"https://www.silverstone.co.uk", "Suzuka":"https://www.suzukacircuit.jp/en/", "Monza":"https://www.monzanet.it", "Hungaroring":"https://hungaroring.hu", "Autodromo Enzo e Dino Ferrari":"https://www.autodromoimola.it",
+  "Red Bull Ring":"https://www.redbullring.com", "Silverstone":"https://www.silverstone.co.uk", "Suzuka":"https://www.suzukacircuit.jp/en/", "Lusail International Circuit":"https://www.lcsc.qa", "Bahrain International Circuit":"https://www.bahraingp.com", "Circuit de Nevers Magny-Cours":"https://www.circuitmagnycours.com", "Zandvoort":"https://www.circuitzandvoort.nl", "Mount Panorama":"https://www.bathurst12hour.com.au", "Queensland Raceway":"https://www.queenslandraceway.com.au", "Monza":"https://www.monzanet.it", "Hungaroring":"https://hungaroring.hu", "Autodromo Enzo e Dino Ferrari":"https://www.autodromoimola.it",
 };
 function ticketLinks(e){
   if (!e || e.cancelled || phase(e) === "past") return [];
@@ -2824,7 +2829,7 @@ function openWorld(id){
   h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">Share</button>`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
-  if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">Tickets ↗</a>`;
+  { const tl = seriesTicketLinks(x); h += `<a class="btn" href="${esc(tl[0][0] === "Official tickets" ? tl[0][1] : tl[tl.length - 1][1])}" target="_blank" rel="noopener">Tickets ↗</a>`; }
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? `. <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   const P = x.app && STATS[x.app] ? seriesHubHTML(x.app) : null;
   const wrap = t => `<div class="${x.app || ""}">${t}</div>`;
@@ -3357,6 +3362,36 @@ function ticketLinksFull(e){
   out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.circuit} ${e.end.getFullYear()} tickets`)]);
   const seen = new Set(); return out.filter(t => !seen.has(t[1]) && seen.add(t[1]));
 }
+// Official ticket stores for whole series (checked Oct 30, 2026). Others use the series' own site plus a ticket search.
+const SERIES_TICKETS = {
+  f1: "https://tickets.formula1.com/en", f2: "https://tickets.formula1.com/en", f3: "https://tickets.formula1.com/en", f1academy: "https://tickets.formula1.com/en",
+  "porsche-supercup": "https://tickets.formula1.com/en",
+  motogp: "https://tickets.motogp.com/", moto2: "https://tickets.motogp.com/", moto3: "https://tickets.motogp.com/",
+  indycar: "https://www.indycar.com/tickets", indynxt: "https://www.indycar.com/tickets",
+};
+function seriesTicketLinks(x){
+  const out = [];
+  if (SERIES_TICKETS[x.id]) out.push(["Official tickets", SERIES_TICKETS[x.id]]);
+  else if (x.site) out.push(["Official site", x.site]);
+  const where = x.next && x.status !== "Finished" ? x.next.split(" · ")[0] + " " : "";
+  out.push(["Find tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${x.short || x.name} ${where}tickets`)]);
+  return out;
+}
+function tkSeriesHTML(){
+  const q = tkQuery.trim().toLowerCase();
+  const list = WORLD_LIST.filter(x => !q || [x.name, x.short, x.code, x.region, x.discipline, x.next].join(" ").toLowerCase().includes(q));
+  if (!list.length) return "";
+  const groups = DISC_GROUPS.filter(g => !["all", "mine", "tracked"].includes(g[0]));
+  let h = `<details class="acc tk-all"${q ? " open" : ""}><summary><h3>Tickets for every series (${list.length})</h3><span class="acc-caret" aria-hidden="true"></span></summary><div class="acc-body">
+    <p class="fine" style="margin-top:0">NASCAR, IndyCar, MotoGP, Supercars, NHRA, Supercross and ${WORLD_LIST.length - 6} more. Each links to the official ticket store or site and a ticket search for the next round.</p>`;
+  for (const [g, label] of groups) {
+    const rows = list.filter(x => GROUP_OF(x.discipline) === g); if (!rows.length) continue;
+    h += `<div class="month">${esc(label)}</div><div class="tks-list">${rows.map(x => `<div class="tks ${DISC_CLS[x.discipline] || "d-mo"}">
+      <div style="min-width:0"><div class="nm">${esc(x.short || x.name)}</div><div class="loc">${esc(x.status === "Finished" ? "Season over · next season TBA" : x.next ? "Next: " + x.next : x.region || "")}</div></div>
+      <div class="tk-btns">${seriesTicketLinks(x).map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])}</a>`).join("")}</div></div>`).join("")}</div>`;
+  }
+  return h + `</div></details>`;
+}
 function renderTicketFilters(){
   const all = tkEvents();
   const months = [...new Set(all.map(tkMonthKey))];
@@ -3403,7 +3438,8 @@ function renderTicketList(){
   document.getElementById("tkCount").textContent = `${list.length} race${list.length === 1 ? "" : "s"} with tickets${tkLoc === "all" ? "" : " in " + locLabel(tkLoc)}`;
   if (!list.length) {
     const near = tkLoc.startsWith("s:") ? "c:" + tkLoc.slice(2).split("|")[0] : tkLoc.startsWith("c:") && GEO.region[tkLoc.slice(2)] ? "r:" + GEO.region[tkLoc.slice(2)] : "all";
-    document.getElementById("tkList").innerHTML = `<div class="empty" style="margin-top:14px">No upcoming races in ${esc(locLabel(tkLoc))}${tkSeries !== "all" || tkMonth !== "all" ? " with these filters" : ""}.<br><button class="btn" style="margin-top:10px" data-tkloc="${esc(near)}">Show ${esc(locLabel(near))} instead</button></div>`; return;
+    if (q && tkSeriesHTML()) { document.getElementById("tkList").innerHTML = `<p class="fine" style="margin-top:10px">No race-by-race listings match “${esc(tkQuery.trim())}”. These series do:</p>` + tkSeriesHTML(); return; }
+    document.getElementById("tkList").innerHTML = `<div class="empty" style="margin-top:14px">No upcoming races in ${esc(locLabel(tkLoc))}${tkSeries !== "all" || tkMonth !== "all" ? " with these filters" : ""}.<br><button class="btn" style="margin-top:10px" data-tkloc="${esc(near)}">Show ${esc(locLabel(near))} instead</button></div>` + tkSeriesHTML(); return;
   }
   let h = "", m = "";
   for (const e of list) {
@@ -3420,7 +3456,7 @@ function renderTicketList(){
       <div class="tk-btns">${links.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])}</a>`).join("")}</div>
     </article>`;
   }
-  document.getElementById("tkList").innerHTML = h + `</div>`;
+  document.getElementById("tkList").innerHTML = h + `</div>` + tkSeriesHTML();
 }
 function renderTickets(){ renderTicketFilters(); renderTicketList(); }
 // Location picker: country, then state/province
