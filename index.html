@@ -990,6 +990,22 @@ main{max-width:1200px}
 .hh-pause:hover{background:var(--scrim-strong)}
 .hh-pause:focus-visible{outline:2px solid var(--band-ink);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){ .hh-ph{transition:none} .hh-pause{display:none} }
+
+/* photos everywhere */
+.pic{position:relative;display:block;background:var(--c, var(--color-paper-3)) 50% 40%/cover no-repeat;border-radius:var(--radius-card);overflow:hidden}
+.pic.thumb{width:76px;height:52px;flex:none}
+.pic.thumb .plate{position:absolute;left:4px;bottom:4px}
+.pic.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--scrim),transparent 60%)}
+.pic.thumb .plate{z-index:1}
+.row{grid-template-columns:44px 76px minmax(0,1fr) auto}
+.tk-top{grid-template-columns:40px 76px minmax(0,1fr) !important}
+.wk-row{grid-template-columns:76px minmax(0,1fr) auto auto}
+@media (max-width:640px){ .wk-row{grid-template-columns:76px minmax(0,1fr) auto} .row{grid-template-columns:40px 64px minmax(0,1fr) auto;gap:var(--space-xs)} .row .pic.thumb{width:64px;height:48px} }
+.sh-pic{height:clamp(150px,30vw,220px);margin:0 calc(-1 * var(--space-md)) var(--space-sm);border-radius:0}
+.sheet{padding-top:0}
+.up-ph{display:block;aspect-ratio:4/3}
+.sthumb.pic{width:60px;height:60px;border-radius:var(--radius-card)}
+.sthumb.pic.ok .dplate{display:none}
 </style>
 </head>
 <body>
@@ -1842,7 +1858,33 @@ function heroSetup(){
   }
   heroShow(0); heroStart();
 }
+// Every race and series gets a photo: this week's press photo for that series, else one from the same kind of racing,
+// else any race photo. The same race keeps the same photo (picked by its id); a screen avoids repeats while it can.
+const PIC_DISC = {};
+function picDisc(wid){ if (!(wid in PIC_DISC)) { const w = worldById(wid); PIC_DISC[wid] = w ? w.discipline : ""; } return PIC_DISC[wid]; }
+function picHash(k){ let h = 2166136261; for (const c of String(k)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function picHTML(series, key, cls = "", label = ""){
+  const wid = APP_TO_WORLD[series] || series;
+  return `<span class="pic ${cls}" data-pic="${esc(wid)}" data-key="${esc(key)}" aria-hidden="true">${label}</span>`;
+}
+function fillPics(root = document){
+  if (!NEWS || !NEWS.items) return;
+  const all = NEWS.items.filter(n => n.img && !/logo|headshot|portrait/i.test(n.img));
+  if (!all.length) return;
+  const used = new Set();
+  root.querySelectorAll(".pic:not(.ok)").forEach(el => {
+    const wid = el.dataset.pic, h = picHash(el.dataset.key || wid), d = picDisc(wid);
+    const tiers = [all.filter(n => n.tags.includes(wid)), d ? all.filter(n => n.tags.some(t => picDisc(t) === d)) : [], all];
+    let x = null;
+    for (const pool of tiers) { if (!pool.length) continue; for (let i = 0; i < pool.length; i++) { const c = pool[(h + i) % pool.length]; if (!used.has(c.img)) { x = c; break; } } if (!x) x = pool[h % pool.length]; break; }
+    if (!x) return;
+    used.add(x.img);
+    el.style.backgroundImage = `url("${x.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = `Photo: ${x.source}`;
+  });
+}
+{ let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => fillPics(), 30); }).observe(document.body, { childList: true, subtree: true }); }
 function applyNewsPhotos(root = document){
+  fillPics(root);
   if (!NEWS || !NEWS.items) return;
   const used = new Set();
   heroSetup();
@@ -2259,7 +2301,7 @@ function upNextHTML(skip){
   if (!list.length) return "";
   return `<section class="upnext" aria-labelledby="upTitle"><div class="sec-head"><h2 id="upTitle">Up next</h2><button class="tlink" data-gotab="calendar">Full calendar</button></div>
     <div class="up-strip">${list.map(e => { const d = dayDiff(t, e.start); return `<article class="up-card ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
-      <div class="up-ph" data-sphoto="${e.series}" data-img="${esc(trackQuery(e))}" data-sz="640" data-photo><span class="up-days"><b>${d}</b> ${d === 1 ? "day" : "days"}</span></div>
+      ${picHTML(e.series, e.id, "up-ph", `<span class="up-days"><b>${d}</b> ${d === 1 ? "day" : "days"}</span>`)}
       <div class="up-body">${plate(e.series, 24)}<h3>${esc(e.name)}</h3><p>${esc(e.circuit)}<br>${range(e)}</p></div>
     </article>`; }).join("")}</div></section>`;
 }
@@ -2295,7 +2337,7 @@ function guideHTML(list){
 function wkRow(e){
   const [st, cls] = statusOf(e), ns = nextSession(e.id);
   return `<div class="wk-row ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
-    ${plate(e.series, 28)}
+    ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
     <div class="wk-main"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div></div>
     <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${fmtDow.format(new Date(ns[1]))} ${txTime(ns[1])}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
     <div class="wk-watch">${watchButtons(e.series, 1)}</div>
@@ -2372,7 +2414,7 @@ function renderList(){
     if (state.watched[e.id]) tags.push(`<span class="tag">Watched</span>`);
     h += `<article class="row ${e.series} ${ph}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
       <div class="dt"><b>${e.end.getDate()}</b><span>${DOW[e.end.getDay()]} ${MON[e.end.getMonth()]}</span></div>
-      ${plate(e.series, 26)}
+      ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
       <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
       ${e.cancelled ? "<span></span>" : `<button class="staricon" data-k="starred" data-id="${e.id}" aria-pressed="${!!state.starred[e.id]}" aria-label="Star ${esc(e.name)}" title="Can't miss">★</button>`}
     </article>`;
@@ -2484,7 +2526,7 @@ function openRace(id){
   const ph = phase(e), [stt, cls] = statusOf(e);
   const others = events.filter(o => o.circuit === e.circuit && o.id !== e.id && !o.cancelled && o.start.getFullYear() === e.start.getFullYear());
   const pr = k => !!state[k][e.id];
-  let h = `<div class="sh-head ${c}">${plate(c, 38)}
+  let h = `${picHTML(c, e.id + "-sheet", "sh-pic")}<div class="sh-head ${c}">${plate(c, 38)}
       <div><span class="status ${cls}">${esc(stt)}</span> <span class="fine" style="margin:0">${esc(SERIES_FULL[c])}</span>
       <h2 id="sheetTitle">${esc(e.name)}</h2><div class="m">${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}</div></div>
       <button class="close" id="sheetClose" aria-label="Close">×</button></div>
@@ -2595,7 +2637,7 @@ function worldWatch(x){
 }
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="sthumb" data-img="${esc(x.name)}" data-sz="240" data-photo><span class="dplate">${esc(dirCode(x))}</span></span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="sthumb pic" data-pic="${esc(x.id)}" data-key="${esc(x.id)}"><span class="dplate">${esc(dirCode(x))}</span></span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
@@ -3220,7 +3262,7 @@ function renderTicketList(){
     h += `<article class="tk ${e.series}">
       <div class="tk-top" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
         <div class="dt"><b>${e.start.getDate()}</b><span>${MON[e.start.getMonth()]}</span></div>
-        ${plate(e.series, 26)}
+        ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
         <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">${range(e)}</div><div class="loc">${esc(e.circuit)}, ${esc(placeLine(e))}</div>
         ${e.tags.includes("Provisional") ? `<div class="loc" style="color:var(--sub)">Provisional date</div>` : ""}</div>
       </div>
@@ -3315,7 +3357,7 @@ function showTab(name){
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
 }
-function renderAll(){ renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
+function renderAll(){ setTimeout(() => fillPics(), 0); renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
 
 { const top = document.querySelector(".top"), setTop = () => document.documentElement.style.setProperty("--top-h", top.offsetHeight + "px"); setTop(); if ("ResizeObserver" in window) new ResizeObserver(setTop).observe(top); }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-alerts]")) { openReminders(); return; } });
