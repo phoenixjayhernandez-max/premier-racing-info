@@ -52,27 +52,26 @@ function ticketLinks(e){
 }
 
 // ---- Page shell ----
-const CSS = `:root{--bg:#E6E9ED;--panel:#fff;--ink:#0E1319;--sub:#576172;--rule:#D2D8DF;--sig:#FFD100}
-@media (prefers-color-scheme:dark){:root{--bg:#0B0F14;--panel:#141A21;--ink:#EDF1F5;--sub:#97A3B4;--rule:#29323D}}
+const CSS = `:root{--bg:#0E1116;--panel:#161A21;--panel2:#1D222A;--ink:#E8ECF1;--sub:#8B95A4;--rule:#262D37;--sig:#FFD100;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Saira,"Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.5}
 a{color:inherit}header{background:var(--bg);border-bottom:1px solid var(--rule)}.wrap{max-width:860px;margin:0 auto;padding:0 16px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px}.brand{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase;text-decoration:none}
-.brand span{color:var(--sub);font-weight:600}.cta{background:var(--sig);color:#111;font-weight:700;text-decoration:none;padding:8px 14px;border-radius:999px;white-space:nowrap;font-size:.9rem}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px}.brand{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;font-size:1.3rem;text-decoration:none}
+.brand span{color:var(--sub);font-weight:600}.cta{background:var(--ink);color:var(--bg);font-weight:700;text-decoration:none;padding:8px 14px;border-radius:999px;white-space:nowrap;font-size:.9rem}
 nav.crumbs{font-size:.85rem;color:var(--sub);padding:10px 0 0}nav.crumbs a{color:var(--sub)}
-h1{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.05;text-transform:uppercase;margin:14px 0 6px}
-h2{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:1.25rem;margin:0 0 8px}
-.lede{color:var(--sub);margin:0 0 16px}.card{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--c,var(--sig));border-radius:10px;padding:16px;margin:0 0 12px}
-table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{padding:7px 4px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}th{font-size:.75rem;text-transform:uppercase;color:var(--sub)}
+h1{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.05;margin:14px 0 6px}
+h2{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:700;font-size:1.3rem;margin:0 0 8px}
+.lede{color:var(--sub);margin:0 0 16px}.card{background:var(--panel);border:1px solid var(--rule);border-top:2px solid var(--c,var(--rule));border-radius:8px;padding:16px;margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{padding:7px 4px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}th{font-size:.8rem;font-weight:600;color:var(--sub)}
 td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.btn{display:inline-block;padding:8px 12px;border-radius:8px;border:1px solid var(--rule);background:var(--bg);text-decoration:none;font-weight:600;font-size:.9rem}
-.btn.p{background:var(--sig);color:#111;border-color:var(--sig)}ul.list{list-style:none;padding:0;margin:0}ul.list li{padding:8px 0;border-bottom:1px solid var(--rule)}ul.list li:last-child{border-bottom:0}
-ul.list small{display:block;color:var(--sub)}.tag{display:inline-block;font-size:.72rem;font-weight:700;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-left:4px;color:var(--sub)}
-footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:12px}.cols{columns:2 260px;column-gap:24px}`;
+.btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--panel2);text-decoration:none;font-weight:600;font-size:.9rem}
+.btn.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}ul.list{list-style:none;padding:0;margin:0}ul.list li{padding:8px 0;border-bottom:1px solid var(--rule)}ul.list li:last-child{border-bottom:0}
+ul.list small{display:block;color:var(--sub)}.tag{display:inline-block;font-size:.75rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-left:4px;color:var(--sub)}
+footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:14px;text-decoration:none}td.r{font-family:"Saira Condensed",system-ui,sans-serif;font-size:1.05rem;font-variant-numeric:tabular-nums}.cols{columns:2 260px;column-gap:24px}`;
 const ANALYTICS = `<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e52456a52f8540c69bb1ce758237400a"}'></script><!-- End Cloudflare Web Analytics -->`;
 // Converts the Central-time start times (what search engines see) into the visitor's own time zone.
 const LOCAL_TIME = `<script>(function(){try{var d=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"}),t=new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
 document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});document.querySelectorAll("[data-time]").forEach(function(e){e.textContent=t.format(new Date(e.dataset.time))});
-var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent="your time · "+z.replace(/_/g," ").split("/").pop()})}catch(e){}})()</script>`;
+var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent=z.replace(/_/g," ").split("/").pop()+" time"})}catch(e){}})()</script>`;
 function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/" }){
   const canon = SITE + url;
   const ld = [].concat(jsonld || []);
@@ -80,7 +79,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${canon}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${canon}"><meta property="og:image" content="${SITE}/icons/og.png">
-<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0E1319"><link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-180.png"><link rel="manifest" href="/manifest.webmanifest">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0E1116"><link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-180.png"><link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@700;800&family=Saira:wght@400;600;700&display=swap" rel="stylesheet">
 <style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/">Premier Racing <span>Info</span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
@@ -89,7 +88,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
-const watchList = s => (WATCH[s] || []).map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">▶ ${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("");
+const watchList = s => (WATCH[s] || []).map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("");
 const raceLink = e => `<a href="/races/${e.slug}/">${esc(e.name)}</a>`;
 
 // ---- Race pages ----
@@ -102,10 +101,10 @@ for (const e of EV) {
   if (RESULT_FOR[e.id] && STATS[RESULT_FOR[e.id]]?.race?.rows) {
     const r = STATS[RESULT_FOR[e.id]].race;
     body += `<section class="card"><h2>Results</h2>${r.note ? `<p>${esc(r.note)}</p>` : ""}<table><tr><th>Pos</th><th>Driver</th><th>Team / car</th></tr>${r.rows.slice(0, 10).map(x => `<tr><td>${esc(x[0])}</td><td>${esc(x[2])}</td><td>${esc(x[3])}</td></tr>`).join("")}</table></section>`;
-  } else if (WINNERS[e.id]) body += `<section class="card"><h2>Winner</h2><p>🏁 ${esc(WINNERS[e.id])}</p></section>`;
+  } else if (WINNERS[e.id]) body += `<section class="card"><h2>Winner</h2><p>${esc(WINNERS[e.id])}</p></section>`;
   body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watchList(e.s)}</div></section>`;
   const tk = ticketLinks(e);
-  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">🎟 ${esc(t[0])}</a>`).join("")}</div></section>`;
+  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
   body += `<section class="card"><h2>The track</h2><p><a href="/tracks/${trackSlug(e.circuit)}/">${esc(e.circuit)}</a>, ${esc(e.location)}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km lap" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}. ${esc(tr[3])}.` : ""}</p></section>`;
   const same = EV.filter(o => o.circuit === e.circuit && o.id !== e.id && o.start <= e.end && o.end >= e.start);
   if (same.length) body += `<section class="card"><h2>Also racing this weekend</h2><ul class="list">${same.map(o => `<li>${raceLink(o)} <small>${esc(SERIES_FULL[o.s])}</small></li>`).join("")}</ul></section>`;
@@ -132,13 +131,13 @@ for (const x of WORLD.series) {
     const st = STATS[app] || {};
     for (const yr of ["2026", "2027"]) {
       const list = EV.filter(e => e.s === app && e.year === yr);
-      if (list.length) body += `<section class="card"><h2>${yr} calendar</h2><ul class="list">${list.map(e => `<li>${raceLink(e)} <small>${range(e.start, e.end)} · ${esc(e.circuit)}${WINNERS[e.id] ? " · 🏁 " + esc(WINNERS[e.id]) : ""}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
+      if (list.length) body += `<section class="card"><h2>${yr} calendar</h2><ul class="list">${list.map(e => `<li>${raceLink(e)} <small>${range(e.start, e.end)} · ${esc(e.circuit)}${WINNERS[e.id] ? " · " + esc(WINNERS[e.id]) : ""}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
     }
     if (st.champs) body += `<section class="card"><h2>Champions</h2><ul class="list">${st.champs.map(c => `<li><b>${esc(c[1])}</b> <small>${esc(c[0])}${c[2] ? " · " + esc(c[2]) : ""}</small></li>`).join("")}</ul></section>`;
     if (st.standings && !(st.champs && /before/i.test(st.standingsTitle || ""))) body += `<section class="card"><h2>${esc(st.standingsTitle || "Standings")}</h2><table><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr>${st.standings.slice(0, 10).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r[0])}${r.length > 2 ? `<br><small>${esc(r[1])}</small>` : ""}</td><td class="r">${r[r.length - 1]}</td></tr>`).join("")}</table></section>`;
     if (st.grid) body += `<section class="card"><h2>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Teams and drivers")}</h2><ul class="list">${st.grid.map(g => `<li><b>${esc(g[0])}</b> <small>${esc(g[1])} · ${esc(g[2])}</small></li>`).join("")}</ul></section>`;
   }
-  if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">▶ ${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
+  if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
   body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
   const name = x.name;
   const title = `${x.short && x.short.length < name.length ? x.short : name} ${app ? "2026–2027 Calendar, Standings" : "2026: Champion, Standings"} & How to Watch in the US`;
@@ -152,7 +151,7 @@ for (const x of WORLD.series) {
   const groups = {};
   for (const x of WORLD.series) (groups[x.discipline] = groups[x.discipline] || []).push(x);
   const body = `<p class="lede">${WORLD.series.length} racing series from around the world: champions, leaders, next rounds and how to watch from the US.</p>` +
-    Object.entries(groups).map(([g, l]) => `<section class="card"><h2>${esc(g)}</h2><ul class="list">${l.map(x => `<li><a href="/series/${x.id}/">${esc(x.name)}</a> <small>${esc(x.region || "")}${x.champion ? " · 🏆 " + esc(x.champion) : x.leader ? " · Leader: " + esc(x.leader) : ""}</small></li>`).join("")}</ul></section>`).join("");
+    Object.entries(groups).map(([g, l]) => `<section class="card"><h2>${esc(g)}</h2><ul class="list">${l.map(x => `<li><a href="/series/${x.id}/">${esc(x.name)}</a> <small>${esc(x.region || "")}${x.champion ? " · " + esc(x.champion) : x.leader ? " · Leader: " + esc(x.leader) : ""}</small></li>`).join("")}</ul></section>`).join("");
   write("/series/", page({ url: "/series/", title: "Every Racing Series: Champions, Calendars & How to Watch (2026)", desc: `All ${WORLD.series.length} major racing series worldwide — F1, NASCAR, IndyCar, IMSA, WEC, MotoGP, WRC and more — with champions, standings and how to watch in the US.`, h1: "Every racing series", crumbs: [{ name: "All series", item: SITE + "/series/" }], body }));
 }
 
@@ -165,9 +164,9 @@ for (const c of circuits) {
   if (tr && tr[3]) body += `<p>${esc(tr[3])}.</p>`;
   if (up.length) body += `<section class="card"><h2>Upcoming races</h2><ul class="list">${up.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
   const past = list.filter(e => e.end < today);
-  if (past.length) body += `<section class="card"><h2>Earlier in 2026</h2><ul class="list">${past.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${WINNERS[e.id] ? " · 🏁 " + esc(WINNERS[e.id]) : ""}</small></li>`).join("")}</ul></section>`;
+  if (past.length) body += `<section class="card"><h2>Earlier in 2026</h2><ul class="list">${past.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${WINNERS[e.id] ? " · " + esc(WINNERS[e.id]) : ""}</small></li>`).join("")}</ul></section>`;
   const tk = up[0] ? ticketLinks(up[0]) : [];
-  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">🎟 ${esc(t[0])}</a>`).join("")}</div></section>`;
+  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
   const sl = trackSlug(c), yrs = [...new Set(list.map(e => e.year))].join("–");
   write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: `${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, desc: `All races at ${c} (${loc}) in ${yrs}: ${[...new Set(list.map(e => SERIES_FULL[e.s]))].join(", ")}. Dates, start times in Central time and tickets.`,
     h1: c, crumbs: [{ name: "Tracks", item: SITE + "/tracks/" }, { name: c, item: SITE + `/tracks/${sl}/` }], body,
@@ -226,7 +225,7 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
 { // Tickets
   const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
   const body = `<p class="lede">Ticket links for every upcoming race: the official seller first, then the circuit and a ticket search.</p>` +
-    Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => { const t = ticketLinks(e)[0]; return `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}${t ? ` · <a href="${esc(t[1])}" rel="noopener">🎟 ${esc(t[0])}</a>` : ""}</small></li>`; }).join("")}</ul></section>`).join("");
+    Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => { const t = ticketLinks(e)[0]; return `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}${t ? ` · <a href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>` : ""}</small></li>`; }).join("")}</ul></section>`).join("");
   write("/tickets/", page({ url: "/tickets/", title: "Race Tickets 2026–2027: F1, IMSA, WEC & GT Races", desc: "Where to buy tickets for every upcoming F1, IMSA, WEC, GT World Challenge, Porsche Cup and Mustang Challenge race, from the official sellers.", h1: "Race tickets", crumbs: [{ name: "Tickets", item: SITE + "/tickets/" }], body }));
 }
 

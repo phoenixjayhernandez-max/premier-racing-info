@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E1319">
+<meta name="theme-color" content="#0E1116">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -27,12 +27,14 @@
 <style>
 /* Layout: a pit-wall app — sticky header + three tabs (Weekend / Calendar / Standings); timing-tower lists; series plates as the visual system. */
 :root{
-  --bg:#E6E9ED; --panel:#FFFFFF; --panel-2:#F3F5F7; --ink:#0E1319; --sub:#576172; --rule:#D2D8DF;
-  --signal:#FFD100; --signal-ink:#111; --plate-ink:#FFFFFF; --done:#9AA3AE;
-  --f1:#D7261E; --imsa:#2563B8; --wec:#0F8A6C; --gtwc:#C2410C; --gte:#6D28D9; --gtas:#BE185D; --gtau:#0E7490; --psc:#4B5563; --pccna:#3F6212; --mustang:#7F1D1D;
+  /* Pit wall: tarmac, monitor panels, floodlight text. Yellow marks only the next session; series colors are the only other color. */
+  --bg:#0E1116; --panel:#161A21; --panel-2:#1D222A; --ink:#E8ECF1; --sub:#8B95A4; --rule:#262D37;
+  --signal:#FFD100; --signal-ink:#14110A; --plate-ink:#0E1116; --done:#5B6573; --green:#3DDC84;
+  --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
+  color-scheme:dark;
   --display:"Saira Condensed","Arial Narrow",system-ui,sans-serif;
   --ui:"Saira","Segoe UI",system-ui,sans-serif;
-  --r:10px;
+  --r:8px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -298,7 +300,7 @@ html,body{overflow-x:hidden}
 .dplate{display:inline-grid;place-items:center;min-width:44px;height:30px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--c);color:var(--plate-ink);font-family:var(--display);font-weight:800;font-size:.82rem;letter-spacing:.02em;white-space:nowrap}
 .intag{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--signal);color:var(--signal-ink);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
 .lvl{display:inline-block;font-size:.7rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;color:var(--sub);margin-left:4px}
-.d-ow{--c:#D7261E} .d-sc{--c:#0F8A6C} .d-gt{--c:#C2410C} .d-om{--c:#6B7280} .d-stk{--c:#1D4ED8} .d-tc{--c:#7C3AED} .d-ral{--c:#B45309} .d-off{--c:#92400E} .d-drg{--c:#BE123C} .d-dft{--c:#DB2777} .d-dirt{--c:#78350F} .d-gr{--c:#4D7C0F} .d-hc{--c:#0369A1} .d-mr{--c:#0E7490} .d-mx{--c:#A16207} .d-mo{--c:#475569}
+.d-ow{--c:#FF6B5E} .d-sc{--c:#34C79D} .d-gt{--c:#FF8A3D} .d-om{--c:#9CA3AF} .d-stk{--c:#6FA2EE} .d-tc{--c:#B39BFF} .d-ral{--c:#F59E0B} .d-off{--c:#D6A35C} .d-drg{--c:#FB7185} .d-dft{--c:#F472B6} .d-dirt{--c:#C08A5A} .d-gr{--c:#A3E635} .d-hc{--c:#38BDF8} .d-mr{--c:#3FD6EE} .d-mx{--c:#FACC15} .d-mo{--c:#CBD5E1}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .d-ow{--c:#FF6B5E} :root:not([data-theme="light"]) .d-sc{--c:#34C79D} :root:not([data-theme="light"]) .d-gt{--c:#FF8A3D} :root:not([data-theme="light"]) .d-om{--c:#9CA3AF} :root:not([data-theme="light"]) .d-stk{--c:#6FA2EE} :root:not([data-theme="light"]) .d-tc{--c:#B39BFF} :root:not([data-theme="light"]) .d-ral{--c:#F59E0B} :root:not([data-theme="light"]) .d-off{--c:#D6A35C} :root:not([data-theme="light"]) .d-drg{--c:#FB7185} :root:not([data-theme="light"]) .d-dft{--c:#F472B6} :root:not([data-theme="light"]) .d-dirt{--c:#C08A5A} :root:not([data-theme="light"]) .d-gr{--c:#A3E635} :root:not([data-theme="light"]) .d-hc{--c:#38BDF8} :root:not([data-theme="light"]) .d-mr{--c:#3FD6EE} :root:not([data-theme="light"]) .d-mx{--c:#FACC15} :root:not([data-theme="light"]) .d-mo{--c:#CBD5E1}}
 .srow{position:relative;padding-right:44px}
 .swatch{margin-top:8px;padding:5px 10px;font-size:.8rem;max-width:100%;overflow:hidden;text-overflow:ellipsis}
@@ -459,6 +461,139 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
   .tower .who{font-size:.92rem}
   .sync b{display:none}
 }
+
+/* ================= Pit-wall redesign (overrides) ================= */
+/* Sentence case everywhere; plates and codes carry their own capitals */
+*{text-transform:none !important}
+.h2,.month,.card > h3,.card h4,.sh-head h2,.status,.tab,.count .lbl,.dt span,.tower th,.champ .cl,.fact .k,.form label,.dir-h,.intag,.perso b,summary.h3like,.hub-next .nm{letter-spacing:0 !important}
+body{font-size:15px}
+.num, .dt b, .tower .num, .tower .pos, .sched td:last-child, .fact .v, .stats4 b{font-variant-numeric:tabular-nums}
+/* Header */
+.top{background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px)}
+.brand h1{text-transform:none;font-weight:800;letter-spacing:-.005em}
+.brand h1 span{color:var(--sub);font-weight:600}
+.hbtn,.hbtn.alt{background:transparent;color:var(--ink);border:1px solid var(--rule);width:34px;height:34px}
+.hbtn svg{width:17px;height:17px;display:block}
+.hbtn.acct{border-radius:999px}
+.hbtn[data-on="1"]{color:var(--ink);border-color:var(--rule)}
+.tab{font-family:var(--ui);font-weight:600;font-size:.95rem;color:var(--sub)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+@media (max-width:640px){ .tabs .tab{font-size:.86rem !important} }
+@media (max-width:360px){ .tabs .tab{font-size:.78rem !important} }
+/* Headings */
+.h2{font-size:1.65rem;font-weight:700;line-height:1.1}
+.wk-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.wk-head .n{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--sub);white-space:nowrap}
+.month{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--sub)}
+.card > h3{font-weight:700;font-size:1.3rem}
+.card h4{font-weight:700;font-size:1rem}
+.sh-head h2{font-weight:800;font-size:clamp(1.55rem,5vw,2.1rem);line-height:1.04}
+.sh-head{border-bottom-width:2px}
+/* Weekend: race blocks with a timing list */
+.stack{display:grid;gap:12px}
+.ev{display:block;padding:16px;border-radius:var(--r);border:1px solid var(--rule);background:var(--panel)}
+.ev::before{display:none}
+.ev:hover{border-color:#3A4350}
+.ev .photo{display:none !important}
+.ev-top{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+.ev h3{font-size:1.5rem;font-weight:700;line-height:1.05}
+.ev .meta{margin-top:3px;font-size:.86rem;line-height:1.35}
+.ev .res{margin-top:6px}
+.ev .sched{margin-top:12px}
+.ev .acts{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.state{font-size:.82rem;color:var(--sub);white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding-top:4px}
+.state.live{color:var(--ink)}
+.state.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 25%,transparent)}
+@media (prefers-reduced-motion:no-preference){.state.live::before{animation:blink 1.6s infinite}}
+.status{background:transparent;border:0;padding:0;font-size:.8rem;font-weight:600;color:var(--sub)}
+.status.live{background:transparent;color:var(--ink)}
+.status.live::before{background:var(--green)}
+/* Session timing rows: the one bright thing */
+.sched{font-size:.92rem}
+.sched td{padding:7px 6px;border-bottom:1px solid var(--rule)}
+.sched td:nth-child(2){color:var(--sub)}
+.sched td:last-child{font-family:var(--display);font-weight:700;font-size:1.02rem}
+.sched tr.nx td{background:var(--signal);color:var(--signal-ink);border-bottom-color:var(--signal)}
+.sched tr.done td{text-decoration:none;color:var(--done)}
+/* Buttons: quiet by default; series color only for the main watch link */
+.btn{background:var(--panel-2);border-color:var(--rule);font-size:.85rem;padding:7px 12px}
+.btn:hover{border-color:#3A4350}
+.btn[aria-pressed="true"],.btn.star[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.watch{font-weight:700}
+.btn .free{background:transparent;color:inherit;border:1px solid currentColor;font-weight:700;padding:0 4px}
+.btn.ghost,.tlink{all:unset;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--sub);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rule)}
+.btn.ghost:hover,.tlink:hover{color:var(--ink)}
+.pk[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pk[aria-pressed="true"]::before{content:""}
+/* Lists & rows */
+.row{border-radius:var(--r)}
+.row.now{border-color:var(--rule);box-shadow:inset 3px 0 0 var(--green)}
+.tag.win{border-color:var(--rule)}
+.staricon[aria-pressed="true"]{background:transparent;color:var(--ink)}
+.sstar[aria-pressed="true"]{color:var(--ink)}
+.tower tr.p1 .pos{background:var(--ink);color:var(--bg)}
+.tower .pos{background:var(--panel);color:var(--ink);border-right:1px solid var(--rule)}
+.tower td{background:var(--panel)}
+.tower tr.fav td:not(.pos){background:color-mix(in srgb,var(--ink) 9%,var(--panel))}
+.tower tr.fav .who::before{content:""}
+.team.fav{border-left-color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,var(--panel-2))}
+.champ{border-top:2px solid var(--rule)}
+.fv{border-left:1px solid var(--rule)}
+.tk{border-left:1px solid var(--rule)}
+.srow{border-left:1px solid var(--rule)}
+.intag{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.prog i.now{background:var(--ink)}
+.install{border-color:var(--rule)}
+/* News: one panel, rows divided by gridlines */
+.nlist{gap:0;background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.nitem{border:0;border-radius:0;background:transparent;border-bottom:1px solid var(--rule);padding:10px 12px}
+.nitem:last-child{border-bottom:0}
+.nitem:hover{background:var(--panel-2)}
+.nthumb{width:72px;height:52px}
+.ntag{background:transparent;color:var(--sub);border:1px solid var(--rule)}
+.nsearch-open{margin:2px 0 10px}
+.card .nlist{border:0;background:transparent}
+.card .nitem{padding-left:0;padding-right:0}
+/* Quiet personalize line */
+.perso{background:transparent;border:0;padding:0;color:var(--sub);font-size:.9rem}
+.perso b,.perso span{display:inline;font-family:var(--ui);font-weight:400;font-size:.9rem;margin:0;color:var(--sub)}
+.perso-btns{display:inline-flex;gap:14px;margin-left:6px}
+/* Sheets & misc */
+.sheet{background:var(--bg);border:1px solid var(--rule);border-bottom:0}
+.close{background:transparent}
+.tzopt[aria-pressed="true"]{border-color:var(--ink)}
+.locked-in{border-color:var(--rule)}
+.more-sec summary{font-family:var(--display);font-weight:700;font-size:1.2rem}
+.site-foot{font-size:.82rem}
+.site-foot nav{gap:6px 16px;margin-bottom:6px}
+.site-foot a{text-decoration:none;color:var(--sub)}
+.site-foot a:hover{color:var(--ink)}
+.site-foot p{margin:12px 0 0}
+.perso{margin:0;line-height:1.6}
+@media (min-width:760px){
+  .ev{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);column-gap:28px;align-items:start}
+  .ev .ev-top{grid-column:1}
+  .ev .sched{grid-column:2;grid-row:1 / span 3;margin-top:0}
+  .ev .acts,.ev .res,.ev .next{grid-column:1}
+}
+.site-foot .fine{margin-top:10px}
+.sh-head > div:first-child{grid-column:1 / 3}
+.ico-sv{width:16px;height:16px;vertical-align:-3px;display:inline-block}
+:focus-visible{outline-color:var(--ink)}
+
+/* Calendar tags read as text, not chips */
+.row .tags{display:block;margin-top:3px;font-size:.78rem;color:var(--sub);line-height:1.4}
+.row .tags > *{display:inline;margin:0}
+.row .tags .tag{border:0;background:none;padding:0;font-size:.78rem;font-weight:500;color:var(--sub)}
+.row .tags .tag + .tag::before{content:", "}
+.row .tags .tag.win{color:var(--ink);font-weight:600}
+.row .tags .status{font-size:.78rem}
+.row .tags .status + .tag::before{content:" · "}
+/* Series directory: quiet thumbnails until a photo loads */
+.sthumb{background-color:var(--panel-2)}
+.sthumb:not(.ok) .dplate{background:transparent;color:var(--c)}
+.sthumb .dplate{color:var(--plate-ink)}
+.srow .btn{background:transparent}
 </style>
 </head>
 <body>
@@ -469,7 +604,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
     <div class="brand">
       <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
       <h1>Premier Racing <span>Info</span></h1>
-      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams">★</button><button class="hbtn alt" id="bellBtn" aria-label="Race reminders">🔔</button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico">👤</span> <span id="acctLbl">Log in</span></button></span>
+      <span class="hbtns"><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg></button><button class="hbtn alt" id="bellBtn" aria-label="Alerts and reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico"><svg class="ico-sv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span> <span id="acctLbl">Log in</span></button></span>
       <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
@@ -489,7 +624,6 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
     <div class="sec" id="newsSec"></div>
     <div class="sec" id="mySec"></div>
     <div class="sec" id="favSec"></div>
-    <div class="sec share-app"><button class="btn" data-share="app">📤 Share Premier Racing Info with friends</button></div>
     <details class="sec more-sec">
       <summary class="h2">Season progress</summary>
       <p class="kicker">Each block is a round. Tap a series to see its calendar.</p>
@@ -532,7 +666,9 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;text
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Browse"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch racing in the US</a><a href="/tickets/">Race tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></nav><p>Premier Racing Info is an independent fan site. Times show in your phone's time zone; change it with 🕒.</p></footer>
+<footer class="site-foot"><nav aria-label="Guides"><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
+<nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
+<p>An independent fan site, not affiliated with any series or team. <button class="tlink" data-share="app">Share the app</button> · <a href="/about/">About</a> · <a href="/privacy/">Privacy</a></p></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -1172,11 +1308,11 @@ function tzLabel(){
   try { long = new Intl.DateTimeFormat("en-US", { timeZone: TX, timeZoneName: "long" }).formatToParts(new Date()).find(p => p.type === "timeZoneName").value.replace(/ (Standard|Daylight) Time$/, " Time"); } catch(e){}
   return hit ? hit[1].split(" (")[0] + (/^(Eastern|Central|Mountain|Pacific)$/.test(hit[1].split(" (")[0]) ? " time" : "") : (long || TX.replace(/_/g, " "));
 }
-function tzLine(){ return `<span class="tzline">🕒 ${esc(tzLabel())}${tzPref === "auto" ? " (your phone)" : ""} · <button class="linkbtn" data-tz="1">Change</button></span>`; }
+function tzLine(){ return `<span class="tzline">${esc(tzLabel())}${tzPref === "auto" ? " (your phone)" : ""} · <button class="linkbtn" data-tz="1">Change</button></span>`; }
 function openTZ(){
   const sheet = document.getElementById("sheet");
   const fresh = document.getElementById("sheetBg").hidden;
-  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:46px">🕒</span>
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)">
     <div><h2 id="sheetTitle">Time zone</h2><div class="m">All start times, countdowns and lock times use this</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
     <div class="tzlist">${TZ_LIST.map(([v, l]) => `<button class="tzopt" data-tzset="${esc(v)}" aria-pressed="${tzPref === v}">${tzPref === v ? "✓ " : ""}${esc(l)}${v === "auto" ? `<small>${esc(deviceTZ().replace(/_/g, " "))}</small>` : ""}</button>`).join("")}</div>
     <p class="fine">Daylight saving is handled automatically. Saved on this phone${me ? " and your account" : ""}.</p>`;
@@ -1194,18 +1330,18 @@ function nextSession(id){
   const now = Date.now();
   return L.find(x => !x[2] && Date.parse(x[1]) + 2 * 3600000 > now) || null;
 }
-function schedHTML(id, compact){
+function schedHTML(id, compact, lit = true){
   const L = SESSIONS[id]; if (!L) return "";
-  const nx = nextSession(id), now = Date.now();
+  const nx = lit ? nextSession(id) : null, now = Date.now();
   const rows = L.filter(x => !compact || !x[2]);
   return `<table class="sched${compact ? " compact" : ""}">${rows.map(x => {
     const t = Date.parse(x[1]), done = t + 2 * 3600000 < now, on = t <= now && !done;
     return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
   }).join("")}</table>`;
 }
-function watchButtons(series, n = 9){
+function watchButtons(series, n = 9, lead = ""){
   return WATCH[series].slice(0, n).map((w, i) =>
-    `<a class="btn ${i === 0 ? "watch " + series : ""}" href="${w[1]}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("");
+    `<a class="btn ${i === 0 ? "watch " + series : ""}" href="${w[1]}" target="_blank" rel="noopener">${i === 0 && lead ? (/ on /.test(w[0]) ? "Watch" : lead) + " " : ""}${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("");
 }
 function weekendEvents(){
   const t = today(), dow = t.getDay();
@@ -1302,9 +1438,9 @@ function clampText(root = document){
     if (el.classList.contains("asof")) el.style.setProperty("--lines", 1);
     const long = el.textContent.length > (el.classList.contains("asof") ? 90 : 170);
     if (!long) { el.classList.remove("clamp"); return; }
-    const b = document.createElement("button"); b.className = "more"; b.type = "button"; b.textContent = "More ▾";
+    const b = document.createElement("button"); b.className = "more"; b.type = "button"; b.textContent = "More";
     el.after(b);
-    const toggle = () => { const o = el.classList.toggle("open"); b.textContent = o ? "Less ▴" : "More ▾"; };
+    const toggle = () => { const o = el.classList.toggle("open"); b.textContent = o ? "Less" : "More"; };
     b.addEventListener("click", ev => { ev.stopPropagation(); toggle(); });
     el.addEventListener("click", toggle);
   });
@@ -1348,7 +1484,7 @@ function favSummary(f){
     if (i >= 0) { const pts = list[i][list[i].length - 1]; lines.push(`<b>P${i + 1}</b> in ${esc((title || "standings").replace(/ \(.*\)/, ""))} · ${pts} pts${i ? ` · ${+(list[0][list[0].length-1] - pts).toFixed(1)} behind` : " · leader"}`); break; }
   }
   const champ = (st.champs || []).find(c => String(c[1] + " " + c[2]).includes(f.n));
-  if (champ) lines.push(`🏆 <b>2026 champion</b> · ${esc(champ[0])}`);
+  if (champ) lines.push(`<b>2026 champion:</b> ${esc(champ[0])}`);
   const r = st.race;
   if (r && r.rows) {
     const hit = r.rows.filter(x => String(x[2] + " " + x[3]).includes(f.n)).slice(0, 2);
@@ -1374,7 +1510,7 @@ function openFavPicker(){
   const list = (arr) => arr.filter(n => !q || n.toLowerCase().includes(q)).map(n => `<button class="pk" data-fs="${pickSeries}" data-fn="${esc(n)}" aria-pressed="${isFav(pickSeries, n)}">${esc(n)}</button>`).join("") || `<span class="fine">No matches.</span>`;
   const sheet = document.getElementById("sheet");
   const fresh = document.getElementById("sheetBg").hidden;
-  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="8" style="fill:var(--signal)"/><text x="19" y="27" text-anchor="middle" font-size="22" style="fill:var(--signal-ink)">★</text></svg>
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)">
       <div><h2 id="sheetTitle">Your favorites</h2><div class="m">${favs.length ? `${favs.length} followed · saved on this phone` : "Tap names to follow them"}</div></div>
       <button class="close" id="sheetClose" aria-label="Close">×</button></div>
     <div class="chips" id="pickChips">${chipsHTML(pickSeries, ORDER.map(x => [x, SERIES[x], x]))}</div>
@@ -1445,7 +1581,7 @@ let acctError = "";
 let acctMode = "signup";
 function openAccount(msg){
   const sheet = document.getElementById("sheet");
-  const head = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="19" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">👤</text></svg>
+  const head = `<div class="sh-head" style="--c:var(--rule)">
     <div><h2 id="sheetTitle">${me ? esc(myName || "Your account") : "Your account"}</h2><div class="m">${me ? esc(me.email || "") : "Save your favorites and races on every device"}</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
   let body;
   if (!sb) body = `<div class="empty">${esc(acctError || "Accounts are still loading. Try again in a few seconds.")}</div>`;
@@ -1454,7 +1590,7 @@ function openAccount(msg){
     const been = events.filter(e => state.going[e.id] && phase(e) === "past");
     body = `<section class="card"><h3>Your season</h3><div class="stats4"><div><b>${favs.length}</b><span>following</span></div><div><b>${n("starred")}</b><span>starred</span></div><div><b>${n("going")}</b><span>going</span></div><div><b>${n("watched")}</b><span>watched</span></div></div>
         <p class="fine" id="syncLine">${esc(syncState || "Synced")}</p></section>
-      ${been.length ? `<section class="card"><h3>Races you went to</h3><div class="list">${been.map(e => `<div class="team ${e.series}"><div class="a">${esc(e.name)}</div><div class="b">${esc(SERIES_FULL[e.series])} · ${range(e)}</div>${WINNERS[e.id] ? `<div class="d">🏁 ${esc(WINNERS[e.id])}</div>` : ""}</div>`).join("")}</div></section>` : ""}
+      ${been.length ? `<section class="card"><h3>Races you went to</h3><div class="list">${been.map(e => `<div class="team ${e.series}"><div class="a">${esc(e.name)}</div><div class="b">${esc(SERIES_FULL[e.series])} · ${range(e)}</div>${WINNERS[e.id] ? `<div class="d">${esc(WINNERS[e.id])}</div>` : ""}</div>`).join("")}</div></section>` : ""}
       <section class="card"><h3>Profile</h3><form class="form" id="nameForm"><label for="dispName">Display name</label><input id="dispName" maxlength="40" value="${esc(myName)}" autocomplete="nickname"><button class="btn" type="submit">Save name</button></form></section>
       <section class="card"><h3>Time zone</h3><p style="margin:2px 0 0">${tzLine()}</p></section>
       <button class="btn" id="signOut" style="margin-top:4px">Sign out</button>`;
@@ -1535,7 +1671,7 @@ window.addEventListener("appinstalled", () => { deferredInstall = null; renderIn
 function openReminders(){
   renderReminders();
   const sheet = document.getElementById("sheet");
-  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="8" style="fill:var(--signal)"/><text x="19" y="26" text-anchor="middle" font-size="18">🔔</text></svg>
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)">
     <div><h2 id="sheetTitle">Alerts &amp; reminders</h2><div class="m">Lock screen alerts and calendar reminders</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div><div id="pushBox"></div>` + REMIND_HTML;
   renderPush();
   lastFocus = document.activeElement;
@@ -1551,7 +1687,7 @@ function renderReminders(){
   const favSeries = [...new Set(favs.map(f => f.s))];
   const order = favSeries.concat(ORDER.filter(x => !favSeries.includes(x)));
   REMIND_HTML = `<section class="card"><h3>Calendar reminders</h3><p class="fine" style="margin:0 0 8px">Every session in your phone's calendar (your calendar shows them in your own time zone), with a 30-minute alert.</p>
-      <div class="feeds"><a class="btn star" aria-pressed="true" href="${web("all")}">🔔 All series</a>${order.map(x => `<a class="btn" href="${web(x)}">${plate(x, 18)} ${esc(SERIES[x])}${favSeries.includes(x) ? " ★" : ""}</a>`).join("")}</div>
+      <div class="feeds"><a class="btn star" aria-pressed="true" href="${web("all")}">All series</a>${order.map(x => `<a class="btn" href="${web(x)}">${plate(x, 18)} ${esc(SERIES[x])}${favSeries.includes(x) ? " ★" : ""}</a>`).join("")}</div>
       <ol class="steps">
         <li>Tap a series, then <b>Subscribe</b>, then <b>Add</b>.</li>
         <li>Turn alerts on: <b>Settings → Apps → Calendar → Calendar Accounts → Subscribed Calendars</b>, open the calendar and switch <b>Remove Alerts</b> off.</li>
@@ -1584,25 +1720,29 @@ function renderWeekend(){
     kicker = "Tap a race for times, results and where to watch.";
     items = next.filter(e => e.start <= new Date(next[0].start.getTime() + 2 * 86400000)).slice(0, 3);
   }
+  const ns = items.map(e => [e.id, nextSession(e.id)]).filter(x => x[1]).sort((a, b) => Date.parse(a[1][1]) - Date.parse(b[1][1]));
+  LIT_ID = ns.length ? ns[0][0] : null;
+  const side = wk.length ? `${wk.length} race${wk.length === 1 ? "" : "s"}` : `in ${countNum} day${countNum === 1 ? "" : "s"}`;
   el.innerHTML = `
-    <h2 class="h2">${esc(title)}</h2><p class="fine" style="margin:-6px 0 10px">${tzLine()}</p>
-    <div class="board">
-      <div class="count" aria-label="${esc(countLbl)}"><div class="lbl">${esc(countLbl)}</div><div class="num">${countNum}</div><div class="lbl">${wk.length ? (wk.length === 1 ? "race" : "races") : (countNum === 1 ? "day" : "days")}</div></div>
-      <div class="stack">${items.map(evCard).join("")}</div>
-    </div>`;
+    <div class="wk-head"><h2 class="h2">${wk.length ? "This weekend" : "Next race"}</h2><span class="n">${esc(side)}</span></div>
+    <p class="fine" style="margin:2px 0 14px">${tzLine()}</p>
+    <div class="stack">${items.map(evCard).join("")}</div>`;
 }
+let LIT_ID = null;
 function evCard(e){
   const [st, cls] = statusOf(e);
   const resLine = WINNERS_LIVE[e.id] || (phase(e) === "past" && WINNERS[e.id] ? `Won by ${WINNERS[e.id]}` : "");
+  const sched = SESSIONS[e.id] && phase(e) !== "past" ? schedHTML(e.id, true, e.id === LIT_ID) : "";
   return `<article class="ev ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
-    ${photoSlot(trackQuery(e))}
-    <div class="pl">${plate(e.series, 34)}</div>
-    <div><span class="status ${cls}">${esc(st)}</span></div>
-    <h3>${esc(e.name)}</h3>
-    <div class="meta">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</div>
-    ${resLine ? `<div class="res" style="grid-column:2">${esc(resLine)}</div>` : ""}
-    ${nextSession(e.id) ? `<div class="next">Next up: <b>${esc(nextSession(e.id)[0])} · ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</b></div>` : ""}
-    <div class="acts">${watchButtons(e.series, 1)}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="btn" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="btn" data-gopredict="1">🔮 Make your pick</button>` : ""}</div>
+    <div class="ev-top">
+      <div class="pl">${plate(e.series, 34)}</div>
+      <div style="min-width:0"><h3>${esc(e.name)}</h3>
+        <div class="meta">${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}${e.tags.length ? `, ${e.tags.map(esc).join(", ").toLowerCase()}` : ""}</div></div>
+      <span class="state ${cls}">${esc(st)}</span>
+    </div>
+    ${resLine ? `<div class="res">${esc(resLine)}</div>` : ""}
+    ${sched || (nextSession(e.id) ? `<div class="next">Next: ${esc(nextSession(e.id)[0])}, ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</div>` : "")}
+    <div class="acts">${watchButtons(e.series, 1, "Watch on")}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="tlink" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="tlink" data-gopredict="1">Make your pick</button>` : ""}</div>
   </article>`;
 }
 function renderSeriesGrid(){
@@ -1652,16 +1792,16 @@ function renderList(){
     if (ph === "now") tags.push(`<span class="status live">${esc(st)}</span>`);
     if (e.cancelled) tags.push(`<span class="tag">Cancelled</span>`);
     if (WINNERS_LIVE[e.id]) tags.push(`<span class="tag win">${esc(WINNERS_LIVE[e.id])}</span>`);
-    if (WINNERS[e.id]) tags.push(`<span class="tag win">🏁 ${esc(WINNERS[e.id])}</span>`);
+    if (WINNERS[e.id]) tags.push(`<span class="tag win">Won by ${esc(WINNERS[e.id])}</span>`);
     if (WINNERS[e.id] && favHit(WINNERS[e.id])) tags.push(`<span class="tag win">★ Your pick won</span>`);
     e.tags.forEach(t => tags.push(`<span class="tag">${esc(t)}</span>`));
     if (e.clashes.length && ph !== "past") tags.push(`<span class="tag clash">Same weekend: ${e.clashes.map(c => SERIES[c.series]).join(", ")}</span>`);
     if (state.going[e.id]) tags.push(`<span class="tag">Going</span>`);
     if (state.watched[e.id]) tags.push(`<span class="tag">Watched</span>`);
     h += `<article class="row ${e.series} ${ph}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
-      <div class="dt"><b>${e.end.getDate()}</b><span>${MON[e.end.getMonth()]} · ${DOW[e.end.getDay()]}</span></div>
+      <div class="dt"><b>${e.end.getDate()}</b><span>${DOW[e.end.getDay()]} ${MON[e.end.getMonth()]}</span></div>
       ${plate(e.series, 26)}
-      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
+      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
       ${e.cancelled ? "<span></span>" : `<button class="staricon" data-k="starred" data-id="${e.id}" aria-pressed="${!!state.starred[e.id]}" aria-label="Star ${esc(e.name)}" title="Can't miss">★</button>`}
     </article>`;
   }
@@ -1772,23 +1912,23 @@ function openRace(id){
   const pr = k => !!state[k][e.id];
   let h = `<div class="sh-head ${c}">${plate(c, 38)}
       <div><span class="status ${cls}">${esc(stt)}</span> <span class="fine" style="margin:0">${esc(SERIES_FULL[c])}</span>
-      <h2 id="sheetTitle">${esc(e.name)}</h2><div class="m">${esc(e.circuit)} · ${esc(e.location)} · ${range(e)}</div></div>
+      <h2 id="sheetTitle">${esc(e.name)}</h2><div class="m">${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}</div></div>
       <button class="close" id="sheetClose" aria-label="Close">×</button></div>
     <div class="${c}">`;
   if (!e.cancelled) h += `<div class="mine">
       <button class="btn star" data-k="starred" data-id="${e.id}" aria-pressed="${pr("starred")}">★ Can't miss</button>
       <button class="btn" data-k="going" data-id="${e.id}" aria-pressed="${pr("going")}">Going</button>
       <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
-      <button class="btn" data-share="race:${e.id}">📤 Share</button></div>`;
+      <button class="btn" data-share="race:${e.id}">Share</button></div>`;
 
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
-      <p class="fine">FREE = no subscription needed.</p>`;
+      <p class="fine">Free means no subscription needed.</p>`;
     if (SESSIONS[e.id] && ph !== "past") h += `<h4>Session times</h4><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(e.id, false)}<p class="fine">Daylight saving is handled automatically. Support races in grey. Times can change; check the official timetable on the day.</p>`;
     h += `</section>`;
   }
   const tk = ticketLinks(e);
-  if (tk.length) h += `<section class="card"><h3>🎟 Tickets</h3><div class="mine" style="margin:8px 0 0">${tk.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])} ↗</a>`).join("")}</div><p class="fine">Buy from the official seller where you can; resale prices vary.</p></section>`;
+  if (tk.length) h += `<section class="card"><h3>Tickets</h3><div class="mine" style="margin:8px 0 0">${tk.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])} ↗</a>`).join("")}</div><p class="fine">Buy from the official seller where you can; resale prices vary.</p></section>`;
   if (LIVE[e.id]) {
     const L = LIVE[e.id];
     h += `<section class="card"><h3>This weekend so far</h3><p class="lede">Updated ${esc(L.updated)}</p>` +
@@ -1798,7 +1938,7 @@ function openRace(id){
     const r = STATS[RESULT_FOR[e.id]].race;
     h += `<section class="card"><h3>Results</h3>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}</section>`;
   } else if (WINNERS[e.id]) {
-    h += `<section class="card"><h3>Winner</h3><p style="margin:2px 0 0;font-weight:700">🏁 ${esc(WINNERS[e.id])}</p><p class="fine">Full race order isn't loaded for this round.</p></section>`;
+    h += `<section class="card"><h3>Winner</h3><p style="margin:2px 0 0;font-weight:700">${esc(WINNERS[e.id])}</p><p class="fine">Full race order isn't loaded for this round.</p></section>`;
   } else if (!e.cancelled && !LIVE[e.id]) {
     h += `<section class="card"><h3>Results</h3><p class="lede" style="margin:0">${ph === "past" ? "Results for this round aren't loaded yet." : "Qualifying and race results show here during and after the weekend."}</p></section>`;
   }
@@ -1850,7 +1990,7 @@ const GROUP_OF = d => ({"Open-wheel":"Open-wheel","Sports car & endurance":"spor
 let dirGroup = "all", dirQuery = "";
 function dirCode(x){ return x.code || (x.short || x.name).replace(/[^A-Za-z0-9 ]/g,"").split(" ").filter(Boolean).map((w,i,a) => a.length === 1 ? w.slice(0,5) : (/\d/.test(w) ? w : w[0])).join("").slice(0,5).toUpperCase(); }
 function dirLine(x){
-  if (x.champion) return `<span>🏆 <b>${esc(x.champion)}</b></span>`;
+  if (x.champion) return `<span>Champion: <b>${esc(x.champion)}</b></span>`;
   if (x.leader) return `<span>Leader: <b>${esc(x.leader)}</b></span>${x.next ? `<br><span style="color:var(--sub)">Next: ${esc(x.next)}</span>` : ""}`;
   if (x.next) return `<span>Next: <b>${esc(x.next)}</b></span>`;
   return `<span style="color:var(--sub)">${esc(x.season || "")}</span>`;
@@ -1881,13 +2021,13 @@ function worldWatch(x){
 }
 function srowHTML(x){
   const cls = DISC_CLS[x.discipline] || "d-mo";
-  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="sthumb" data-img="${esc(x.name)}" data-sz="240" data-photo><span class="dplate">${esc(dirCode(x))}</span></span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
+  return `<div class="srow ${cls}" data-world="${esc(x.id)}" role="button" tabindex="0" aria-label="${esc(x.name)}"><span class="sthumb" data-img="${esc(x.name)}" data-sz="240" data-photo><span class="dplate">${esc(dirCode(x))}</span></span><div><div class="nm">${esc(x.name)}${x.app ? `<span class="intag">★ In app</span>` : ""}</div><div class="rg">${esc(x.region || "")}</div><div class="st">${dirLine(x)}</div>${(() => { const w = worldWatch(x)[0]; return w ? `<a class="btn swatch" href="${esc(w[1])}" target="_blank" rel="noopener">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>` : ""; })()}</div><button class="sstar" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}" aria-label="${isMine(x.id) ? "Remove from" : "Add to"} my series: ${esc(x.name)}">${isMine(x.id) ? "★" : "☆"}</button></div>`;
 }
 function renderMySeries(){
   const el = document.getElementById("mySec");
   const list = mySeries.map(id => WORLD_LIST.find(x => x.id === id)).filter(Boolean);
   if (!list.length) {
-    el.innerHTML = `<div class="perso"><b>Make it yours</b><span>Star your series and follow drivers to get their news, alerts and results first.</span><div class="perso-btns"><button class="btn star" aria-pressed="true" data-gotab="series">☆ Pick series</button>${favs.length ? "" : `<button class="btn" data-favpick="1">★ Follow drivers</button>`}</div></div>`;
+    el.innerHTML = `<p class="perso">Star the series you follow${favs.length ? "" : " and pick favorite drivers"} to see their news and results first. <span class="perso-btns"><button class="tlink" data-gotab="series">Choose series</button>${favs.length ? "" : `<button class="tlink" data-favpick="1">Choose drivers</button>`}</span></p>`;
     return;
   }
   el.innerHTML = `<h2 class="h2">My series</h2><p class="kicker">Tap one for details. <button class="btn" data-gotab="series" style="margin-left:6px">Add more</button></p><div class="my-list">${list.map(srowHTML).join("")}</div>`;
@@ -1912,12 +2052,12 @@ function openWorld(id){
   h += photoSlot(x.name, "sh-photo");
   if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
-  h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">▶ ${esc(w[0])}${w[2] ? ` <span class="free">FREE</span>` : ""}</a>`).join("")}</div>
-    <p class="fine">FREE = no subscription needed.</p><div class="mine" style="margin:12px 0 0">`;
-  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">📤 Share</button>`;
-  if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">★ Open calendar in app</button>`;
+  h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("")}</div>
+    <p class="fine">Free means no subscription needed.</p><div class="mine" style="margin:12px 0 0">`;
+  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">Share</button>`;
+  if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
-  if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">🎟 Tickets ↗</a>`;
+  if (x.status !== "Finished") h += `<a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(x.name + " " + (x.next ? x.next.split(" · ")[0] + " " : "") + "2026 tickets")}" target="_blank" rel="noopener">Tickets ↗</a>`;
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? ` · <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   const P = x.app && STATS[x.app] ? seriesHubHTML(x.app) : null;
   const wrap = t => `<div class="${x.app || ""}">${t}</div>`;
@@ -1985,7 +2125,7 @@ function isForMe(x){
 function newsItemHTML(x){
   const w = x.tags.map(worldById).filter(Boolean);
   const thumb = x.img ? `<div class="nthumb" style="background-image:url('${esc(x.img).replace(/'/g, "%27")}')"></div>`
-    : `<div class="nthumb ${w[0] ? (DISC_CLS[w[0].discipline] || "") : ""}">${w[0] ? `<span class="dplate">${esc(dirCode(w[0]))}</span>` : "🏁"}</div>`;
+    : `<div class="nthumb ${w[0] ? (DISC_CLS[w[0].discipline] || "") : ""}">${w[0] ? `<span class="dplate">${esc(dirCode(w[0]))}</span>` : ""}</div>`;
   return `<a class="nitem" href="${esc(x.link)}" target="_blank" rel="noopener">${thumb}<div style="min-width:0"><div class="nt">${esc(x.title)}</div>
     <div class="nm2"><span>${esc(x.source)} · ${ago(x.time)}</span>${w.slice(0, 3).map(s => `<span class="ntag">${esc(dirCode(s))}</span>`).join("")}</div></div></a>`;
 }
@@ -2007,8 +2147,8 @@ function renderNews(){
   if (!NEWS || !NEWS.items || !NEWS.items.length) { el.innerHTML = ""; return; }
   const mine = NEWS.items.filter(isForMe);
   const list = (mine.length >= 2 ? mine : NEWS.items).slice(0, 4);
-  el.innerHTML = `<div class="nhead"><h2 class="h2">${mine.length >= 2 ? "News for you" : "Latest news"}</h2><button class="btn" data-allnews="1">All news ›</button></div>
-    <button class="search nsearch-open" data-newssearch="1" aria-label="Search news">🔍 Search news: drivers, teams, tracks…</button>
+  el.innerHTML = `<div class="nhead"><h2 class="h2">${mine.length >= 2 ? "News for you" : "Latest news"}</h2><button class="tlink" data-allnews="1">All news</button></div>
+    <button class="search nsearch-open" data-newssearch="1" aria-label="Search news">Search news</button>
     <div class="nlist">${list.map(newsItemHTML).join("")}</div>`;
 }
 function openNews(focusSearch){
@@ -2019,8 +2159,7 @@ function openNews(focusSearch){
   const chips = [["all", "All"], ["mine", "★ For you"]].concat(top.map(t => [t, worldById(t).short || worldById(t).name]));
   const sheet = document.getElementById("sheet");
   const fresh = document.getElementById("sheetBg").hidden;
-  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:54px">NEWS</span>
-      <div><h2 id="sheetTitle">Racing news</h2><div class="m">Updated ${NEWS && NEWS.updated ? ago(NEWS.updated) : ""} · tap a story to read it</div></div>
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Racing news</h2><div class="m">Updated ${NEWS && NEWS.updated ? ago(NEWS.updated) : ""} · tap a story to read it</div></div>
       <button class="close" id="sheetClose" aria-label="Close">×</button></div>
     <input class="search" id="newsSearch" type="search" placeholder="Search news: driver, team, track, series" value="${esc(newsQuery)}" autocomplete="off" enterkeyhint="search">
     <div class="chips" id="newsChips">${chips.map(([v, l]) => `<button class="chip txt" data-newsf="${esc(v)}" aria-pressed="${newsFilter === v}">${esc(l)}</button>`).join("")}</div>
@@ -2102,11 +2241,11 @@ function renderPush(){
       ? `<p style="margin:2px 0 0">On iPhone, alerts work from the app on your Home Screen. Tap Share → <b>Add to Home Screen</b>, open Racing Info from that icon, then come back here.</p>`
       : `<p style="margin:2px 0 0">This browser can't show alerts. Try Chrome, Edge or Safari, or the app on your phone.</p>`;
   } else if (!pushSub) {
-    h += `<p style="margin:2px 0 10px">Get a notification before sessions start, when the race goes live, and when results come in.</p><button class="btn star" aria-pressed="true" id="pushOn">🔔 Turn on alerts</button>`;
+    h += `<p style="margin:2px 0 10px">Get a notification before sessions start, when the race goes live, and when results come in.</p><button class="btn star" aria-pressed="true" id="pushOn">Turn on alerts</button>`;
   } else {
     const t = pushPrefs.types, sel = new Set(pushPrefs.series);
     const tog = (k, label) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${t[k] ? "checked" : ""}> ${label}</label>`;
-    h += tog("soon", "⏱ Starting soon (about 30 min before)") + tog("live", "🟢 Race is live") + tog("result", "🏁 Results, pole and winners") + tog("news", "📰 News about your favorite drivers and teams");
+    h += tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
     h += `<h4>Series</h4><div class="feeds">${ORDER.map(x => `<button class="btn" data-pseries="${x}" aria-pressed="${sel.has(x)}">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
       <p class="fine">${sel.size ? `${sel.size} selected.` : "None selected, so you'll get alerts for all of them."} Start times and results come from the series this app follows in full.</p>
       <div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
@@ -2252,8 +2391,8 @@ async function savePick(key, pick){
 const myRow = key => (picksRows || []).find(r => me && r.user_id === me.id && r.key === key);
 
 function pickSelects(prefix, names, cur, locked){
-  if (locked) return cur && cur.p1 ? `<div class="locked-in">🔒 <b>Locked in</b><div>${["p1", "p2", "p3"].map((k, i) => `<span><b>P${i + 1}</b> ${esc(cur[k] || "—")}</span>`).join("")}</div></div>`
-    : `<div class="locked-in off">🔒 Locked. You didn't make a pick for this one.</div>`;
+  if (locked) return cur && cur.p1 ? `<div class="locked-in"><b>Locked in</b><div>${["p1", "p2", "p3"].map((k, i) => `<span><b>P${i + 1}</b> ${esc(cur[k] || "—")}</span>`).join("")}</div></div>`
+    : `<div class="locked-in off">Picks are locked. You didn't make one for this race.</div>`;
   return `<div class="pick-grid">${["p1", "p2", "p3"].map((k, i) => `<label for="${prefix}-${k}">P${i + 1}</label>
     <select id="${prefix}-${k}" ${locked ? "disabled" : ""}><option value="">Choose a driver</option>${names.map(n => `<option ${cur && cur[k] === n ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>`).join("")}</div>`;
 }
@@ -2283,7 +2422,7 @@ function renderPredict(el){
   if (nx) {
     const key = "f1:" + nx.id, lock = raceLock(nx.id), locked = Date.now() >= lock, mine = myRow(key);
     h += `<section class="card"><h3>Your podium pick</h3><p class="lede" style="margin:0">${locked ? "Locked" : "Locks"} ${fmtDay.format(new Date(lock))} ${txTime(new Date(lock).toISOString())} · 5 pts exact, 2 pts on the podium, +3 for all three</p>`;
-    if (!me) h += `<button class="btn star" aria-pressed="true" id="pickSignIn" style="margin-top:10px">👤 Sign in to play</button>`;
+    if (!me) h += `<button class="btn star" aria-pressed="true" id="pickSignIn" style="margin-top:10px">Sign in to play</button>`;
     else {
       if (!locked && mine && !predDraft.race) h += `<p class="fine" style="font-weight:600;margin:8px 0 0">✓ Saved: ${["p1", "p2", "p3"].map(k => esc(mine.pick[k])).join(" · ")}. You can change it until it locks.</p>`;
       h += pickSelects("rp", names, (!locked && predDraft.race) || (mine && mine.pick), locked);
@@ -2451,12 +2590,12 @@ function renderTicketFilters(){
   const a = myArea();
   const count = loc => all.filter(e => locMatch(e, loc)).length;
   // Quick chips: Anywhere, then your state, your country, your region
-  const quick = [["all", "🌍 Anywhere"]];
-  if (a.country && a.state) quick.push([`s:${a.country}|${a.state}`, `📍 ${stateName(a.country, a.state)}`]);
+  const quick = [["all", "Anywhere"]];
+  if (a.country && a.state) quick.push([`s:${a.country}|${a.state}`, stateName(a.country, a.state)]);
   if (a.country) quick.push([`c:${a.country}`, `${FLAG[a.country] || ""} ${cShort(a.country)}`.trim()]);
   if (a.country && GEO.region[a.country]) quick.push([`r:${GEO.region[a.country]}`, GEO.region[a.country]]);
   const quickHTML = quick.map(([v, l]) => `<button class="chip txt" data-tkloc="${esc(v)}" aria-pressed="${tkLoc === v}">${esc(l)}${v === "all" ? "" : ` <small>${count(v)}</small>`}</button>`).join("") +
-    `<button class="chip txt ghost" data-sethome="1">${a.country ? (a.state || !GEO.states[a.country] ? "✎ Change" : `📍 Add your ${{ Canada: "province", "United Kingdom": "nation" }[a.country] || "state"}`) : "📍 Set your location"}</button>`;
+    `<button class="chip txt ghost" data-sethome="1">${a.country ? (a.state || !GEO.states[a.country] ? "Change location" : `Add your ${{ Canada: "province", "United Kingdom": "nation" }[a.country] || "state"}`) : "Set your location"}</button>`;
   // Every place that has races: regions, countries, states
   const places = all.map(venueOf);
   const regions = REGIONS.filter(r => places.some(p => p[1] === r));
@@ -2502,10 +2641,10 @@ function renderTicketList(){
       <div class="tk-top" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
         <div class="dt"><b>${e.start.getDate()}</b><span>${MON[e.start.getMonth()]}</span></div>
         ${plate(e.series, 26)}
-        <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">🗓 ${range(e)}</div><div class="loc">📍 ${esc(e.circuit)} · ${esc(placeLine(e))}</div>
+        <div style="min-width:0"><div class="nm">${esc(e.name)}</div><div class="loc">${range(e)}</div><div class="loc">${esc(e.circuit)}, ${esc(placeLine(e))}</div>
         ${e.tags.includes("Provisional") ? `<div class="loc" style="color:var(--sub)">Provisional date</div>` : ""}</div>
       </div>
-      <div class="tk-btns">${links.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">🎟 ${esc(t[0])}</a>`).join("")}</div>
+      <div class="tk-btns">${links.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])}</a>`).join("")}</div>
     </article>`;
   }
   document.getElementById("tkList").innerHTML = h + `</div>`;
@@ -2519,7 +2658,7 @@ function openHome(){
   const countries = Object.keys(GEO.region).sort((x, y) => x.localeCompare(y));
   const stOpts = c => GEO.states[c] ? `<option value="">Whole country</option>` + Object.entries(GEO.states[c]).sort((x, y) => x[1].localeCompare(y[1])).map(([k, n]) => `<option value="${esc(k)}" ${k === a.state ? "selected" : ""}>${esc(n)}</option>`).join("") : "";
   const stLbl = c => ({ Canada: "Province", "United Kingdom": "Nation" })[c] || "State";
-  sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:46px">📍</span>
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)">
     <div><h2 id="sheetTitle">Your location</h2><div class="m">Shows races in your state, country and region first</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
     <label class="fld">Country<select id="homeCountry" class="tk-sel"><option value="">Choose a country</option>${countries.map(c => `<option value="${esc(c)}" ${c === a.country ? "selected" : ""}>${esc(`${FLAG[c] || ""} ${c}`.trim())}</option>`).join("")}</select></label>
     <label class="fld" id="homeStateWrap" ${GEO.states[a.country] ? "" : "hidden"}><span id="homeStateLbl">${stLbl(a.country)}</span><select id="homeState" class="tk-sel">${stOpts(a.country)}</select></label>
@@ -2551,11 +2690,11 @@ function seriesHubHTML(c){
   // Next race
   if (nx) {
     const ns = nextSession(nx.id), tk = ticketLinks(nx);
-    P.next += `<section class="card"><h3>${phase(nx) === "now" ? "🟢 On track now" : "Next race"}</h3>
+    P.next += `<section class="card"><h3>${phase(nx) === "now" ? "On track now" : "Next race"}</h3>
       <div class="hub-next" data-open="${nx.id}" role="button" tabindex="0"><div class="nm">${esc(nx.name)}</div><div class="loc">${esc(nx.circuit)} · ${esc(nx.location)} · ${range(nx)}${!inSeason(nx) ? " " + nx.start.getFullYear() : ""}</div>
       ${nx.tags.length ? `<div class="tags" style="margin-top:4px">${nx.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}</div>
       ${SESSIONS[nx.id] ? `<h4>Session times</h4><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(nx.id, true)}` : `<p class="fine">Session times are added about a week before the race.</p>`}
-      <div class="mine" style="margin:10px 0 0"><button class="btn star" aria-pressed="true" data-open="${nx.id}">Race details ›</button>${tk[0] ? `<a class="btn" href="${esc(tk[0][1])}" target="_blank" rel="noopener">🎟 Tickets</a>` : ""}</div></section>`;
+      <div class="mine" style="margin:10px 0 0"><button class="btn star" aria-pressed="true" data-open="${nx.id}">Race details</button>${tk[0] ? `<a class="btn" href="${esc(tk[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}</div></section>`;
   } else P.next += `<section class="card"><h3>Next race</h3><p class="lede" style="margin:0">No more races announced yet.</p></section>`;
   // Standings
   if (st.champs || st.standings || st.makers) {
@@ -2563,12 +2702,12 @@ function seriesHubHTML(c){
     if (st.champs) h += `<div class="champs">${st.champs.map(x => `<div class="champ"><div class="cl">${esc(x[0])}</div><div class="w">${esc(x[1])}</div><div class="x">${esc(x[2])}</div></div>`).join("")}</div>`;
     if (st.standings) h += `<h4>${esc(st.standingsTitle || "Drivers")}</h4>${pointsTower(st.standings.slice(0, 10), c)}${st.standings.length > 10 ? `<p class="fine">Top 10 of ${st.standings.length}. Full table on the Standings tab.</p>` : ""}`;
     if (st.makers) h += `<h4>${esc(st.makersTitle || "Teams")}</h4>${pointsTower(st.makers, c)}`;
-    h += `<div class="mine" style="margin:10px 0 0"><button class="btn" data-gostats="${c}">Full standings &amp; latest results ›</button></div></section>`;
+    h += `<div class="mine" style="margin:10px 0 0"><button class="btn" data-gostats="${c}">Full standings and latest results</button></div></section>`;
     P.stand = h;
   }
   // Calendar
   const calRows = arr => arr.map(e => { const ph = phase(e);
-    return `<div class="hub-cal ${ph}" data-open="${e.id}" role="button" tabindex="0"><span class="d">${MON[e.start.getMonth()]} ${e.start.getDate()}</span><span class="n">${esc(e.name)}<small>${esc(e.circuit)}</small></span><span class="w">${WINNERS[e.id] ? "🏁 " + esc(String(WINNERS[e.id]).split(/[,(]/)[0]) : ph === "now" ? "🟢 Now" : ph === "past" ? "Done" : nx && e.id === nx.id ? "Next" : ""}</span></div>`; }).join("");
+    return `<div class="hub-cal ${ph}" data-open="${e.id}" role="button" tabindex="0"><span class="d">${MON[e.start.getMonth()]} ${e.start.getDate()}</span><span class="n">${esc(e.name)}<small>${esc(e.circuit)}</small></span><span class="w">${WINNERS[e.id] ? "" + esc(String(WINNERS[e.id]).split(/[,(]/)[0]) : ph === "now" ? "Now" : ph === "past" ? "Done" : nx && e.id === nx.id ? "Next" : ""}</span></div>`; }).join("");
   if (cur.length) P.cal += `<section class="card"><h3>${SEASON} calendar · ${cur.filter(e => phase(e) === "past").length} of ${cur.length} done</h3>${calRows(cur)}</section>`;
   if (nextYr.length) P.cal += `<section class="card"><details><summary class="h3like">${SEASON + 1} calendar · ${nextYr.length} rounds${nextYr.some(e => e.tags.includes("Provisional")) ? " (provisional)" : ""}</summary>${calRows(nextYr)}</details></section>`;
   // Drivers & cars
