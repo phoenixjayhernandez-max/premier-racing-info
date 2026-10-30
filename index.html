@@ -227,6 +227,8 @@ html,body{overflow-x:hidden}
 .pk[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
 .pk[aria-pressed="true"]::before{content:"★ "}
 .pk:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.nsearch-open{display:block;text-align:left;color:var(--sub);cursor:text;margin:0 0 10px}
+.ncount{font-size:.85rem;color:var(--sub);margin:0 0 8px}
 .search{width:100%;font:inherit;padding:9px 12px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);margin:4px 0 12px}
 .feeds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .steps{margin:8px 0 0;padding-left:20px;font-size:.88rem;max-width:65ch}
@@ -1968,7 +1970,7 @@ document.addEventListener("click", ev => {
 });
 
 // ---------- News (headlines collected every 30 min into news.json) ----------
-let NEWS = null, newsFilter = "all";
+let NEWS = null, newsFilter = "all", newsQuery = "";
 const APP_TO_WORLD = {f1:"f1",imsa:"imsa",wec:"wec",gtwc:"gtwc-america",gte:"gtwc-europe",gtas:"gtwc-asia",gtau:"gtwc-australia",psc:"porsche-supercup",pccna:"carrera-cup-na",mustang:"mustang-challenge"};
 function ago(iso){
   const m = Math.max(1, Math.round((Date.now() - Date.parse(iso)) / 60000));
@@ -1987,6 +1989,18 @@ function newsItemHTML(x){
   return `<a class="nitem" href="${esc(x.link)}" target="_blank" rel="noopener">${thumb}<div style="min-width:0"><div class="nt">${esc(x.title)}</div>
     <div class="nm2"><span>${esc(x.source)} · ${ago(x.time)}</span>${w.slice(0, 3).map(s => `<span class="ntag">${esc(dirCode(s))}</span>`).join("")}</div></div></a>`;
 }
+// Search: every word must appear in the headline, source or series names ("verstappen mexico", "le mans", "nascar")
+function newsHay(x){ return [x.title, x.source].concat(x.tags.map(t => { const w = worldById(t); return w ? [w.short, w.name, t].join(" ") : t; })).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+function newsMatches(x, q){ const words = q.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().split(/\s+/).filter(Boolean); if (!words.length) return true; const h = newsHay(x); return words.every(w => h.includes(w)); }
+function newsListHTML(){
+  const items = (NEWS && NEWS.items) || [];
+  const q = newsQuery.trim();
+  const list = items.filter(x => (newsFilter === "all" || (newsFilter === "mine" ? isForMe(x) : x.tags.includes(newsFilter))) && newsMatches(x, q));
+  const elsewhere = q && newsFilter !== "all" && !list.length ? items.filter(x => newsMatches(x, q)).length : 0;
+  const count = q ? `<div class="ncount">${list.length} stor${list.length === 1 ? "y" : "ies"} for “${esc(q)}”</div>` : "";
+  if (!list.length) return count + `<div class="card"><p class="lede" style="margin:0">${q ? `Nothing in the last few days matches “${esc(q)}”${elsewhere ? `` : ". Try a driver, team, track or series."}` : `No stories in the last few days${newsFilter === "mine" ? " for your series. Star series on the Series tab" : ""}.`}</p>${elsewhere ? `<button class="btn" style="margin-top:10px" data-newsf="all">Show ${elsewhere} in all news</button>` : ""}</div>`;
+  return count + list.slice(0, q ? 120 : 80).map(newsItemHTML).join("");
+}
 function renderNews(){
   const el = document.getElementById("newsSec");
   if (!el) return;
@@ -1994,30 +2008,35 @@ function renderNews(){
   const mine = NEWS.items.filter(isForMe);
   const list = (mine.length >= 2 ? mine : NEWS.items).slice(0, 4);
   el.innerHTML = `<div class="nhead"><h2 class="h2">${mine.length >= 2 ? "News for you" : "Latest news"}</h2><button class="btn" data-allnews="1">All news ›</button></div>
+    <button class="search nsearch-open" data-newssearch="1" aria-label="Search news">🔍 Search news: drivers, teams, tracks…</button>
     <div class="nlist">${list.map(newsItemHTML).join("")}</div>`;
 }
-function openNews(){
+function openNews(focusSearch){
   const items = (NEWS && NEWS.items) || [];
   const counts = {};
   items.forEach(x => x.tags.forEach(t => { if (worldById(t)) counts[t] = (counts[t] || 0) + 1; }));
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 16).map(([t]) => t);
   const chips = [["all", "All"], ["mine", "★ For you"]].concat(top.map(t => [t, worldById(t).short || worldById(t).name]));
-  const list = items.filter(x => newsFilter === "all" || (newsFilter === "mine" ? isForMe(x) : x.tags.includes(newsFilter))).slice(0, 80);
   const sheet = document.getElementById("sheet");
   const fresh = document.getElementById("sheetBg").hidden;
   sheet.innerHTML = `<div class="sh-head" style="--c:var(--signal)"><span class="dplate" style="--c:var(--signal);color:var(--signal-ink);height:38px;min-width:54px">NEWS</span>
       <div><h2 id="sheetTitle">Racing news</h2><div class="m">Updated ${NEWS && NEWS.updated ? ago(NEWS.updated) : ""} · tap a story to read it</div></div>
       <button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <input class="search" id="newsSearch" type="search" placeholder="Search news: driver, team, track, series" value="${esc(newsQuery)}" autocomplete="off" enterkeyhint="search">
     <div class="chips" id="newsChips">${chips.map(([v, l]) => `<button class="chip txt" data-newsf="${esc(v)}" aria-pressed="${newsFilter === v}">${esc(l)}</button>`).join("")}</div>
-    <div class="nlist">${list.map(newsItemHTML).join("") || `<div class="card"><p class="lede" style="margin:0">No stories in the last few days${newsFilter === "mine" ? " for your series. Star series on the Series tab" : ""}.</p></div>`}</div>
+    <div class="nlist" id="newsList">${newsListHTML()}</div>
     <p class="fine">Headlines from Formula1.com, Motorsport.com, Autosport, RACER, Sportscar365, DirtFish and Crash.net. Stories open on their sites.</p>`;
   if (fresh) {
     lastFocus = document.activeElement;
     document.getElementById("sheetBg").hidden = false;
     document.body.style.overflow = "hidden";
     sheet.scrollTop = 0;
-    document.getElementById("sheetClose").focus();
+    if (!focusSearch) document.getElementById("sheetClose").focus();
   }
+  const box = document.getElementById("newsSearch");
+  box.addEventListener("input", () => { newsQuery = box.value; document.getElementById("newsList").innerHTML = newsListHTML(); });
+  box.addEventListener("keydown", ev => { if (ev.key === "Enter") box.blur(); });
+  if (focusSearch) { box.focus(); const n = box.value.length; box.setSelectionRange(n, n); }
 }
 function seriesNewsHTML(id){
   const list = ((NEWS && NEWS.items) || []).filter(x => x.tags.includes(id)).slice(0, 4);
@@ -2027,9 +2046,10 @@ function loadNews(){
   fetch("news.json?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(d => { if (d) { NEWS = d; renderNews(); } }).catch(() => {});
 }
 document.addEventListener("click", ev => {
-  if (ev.target.closest("[data-allnews]")) { newsFilter = "all"; openNews(); return; }
+  if (ev.target.closest("[data-allnews]")) { newsFilter = "all"; newsQuery = ""; openNews(); return; }
+  if (ev.target.closest("[data-newssearch]")) { newsFilter = "all"; openNews(true); return; }
   const nf = ev.target.closest("[data-newsf]");
-  if (nf) { newsFilter = nf.dataset.newsf; openNews(); return; }
+  if (nf) { newsFilter = nf.dataset.newsf; openNews(document.activeElement && document.activeElement.id === "newsSearch"); return; }
 });
 
 // ---------- Lock-screen notifications (Web Push) ----------
