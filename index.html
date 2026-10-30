@@ -1005,7 +1005,7 @@ main{max-width:1200px}
 
 /* hero photos: smooth crossfade with a slow settle */
 .hh-media{position:absolute;inset:-10% 0 -10% 0;z-index:-2;will-change:transform}
-.hh-media .hh-ph{position:absolute;inset:0;z-index:auto;background:50% 50%/cover no-repeat;transform:scale(1.06);transition:opacity 900ms var(--ease-in-out),transform 9s var(--ease-out);will-change:opacity,transform}
+.hh-media .hh-ph{position:absolute;inset:0;z-index:auto;background:50% 50%/cover no-repeat;transform:scale(1.06);transition:opacity 900ms var(--ease-in-out),transform 7s var(--ease-out);will-change:opacity,transform}
 .js .hh-media .hh-ph:not(.on),.js .hh-media .hh-ph:not(.ok){opacity:0}
 .hh-media .hh-ph.on{opacity:1;transform:scale(1)}
 @media (prefers-reduced-motion:reduce){ .hh-media .hh-ph{transition:none;transform:none} }
@@ -1825,7 +1825,7 @@ function wikiImage(q, size = 800, photoOnly = false){
 const photoIO = "IntersectionObserver" in window ? new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { photoIO.unobserve(en.target); loadPhoto(en.target); } }), { rootMargin: "300px" }) : null;
 // Race photographs from this week's news (press photos from Motorsport.com, Crash.net, RACER, Sportscar365),
 // matched to each slot's series and never repeated; each links back to its story. Falls back to Wikipedia.
-// Hero slideshow: a new race photo every 40 seconds, cycling through every series in the news
+// Hero slideshow: a new race photo every 7 seconds, cycling through every series in the news
 // (F1, hypercars, LMP2, GTP, GT3, cups...). Pauses on hover, focus, the pause button, a hidden tab and reduced motion.
 let heroTimer = 0, heroPool = [], heroIdx = 0, heroPaused = false;
 function heroPoolFrom(first){
@@ -1863,7 +1863,7 @@ function heroShow(i){
 function heroStart(){
   clearInterval(heroTimer);
   if (heroPool.length < 2 || heroPaused || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  heroTimer = setInterval(() => { if (!document.hidden) heroShow(++heroIdx); }, 30000);
+  heroTimer = setInterval(() => { if (!document.hidden) heroShow(++heroIdx); }, 7000);
 }
 function heroSetup(){
   const band = document.querySelector(".hh-band"); if (!band || !NEWS || !NEWS.items) return;
