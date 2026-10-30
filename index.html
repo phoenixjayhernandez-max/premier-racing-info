@@ -26,7 +26,7 @@
 <style>
 /* Hallmark · shape: app home (Stage hero) + app screens · genre: editorial · theme: Sport (deal 3/3, seed motorsport-race-weekend-schedule-guide-edd8·2cb8b73b·2026-10-30·r0) · redesign: full
  * hero: Poster · nav: masthead with tabs · footer: colophon · imagery: the product (live timing sheet), track photographs from Wikipedia · signature: the weekend as a race-programme sheet, the next session lit in volt with a live countdown
- * axes: light/display-condensed/chromatic-volt · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+ * axes: light/display-condensed/cool-electric-blue (user pick, replaces volt) · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · waive 44c · hero: Poster, the race photograph anchors the head at its foot · the hero stops at about 70% so the featured race timing sheet starts above the fold, as the user needs to see the weekend at once */
 /* Hallmark · waive 39b · the home sits on an app: calendar rows, sheet buttons and chips are app controls at 32 to 40px with 44px hit areas · the race cards are whole-card buttons holding session timing rows */
 /* Hallmark · answered F19 · JetBrains Mono 500 is the stopwatch face for times only; text runs at Albert Sans 400 and 600 with Saira Condensed 800 display */
@@ -52,8 +52,8 @@
   --color-paper: oklch(98% 0.005 250); --color-paper-2: oklch(95% 0.006 250); --color-paper-3: oklch(91.5% 0.007 250);
   --color-ink: oklch(16% 0.080 260); --color-ink-2: oklch(22% 0.060 258); --color-muted: oklch(50% 0.020 250);
   --color-rule: oklch(78% 0.008 250); --color-rule-2: oklch(36% 0.060 255);
-  --color-accent: oklch(88% 0.200 120); --color-accent-ink: oklch(16% 0.080 260); --color-accent-deep: oklch(58% 0.145 125);
-  --color-focus: oklch(58% 0.145 125); --color-slot: oklch(76% 0.07 258);
+  --color-accent: oklch(54% 0.215 263); --color-accent-ink: oklch(99% 0.003 250); --color-accent-deep: oklch(50% 0.200 263);
+  --color-focus: oklch(50% 0.200 263); --color-slot: oklch(76% 0.07 258);
   --font-display: "Saira Condensed", sans-serif; --font-body: "Albert Sans", ui-sans-serif, sans-serif;
   --font-outlier: "JetBrains Mono", ui-monospace, monospace;
   --radius-card: 4px; --radius-pill: 4px; --rule-hair: 1px; --rule-bar: 2px;
@@ -968,7 +968,7 @@ main{max-width:1200px}
   --color-paper:oklch(17% 0.030 258); --color-paper-2:oklch(21% 0.034 258); --color-paper-3:oklch(25% 0.036 258);
   --color-ink:oklch(95% 0.008 250); --color-ink-2:oklch(88% 0.010 250); --color-muted:oklch(71% 0.020 250);
   --color-rule:oklch(33% 0.030 255); --color-rule-2:oklch(80% 0.020 250);
-  --color-accent-deep:oklch(82% 0.170 125); --color-focus:oklch(82% 0.170 125);
+  --color-accent-deep:oklch(76% 0.130 263); --color-focus:oklch(76% 0.130 263);
   --done:oklch(52% 0.015 250); --green:oklch(72% 0.17 150); --plate-ink:oklch(99% 0.003 250);
   --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
   --scrim-mid:oklch(8% 0.03 260 / 0.6); --plate-ink-dark:oklch(14% 0.03 258);
@@ -977,6 +977,19 @@ main{max-width:1200px}
 .hbtn svg.sun{display:none}
 :root[data-theme="dark"] .hbtn svg.sun{display:block}
 :root[data-theme="dark"] .hbtn svg.moon{display:none}
+
+/* hero slideshow */
+.hh-ph{opacity:0;transition:opacity var(--dur-long) var(--ease-out)}
+.hh-ph.on,.hh-ph.ok:only-of-type{opacity:1}
+.hh-ph:not(.from-news).ok{opacity:1}
+.hh-pause{all:unset;cursor:pointer;position:absolute;right:var(--space-md);top:var(--space-md);width:36px;height:36px;display:grid;place-items:center;border-radius:var(--radius-card);background:var(--scrim);color:var(--band-ink)}
+.hh-pause svg{width:16px;height:16px;fill:currentColor}
+.hh-pause .pl{display:none}
+.hh-pause[aria-pressed="true"] .pl{display:block}
+.hh-pause[aria-pressed="true"] .ps{display:none}
+.hh-pause:hover{background:var(--scrim-strong)}
+.hh-pause:focus-visible{outline:2px solid var(--band-ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){ .hh-ph{transition:none} .hh-pause{display:none} }
 </style>
 </head>
 <body>
@@ -1787,10 +1800,53 @@ function wikiImage(q, size = 800, photoOnly = false){
 const photoIO = "IntersectionObserver" in window ? new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { photoIO.unobserve(en.target); loadPhoto(en.target); } }), { rootMargin: "300px" }) : null;
 // Race photographs from this week's news (press photos from Motorsport.com, Crash.net, RACER, Sportscar365),
 // matched to each slot's series and never repeated; each links back to its story. Falls back to Wikipedia.
+// Hero slideshow: a new race photo every 40 seconds, cycling through every series in the news
+// (F1, hypercars, LMP2, GTP, GT3, cups...). Pauses on hover, focus, the pause button, a hidden tab and reduced motion.
+let heroTimer = 0, heroPool = [], heroIdx = 0, heroPaused = false;
+function heroPoolFrom(first){
+  const byTag = new Map();
+  for (const n of NEWS.items) { if (!n.img || /logo|headshot|portrait/i.test(n.img)) continue; const t = n.tags[0] || n.source; if (!byTag.has(t)) byTag.set(t, []); byTag.get(t).push(n); }
+  const tags = [...byTag.keys()].sort((a, b) => (b === first) - (a === first));
+  const pool = []; for (let i = 0; pool.length < 16 && i < 6; i++) for (const t of tags) { const x = byTag.get(t)[i]; if (x && pool.length < 16) pool.push(x); }
+  return pool;
+}
+function heroShow(i){
+  const band = document.querySelector(".hh-band"); if (!band || !heroPool.length) return;
+  const x = heroPool[i % heroPool.length], src = x.img.replace(/\/s6\//, "/s8/"), img = new Image();
+  img.onload = () => {
+    if (img.naturalWidth < 400 && img.src !== x.img) { img.src = x.img; return; }
+    const layers = band.querySelectorAll(".hh-ph"), cur = band.querySelector(".hh-ph.on") || layers[0], next = [...layers].find(l => l !== cur) || cur;
+    next.style.backgroundImage = `url("${img.src.replace(/"/g, "%22")}")`; next.classList.add("ok", "from-news", "on"); if (next !== cur) cur.classList.remove("on");
+    const w = worldById(x.tags[0]), html = `<a class="credit" href="${esc(x.link)}" target="_blank" rel="noopener">Photo: ${esc(x.source)}${w ? ", " + esc(w.short || w.name) : ""}</a>`;
+    const cr = band.querySelector(".credit"); if (cr) cr.outerHTML = html; else band.insertAdjacentHTML("beforeend", html);
+  };
+  img.onerror = () => { if (img.src !== x.img) img.src = x.img; };
+  img.src = src;
+}
+function heroStart(){
+  clearInterval(heroTimer);
+  if (heroPool.length < 2 || heroPaused || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  heroTimer = setInterval(() => { if (!document.hidden) heroShow(++heroIdx); }, 40000);
+}
+function heroSetup(){
+  const band = document.querySelector(".hh-band"); if (!band || !NEWS || !NEWS.items) return;
+  const ph = band.querySelector(".hh-ph"); if (!ph) return;
+  if (!band.querySelector(".hh-ph.b")) { ph.classList.add("on"); ph.insertAdjacentHTML("afterend", `<div class="hh-ph b" aria-hidden="true"></div>`); }
+  heroPool = heroPoolFrom(APP_TO_WORLD[ph.dataset.sphoto]); heroIdx = 0;
+  if (heroPool.length > 1 && !band.querySelector(".hh-pause")) {
+    band.insertAdjacentHTML("beforeend", `<button class="hh-pause" type="button" aria-label="${heroPaused ? "Play" : "Pause"} photos" aria-pressed="${heroPaused}"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ps" d="M8 5h3v14H8zM13 5h3v14h-3z"/><path class="pl" d="M8 5l11 7-11 7z"/></svg></button>`);
+    const b = band.querySelector(".hh-pause");
+    b.addEventListener("click", () => { heroPaused = !heroPaused; b.setAttribute("aria-pressed", heroPaused); b.setAttribute("aria-label", heroPaused ? "Play photos" : "Pause photos"); heroPaused ? clearInterval(heroTimer) : heroStart(); });
+    band.addEventListener("mouseenter", () => clearInterval(heroTimer)); band.addEventListener("mouseleave", heroStart);
+    band.addEventListener("focusin", () => clearInterval(heroTimer)); band.addEventListener("focusout", heroStart);
+  }
+  heroShow(0); heroStart();
+}
 function applyNewsPhotos(root = document){
   if (!NEWS || !NEWS.items) return;
   const used = new Set();
-  root.querySelectorAll("[data-sphoto]").forEach(el => {
+  heroSetup();
+  root.querySelectorAll("[data-sphoto]:not(.hh-ph)").forEach(el => {
     const wid = APP_TO_WORLD[el.dataset.sphoto];
     const x = NEWS.items.find(n => n.img && !used.has(n.img) && n.tags.includes(wid) && !/logo|headshot|portrait/i.test(n.img));
     if (!x) return;
