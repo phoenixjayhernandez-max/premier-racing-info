@@ -11,6 +11,7 @@ Ideas and plans for later. Nothing here is being built yet unless it says so.
 Phoenix's idea (Oct 31, 2026): make "My account" feel personal, and grow it into a social side of the app where fans share their own race videos and photos.
 
 **Personal account**
+- Done Oct 31, 2026: profile photo, display name and bio (private to the account owner), with your photo and first name in the header.
 - Profile: display name, photo, home track, favorite series, drivers and teams.
 - "My season": races attended (Going/Watched), picks record, badges (for example, first race attended or 5 tracks visited).
 - A personal home screen built from your series, your time zone and races near you.
