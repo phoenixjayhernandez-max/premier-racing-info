@@ -2146,9 +2146,9 @@ const OWN_PHOTOS = [
   // { src: "/photos/imsa-daytona-gtp.jpg", series: "imsa", by: "@handle", link: "https://www.tiktok.com/@handle" },
 ];
 const PHOTO_TITLES = {
-  "f1": ["2023 Formula One World Championship", "2024 Formula One World Championship", "2022 Formula One World Championship", "Red Bull Racing RB19", "Ferrari SF-23", "McLaren MCL38", "Mercedes-AMG F1 W14 E Performance", "2023 British Grand Prix", "2024 Italian Grand Prix", "2023 Las Vegas Grand Prix"],
-  "wec": ["2023 24 Hours of Le Mans", "2024 24 Hours of Le Mans", "2025 24 Hours of Le Mans", "Ferrari 499P", "Toyota GR010 Hybrid", "Porsche 963", "Cadillac V-Series.R", "Peugeot 9X8", "Alpine A424", "BMW M Hybrid V8", "2024 FIA World Endurance Championship"],
-  "imsa": ["2024 24 Hours of Daytona", "2023 24 Hours of Daytona", "2025 24 Hours of Daytona", "Acura ARX-06", "2024 IMSA SportsCar Championship", "Oreca 07", "Ligier JS P320", "Petit Le Mans", "12 Hours of Sebring"],
+  "f1": ["2023 Formula One World Championship", "2024 Formula One World Championship", "2022 Formula One World Championship", "Red Bull Racing RB19", "Ferrari SF-23", "McLaren MCL38", "Mercedes-AMG F1 W14 E Performance", "2023 British Grand Prix", "2024 Italian Grand Prix", "2023 Las Vegas Grand Prix", "Mercedes-AMG F1 W15 E Performance", "Ferrari SF-24", "Red Bull Racing RB20", "Aston Martin AMR24", "Williams FW46", "Alpine A524", "Sauber C44", "Cadillac Formula 1 Team", "2025 Mexico City Grand Prix", "2025 São Paulo Grand Prix", "2025 Las Vegas Grand Prix", "2025 Qatar Grand Prix", "2025 Abu Dhabi Grand Prix", "Autódromo Hermanos Rodríguez", "Interlagos Circuit", "Las Vegas Strip Circuit", "Yas Marina Circuit", "Lusail International Circuit"],
+  "wec": ["2023 24 Hours of Le Mans", "2024 24 Hours of Le Mans", "2025 24 Hours of Le Mans", "Ferrari 499P", "Toyota GR010 Hybrid", "Porsche 963", "Cadillac V-Series.R", "Peugeot 9X8", "Alpine A424", "BMW M Hybrid V8", "2024 FIA World Endurance Championship", "Aston Martin Valkyrie AMR-LMH", "Lamborghini SC63", "6 Hours of Monza", "8 Hours of Bahrain", "Circuit de la Sarthe"],
+  "imsa": ["2024 24 Hours of Daytona", "2023 24 Hours of Daytona", "2025 24 Hours of Daytona", "Acura ARX-06", "2024 IMSA SportsCar Championship", "Oreca 07", "Ligier JS P320", "Petit Le Mans", "12 Hours of Sebring", "Porsche 963", "Cadillac V-Series.R", "BMW M Hybrid V8", "Michelin Raceway Road Atlanta", "Daytona International Speedway", "Sebring International Raceway"],
   "gtwc-europe": ["GT World Challenge Europe", "2023 24 Hours of Spa", "2024 24 Hours of Spa", "Porsche 911 GT3 R (992)", "Ferrari 296 GT3", "BMW M4 GT3", "Mercedes-AMG GT3", "Lamborghini Huracán GT3", "Audi R8 LMS", "McLaren 720S GT3", "Aston Martin Vantage AMR GT3"],
   "gtwc-america": ["GT World Challenge America", "Ford Mustang GT3", "Chevrolet Corvette Z06 GT3.R", "Acura NSX GT3", "Indianapolis 8 Hours"],
   "gtwc-asia": ["GT World Challenge Asia", "Nissan GT-R Nismo GT3", "Honda NSX GT3"],
@@ -2156,11 +2156,11 @@ const PHOTO_TITLES = {
   "porsche-supercup": ["Porsche Supercup", "Porsche 911 GT3 Cup"],
   "carrera-cup-na": ["Porsche Carrera Cup North America", "Porsche Carrera Cup Germany"],
   "mustang-challenge": ["Ford Mustang (seventh generation)", "Ford Mustang GT4"],
-  "nascar-cup": ["NASCAR Cup Series", "2024 Daytona 500", "2023 Daytona 500", "Next Gen car", "Talladega Superspeedway"],
-  "indycar": ["IndyCar Series", "2024 Indianapolis 500", "2023 Indianapolis 500", "Dallara IR-18"],
-  "motogp": ["MotoGP", "2024 MotoGP World Championship", "Ducati Desmosedici"],
-  "formulae": ["Formula E", "Gen3 (Formula E)"],
-  "supercars": ["Supercars Championship", "Bathurst 1000", "2023 Bathurst 1000"],
+  "nascar-cup": ["NASCAR Cup Series", "2024 Daytona 500", "2023 Daytona 500", "Next Gen car", "Talladega Superspeedway", "Martinsville Speedway", "Homestead–Miami Speedway", "Phoenix Raceway", "Daytona 500", "Coca-Cola 600", "Bristol Motor Speedway", "Chevrolet Camaro ZL1 (NASCAR)", "Ford Mustang (NASCAR)", "Toyota Camry (NASCAR)", "Hendrick Motorsports", "Joe Gibbs Racing", "Team Penske", "23XI Racing"],
+  "indycar": ["IndyCar Series", "2024 Indianapolis 500", "2023 Indianapolis 500", "Dallara IR-18", "Indianapolis 500", "Indianapolis Motor Speedway", "Grand Prix of Long Beach", "Chip Ganassi Racing", "Arrow McLaren", "Andretti Global", "Team Penske"],
+  "motogp": ["MotoGP", "2024 MotoGP World Championship", "Ducati Desmosedici", "Aprilia RS-GP", "KTM RC16", "Yamaha YZR-M1", "Honda RC213V", "Sepang International Circuit", "Lusail International Circuit", "Circuit Ricardo Tormo", "Algarve International Circuit", "Phillip Island Grand Prix Circuit"],
+  "formulae": ["Formula E", "Gen3 (Formula E)", "Formula E Gen3", "Jaguar TCS Racing", "Porsche 99X Electric"],
+  "supercars": ["Supercars Championship", "Bathurst 1000", "2023 Bathurst 1000", "Mount Panorama Circuit", "Ford Mustang (Supercars)", "Chevrolet Camaro (Supercars)"],
   "wrc": ["World Rally Championship", "Rally1", "Toyota GR Yaris Rally1"],
   "dtm": ["Deutsche Tourenwagen Masters"],
   "supergt": ["Super GT"],
@@ -2171,7 +2171,7 @@ const PHOTO_TITLES = {
   "wsbk": ["Superbike World Championship"],
 };
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b)/i;
-const PHOTOKEY = KEY + "-freepics1";
+const PHOTOKEY = KEY + "-freepics2";
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], own }
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
 function photoCredit(x){ return x.own ? `Photo: ${x.by}` : `Photo: ${x.by || "Unknown"}, ${x.lic}, via Wikimedia Commons`; }
@@ -2188,18 +2188,18 @@ function loadFreePhotos(){
     const q = d.query || {}, map = {};
     (q.normalized || []).concat(q.redirects || []).forEach(n => { map[n.to] = map[n.from] || n.from; });
     const byTitle = {}; ch.forEach(([wid, t]) => { byTitle[t] = wid; });
-    return (q.pages || []).filter(p => p.pageimage).map(p => { let t = p.title; while (map[t] && !byTitle[t]) t = map[t]; return [byTitle[t] || byTitle[p.title], p.pageimage]; }).filter(x => x[0]);
+    return (q.pages || []).filter(p => p.pageimage).map(p => { let t = p.title; while (map[t] && !byTitle[t]) t = map[t]; return [byTitle[t] || byTitle[p.title], p.pageimage, byTitle[t] ? t : p.title]; }).filter(x => x[0]);
   }).catch(() => []))).then(rs => {
     const files = rs.flat().filter(([, f]) => /\.jpe?g$/i.test(f));
     const fchunks = []; for (let i = 0; i < files.length; i += 45) fchunks.push(files.slice(i, i + 45));
     // 2) who took it and under which licence
     return Promise.all(fchunks.map(ch => fetch(API + "&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent(ch.map(f => "File:" + f[1]).join("|"))).then(r => r.json()).then(d => {
       const pages = (d.query && d.query.pages) || [];
-      return ch.map(([wid, f]) => {
+      return ch.map(([wid, f, at]) => {
         const p = pages.find(x => x.title.replace(/^File:/, "").replace(/ /g, "_") === f.replace(/ /g, "_")); const ii = p && p.imageinfo && p.imageinfo[0]; if (!ii) return null;
         const m = ii.extmetadata || {}, lic = plain(m.LicenseShortName && m.LicenseShortName.value);
         if (!FREE_LIC.test(lic) || ii.width < 1000 || ii.width / ii.height < 1.25) return null; // free licence, big, landscape
-        return { img: ii.thumburl || ii.url, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid] };
+        return { img: ii.thumburl || ii.url, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid], about: `${at || ""} ${f.replace(/\.jpe?g$/i, "").replace(/[_\-.()]+/g, " ")}` };
       }).filter(Boolean);
     }).catch(() => [])));
   }).then(rs => {
@@ -2267,9 +2267,20 @@ function heroSetup(){
 const PIC_DISC = {};
 function picDisc(wid){ if (!(wid in PIC_DISC)) { const w = worldById(wid); PIC_DISC[wid] = w ? w.discipline : ""; } return PIC_DISC[wid]; }
 function picHash(k){ let h = 2166136261; for (const c of String(k)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
-function picHTML(series, key, cls = "", label = ""){
+function picHTML(series, key, cls = "", label = "", q = ""){
   const wid = APP_TO_WORLD[series] || series;
-  return `<span class="pic ${cls}" data-pic="${esc(wid)}" data-key="${esc(key)}" aria-hidden="true">${label}</span>`;
+  return `<span class="pic ${cls}" data-pic="${esc(wid)}" data-key="${esc(key)}"${q ? ` data-q="${esc(q)}"` : ""} aria-hidden="true">${label}</span>`;
+}
+// Match a photo to a headline: words in the headline (drivers, teams, cars, tracks, races) against
+// each photo's Wikipedia article and file name, with the story's series as a bonus.
+const PIC_STOP = new Set("the and for with from after before into over his her their they this that will have has had are was were not but out new first last more says said how why what when who year season race races racing series championship grand prix gp win wins won team teams driver drivers points title weekend round".split(" "));
+const fold = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function picScore(x, words, wid){
+  const hay = fold(x.about || "") + " " + x.tags.join(" ");
+  const d = picDisc(wid);
+  let sc = x.tags.includes(wid) ? 3 : d && picDisc(x.tags[0]) === d ? 1 : d ? -5 : 0; // never a car photo on a bike story (or the reverse)
+  for (const w of words) if (hay.includes(w)) sc += w.length >= 5 ? 4 : 2;
+  return sc;
 }
 function fillPics(root = document){
   const all = PHOTO_POOL;
@@ -2277,6 +2288,13 @@ function fillPics(root = document){
   const used = new Set();
   root.querySelectorAll(".pic:not(.ok)").forEach(el => {
     const wid = el.dataset.pic, h = picHash(el.dataset.key || wid), d = picDisc(wid);
+    if (el.dataset.q) {
+      const words = [...new Set(fold(el.dataset.q).split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !PIC_STOP.has(w) && !/^\d{1,2}$/.test(w)))];
+      let best = null, bs = -1;
+      for (let i = 0; i < all.length; i++) { const c = all[(h + i) % all.length]; const sc = picScore(c, words, wid) - (used.has(c.img) ? 2.5 : 0); if (sc > bs) { bs = sc; best = c; } }
+      if (best) { used.add(best.img); el.style.backgroundImage = `url("${best.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
+      return;
+    }
     const tiers = [all.filter(n => n.tags.includes(wid)), d ? all.filter(n => n.tags.some(t => picDisc(t) === d)) : [], all];
     let x = null;
     for (const pool of tiers) { if (!pool.length) continue; for (let i = 0; i < pool.length; i++) { const c = pool[(h + i) % pool.length]; if (!used.has(c.img)) { x = c; break; } } if (!x) x = pool[h % pool.length]; break; }
@@ -3227,7 +3245,7 @@ function isForMe(x){
 }
 function newsItemHTML(x){
   const w = x.tags.map(worldById).filter(Boolean);
-  const thumb = `<div class="nthumb ${w[0] ? (DISC_CLS[w[0].discipline] || "") : ""}">${w[0] ? `<span class="dplate">${esc(dirCode(w[0]))}</span>` : `<span class="dplate nsrc">${esc(String(x.source || "").slice(0, 3))}</span>`}${picHTML(x.tags[0] || "", x.link, "fillpic")}</div>`;
+  const thumb = `<div class="nthumb ${w[0] ? (DISC_CLS[w[0].discipline] || "") : ""}">${w[0] ? `<span class="dplate">${esc(dirCode(w[0]))}</span>` : `<span class="dplate nsrc">${esc(String(x.source || "").slice(0, 3))}</span>`}${picHTML(x.tags[0] || "", x.link, "fillpic", "", x.title)}</div>`;
   return `<a class="nitem" href="${esc(x.link)}" target="_blank" rel="noopener">${thumb}<div style="min-width:0"><div class="nt">${esc(x.title)}</div>
     <div class="nm2"><span>${esc(x.source)} · ${ago(x.time)}</span>${w.slice(0, 3).map(s => `<span class="ntag">${esc(dirCode(s))}</span>`).join("")}</div></div></a>`;
 }
@@ -3252,7 +3270,7 @@ function renderNews(){
   const lead = pool[0];
   const rest = pool.filter(x => x !== lead).slice(0, 6);
   const tag = x => { const w = x.tags.map(worldById).filter(Boolean)[0]; return w ? esc(w.short || w.name) : esc(x.source); };
-  const pic = (x, cls) => `<div class="np ${cls}"><span class="np-fb" aria-hidden="true">${tag(x)}</span>${picHTML(x.tags[0] || "", x.link, "fillpic")}<span class="np-tag">${tag(x)}</span></div>`;
+  const pic = (x, cls) => `<div class="np ${cls}"><span class="np-fb" aria-hidden="true">${tag(x)}</span>${picHTML(x.tags[0] || "", x.link, "fillpic", "", x.title)}<span class="np-tag">${tag(x)}</span></div>`;
   el.innerHTML = `<div class="sec-head"><h2>${mine.length >= 2 ? "News for you" : "Latest news"}</h2><button class="tlink" data-allnews="1">All news</button></div>
     <div class="news-grid">
       <a class="n-lead" href="${esc(lead.link)}" target="_blank" rel="noopener">${pic(lead, "np-lead")}<h3>${esc(lead.title)}</h3><p class="n-src">${esc(lead.source)}, ${ago(lead.time)}</p></a>
