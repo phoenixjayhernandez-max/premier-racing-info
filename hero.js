@@ -43,6 +43,8 @@ const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia":
 const PHOTO_NOT = /podium|portrait|headshot|trophy|logo|\bmap\b|layout|helmet|museum|motor ?show|auto ?show|salon|expo\b|exhibit|display|showroom|press conference|interview|autograph|signing|fan ?zone|grid girl|celebrat|parade|render|reveal|launch|presentation|road car|street[- ]legal|\bIAA\b|Goodwood|concours|dealer|test drive|toy|model car|scale model|replica|drawing|diagram|chart|ticket|poster|stamp|coin/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b)/i;
 const PHOTOKEY = KEY + "-racepics1";
+// Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
+try { ["-freepics1", "-freepics2", "-img2"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
 function photoCredit(x){ return x.own ? `Photo: ${x.by}` : `Photo: ${x.by || "Unknown"}, ${x.lic}, via Wikimedia Commons`; }
