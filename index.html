@@ -1022,6 +1022,7 @@ main{max-width:1200px}
 .tk-top{grid-template-columns:40px 76px minmax(0,1fr) !important}
 .wk-row{grid-template-columns:76px minmax(0,1fr) auto auto}
 @media (max-width:640px){ .wk-row{grid-template-columns:76px minmax(0,1fr) auto} .row{grid-template-columns:40px 64px minmax(0,1fr) auto;gap:var(--space-xs)} .row .pic.thumb{width:64px;height:48px} }
+.sh-pic:not(.ok){display:none}
 .sh-pic{height:clamp(150px,30vw,220px);margin:0 calc(-1 * var(--space-md)) var(--space-sm);border-radius:0}
 .sheet{padding-top:0}
 .up-ph{display:block;aspect-ratio:4/3}
@@ -2157,67 +2158,80 @@ const photoIO = "IntersectionObserver" in window ? new IntersectionObserver(ents
 const OWN_PHOTOS = [
   // { src: "/photos/imsa-daytona-gtp.jpg", series: "imsa", by: "@handle", link: "https://www.tiktok.com/@handle" },
 ];
-const PHOTO_TITLES = {
-  "f1": ["2023 Formula One World Championship", "2024 Formula One World Championship", "2022 Formula One World Championship", "Red Bull Racing RB19", "Ferrari SF-23", "McLaren MCL38", "Mercedes-AMG F1 W14 E Performance", "2023 British Grand Prix", "2024 Italian Grand Prix", "2023 Las Vegas Grand Prix", "Mercedes-AMG F1 W15 E Performance", "Ferrari SF-24", "Red Bull Racing RB20", "Aston Martin AMR24", "Williams FW46", "Alpine A524", "Sauber C44", "Cadillac Formula 1 Team", "2025 Mexico City Grand Prix", "2025 São Paulo Grand Prix", "2025 Las Vegas Grand Prix", "2025 Qatar Grand Prix", "2025 Abu Dhabi Grand Prix", "Autódromo Hermanos Rodríguez", "Interlagos Circuit", "Las Vegas Strip Circuit", "Yas Marina Circuit", "Lusail International Circuit"],
-  "wec": ["2023 24 Hours of Le Mans", "2024 24 Hours of Le Mans", "2025 24 Hours of Le Mans", "Ferrari 499P", "Toyota GR010 Hybrid", "Porsche 963", "Cadillac V-Series.R", "Peugeot 9X8", "Alpine A424", "BMW M Hybrid V8", "2024 FIA World Endurance Championship", "Aston Martin Valkyrie AMR-LMH", "Lamborghini SC63", "6 Hours of Monza", "8 Hours of Bahrain", "Circuit de la Sarthe"],
-  "imsa": ["2024 24 Hours of Daytona", "2023 24 Hours of Daytona", "2025 24 Hours of Daytona", "Acura ARX-06", "2024 IMSA SportsCar Championship", "Oreca 07", "Ligier JS P320", "Petit Le Mans", "12 Hours of Sebring", "Porsche 963", "Cadillac V-Series.R", "BMW M Hybrid V8", "Michelin Raceway Road Atlanta", "Daytona International Speedway", "Sebring International Raceway"],
-  "gtwc-europe": ["GT World Challenge Europe", "2023 24 Hours of Spa", "2024 24 Hours of Spa", "Porsche 911 GT3 R (992)", "Ferrari 296 GT3", "BMW M4 GT3", "Mercedes-AMG GT3", "Lamborghini Huracán GT3", "Audi R8 LMS", "McLaren 720S GT3", "Aston Martin Vantage AMR GT3"],
-  "gtwc-america": ["GT World Challenge America", "Ford Mustang GT3", "Chevrolet Corvette Z06 GT3.R", "Acura NSX GT3", "Indianapolis 8 Hours"],
-  "gtwc-asia": ["GT World Challenge Asia", "Nissan GT-R Nismo GT3", "Honda NSX GT3"],
-  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour", "2024 Bathurst 12 Hour"],
-  "porsche-supercup": ["Porsche Supercup", "Porsche 911 GT3 Cup"],
-  "carrera-cup-na": ["Porsche Carrera Cup North America", "Porsche Carrera Cup Germany"],
-  "mustang-challenge": ["Ford Mustang (seventh generation)", "Ford Mustang GT4"],
-  "nascar-cup": ["NASCAR Cup Series", "2024 Daytona 500", "2023 Daytona 500", "Next Gen car", "Talladega Superspeedway", "Martinsville Speedway", "Homestead–Miami Speedway", "Phoenix Raceway", "Daytona 500", "Coca-Cola 600", "Bristol Motor Speedway", "Chevrolet Camaro ZL1 (NASCAR)", "Ford Mustang (NASCAR)", "Toyota Camry (NASCAR)", "Hendrick Motorsports", "Joe Gibbs Racing", "Team Penske", "23XI Racing"],
-  "indycar": ["IndyCar Series", "2024 Indianapolis 500", "2023 Indianapolis 500", "Dallara IR-18", "Indianapolis 500", "Indianapolis Motor Speedway", "Grand Prix of Long Beach", "Chip Ganassi Racing", "Arrow McLaren", "Andretti Global", "Team Penske"],
-  "motogp": ["MotoGP", "2024 MotoGP World Championship", "Ducati Desmosedici", "Aprilia RS-GP", "KTM RC16", "Yamaha YZR-M1", "Honda RC213V", "Sepang International Circuit", "Lusail International Circuit", "Circuit Ricardo Tormo", "Algarve International Circuit", "Phillip Island Grand Prix Circuit"],
-  "formulae": ["Formula E", "Gen3 (Formula E)", "Formula E Gen3", "Jaguar TCS Racing", "Porsche 99X Electric"],
-  "supercars": ["Supercars Championship", "Bathurst 1000", "2023 Bathurst 1000", "Mount Panorama Circuit", "Ford Mustang (Supercars)", "Chevrolet Camaro (Supercars)"],
-  "wrc": ["World Rally Championship", "Rally1", "Toyota GR Yaris Rally1"],
-  "dtm": ["Deutsche Tourenwagen Masters"],
-  "supergt": ["Super GT"],
-  "elms": ["European Le Mans Series"],
-  "btcc": ["British Touring Car Championship"],
-  "nhra": ["NHRA Camping World Drag Racing Series", "Top Fuel"],
-  "supercross": ["AMA Supercross Championship"],
-  "wsbk": ["Superbike World Championship"],
+// Race photos come from Wikimedia Commons searches for each series' own races (not car-model articles,
+// which often show road cars or show cars). Each series only ever shows its own photos: F1 is F1, F2 is F2,
+// GT shows GT race cars. Only identical cars share (the GT3 cars of the GT World Challenge regions, and
+// the Porsche 911 GT3 Cup cars of the Carrera Cups); anything else with no photo keeps its plain plate.
+const PHOTO_QUERIES = {
+  "f1": ["Formula One 2025 Grand Prix", "Formula One 2024 Grand Prix", "Formula One 2023 Grand Prix race"],
+  "f2": ["FIA Formula 2 Championship 2024", "FIA Formula 2 Championship"], "f3": ["FIA Formula 3 Championship 2024", "FIA Formula 3 Championship"],
+  "f1academy": ["F1 Academy"], "italianf4": ["Italian F4 Championship"], "f4us": ["Formula 4 United States Championship"],
+  "formulae": ["Formula E ePrix 2024", "Formula E ePrix 2025", "Formula E Gen3"], "superformula": ["Super Formula Championship"],
+  "indycar": ["IndyCar Series 2024 race", "Indianapolis 500 2024", "IndyCar Series 2025"], "indynxt": ["Indy NXT"],
+  "wec": ["24 Hours of Le Mans 2024 Hypercar", "24 Hours of Le Mans 2025", "FIA World Endurance Championship 2024"],
+  "imsa": ["IMSA SportsCar Championship 2024 GTP", "24 Hours of Daytona 2024", "12 Hours of Sebring 2024"],
+  "elms": ["European Le Mans Series"], "alms": ["Asian Le Mans Series"],
+  "gtwc-europe": ["GT World Challenge Europe", "24 Hours of Spa 2024", "24 Hours of Spa 2023"],
+  "gtwc-america": ["GT World Challenge America"], "gtwc-asia": ["GT World Challenge Asia"],
+  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour 2024", "Bathurst 12 Hour 2025"],
+  "igtc": ["Intercontinental GT Challenge"], "britgt": ["British GT Championship"], "adacgtm": ["ADAC GT Masters"],
+  "dtm": ["DTM 2024 race", "DTM 2025 race"], "supergt": ["Super GT GT500", "Super GT GT300"],
+  "porsche-supercup": ["Porsche Supercup"], "carrera-cup-na": ["Porsche Carrera Cup North America"], "pccd": ["Porsche Carrera Cup Deutschland"],
+  "mustang-challenge": ["Mustang Challenge Dark Horse R", "Ford Mustang Dark Horse R race"],
+  "nascar-cup": ["NASCAR Cup Series 2024", "NASCAR Cup Series 2025", "Daytona 500 2024"], "nascar-oreilly": ["NASCAR Xfinity Series"], "nascar-truck": ["NASCAR Truck Series"],
+  "supercars": ["Supercars Championship 2024", "Bathurst 1000 2024"], "btcc": ["British Touring Car Championship 2024"], "tcr-world-tour": ["TCR World Tour"],
+  "wrc": ["World Rally Championship 2024 Rally1", "World Rally Championship 2025"], "erc": ["European Rally Championship"], "w2rc": ["Dakar Rally 2025"],
+  "nhra": ["NHRA Top Fuel dragster", "NHRA Funny Car"], "fd": ["Formula Drift"], "ppihc": ["Pikes Peak International Hill Climb"],
+  "motogp": ["MotoGP 2024 Grand Prix", "MotoGP 2025 Grand Prix", "MotoGP 2023 Grand Prix"], "moto2": ["Moto2 2024"], "moto3": ["Moto3 2024"],
+  "wsbk": ["Superbike World Championship 2024"], "supercross": ["AMA Supercross Championship"], "promotocross": ["AMA Pro Motocross"], "mxgp": ["MXGP motocross"],
+  "iomtt": ["Isle of Man TT 2024"], "woo": ["World of Outlaws sprint car"],
 };
+// What a photo's title/categories must (and must not) say to count for a series
+const PHOTO_NEED = {
+  "f1": [/Formula (One|1)\b|\bF1\b|Grand Prix/i, /Formula (2|3|4|E)\b|\bF[234]\b|Formula Regional|Super Formula|F1 Academy|GP[23]\b|Moto|motorcycle|Historic|Classic/i],
+  "f2": [/Formula 2\b|\bF2\b/i], "f3": [/Formula 3\b|\bF3\b/i], "f1academy": [/F1 Academy/i], "italianf4": [/F4|Formula 4/i], "f4us": [/F4|Formula 4/i],
+  "formulae": [/Formula E\b|E-?Prix/i], "indycar": [/IndyCar|Indy ?500|Indianapolis 500/i, /Indy NXT|Indy Lights|Historic/i], "indynxt": [/Indy NXT/i],
+  "motogp": [/MotoGP/i, /Moto2|Moto3|MotoE/i], "moto2": [/Moto2/i], "moto3": [/Moto3/i],
+  "nascar-cup": [/NASCAR|Cup Series|Daytona 500/i, /Xfinity|Truck|ARCA|Euro|Brasil|Mexico|Pinty|Whelen|Modified/i],
+  "wec": [/Le Mans|WEC|Hypercar|World Endurance/i, /Classic|Legend|European Le Mans|Asian Le Mans|Le Mans Cup|Historic|Bugatti Circuit|MotoGP/i],
+  "imsa": [/IMSA|Daytona|Sebring|Petit Le Mans|GTP|WeatherTech/i, /NASCAR|ARCA|Bike|Motorcycle|Supercross/i],
+  "gtwc-europe": [/GT World Challenge|Blancpain|GT3|24 Hours of Spa|Spa 24/i, /GT4|Historic/i], "gtwc-america": [/GT World Challenge|GT3/i, /GT4/i],
+  "gtwc-asia": [/GT World Challenge|GT3/i, /GT4|GT500/i], "gtwc-australia": [/GT World Challenge|GT3|Bathurst 12/i, /GT4/i],
+  "supercars": [/Supercars|Bathurst 1000|V8/i], "mustang-challenge": [/Mustang/i],
+};
+const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
+  "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
+const PHOTO_NOT = /podium|portrait|headshot|trophy|logo|\bmap\b|layout|helmet|museum|motor ?show|auto ?show|salon|expo\b|exhibit|display|showroom|press conference|interview|autograph|signing|fan ?zone|grid girl|celebrat|parade|render|reveal|launch|presentation|road car|street[- ]legal|\bIAA\b|Goodwood|concours|dealer|test drive|toy|model car|scale model|replica|drawing|diagram|chart|ticket|poster|stamp|coin/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b)/i;
-const PHOTOKEY = KEY + "-freepics2";
-let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], own }
+const PHOTOKEY = KEY + "-racepics1";
+let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
 function photoCredit(x){ return x.own ? `Photo: ${x.by}` : `Photo: ${x.by || "Unknown"}, ${x.lic}, via Wikimedia Commons`; }
 function buildPool(list){
-  PHOTO_POOL = OWN_PHOTOS.map(p => ({ img: p.src, page: p.link || "", by: p.by, lic: "used with permission", tags: [p.series], own: true })).concat(list);
+  PHOTO_POOL = OWN_PHOTOS.map(p => ({ img: p.src, page: p.link || "", by: p.by, lic: "used with permission", tags: [p.series], about: p.about || "", own: true })).concat(list);
 }
 function loadFreePhotos(){
   try { const c = JSON.parse(localStorage.getItem(PHOTOKEY) || "null"); if (c && Date.now() - c.t < 7 * 864e5 && c.list.length) { buildPool(c.list); return Promise.resolve(); } } catch(e){}
-  const API = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&formatversion=2&redirects=1";
-  const entries = Object.entries(PHOTO_TITLES).flatMap(([wid, ts]) => ts.map(t => [wid, t]));
-  const chunks = []; for (let i = 0; i < entries.length; i += 45) chunks.push(entries.slice(i, i + 45));
-  // 1) the lead image of each article (free licences only)
-  return Promise.all(chunks.map(ch => fetch(API + "&prop=pageimages&piprop=name&pilicense=free&titles=" + encodeURIComponent(ch.map(e => e[1]).join("|"))).then(r => r.json()).then(d => {
-    const q = d.query || {}, map = {};
-    (q.normalized || []).concat(q.redirects || []).forEach(n => { map[n.to] = map[n.from] || n.from; });
-    const byTitle = {}; ch.forEach(([wid, t]) => { byTitle[t] = wid; });
-    return (q.pages || []).filter(p => p.pageimage).map(p => { let t = p.title; while (map[t] && !byTitle[t]) t = map[t]; return [byTitle[t] || byTitle[p.title], p.pageimage, byTitle[t] ? t : p.title]; }).filter(x => x[0]);
-  }).catch(() => []))).then(rs => {
-    const files = rs.flat().filter(([, f]) => /\.jpe?g$/i.test(f));
-    const fchunks = []; for (let i = 0; i < files.length; i += 45) fchunks.push(files.slice(i, i + 45));
-    // 2) who took it and under which licence
-    return Promise.all(fchunks.map(ch => fetch(API + "&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent(ch.map(f => "File:" + f[1]).join("|"))).then(r => r.json()).then(d => {
-      const pages = (d.query && d.query.pages) || [];
-      return ch.map(([wid, f, at]) => {
-        const p = pages.find(x => x.title.replace(/^File:/, "").replace(/ /g, "_") === f.replace(/ /g, "_")); const ii = p && p.imageinfo && p.imageinfo[0]; if (!ii) return null;
-        const m = ii.extmetadata || {}, lic = plain(m.LicenseShortName && m.LicenseShortName.value);
-        if (!FREE_LIC.test(lic) || ii.width < 1000 || ii.width / ii.height < 1.25) return null; // free licence, big, landscape
-        return { img: ii.thumburl || ii.url, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid], about: `${at || ""} ${f.replace(/\.jpe?g$/i, "").replace(/[_\-.()]+/g, " ")}` };
-      }).filter(Boolean);
-    }).catch(() => [])));
-  }).then(rs => {
-    const seen = new Set(), list = rs.flat().filter(x => !seen.has(x.img) && seen.add(x.img));
-    if (list.length) try { localStorage.setItem(PHOTOKEY, JSON.stringify({ t: Date.now(), list })); } catch(e){}
-    buildPool(list);
+  const API = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&formatversion=2&generator=search&gsrnamespace=6&gsrlimit=30&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName|Categories&gsrsearch=";
+  const jobs = Object.entries(PHOTO_QUERIES).flatMap(([wid, qs]) => qs.map(q => [wid, q]));
+  const out = [], seen = new Set();
+  const run = ([wid, q]) => fetch(API + encodeURIComponent(q + " filetype:bitmap")).then(r => r.json()).then(d => {
+    const need = PHOTO_NEED[wid];
+    for (const p of (d.query && d.query.pages) || []) {
+      const ii = p.imageinfo && p.imageinfo[0]; if (!ii || !/\.jpe?g$/i.test(p.title)) continue;
+      const m = ii.extmetadata || {}, lic = plain(m.LicenseShortName && m.LicenseShortName.value), cats = plain(m.Categories && m.Categories.value).replace(/\|/g, " · ");
+      const text = p.title.replace(/^File:/, "").replace(/\.jpe?g$/i, "").replace(/[_]+/g, " ") + " · " + cats;
+      if (!FREE_LIC.test(lic) || ii.width < 1200 || ii.width / ii.height < 1.3 || PHOTO_NOT.test(text)) continue; // free, big, landscape, on track
+      if (need && (!need[0].test(text) || (need[1] && need[1].test(text)))) continue;
+      const img = ii.thumburl || ii.url; if (seen.has(img)) continue; seen.add(img);
+      out.push({ img, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid], about: text.slice(0, 400) });
+    }
+  }).catch(() => {});
+  // a few searches at a time
+  let i = 0; const worker = () => i < jobs.length ? run(jobs[i++]).then(worker) : Promise.resolve();
+  return Promise.all([0, 1, 2, 3, 4, 5].map(worker)).then(() => {
+    if (out.length) try { localStorage.setItem(PHOTOKEY, JSON.stringify({ t: Date.now(), list: out })); } catch(e){}
+    buildPool(out);
   });
 }
 // Hero slideshow: a new race photo every 7 seconds across every series. Pauses on hover, focus, the pause button, a hidden tab and reduced motion.
@@ -2289,8 +2303,7 @@ const PIC_STOP = new Set("the and for with from after before into over his her t
 const fold = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 function picScore(x, words, wid){
   const hay = fold(x.about || "") + " " + x.tags.join(" ");
-  const d = picDisc(wid);
-  let sc = x.tags.includes(wid) ? 3 : d && picDisc(x.tags[0]) === d ? 1 : d ? -5 : 0; // never a car photo on a bike story (or the reverse)
+  let sc = !wid ? 0 : x.tags.includes(wid) ? 6 : PHOTO_FAMILY[wid] && PHOTO_FAMILY[x.tags[0]] === PHOTO_FAMILY[wid] ? 3 : -100; // only its own series' photos
   for (const w of words) if (hay.includes(w)) sc += w.length >= 5 ? 4 : 2;
   return sc;
 }
@@ -2304,10 +2317,11 @@ function fillPics(root = document){
       const words = [...new Set(fold(el.dataset.q).split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !PIC_STOP.has(w) && !/^\d{1,2}$/.test(w)))];
       let best = null, bs = -1;
       for (let i = 0; i < all.length; i++) { const c = all[(h + i) % all.length]; const sc = picScore(c, words, wid) - (used.has(c.img) ? 2.5 : 0); if (sc > bs) { bs = sc; best = c; } }
-      if (best) { used.add(best.img); el.style.backgroundImage = `url("${best.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
+      if (best && bs > -50) { used.add(best.img); el.style.backgroundImage = `url("${best.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
       return;
     }
-    const tiers = [all.filter(n => n.tags.includes(wid)), d ? all.filter(n => n.tags.some(t => picDisc(t) === d)) : [], all];
+    const fam = PHOTO_FAMILY[wid];
+    const tiers = [all.filter(n => n.tags.includes(wid)), fam ? all.filter(n => PHOTO_FAMILY[n.tags[0]] === fam) : []]; // never another series' photo
     let x = null;
     for (const pool of tiers) { if (!pool.length) continue; for (let i = 0; i < pool.length; i++) { const c = pool[(h + i) % pool.length]; if (!used.has(c.img)) { x = c; break; } } if (!x) x = pool[h % pool.length]; break; }
     if (!x) return;
@@ -3209,7 +3223,7 @@ function openWorld(id){
     <div><span class="fine" style="margin:0">${esc(x.discipline)}${x.level ? ", " + esc(x.level).toLowerCase() : ""}</span><h2 id="sheetTitle">${esc(x.short && x.short.length < x.name.length ? x.short : x.name)}</h2><div class="m">${esc(x.short && x.short.length < x.name.length ? x.name : (x.region || ""))}</div></div>
     <button class="close" id="sheetClose" aria-label="Close">×</button></div>`;
   const head = h; h = "";
-  h += photoSlot(x.name, "sh-photo");
+  h += picHTML(x.id, x.id + "-sheet", "sh-pic");
   if (x.about) h += `<p class="story" style="margin:0 0 12px">${esc(x.about)}</p>`;
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site));
   h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("")}</div>
