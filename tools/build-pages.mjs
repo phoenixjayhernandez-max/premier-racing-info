@@ -15,7 +15,7 @@ const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/sc
 const data = new Function("window", "document", "localStorage",
   src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
-const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
+const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS } = data;
@@ -123,7 +123,7 @@ for (const e of EV) {
   const full = SERIES_FULL[e.s], sess = SESSIONS[e.id] || [], tr = TRACKS[e.circuit], past = e.end < today;
   const mainRace = sess.filter(x => !x[2]).slice(-1)[0];
   let body = `<p class="lede">${esc(full)} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</p>`;
-  if (sess.length) body += `<section class="card"><h2>Start times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}">${fTime.format(new Date(x[1]))}</td></tr>`).join("")}</table></section>`;
+  if (sess.length) body += `<section class="card"><h2>Start times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => { const sw = SESSION_WATCH[e.id + "|" + x[0]]; return `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}${sw ? `<br><small><a href="${esc(sw[1])}" rel="noopener">Watch on ${esc(sw[0])}</a></small>` : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}">${fTime.format(new Date(x[1]))}</td></tr>`; }).join("")}</table></section>`;
   else if (!past) body += `<section class="card"><h2>Start times</h2><p>Session times are usually published about a week before the race. They'll show here in your time zone as soon as they're out.</p></section>`;
   if (RESULT_FOR[e.id] && STATS[RESULT_FOR[e.id]]?.race?.rows) {
     const r = STATS[RESULT_FOR[e.id]].race;

@@ -345,6 +345,7 @@ html,body{overflow-x:clip}
 .sched tr.nx td:first-child{border-radius:4px 0 0 4px;padding-left:var(--space-xs)}
 .sched tr.nx td:last-child{border-radius:0 4px 4px 0;padding-right:var(--space-xs)}
 .sched.compact{font-size:.85rem;max-width:420px}
+.s-watch{display:block;font-size:.8rem;font-weight:600;margin-top:2px;color:inherit;text-underline-offset:3px}.sched tr.nx .s-watch{color:inherit}
 .sched.compact td{padding:var(--space-2xs) var(--space-2xs)}
 
 /* ---------- Series directory ---------- */
@@ -1613,6 +1614,11 @@ const SESSIONS = {
   "wec-monza":[["Free Practice 1","2026-11-06T09:30Z"],["Free Practice 2","2026-11-06T13:30Z"],["Free Practice 3","2026-11-07T09:30Z"],
     ["LMGT3 qualifying","2026-11-07T13:20Z"],["LMGT3 Hyperpole","2026-11-07T13:40Z"],["Hypercar qualifying","2026-11-07T14:00Z"],["Hypercar Hyperpole","2026-11-07T14:20Z"],["6 Hours of Monza","2026-11-08T10:00Z"]],
 };
+// Where to watch one specific session: "eventId|Session name": ["Network or stream", "exact link"].
+// Filled in by the updater when the official TV schedule or a live-stream link is published.
+const SESSION_WATCH = {
+};
+
 
 
 const LIVE = {};
@@ -2036,7 +2042,8 @@ function liveSessions(){
 function liveNowHTML(){
   const L = liveSessions(), now = Date.now();
   if (L.length) return `<div class="live-strip" role="status" aria-live="polite"><span class="live-tag"><i aria-hidden="true"></i>Live now</span>${L.slice(0, 4).map(x => { const w = (WATCH[x.e.series] || [])[0];
-    return `<span class="live-item ${x.e.series}"><button class="live-open" data-open="${x.e.id}">${plate(x.e.series, 18)}<b>${esc(x.name)}</b> <span>${esc(x.e.name)}</span></button>${w && !x.support ? `<a class="live-watch" href="${esc(w[1])}" target="_blank" rel="noopener">Watch on ${esc(w[0])}</a>` : ""}</span>`; }).join("")}</div>`;
+    const sw = sessWatch(x.e.id, x.name);
+    return `<span class="live-item ${x.e.series}"><button class="live-open" data-open="${x.e.id}">${plate(x.e.series, 18)}<b>${esc(x.name)}</b> <span>${esc(x.e.name)}</span></button>${sw && (!x.support || sw[2]) ? `<a class="live-watch" href="${esc(sw[1])}" target="_blank" rel="noopener">${/schedule/i.test(sw[0]) ? esc(sw[0]) : "Watch on " + esc(sw[0])}</a>` : ""}</span>`; }).join("")}</div>`;
   // Nothing on track: the next start within 3 hours
   let nx = null;
   for (const e of events) { if (e.cancelled || phase(e) === "past") continue; for (const x of SESSIONS[e.id] || []) { const t = Date.parse(x[1]); if (!x[2] && t > now && t - now < 3 * 3600000 && (!nx || t < nx.t)) nx = { e, name: x[0], t }; } }
@@ -2049,13 +2056,22 @@ function nextSession(id){
   const now = Date.now();
   return L.find(x => !x[2] && Date.parse(x[1]) + 2 * 3600000 > now) || null;
 }
+// The link for one session: its exact stream if known, else the series' usual place to watch it.
+const TV_LISTINGS = { nascar: ["NASCAR TV schedule", "https://www.nascar.com/nascar-cup-series/"], indy: ["IndyCar TV schedule", "https://www.indycar.com/schedule"], motogp: ["MotoGP TV schedule", "https://www.motogp.com/en/calendar"] };
+function sessWatch(id, name){
+  const own = SESSION_WATCH[id + "|" + name]; if (own) return [own[0], own[1], true];
+  const e = events.find(x => x.id === id); if (!e) return null;
+  if (TV_LISTINGS[e.series]) return [TV_LISTINGS[e.series][0], TV_LISTINGS[e.series][1], false];
+  const w = (WATCH[e.series] || []).find(v => !/timing/i.test(v[0])); return w ? [w[0], w[1], false] : null;
+}
 function schedHTML(id, compact, lit = true){
   const L = SESSIONS[id]; if (!L) return "";
   const nx = lit ? nextSession(id) : null, now = Date.now();
   const rows = L.filter(x => !compact || !x[2]);
   return `<table class="sched${compact ? " compact" : ""}">${rows.map(x => {
     const t = Date.parse(x[1]), done = t + 2 * 3600000 < now, on = t <= now && !done;
-    return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
+    const sw = !compact && !done ? sessWatch(id, x[0]) : null;
+    return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}${sw ? `<a class="s-watch" href="${esc(sw[1])}" target="_blank" rel="noopener" aria-label="Watch ${esc(x[0])}: ${esc(sw[0])}">${sw[2] ? (on ? "Watch live" : "Watch") + " on " + esc(sw[0]) : /schedule/i.test(sw[0]) ? esc(sw[0]) : "On " + esc(sw[0])} ↗</a>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
   }).join("")}</table>`;
 }
 function watchButtons(series, n = 9, lead = ""){
