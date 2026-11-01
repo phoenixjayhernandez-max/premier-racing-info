@@ -2162,79 +2162,126 @@ const OWN_PHOTOS = [
 // which often show road cars or show cars). Each series only ever shows its own photos: F1 is F1, F2 is F2,
 // GT shows GT race cars. Only identical cars share (the GT3 cars of the GT World Challenge regions, and
 // the Porsche 911 GT3 Cup cars of the Carrera Cups); anything else with no photo keeps its plain plate.
+const fold = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const PHOTO_QUERIES = {
-  "f1": ["Formula One 2025 Grand Prix", "Formula One 2024 Grand Prix", "Formula One 2023 Grand Prix race"],
-  "f2": ["FIA Formula 2 Championship 2024", "FIA Formula 2 Championship"], "f3": ["FIA Formula 3 Championship 2024", "FIA Formula 3 Championship"],
-  "f1academy": ["F1 Academy"], "italianf4": ["Italian F4 Championship"], "f4us": ["Formula 4 United States Championship"],
-  "formulae": ["Formula E ePrix 2024", "Formula E ePrix 2025", "Formula E Gen3"], "superformula": ["Super Formula Championship"],
-  "indycar": ["IndyCar Series 2024 race", "Indianapolis 500 2024", "IndyCar Series 2025"], "indynxt": ["Indy NXT"],
-  "wec": ["24 Hours of Le Mans 2024 Hypercar", "24 Hours of Le Mans 2025", "FIA World Endurance Championship 2024"],
-  "imsa": ["IMSA SportsCar Championship 2024 GTP", "24 Hours of Daytona 2024", "12 Hours of Sebring 2024"],
-  "elms": ["European Le Mans Series"], "alms": ["Asian Le Mans Series"],
-  "gtwc-europe": ["GT World Challenge Europe", "24 Hours of Spa 2024", "24 Hours of Spa 2023"],
-  "gtwc-america": ["GT World Challenge America"], "gtwc-asia": ["GT World Challenge Asia"],
-  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour 2024", "Bathurst 12 Hour 2025"],
+  "f1": ["Formula One 2025 Grand Prix", "Formula One 2024 Grand Prix", "Formula One 2023 Grand Prix race", "Formula One 2022 Grand Prix race"],
+  "f2": ["FIA Formula 2 Championship 2024", "FIA Formula 2 Championship", "Formula 2 race"], "f3": ["FIA Formula 3 Championship 2024", "FIA Formula 3 Championship", "Formula 3 race"],
+  "f1academy": ["F1 Academy"], "italianf4": ["Italian F4 Championship", "Formula 4 Italy"], "f4us": ["Formula 4 United States Championship", "F4 United States"],
+  "formulae": ["Formula E ePrix 2024", "Formula E ePrix 2025", "Formula E Gen3", "Formula E race"], "superformula": ["Super Formula Championship", "Super Formula race"],
+  "indycar": ["IndyCar Series 2024 race", "Indianapolis 500 2024", "IndyCar Series 2025", "IndyCar Series 2023 race"], "indynxt": ["Indy NXT", "Indy Lights"],
+  "wec": ["24 Hours of Le Mans 2024 Hypercar", "24 Hours of Le Mans 2025", "FIA World Endurance Championship 2024", "24 Hours of Le Mans 2023"],
+  "imsa": ["IMSA SportsCar Championship 2024 GTP", "24 Hours of Daytona 2024", "12 Hours of Sebring 2024", "IMSA WeatherTech 2023"],
+  "elms": ["European Le Mans Series", "European Le Mans Series LMP2"], "alms": ["Asian Le Mans Series"],
+  "gtwc-europe": ["GT World Challenge Europe", "24 Hours of Spa 2024", "24 Hours of Spa 2023", "GT3 Spa-Francorchamps"],
+  "gtwc-america": ["GT World Challenge America", "GT3 Road America", "GT3 Circuit of the Americas"], "gtwc-asia": ["GT World Challenge Asia", "GT3 Sepang", "GT3 Suzuka", "GT3 Fuji Speedway"],
+  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour 2024", "Bathurst 12 Hour 2025", "GT3 Phillip Island"],
   "igtc": ["Intercontinental GT Challenge"], "britgt": ["British GT Championship"], "adacgtm": ["ADAC GT Masters"],
-  "dtm": ["DTM 2024 race", "DTM 2025 race"], "supergt": ["Super GT GT500", "Super GT GT300"],
-  "porsche-supercup": ["Porsche Supercup"], "carrera-cup-na": ["Porsche Carrera Cup North America"], "pccd": ["Porsche Carrera Cup Deutschland"],
+  "dtm": ["DTM 2024 race", "DTM 2025 race", "Deutsche Tourenwagen Masters 2023"], "supergt": ["Super GT GT500", "Super GT GT300", "Super GT race"],
+  "porsche-supercup": ["Porsche Supercup", "Porsche Mobil 1 Supercup"], "carrera-cup-na": ["Porsche Carrera Cup North America"], "pccd": ["Porsche Carrera Cup Deutschland"],
   "mustang-challenge": ["Mustang Challenge Dark Horse R", "Ford Mustang Dark Horse R race"],
-  "nascar-cup": ["NASCAR Cup Series 2024", "NASCAR Cup Series 2025", "Daytona 500 2024"], "nascar-oreilly": ["NASCAR Xfinity Series"], "nascar-truck": ["NASCAR Truck Series"],
-  "supercars": ["Supercars Championship 2024", "Bathurst 1000 2024"], "btcc": ["British Touring Car Championship 2024"], "tcr-world-tour": ["TCR World Tour"],
-  "wrc": ["World Rally Championship 2024 Rally1", "World Rally Championship 2025"], "erc": ["European Rally Championship"], "w2rc": ["Dakar Rally 2025"],
-  "nhra": ["NHRA Top Fuel dragster", "NHRA Funny Car"], "fd": ["Formula Drift"], "ppihc": ["Pikes Peak International Hill Climb"],
-  "motogp": ["MotoGP 2024 Grand Prix", "MotoGP 2025 Grand Prix", "MotoGP 2023 Grand Prix"], "moto2": ["Moto2 2024"], "moto3": ["Moto3 2024"],
-  "wsbk": ["Superbike World Championship 2024"], "supercross": ["AMA Supercross Championship"], "promotocross": ["AMA Pro Motocross"], "mxgp": ["MXGP motocross"],
-  "iomtt": ["Isle of Man TT 2024"], "woo": ["World of Outlaws sprint car"],
+  "nascar-cup": ["NASCAR Cup Series 2024", "NASCAR Cup Series 2025", "Daytona 500 2024", "NASCAR Cup Series 2023 race"], "nascar-oreilly": ["NASCAR Xfinity Series", "NASCAR Xfinity Series race"], "nascar-truck": ["NASCAR Truck Series", "NASCAR Craftsman Truck Series"],
+  "nascar-brasil": ["NASCAR Brasil", "NASCAR Brasil Series", "NASCAR Brasil Sprint Race", "NASCAR Brazil"], "nascar-mexico": ["NASCAR Mexico Series", "NASCAR México"], "nascar-euro": ["NASCAR Whelen Euro Series"],
+  "supercars": ["Supercars Championship 2024", "Bathurst 1000 2024", "Supercars Championship race"], "btcc": ["British Touring Car Championship 2024", "British Touring Car Championship"], "tcr-world-tour": ["TCR World Tour", "TCR touring car"],
+  "wrc": ["World Rally Championship 2024 Rally1", "World Rally Championship 2025", "World Rally Championship 2023"], "erc": ["European Rally Championship"], "w2rc": ["Dakar Rally 2025", "Dakar Rally 2024"],
+  "nhra": ["NHRA Top Fuel dragster", "NHRA Funny Car", "NHRA drag racing", "NHRA Pro Stock", "Top Fuel dragster"], "fd": ["Formula Drift", "Formula D drifting"], "ppihc": ["Pikes Peak International Hill Climb"],
+  "motogp": ["MotoGP 2024", "MotoGP 2025", "MotoGP 2023", "MotoGP Sepang", "MotoGP Mugello", "MotoGP Ducati race"],
+  "moto2": ["Moto2 2024", "Moto2 2023", "Moto2 race", "Moto2 Mugello", "Moto2 Jerez"], "moto3": ["Moto3 2024", "Moto3 2023", "Moto3 race", "Moto3 Mugello", "Moto3 Jerez"],
+  "wsbk": ["Superbike World Championship 2024", "WorldSBK race"], "supercross": ["AMA Supercross Championship", "Monster Energy Supercross"], "promotocross": ["AMA Pro Motocross"], "mxgp": ["MXGP motocross"],
+  "iomtt": ["Isle of Man TT 2024", "Isle of Man TT"], "woo": ["World of Outlaws sprint car", "sprint car racing dirt"],
 };
+
 // What a photo's title/categories must (and must not) say to count for a series
 const PHOTO_NEED = {
   "f1": [/Formula (One|1)\b|\bF1\b|Grand Prix/i, /Formula (2|3|4|E)\b|\bF[234]\b|Formula Regional|Super Formula|F1 Academy|GP[23]\b|Moto|motorcycle|Historic|Classic/i],
   "f2": [/Formula 2\b|\bF2\b/i], "f3": [/Formula 3\b|\bF3\b/i], "f1academy": [/F1 Academy/i], "italianf4": [/F4|Formula 4/i], "f4us": [/F4|Formula 4/i],
-  "formulae": [/Formula E\b|E-?Prix/i], "indycar": [/IndyCar|Indy ?500|Indianapolis 500/i, /Indy NXT|Indy Lights|Historic/i], "indynxt": [/Indy NXT/i],
-  "motogp": [/MotoGP/i, /Moto2|Moto3|MotoE/i], "moto2": [/Moto2/i], "moto3": [/Moto3/i],
-  "nascar-cup": [/NASCAR|Cup Series|Daytona 500/i, /Xfinity|Truck|ARCA|Euro|Brasil|Mexico|Pinty|Whelen|Modified/i],
+  "formulae": [/Formula E\b|E-?Prix/i], "indycar": [/IndyCar|Indy ?500|Indianapolis 500/i, /Indy NXT|Indy Lights|Historic/i], "indynxt": [/Indy NXT|Indy Lights/i],
+  "motogp": [/MotoGP/i, /Moto2|Moto3|MotoE/i, 1], "moto2": [/Moto2/i, /MotoGP|Moto3/i, 1], "moto3": [/Moto3/i, /MotoGP|Moto2/i, 1],
+  "nascar-cup": [/NASCAR|Cup Series|Daytona 500/i, /Xfinity|Truck|ARCA|Euro|Brasil|Brazil|Mexico|México|Pinty|Whelen|Modified/i],
+  "nascar-brasil": [/NASCAR Bra[sz]il|Sprint Race/i], "nascar-mexico": [/NASCAR M[eé]xico|NASCAR Mexico/i],
   "wec": [/Le Mans|WEC|Hypercar|World Endurance/i, /Classic|Legend|European Le Mans|Asian Le Mans|Le Mans Cup|Historic|Bugatti Circuit|MotoGP/i],
   "imsa": [/IMSA|Daytona|Sebring|Petit Le Mans|GTP|WeatherTech/i, /NASCAR|ARCA|Bike|Motorcycle|Supercross/i],
   "gtwc-europe": [/GT World Challenge|Blancpain|GT3|24 Hours of Spa|Spa 24/i, /GT4|Historic/i], "gtwc-america": [/GT World Challenge|GT3/i, /GT4/i],
   "gtwc-asia": [/GT World Challenge|GT3/i, /GT4|GT500/i], "gtwc-australia": [/GT World Challenge|GT3|Bathurst 12/i, /GT4/i],
   "supercars": [/Supercars|Bathurst 1000|V8/i], "mustang-challenge": [/Mustang/i],
+  "nhra": [/NHRA|Top Fuel|Funny Car|Pro Stock|dragster|drag rac/i], "woo": [/sprint car|World of Outlaws/i],
 };
+
 const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
   "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
-const PHOTO_NOT = /podium|portrait|headshot|trophy|logo|\bmap\b|layout|helmet|museum|motor ?show|auto ?show|salon|expo\b|exhibit|display|showroom|press conference|interview|autograph|signing|fan ?zone|grid girl|celebrat|parade|render|reveal|launch|presentation|road car|street[- ]legal|\bIAA\b|Goodwood|concours|dealer|test drive|toy|model car|scale model|replica|drawing|diagram|chart|ticket|poster|stamp|coin/i;
-const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b)/i;
-const PHOTOKEY = KEY + "-racepics1";
+// Never on track (whole words only, so "Toyota" or "designing" don't trip it)
+const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?)\b/i;
+const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
+const PHOTOKEY = KEY + "-racepics2";
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
-try { ["-freepics1", "-freepics2", "-img2"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
+try { ["-freepics1", "-freepics2", "-img2", "-racepics1"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
+let PHOTO_CACHE = { t: 0, by: {}, tried: {} }; // per series: photos found, and when a series was last searched
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
-function photoCredit(x){ return x.own ? `Photo: ${x.by}` : `Photo: ${x.by || "Unknown"}, ${x.lic}, via Wikimedia Commons`; }
-function buildPool(list){
+function photoCredit(x){ return x.own ? `Photo: ${x.by}` : `Photo: ${x.by || "Unknown"}, ${x.lic}, via ${x.via || "Wikimedia Commons"}`; }
+function buildPool(){
+  const seen = new Set(), list = [];
+  for (const L of Object.values(PHOTO_CACHE.by)) for (const x of L) if (!seen.has(x.img)) { seen.add(x.img); list.push(x); }
   PHOTO_POOL = OWN_PHOTOS.map(p => ({ img: p.src, page: p.link || "", by: p.by, lic: "used with permission", tags: [p.series], about: p.about || "", own: true })).concat(list);
 }
-function loadFreePhotos(){
-  try { const c = JSON.parse(localStorage.getItem(PHOTOKEY) || "null"); if (c && Date.now() - c.t < 7 * 864e5 && c.list.length) { buildPool(c.list); return Promise.resolve(); } } catch(e){}
-  const API = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&formatversion=2&generator=search&gsrnamespace=6&gsrlimit=30&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName|Categories&gsrsearch=";
-  const jobs = Object.entries(PHOTO_QUERIES).flatMap(([wid, qs]) => qs.map(q => [wid, q]));
-  const out = [], seen = new Set();
-  const run = ([wid, q]) => fetch(API + encodeURIComponent(q + " filetype:bitmap")).then(r => r.json()).then(d => {
-    const need = PHOTO_NEED[wid];
-    for (const p of (d.query && d.query.pages) || []) {
-      const ii = p.imageinfo && p.imageinfo[0]; if (!ii || !/\.jpe?g$/i.test(p.title)) continue;
-      const m = ii.extmetadata || {}, lic = plain(m.LicenseShortName && m.LicenseShortName.value), cats = plain(m.Categories && m.Categories.value).replace(/\|/g, " · ");
-      const text = p.title.replace(/^File:/, "").replace(/\.jpe?g$/i, "").replace(/[_]+/g, " ") + " · " + cats;
-      if (!FREE_LIC.test(lic) || ii.width < 1200 || ii.width / ii.height < 1.3 || PHOTO_NOT.test(text)) continue; // free, big, landscape, on track
-      if (need && (!need[0].test(text) || (need[1] && need[1].test(text)))) continue;
-      const img = ii.thumburl || ii.url; if (seen.has(img)) continue; seen.add(img);
-      out.push({ img, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid], about: text.slice(0, 400) });
-    }
-  }).catch(() => {});
-  // a few searches at a time
-  let i = 0; const worker = () => i < jobs.length ? run(jobs[i++]).then(worker) : Promise.resolve();
-  return Promise.all([0, 1, 2, 3, 4, 5].map(worker)).then(() => {
-    if (out.length) try { localStorage.setItem(PHOTOKEY, JSON.stringify({ t: Date.now(), list: out })); } catch(e){}
-    buildPool(out);
+function savePhotos(){ try { localStorage.setItem(PHOTOKEY, JSON.stringify(PHOTO_CACHE)); } catch(e){} }
+// Does this photo show this series on track?
+function photoFits(wid, text, title){
+  if (PHOTO_NOT.test(text)) return false;
+  const need = PHOTO_NEED[wid];
+  if (need) { if (!need[0].test(text)) return false; if (need[1] && need[1].test(need[2] ? title : text)) return false; return true; }
+  // directory series without their own rule: the series' name has to be in the photo's title, tags or categories
+  const w = typeof worldById === "function" ? worldById(wid) : null, names = w ? [w.short, w.name, w.code].filter(n => n && n.length >= 3) : [];
+  return !names.length || names.some(n => fold(text).includes(fold(n).replace(/\s*\(.*$/, "")));
+}
+function queriesFor(wid){
+  if (PHOTO_QUERIES[wid]) return PHOTO_QUERIES[wid];
+  const w = typeof worldById === "function" ? worldById(wid) : null; if (!w) return [];
+  const n = (w.short || w.name).replace(/\s*\(.*$/, "");
+  return [n + " race", w.name.replace(/\s*\(.*$/, "")];
+}
+const COMMONS = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&formatversion=2&generator=search&gsrnamespace=6&gsrlimit=40&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName|Categories&gsrsearch=";
+function fromCommons(wid, q){
+  return fetch(COMMONS + encodeURIComponent(q + " filetype:bitmap")).then(r => r.json()).then(d => ((d.query && d.query.pages) || []).map(p => {
+    const ii = p.imageinfo && p.imageinfo[0]; if (!ii || !/\.jpe?g$/i.test(p.title)) return null;
+    const m = ii.extmetadata || {}, lic = plain(m.LicenseShortName && m.LicenseShortName.value), cats = plain(m.Categories && m.Categories.value).replace(/\|/g, " · ");
+    const title = p.title.replace(/^File:/, "").replace(/\.jpe?g$/i, "").replace(/[_]+/g, " "), text = title + " · " + cats;
+    if (!FREE_LIC.test(lic) || ii.width < 900 || ii.width / ii.height < 1.2 || !photoFits(wid, text, title)) return null; // free, big enough, landscape, this series on track
+    return { img: ii.thumburl || ii.url, page: ii.descriptionurl, by: plain(m.Artist && m.Artist.value).slice(0, 60), lic, tags: [wid], about: text.slice(0, 400) };
+  }).filter(Boolean)).catch(() => []);
+}
+// Backup: Openverse (openly licensed photos from Flickr and other archives), commercial-use licences only
+const OPENVERSE = "https://api.openverse.org/v1/images/?license=by,by-sa,cc0,pdm&aspect_ratio=wide&page_size=30&q=";
+function fromOpenverse(wid, q){
+  return fetch(OPENVERSE + encodeURIComponent(q)).then(r => r.ok ? r.json() : { results: [] }).then(d => (d.results || []).map(x => {
+    const title = x.title || "", text = title + " · " + (x.tags || []).map(t => t.name).join(" · ");
+    if ((x.width && x.width < 900) || !photoFits(wid, text, title)) return null;
+    const lic = (x.license === "pdm" ? "Public domain" : x.license === "cc0" ? "CC0" : "CC " + String(x.license).toUpperCase() + " " + (x.license_version || "")).trim();
+    return { img: x.url, page: x.foreign_landing_url || x.url, by: String(x.creator || "Unknown").slice(0, 60), lic, tags: [wid], about: text.slice(0, 400), via: x.source ? x.source.charAt(0).toUpperCase() + x.source.slice(1) + " (via Openverse)" : "Openverse" };
+  }).filter(Boolean)).catch(() => []);
+}
+// Find photos for one series: every Commons search first, then the backup if fewer than 3 turned up
+const photoInflight = {};
+function seriesPhotos(wid){
+  if (!wid) return Promise.resolve();
+  if (photoInflight[wid]) return photoInflight[wid];
+  const last = PHOTO_CACHE.tried[wid];
+  if ((PHOTO_CACHE.by[wid] || []).length >= 3 || (last && Date.now() - last < 864e5)) return Promise.resolve();
+  const qs = queriesFor(wid);
+  return photoInflight[wid] = Promise.all(qs.map(q => fromCommons(wid, q))).then(rs => {
+    let got = rs.flat();
+    return got.length >= 3 ? got : Promise.all(qs.slice(0, 2).map(q => fromOpenverse(wid, q))).then(o => got.concat(o.flat()));
+  }).then(got => {
+    const seen = new Set(), L = got.filter(x => !seen.has(x.img) && seen.add(x.img)).slice(0, 24);
+    if (L.length) PHOTO_CACHE.by[wid] = L;
+    PHOTO_CACHE.tried[wid] = Date.now(); savePhotos(); buildPool(); delete photoInflight[wid];
   });
+}
+function loadFreePhotos(){
+  try { const c = JSON.parse(localStorage.getItem(PHOTOKEY) || "null"); if (c && c.by && Date.now() - c.t < 7 * 864e5) { PHOTO_CACHE = c; buildPool(); if (PHOTO_POOL.length) return Promise.resolve(); } } catch(e){}
+  PHOTO_CACHE = { t: Date.now(), by: {}, tried: {} };
+  const ids = Object.keys(PHOTO_QUERIES);
+  let i = 0; const worker = () => i < ids.length ? seriesPhotos(ids[i++]).then(worker) : Promise.resolve();
+  return Promise.all([0, 1, 2, 3].map(worker)).then(() => { PHOTO_CACHE.t = Date.now(); savePhotos(); buildPool(); });
 }
 // Hero slideshow: a new race photo every 7 seconds across every series. Pauses on hover, focus, the pause button, a hidden tab and reduced motion.
 let heroTimer = 0, heroPool = [], heroIdx = 0, heroPaused = false;
@@ -2302,7 +2349,6 @@ function picHTML(series, key, cls = "", label = "", q = ""){
 // Match a photo to a headline: words in the headline (drivers, teams, cars, tracks, races) against
 // each photo's Wikipedia article and file name, with the story's series as a bonus.
 const PIC_STOP = new Set("the and for with from after before into over his her their they this that will have has had are was were not but out new first last more says said how why what when who year season race races racing series championship grand prix gp win wins won team teams driver drivers points title weekend round".split(" "));
-const fold = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 function picScore(x, words, wid){
   const hay = fold(x.about || "") + " " + x.tags.join(" ");
   let sc = !wid ? 0 : x.tags.includes(wid) ? 6 : PHOTO_FAMILY[wid] && PHOTO_FAMILY[x.tags[0]] === PHOTO_FAMILY[wid] ? 3 : -100; // only its own series' photos
@@ -2319,6 +2365,7 @@ function fillPics(root = document){
       const words = [...new Set(fold(el.dataset.q).split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !PIC_STOP.has(w) && !/^\d{1,2}$/.test(w)))];
       let best = null, bs = -1;
       for (let i = 0; i < all.length; i++) { const c = all[(h + i) % all.length]; const sc = picScore(c, words, wid) - (used.has(c.img) ? 2.5 : 0); if (sc > bs) { bs = sc; best = c; } }
+      if ((!best || bs <= -50) && wid && !PHOTO_CACHE.tried[wid] && !photoInflight[wid]) seriesPhotos(wid).then(() => fillPics());
       if (best && bs > -50) { used.add(best.img); el.style.backgroundImage = `url("${best.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
       return;
     }
@@ -2326,7 +2373,7 @@ function fillPics(root = document){
     const tiers = [all.filter(n => n.tags.includes(wid)), fam ? all.filter(n => PHOTO_FAMILY[n.tags[0]] === fam) : []]; // never another series' photo
     let x = null;
     for (const pool of tiers) { if (!pool.length) continue; for (let i = 0; i < pool.length; i++) { const c = pool[(h + i) % pool.length]; if (!used.has(c.img)) { x = c; break; } } if (!x) x = pool[h % pool.length]; break; }
-    if (!x) return;
+    if (!x) { if (wid && !PHOTO_CACHE.tried[wid] && !photoInflight[wid]) seriesPhotos(wid).then(() => fillPics()); return; }
     used.add(x.img);
     el.style.backgroundImage = `url("${x.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(x);
   });
@@ -2352,7 +2399,7 @@ function openCredits(){
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Photo credits</h2><div class="m">Every photo on this site, who took it and its licence</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
     ${PHOTO_POOL.length ? `<ul class="credits">${PHOTO_POOL.map(x => `<li><span class="cr-pic" style="background-image:url('${esc(x.img.replace(/'/g, "%27"))}')"></span><span>${x.page ? `<a href="${esc(x.page)}" target="_blank" rel="noopener">${esc(x.by || "Unknown")}</a>` : esc(x.by)}<br><small>${esc(x.own ? "Used with permission" : x.lic + ", via Wikimedia Commons")}</small></span></li>`).join("")}</ul>` : `<p class="fine">Photos are loading. Try again in a moment.</p>`}
-    <p class="fine">Commons photos are free to use under the licence shown; follow each link for the original. Track photos in race and series pages come from Wikipedia under free licences and are credited on the photo. To ask for a photo to be removed, use the contact on the About page.</p>`;
+    <p class="fine">Photos come from Wikimedia Commons and, when Commons has none for a series, from Flickr and other open archives found through Openverse. All are free to use under the licence shown; follow each link for the original. Track photos in race and series pages come from Wikipedia under free licences and are credited on the photo. To ask for a photo to be removed, use the contact on the About page.</p>`;
   lastFocus = document.activeElement; document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; sheet.scrollTop = 0;
 }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-credits]")) { ev.preventDefault(); openCredits(); } });

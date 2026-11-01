@@ -311,7 +311,7 @@ write("/privacy/", page({ url: "/privacy/", title: "Privacy Policy – Premier R
   <li><b>If you turn on alerts:</b> a push address from your browser and which series and alert types you chose, so we can send notifications. Turning alerts off deletes it.</li></ul>
   <h2>What we don't do</h2><p>We don't sell your data, and we don't use it for advertising. We don't ask for your location; times use your phone's time zone setting.</p>
   <h2>Visit statistics</h2><p>We use Google Analytics and Cloudflare Web Analytics to count visits and see which pages people use. Google Analytics sets cookies and receives your browser type, approximate location from your IP address, and the pages you view; it doesn't receive your email, picks or favorites. You can opt out with Google's <a href="https://tools.google.com/dlpage/gaoptout">browser add-on</a> or by blocking cookies for this site. Cloudflare's counter uses no cookies. Visitors in the UK, EU and Switzerland are asked first, and Google Analytics stays off unless they say yes. Nothing on this site is used for advertising.</p>
-  <h2>Services we use</h2><p>Hosting by GitHub Pages; accounts, picks and alert settings stored with Supabase; photos loaded from Wikipedia and Wikimedia Commons; news headlines link to the original publishers. Links to tickets, streaming services and official sites take you to those companies' sites, which have their own policies.${""}</p>
+  <h2>Services we use</h2><p>Hosting by GitHub Pages; accounts, picks and alert settings stored with Supabase; photos loaded from Wikimedia Commons and, as a backup, openly licensed archives such as Flickr through Openverse; news headlines link to the original publishers. Links to tickets, streaming services and official sites take you to those companies' sites, which have their own policies.${""}</p>
   <h2>Your choices</h2><p>You can sign out, turn alerts off, or clear the app's data in your browser at any time. To delete your account and everything linked to it, email <a href="mailto:${CONTACT}">${CONTACT}</a> from the address you signed up with.</p>
   <h2>Changes</h2><p>If this policy changes, the date above will change too.</p></section>` }));
 write("/terms/", page({ url: "/terms/", title: "Terms of Use – Premier Racing Info", desc: "The rules for using Premier Racing Info, plus trademark, photo and link notices.", h1: "Terms of use", crumbs: [{ name: "Terms", item: SITE + "/terms/" }],
@@ -320,7 +320,7 @@ write("/terms/", page({ url: "/terms/", title: "Terms of Use – Premier Racing 
   <h2>Trademarks</h2><p>Series, team, event and broadcaster names are trademarks of their owners. We use them only to say which race or series we mean. The series badges on this site are our own simple labels, not official logos.</p>
   <h2>Times, dates and results</h2><p>We work hard to keep schedules, TV listings, standings and ticket links correct, but they change, and we can make mistakes. Check the official series or circuit site before you travel or buy anything. The site is provided as is, without any warranty.</p>
   <h2>Links, tickets and news</h2><p>Links to tickets, streaming services, news stories and official sites take you to other companies, which have their own terms. We don't sell tickets and aren't responsible for purchases you make elsewhere. News headlines link to the original publisher. If we ever earn a commission from a link, we'll say so next to it.</p>
-  <h2>Photos</h2><p>Photos are used under free licences from Wikimedia Commons, credited to their photographers, or with the photographer's permission. The full list is under Photo credits in the app. If you own a photo on this site and want it credited differently or removed, email <a href="mailto:${CONTACT}">${CONTACT}</a> and we'll act on it promptly.</p>
+  <h2>Photos</h2><p>Photos are used under free licences from Wikimedia Commons (or, as a backup, Flickr and other archives through Openverse), credited to their photographers, or with the photographer's permission. The full list is under Photo credits in the app. If you own a photo on this site and want it credited differently or removed, email <a href="mailto:${CONTACT}">${CONTACT}</a> and we'll act on it promptly.</p>
   <h2>Accounts and picks</h2><p>Keep your account details to yourself and be decent in display names. We can remove names or accounts that are abusive. The picks game is just for fun: there are no prizes or entry fees.</p>
   <h2>Changes</h2><p>If these terms change, the date above will change too. See also our <a href="/privacy/">privacy policy</a>.</p></section>` }));
 fs.writeFileSync(path.join(root, "404.html"), page({ url: "/404.html", title: "Page not found – Premier Racing Info", desc: "This page doesn't exist.", h1: "Page not found",
@@ -337,8 +337,13 @@ var KEY = "raceweekends-2026", OWN_PHOTOS = [];
 ${block}
 var hero = document.querySelector(".ph-hero"), reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+var want = hero ? (hero.dataset.w || "").split(",").filter(Boolean) : [];
 if (hero) loadFreePhotos().then(function(){
-  var want = (hero.dataset.w || "").split(",").filter(Boolean), h = 0;
+  // a page whose series has no photos yet fetches them now (then they're cached for every page)
+  var missing = want.filter(function(w){ return !PHOTO_POOL.some(function(x){ return x.tags[0] === w; }); });
+  return missing.length ? Promise.all(missing.map(seriesPhotos)) : null;
+}).then(function(){
+  var h = 0;
   for (var i = 0; i < location.pathname.length; i++) h = (h * 31 + location.pathname.charCodeAt(i)) >>> 0;
   var fams = want.map(function(w){ return PHOTO_FAMILY[w]; }).filter(Boolean);
   // only this page's series (or its close family); general pages may use any race photo
