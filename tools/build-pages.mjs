@@ -66,13 +66,24 @@ td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex
 .btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--panel2);text-decoration:none;font-weight:600;font-size:.9rem}
 .btn.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}ul.list{list-style:none;padding:0;margin:0}ul.list li{padding:8px 0;border-bottom:1px solid var(--rule)}ul.list li:last-child{border-bottom:0}
 ul.list small{display:block;color:var(--sub)}.tag{display:inline-block;font-size:.75rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-left:4px;color:var(--sub)}
-footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:14px;text-decoration:none}td.r{font-family:"Saira Condensed",system-ui,sans-serif;font-size:1.05rem;font-variant-numeric:tabular-nums}.cols{columns:2 260px;column-gap:24px}`;
+footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:14px;text-decoration:none}td.r{font-family:"Saira Condensed",system-ui,sans-serif;font-size:1.05rem;font-variant-numeric:tabular-nums}.cols{columns:2 260px;column-gap:24px}
+.ph-hero{position:relative;min-height:clamp(260px,42svh,400px);display:flex;align-items:flex-end;background:#0B1424;color:#F7F9FB;overflow:hidden;isolation:isolate}
+.ph-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,14,26,.82) 0%,rgba(8,14,26,.5) 55%,rgba(8,14,26,.2) 100%),linear-gradient(to top,rgba(8,14,26,.75),transparent 55%)}
+.ph-media{position:absolute;inset:-10% 0;z-index:-2;will-change:transform}.ph-l{position:absolute;inset:0;background:50% 50%/cover no-repeat;opacity:0;transform:scale(1.06);transition:opacity .9s ease,transform 7s ease-out}.ph-l.on{opacity:1;transform:scale(1)}
+.ph-copy{width:100%;padding-top:32px;padding-bottom:28px;will-change:transform}.ph-hero h1{color:#F7F9FB;font-size:clamp(2.2rem,8vw,4rem);line-height:.95;margin:10px 0 0;max-width:18ch}.ph-hero nav.crumbs,.ph-hero nav.crumbs a{color:rgba(247,249,251,.82)}
+.ph-pause{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:4px;border:0;background:rgba(8,14,26,.6);color:#fff;display:grid;place-items:center;cursor:pointer}.ph-pause svg{width:16px;height:16px;fill:currentColor}.ph-pause .pl,.ph-pause[aria-pressed="true"] .ps{display:none}.ph-pause[aria-pressed="true"] .pl{display:block}
+.ph-credit{font-size:.75rem;color:var(--sub);text-align:right;margin:6px auto 0;min-height:1.1em}.ph-credit a{color:inherit;text-decoration:none}.ph-credit a:hover{text-decoration:underline}
+.ph-tick{background:#0B1424;color:#F7F9FB;overflow:hidden;padding:12px 0;margin:14px 0 8px}.ph-row{overflow:hidden;white-space:nowrap}.ph-row+.ph-row{margin-top:6px}.ph-track{display:inline-flex;gap:28px;will-change:transform}
+.ph-track span{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:1.5rem;line-height:1.1}.ph-track span::after{content:"";display:inline-block;width:8px;height:8px;margin-left:28px;background:var(--sig);vertical-align:middle}.ph-row[data-dir="-1"] span{opacity:.55}
+@media (prefers-reduced-motion:reduce){.ph-l{transition:none;transform:none}.ph-copy,.ph-media,.ph-track{transform:none !important}}`;
 const ANALYTICS = `<!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-2XEE8686TF"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",region:["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB","CH"]});gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"granted"});try{var c=localStorage.getItem("pri-consent");if(c)gtag("consent","update",{analytics_storage:c==="yes"?"granted":"denied"})}catch(e){}gtag("js",new Date());gtag("config","G-2XEE8686TF");</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e52456a52f8540c69bb1ce758237400a"}'></script><!-- End Cloudflare Web Analytics -->`;
 // Converts the Central-time start times (what search engines see) into the visitor's own time zone.
 const LOCAL_TIME = `<script>(function(){try{var d=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"}),t=new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
 document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});document.querySelectorAll("[data-time]").forEach(function(e){e.textContent=t.format(new Date(e.dataset.time))});
 var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent=z.replace(/_/g," ").split("/").pop()+" time"})}catch(e){}})()</script>`;
-function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/" }){
+// Words that slide sideways as you scroll, like the app's home page
+function tickHTML(words){ const w = [...new Set(words.filter(Boolean))]; const inner = w.map(x => `<span>${esc(x)}</span>`).join(""); return `<div class="ph-tick" aria-hidden="true"><div class="ph-row" data-dir="1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div><div class="ph-row" data-dir="-1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div></div>`; }
+function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick }){
   const canon = SITE + url;
   const ld = [].concat(jsonld || []);
   ld.push({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ name: "Premier Racing Info", item: SITE + "/" }].concat(crumbs).map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.item })) });
@@ -83,8 +94,10 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <link rel="preload" href="/fonts/albert-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/">Premier Racing <span>Info</span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
-<main class="wrap">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1>${body}</main>
-<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}${ANALYTICS}</body></html>`;
+<section class="ph-hero" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true"><div class="ph-l"></div><div class="ph-l"></div></div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
+<p class="wrap ph-credit"></p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
+<main class="wrap">${body}</main>
+<footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -115,7 +128,7 @@ for (const e of EV) {
     startDate: mainRace ? mainRace[1] : e.start, endDate: e.end, eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: e.circuit, address: e.location }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png", description: desc };
   if (tk[0] && !/google\.com/.test(tk[0][1])) ld.offers = { "@type": "Offer", url: tk[0][1], availability: "https://schema.org/InStock" };
-  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${e.name} ${e.year}`, color: COLORS[e.s], jsonld: ld, appLink: `/?race=${e.id}`,
+  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${e.name} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: ld, appLink: `/?race=${e.id}`,
     crumbs: [{ name: full, item: SITE + `/series/${APP_TO_WORLD[e.s]}/` }, { name: `${e.name} ${e.year}`, item: SITE + `/races/${e.slug}/` }], body }));
 }
 
@@ -142,7 +155,7 @@ for (const x of WORLD.series) {
   const name = x.name;
   const title = `${x.short && x.short.length < name.length ? x.short : name} ${app ? "2026–2027 Calendar, Standings" : "2026: Champion, Standings"} & How to Watch in the US`;
   const desc = `${name}: ${x.champion ? "2026 champion " + x.champion + ". " : x.leader ? "Leader " + x.leader + ". " : ""}${x.next ? "Next: " + x.next + ". " : ""}${app ? "Full calendar with start times in Central time, standings, " : ""}how to watch in the US and the official site.`;
-  write(`/series/${x.id}/`, page({ url: `/series/${x.id}/`, title, desc: desc.slice(0, 300), h1: name, appLink: `/?series=${x.id}`, color: app ? COLORS[app] : undefined,
+  write(`/series/${x.id}/`, page({ url: `/series/${x.id}/`, title, desc: desc.slice(0, 300), h1: name, photo: [x.id], tick: [x.short || name, x.discipline, x.region, "Calendar", "Standings", "How to watch"].filter(Boolean), appLink: `/?series=${x.id}`, color: app ? COLORS[app] : undefined,
     crumbs: [{ name: "All series", item: SITE + "/series/" }, { name: x.short || name, item: SITE + `/series/${x.id}/` }], body,
     jsonld: { "@context": "https://schema.org", "@type": "SportsOrganization", name, sport: "Motorsport", url: x.site || SITE + `/series/${x.id}/` } }));
 }
@@ -169,7 +182,7 @@ for (const c of circuits) {
   if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
   const sl = trackSlug(c), yrs = [...new Set(list.map(e => e.year))].join("–");
   write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: `${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, desc: `All races at ${c} (${loc}) in ${yrs}: ${[...new Set(list.map(e => SERIES_FULL[e.s]))].join(", ")}. Dates, start times in Central time and tickets.`,
-    h1: c, crumbs: [{ name: "Tracks", item: SITE + "/tracks/" }, { name: c, item: SITE + `/tracks/${sl}/` }], body,
+    h1: c, photo: [...new Set(list.map(e => APP_TO_WORLD[e.s]))], tick: [c, loc].concat([...new Set(list.map(e => SERIES_FULL[e.s]))]), crumbs: [{ name: "Tracks", item: SITE + "/tracks/" }, { name: c, item: SITE + `/tracks/${sl}/` }], body,
     jsonld: { "@context": "https://schema.org", "@type": "StadiumOrArena", name: c, address: loc } }));
 }
 write("/tracks/", page({ url: "/tracks/", title: "Race Tracks: Every Circuit with Races in 2026 and 2027", desc: `${circuits.length} circuits and what races there in 2026 and 2027, with dates and tickets.`, h1: "Race tracks",
@@ -258,6 +271,57 @@ write("/terms/", page({ url: "/terms/", title: "Terms of Use – Premier Racing 
   <h2>Changes</h2><p>If these terms change, the date above will change too. See also our <a href="/privacy/">privacy policy</a>.</p></section>` }));
 fs.writeFileSync(path.join(root, "404.html"), page({ url: "/404.html", title: "Page not found – Premier Racing Info", desc: "This page doesn't exist.", h1: "Page not found",
   body: `<section class="card"><p>That page doesn't exist, or the race may have moved. Try one of these:</p><div class="btns"><a class="btn p" href="/">Open the app</a><a class="btn" href="/calendar/">Race calendar</a><a class="btn" href="/series/">All series</a><a class="btn" href="/tickets/">Tickets</a></div></section>` }).replace('<link rel="canonical" href="https://premierracinginfo.com/404.html">', '<meta name="robots" content="noindex">'));
+
+// ---- Photo header script for these pages (same licensed photo list and cache as the app) ----
+{
+  const app = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  const a = app.indexOf("const PHOTO_TITLES = "), b = app.indexOf("};", a);
+  const TITLES = Function("return " + app.slice(a + "const PHOTO_TITLES = ".length, b + 1))();
+  const js = `// Generated by tools/build-pages.mjs. Photo header + scroll ticker for guide pages.
+(function(){
+var TITLES=${JSON.stringify(TITLES)};
+var KEY="raceweekends-2026-freepics1",FREE=/^(cc[ -]by(-sa)?( \\d(\\.\\d)?)?|cc0|public domain|pd\\b)/i;
+var hero=document.querySelector(".ph-hero"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function plain(h){return(new DOMParser().parseFromString(String(h||""),"text/html").body.textContent||"").replace(/\\s+/g," ").trim()}
+function chunk(a,n){var o=[];for(var i=0;i<a.length;i+=n)o.push(a.slice(i,i+n));return o}
+var API="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&formatversion=2&redirects=1";
+function load(){
+  try{var c=JSON.parse(localStorage.getItem(KEY)||"null");if(c&&Date.now()-c.t<7*864e5&&c.list.length)return Promise.resolve(c.list)}catch(e){}
+  var entries=[];Object.keys(TITLES).forEach(function(w){TITLES[w].forEach(function(t){entries.push([w,t])})});
+  return Promise.all(chunk(entries,45).map(function(ch){var by={};ch.forEach(function(e){by[e[1]]=e[0]});
+    return fetch(API+"&prop=pageimages&piprop=name&pilicense=free&titles="+encodeURIComponent(ch.map(function(e){return e[1]}).join("|"))).then(function(r){return r.json()}).then(function(d){
+      var q=d.query||{},map={};(q.normalized||[]).concat(q.redirects||[]).forEach(function(n){map[n.to]=map[n.from]||n.from});
+      return(q.pages||[]).filter(function(p){return p.pageimage}).map(function(p){var t=p.title;while(map[t]&&!by[t])t=map[t];return[by[t]||by[p.title],p.pageimage]}).filter(function(x){return x[0]&&/\\.jpe?g$/i.test(x[1])});
+    }).catch(function(){return[]})})).then(function(rs){var files=[].concat.apply([],rs);
+    return Promise.all(chunk(files,45).map(function(ch){return fetch(API+"&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1600&iiextmetadatafilter=Artist|LicenseShortName&titles="+encodeURIComponent(ch.map(function(f){return"File:"+f[1]}).join("|"))).then(function(r){return r.json()}).then(function(d){var pages=(d.query&&d.query.pages)||[];
+      return ch.map(function(f){var p=pages.filter(function(x){return x.title.replace(/^File:/,"").replace(/ /g,"_")===f[1].replace(/ /g,"_")})[0],ii=p&&p.imageinfo&&p.imageinfo[0];if(!ii)return null;var m=ii.extmetadata||{},lic=plain(m.LicenseShortName&&m.LicenseShortName.value);
+        if(!FREE.test(lic)||ii.width<1000||ii.width/ii.height<1.25)return null;return{img:ii.thumburl||ii.url,page:ii.descriptionurl,by:plain(m.Artist&&m.Artist.value).slice(0,60),lic:lic,tags:[f[0]]}}).filter(Boolean)}).catch(function(){return[]})}))}).then(function(rs){
+    var seen={},list=[].concat.apply([],rs).filter(function(x){if(seen[x.img])return false;seen[x.img]=1;return true});
+    if(list.length)try{localStorage.setItem(KEY,JSON.stringify({t:Date.now(),list:list}))}catch(e){}return list});
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+if(hero)load().then(function(list){
+  if(!list||!list.length)return;
+  var want=(hero.dataset.w||"").split(",").filter(Boolean),h=0;for(var i=0;i<location.pathname.length;i++)h=(h*31+location.pathname.charCodeAt(i))>>>0;
+  var mine=list.filter(function(x){return want.indexOf(x.tags[0])>=0}),rest=list.filter(function(x){return want.indexOf(x.tags[0])<0});
+  var rot=function(a){var k=a.length?h%a.length:0;return a.slice(k).concat(a.slice(0,k))};
+  var pool=rot(mine).concat(rot(rest)).slice(0,14),layers=hero.querySelectorAll(".ph-l"),cr=document.querySelector(".ph-credit"),idx=0,cur=0,timer=0,paused=false;
+  function show(i){var x=pool[i%pool.length],img=new Image();img.onload=function(){var next=layers[cur^1];next.style.backgroundImage='url("'+x.img.replace(/"/g,"%22")+'")';next.classList.add("on");layers[cur].classList.remove("on");cur^=1;
+    if(cr)cr.innerHTML='<a href="'+esc(x.page)+'" target="_blank" rel="noopener">Photo: '+esc(x.by||"Unknown")+", "+esc(x.lic)+", via Wikimedia Commons</a>"};img.src=x.img}
+  function start(){clearInterval(timer);if(pool.length<2||paused||reduce)return;timer=setInterval(function(){if(!document.hidden)show(++idx)},7000)}
+  show(0);start();
+  if(pool.length>1&&!reduce){hero.insertAdjacentHTML("beforeend",'<button class="ph-pause" type="button" aria-label="Pause photos" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ps" d="M8 5h3v14H8zM13 5h3v14h-3z"/><path class="pl" d="M8 5l11 7-11 7z"/></svg></button>');
+    var b=hero.querySelector(".ph-pause");b.addEventListener("click",function(){paused=!paused;b.setAttribute("aria-pressed",paused);b.setAttribute("aria-label",paused?"Play photos":"Pause photos");paused?clearInterval(timer):start()});
+    hero.addEventListener("mouseenter",function(){clearInterval(timer)});hero.addEventListener("mouseleave",start)}
+});
+if(!reduce){var tick=false;function onScroll(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;var y=scrollY;
+  document.querySelectorAll(".ph-row").forEach(function(r){var t=r.firstElementChild,w=t.scrollWidth/4||1,d=+r.dataset.dir;var x=((y*.6*d)%w+w)%w;t.style.transform="translate3d("+(-x)+"px,0,0)"});
+  if(hero){var b=hero.getBoundingClientRect();if(b.bottom>0){hero.querySelector(".ph-copy").style.transform="translate3d(0,"+(Math.min(0,b.top)*-.25)+"px,0)";hero.querySelector(".ph-media").style.transform="translate3d(0,"+(Math.min(0,b.top)*-.3)+"px,0)"}}})}
+  addEventListener("scroll",onScroll,{passive:true});onScroll()}
+})();
+`;
+  fs.writeFileSync(path.join(root, "hero.js"), js);
+}
 
 // ---- Sitemap & robots ----
 const all = ["/"].concat(pages);
