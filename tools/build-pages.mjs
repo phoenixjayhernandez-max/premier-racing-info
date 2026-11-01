@@ -67,6 +67,7 @@ td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex
 .btn.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}ul.list{list-style:none;padding:0;margin:0}ul.list li{padding:8px 0;border-bottom:1px solid var(--rule)}ul.list li:last-child{border-bottom:0}
 ul.list small{display:block;color:var(--sub)}.tag{display:inline-block;font-size:.75rem;font-weight:600;border:1px solid var(--rule);border-radius:4px;padding:0 5px;margin-left:4px;color:var(--sub)}
 footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-right:14px;text-decoration:none}td.r{font-family:"Saira Condensed",system-ui,sans-serif;font-size:1.05rem;font-variant-numeric:tabular-nums}.cols{columns:2 260px;column-gap:24px}
+.answer{font-size:1.08rem;line-height:1.55;border-left:4px solid var(--sig);padding:4px 0 4px 14px;margin:0 0 20px}.faq h3{font-size:1.02rem;margin:16px 0 4px}.faq p{margin:0 0 6px}.updated{color:var(--sub);font-size:.85rem;margin:24px 0 0}
 .ph-hero{position:relative;min-height:clamp(260px,42svh,400px);display:flex;align-items:flex-end;background:#0B1424;color:#F7F9FB;overflow:hidden;isolation:isolate}
 .ph-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,14,26,.82) 0%,rgba(8,14,26,.5) 55%,rgba(8,14,26,.2) 100%),linear-gradient(to top,rgba(8,14,26,.75),transparent 55%)}
 .ph-media{position:absolute;inset:-10% 0;z-index:-2;will-change:transform}.ph-l{position:absolute;inset:0;background:50% 50%/cover no-repeat;opacity:0;transform:scale(1.06);transition:opacity .9s ease,transform 7s ease-out}.ph-l.on{opacity:1;transform:scale(1)}
@@ -81,11 +82,23 @@ const ANALYTICS = `<!-- Google Analytics --><script async src="https://www.googl
 const LOCAL_TIME = `<script>(function(){try{var d=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"}),t=new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
 document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});document.querySelectorAll("[data-time]").forEach(function(e){e.textContent=t.format(new Date(e.dataset.time))});
 var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent=z.replace(/_/g," ").split("/").pop()+" time"})}catch(e){}})()</script>`;
+// FAQ block: visible question headings + direct answers, and matching FAQPage schema (AEO)
+function faqHTML(qa){ return qa.length ? `<section class="card faq"><h2>Questions fans ask</h2>${qa.map(([q, a]) => `<h3>${esc(q)}</h3><p>${a}</p>`).join("")}</section>` : ""; }
+function faqLD(qa){ return qa.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qa.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "") } })) } : null; }
+const fitTitle = (...c) => c.find(x => x.length <= 60) || c[c.length - 1];
+function clipDesc(d){ d = d.replace(/\s+/g, " ").trim(); if (d.length <= 158) return d; const cut = d.slice(0, 158), dot = cut.lastIndexOf(". "); return dot > 125 ? cut.slice(0, dot + 1) : cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:·–-]\s*$/, "") + "…"; }
+const ORG = { "@context": "https://schema.org", "@type": "Organization", "@id": "https://premierracinginfo.com/#org", name: "Premier Racing Info", url: "https://premierracinginfo.com/", logo: "https://premierracinginfo.com/icons/icon-512.png", email: "contact@premierracinginfo.com", description: "Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 98 racing series." };
+const WEBSITE = { "@context": "https://schema.org", "@type": "WebSite", "@id": "https://premierracinginfo.com/#site", name: "Premier Racing Info", url: "https://premierracinginfo.com/", publisher: { "@id": "https://premierracinginfo.com/#org" }, inLanguage: "en-US" };
+const fLong = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "long", month: "long", day: "numeric" });
+const fUTC = new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", hour: "2-digit", minute: "2-digit" });
+const fUpd = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+const listAnd = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 // Words that slide sideways as you scroll, like the app's home page
 function tickHTML(words){ const w = [...new Set(words.filter(Boolean))]; const inner = w.map(x => `<span>${esc(x)}</span>`).join(""); return `<div class="ph-tick" aria-hidden="true"><div class="ph-row" data-dir="1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div><div class="ph-row" data-dir="-1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div></div>`; }
 function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick }){
   const canon = SITE + url;
-  const ld = [].concat(jsonld || []);
+  desc = clipDesc(desc);
+  const ld = [].concat(jsonld || []).filter(Boolean).concat(url === "/about/" ? [ORG, WEBSITE] : [ORG]);
   ld.push({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ name: "Premier Racing Info", item: SITE + "/" }].concat(crumbs).map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.item })) });
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${canon}">
@@ -96,7 +109,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/">Premier Racing <span>Info</span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
 <section class="ph-hero" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true"><div class="ph-l"></div><div class="ph-l"></div></div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
 <p class="wrap ph-credit"></p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
-<main class="wrap">${body}</main>
+<main class="wrap">${body}<p class="updated">Page updated <time datetime="${today}">${fUpd.format(new Date(today))}</time>. Dates, start times and TV listings can change, so check the official series site before you travel.</p></main>
 <footer class="wrap"><a href="/">App</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
 }
 const pages = [];
@@ -122,13 +135,37 @@ for (const e of EV) {
   const same = EV.filter(o => o.circuit === e.circuit && o.id !== e.id && o.start <= e.end && o.end >= e.start);
   if (same.length) body += `<section class="card"><h2>Also racing this weekend</h2><ul class="list">${same.map(o => `<li>${raceLink(o)} <small>${esc(SERIES_FULL[o.s])}</small></li>`).join("")}</ul></section>`;
   body += `<p><a class="btn p" href="/?race=${e.id}">Open in the app for live updates, alerts and picks ›</a> <a class="btn" href="/series/${APP_TO_WORLD[e.s]}/">${esc(full)} calendar &amp; standings</a></p>`;
-  const title = `${e.name} ${e.year}${e.s === "f1" ? "" : " – " + SERIES[e.s]}: Start Times, How to Watch & Tickets`;
+  // Direct answer up top + FAQ (start time, how to watch, free option, tickets, where)
+  const place = GEO.places?.[e.circuit] || [], country = place[0] || "", watchN = (WATCH[e.s] || []).filter(w => !/timing|official site/i.test(w[0]));
+  const free = (WATCH[e.s] || []).filter(w => w[2]).map(w => w[0]);
+  const where = `${e.circuit} in ${e.location}${country && !e.location.includes(country) && country !== "United States" ? ", " + country : ""}`;
+  let answer, qa = [];
+  if (mainRace && !past) {
+    const d = new Date(mainRace[1]);
+    answer = `The ${full} ${e.name} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
+    qa.push([`What time does the ${e.name} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC). ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
+  } else if (!past) {
+    answer = `The ${full} ${e.name} ${e.year} runs ${range(e.start, e.end)} at ${esc(where)}. Session times are usually published about a week before; this page updates when they're out.`;
+    qa.push([`When is the ${e.name} ${e.year}?`, `The ${e.name} runs ${range(e.start, e.end)} at ${esc(where)}. Exact start times are usually published about a week before the race.`]);
+  } else {
+    const w = WINNERS[e.id];
+    answer = `The ${full} ${e.name} ${e.year} took place ${range(e.start, e.end)} at ${esc(where)}.${w ? ` Winner: ${esc(w)}.` : ""}`;
+    if (w) qa.push([`Who won the ${e.name} ${e.year}?`, esc(w) + "."]);
+  }
+  body = `<p class="answer">${answer}</p>` + body;
+  if (watchN.length) qa.push([`How can I watch the ${e.name} in the US?`, `${esc(full)} is shown in the US on ${esc(listAnd(watchN.map(w => w[0])))}.${watchN[0][3] ? " " + esc(watchN[0][3]) + "." : ""}`]);
+  if (free.length) qa.push([`Is there a free way to watch the ${e.name}?`, `Yes: ${esc(listAnd(free))} ${free.length > 1 ? "are" : "is"} free to watch in the US.`]);
+  else if (watchN.length) qa.push([`Is the ${e.name} free to watch?`, `Not in the US. Live coverage is on ${esc(listAnd(watchN.map(w => w[0])))}, which needs a subscription.`]);
+  if (!past && tk[0] && !/google\.com/.test(tk[0][1])) qa.push([`Where can I buy tickets for the ${e.name}?`, `Buy from the official seller: <a href="${esc(tk[0][1])}" rel="noopener">${esc(tk[0][0])}</a>. Resale prices vary, so start there.`]);
+  qa.push([`Where is the ${e.name} held?`, `At ${esc(where)}${tr && tr[0] ? `, a ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) ${esc((tr[2] || "").toLowerCase()) || "circuit"}${tr[1] ? ` with ${tr[1]} corners` : ""}` : ""}.`]);
+  body = body.replace('<p><a class="btn p" href="/?race=', faqHTML(qa) + '<p><a class="btn p" href="/?race=');
+  const title = fitTitle(`${e.name} ${e.year}${e.s === "f1" ? "" : " – " + SERIES[e.s]}: Start Times, How to Watch & Tickets`, `${e.name} ${e.year}: Start Times, How to Watch & Tickets`, `${e.name} ${e.year}: Start Times & How to Watch`, `${e.name} ${e.year} Start Times`);
   const desc = `${full} ${e.name} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
   const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${e.name} ${e.year}`, sport: "Motorsport",
     startDate: mainRace ? mainRace[1] : e.start, endDate: e.end, eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: { "@type": "Place", name: e.circuit, address: e.location }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png", description: desc };
+    location: { "@type": "Place", name: e.circuit, address: { "@type": "PostalAddress", addressLocality: e.location.split(",")[0], ...(place[1] ? { addressRegion: place[1] } : {}), ...(country ? { addressCountry: country } : {}) } }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png", description: desc };
   if (tk[0] && !/google\.com/.test(tk[0][1])) ld.offers = { "@type": "Offer", url: tk[0][1], availability: "https://schema.org/InStock" };
-  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${e.name} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: ld, appLink: `/?race=${e.id}`,
+  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${e.name} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`,
     crumbs: [{ name: full, item: SITE + `/series/${APP_TO_WORLD[e.s]}/` }, { name: `${e.name} ${e.year}`, item: SITE + `/races/${e.slug}/` }], body }));
 }
 
@@ -152,12 +189,21 @@ for (const x of WORLD.series) {
   }
   if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
   body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
-  const name = x.name;
-  const title = `${x.short && x.short.length < name.length ? x.short : name} ${app ? "2026–2027 Calendar, Standings" : "2026: Champion, Standings"} & How to Watch in the US`;
+  const name = x.name, sn = x.short && x.short.length < name.length ? x.short : name;
+  const wN = watch.filter(v => !/official site|timing/i.test(v[0])), frS = watch.filter(v => v[2]).map(v => v[0]);
+  const sqa = [];
+  if (x.about) sqa.push([`What is ${sn}?`, `${esc(name)} is ${/^[aeiou]/i.test(x.level || "") ? "an" : "a"} ${esc((x.level || "racing").toLowerCase())} ${esc(x.discipline.toLowerCase())} series (${esc(x.region || "")}). ${esc(x.about)}`]);
+  if (x.champion) sqa.push([`Who won the ${new Date().getFullYear()} ${sn} championship?`, `${esc(x.champion)}.`]);
+  else if (x.leader) sqa.push([`Who leads the ${sn} standings?`, `${esc(x.leader)}.`]);
+  if (x.next) sqa.push([`When is the next ${sn} race?`, `${esc(x.next)}.`]);
+  if (wN.length) sqa.push([`How can I watch ${sn} in the US?`, `On ${esc(listAnd(wN.map(v => v[0])))}.${frS.length ? ` Free: ${esc(listAnd(frS))}.` : ""}`]);
+  body = body.replace(/(<p>(?:<a class="btn" href="[^"]*" rel="noopener">Official site ↗<\/a> )?<a class="btn p" href="\/\?series=)/, faqHTML(sqa) + "$1");
+  const title = fitTitle(`${sn} ${app ? "2026–2027 Calendar, Standings" : "2026: Champion, Standings"} & How to Watch in the US`, `${sn} ${app ? "Calendar, Standings" : "Champion, Standings"} & How to Watch`, `${sn}: Standings & How to Watch`, `${sn} Standings`);
   const desc = `${name}: ${x.champion ? "2026 champion " + x.champion + ". " : x.leader ? "Leader " + x.leader + ". " : ""}${x.next ? "Next: " + x.next + ". " : ""}${app ? "Full calendar with start times in Central time, standings, " : ""}how to watch in the US and the official site.`;
-  write(`/series/${x.id}/`, page({ url: `/series/${x.id}/`, title, desc: desc.slice(0, 300), h1: name, photo: [x.id], tick: [x.short || name, x.discipline, x.region, "Calendar", "Standings", "How to watch"].filter(Boolean), appLink: `/?series=${x.id}`, color: app ? COLORS[app] : undefined,
+  const descF = (desc.length < 125 && x.about ? desc.replace(/\. how to watch/, ". How to watch") + " " + x.about : desc.replace(/\. how to watch/, ". How to watch"));
+  write(`/series/${x.id}/`, page({ url: `/series/${x.id}/`, title, desc: descF, h1: name, photo: [x.id], tick: [x.short || name, x.discipline, x.region, "Calendar", "Standings", "How to watch"].filter(Boolean), appLink: `/?series=${x.id}`, color: app ? COLORS[app] : undefined,
     crumbs: [{ name: "All series", item: SITE + "/series/" }, { name: x.short || name, item: SITE + `/series/${x.id}/` }], body,
-    jsonld: { "@context": "https://schema.org", "@type": "SportsOrganization", name, sport: "Motorsport", url: x.site || SITE + `/series/${x.id}/` } }));
+    jsonld: [{ "@context": "https://schema.org", "@type": "SportsOrganization", name, sport: "Motorsport", url: x.site || SITE + `/series/${x.id}/`, ...(x.about ? { description: x.about } : {}) }, faqLD(sqa)] }));
 }
 // Series index
 {
@@ -165,7 +211,7 @@ for (const x of WORLD.series) {
   for (const x of WORLD.series) (groups[x.discipline] = groups[x.discipline] || []).push(x);
   const body = `<p class="lede">${WORLD.series.length} racing series from around the world: champions, leaders, next rounds and how to watch from the US.</p>` +
     Object.entries(groups).map(([g, l]) => `<section class="card"><h2>${esc(g)}</h2><ul class="list">${l.map(x => `<li><a href="/series/${x.id}/">${esc(x.name)}</a> <small>${esc(x.region || "")}${x.champion ? " · " + esc(x.champion) : x.leader ? " · Leader: " + esc(x.leader) : ""}</small></li>`).join("")}</ul></section>`).join("");
-  write("/series/", page({ url: "/series/", title: "Every Racing Series: Champions, Calendars & How to Watch (2026)", desc: `All ${WORLD.series.length} major racing series worldwide — F1, NASCAR, IndyCar, IMSA, WEC, MotoGP, WRC and more — with champions, standings and how to watch in the US.`, h1: "Every racing series", crumbs: [{ name: "All series", item: SITE + "/series/" }], body }));
+  write("/series/", page({ url: "/series/", title: "Every Racing Series: Champions, Calendars & How to Watch", desc: `All ${WORLD.series.length} major racing series worldwide — F1, NASCAR, IndyCar, IMSA, WEC, MotoGP, WRC and more — with champions, standings and how to watch in the US.`, h1: "Every racing series", crumbs: [{ name: "All series", item: SITE + "/series/" }], body }));
 }
 
 // ---- Track pages ----
@@ -181,7 +227,7 @@ for (const c of circuits) {
   const tk = up[0] ? ticketLinks(up[0]) : [];
   if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
   const sl = trackSlug(c), yrs = [...new Set(list.map(e => e.year))].join("–");
-  write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: `${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, desc: `All races at ${c} (${loc}) in ${yrs}: ${[...new Set(list.map(e => SERIES_FULL[e.s]))].join(", ")}. Dates, start times in Central time and tickets.`,
+  write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: fitTitle(`${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, `${c} Race Schedule ${yrs}: Dates & Tickets`, `${c} Race Schedule ${yrs}`, `${c} Races ${yrs}`), desc: `All races at ${c} (${loc}) in ${yrs}: ${[...new Set(list.map(e => SERIES_FULL[e.s]))].join(", ")}. Dates, start times in Central time and tickets.`,
     h1: c, photo: [...new Set(list.map(e => APP_TO_WORLD[e.s]))], tick: [c, loc].concat([...new Set(list.map(e => SERIES_FULL[e.s]))]), crumbs: [{ name: "Tracks", item: SITE + "/tracks/" }, { name: c, item: SITE + `/tracks/${sl}/` }], body,
     jsonld: { "@context": "https://schema.org", "@type": "StadiumOrArena", name: c, address: loc } }));
 }
@@ -224,7 +270,7 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
       crumbs: [{ name: "Races near you", item: SITE + "/races-in/" }, { name: short(c), item: SITE + cURL(c) }], body: `<p class="lede">${l.length} upcoming race${l.length === 1 ? "" : "s"} in ${esc(c)} (${esc(REG[c] || "")}).</p>${stLinks}${listOf(l)}` }));
     for (const st of sts) {
       const ls = l.filter(e => places[e.circuit][1] === st), n = stN(c, st);
-      write(sURL(c, st), page({ url: sURL(c, st), title: `Races in ${n} 2026–2027: Schedule, Dates & Tickets`, desc: `Every upcoming race in ${n}, ${short(c)}: ${seriesOf(ls)} at ${[...new Set(ls.map(e => e.circuit))].join(", ")}. Dates and tickets.`, h1: `Races in ${n}`,
+      write(sURL(c, st), page({ url: sURL(c, st), title: fitTitle(`Races in ${n} 2026–2027: Schedule, Dates & Tickets`, `Races in ${n} 2026–2027: Dates & Tickets`), desc: `Every upcoming race in ${n}, ${short(c)}: ${seriesOf(ls)} at ${[...new Set(ls.map(e => e.circuit))].join(", ")}. Dates and tickets.`, h1: `Races in ${n}`,
         crumbs: [{ name: "Races near you", item: SITE + "/races-in/" }, { name: short(c), item: SITE + cURL(c) }, { name: n, item: SITE + sURL(c, st) }],
         body: `<p class="lede">${ls.length} upcoming race${ls.length === 1 ? "" : "s"} in ${esc(n)}, ${esc(short(c))}.</p>${listOf(ls)}<p><a class="btn" href="${cURL(c)}">All races in ${esc(short(c))}</a></p>` }));
     }
@@ -233,7 +279,12 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
 { // How to watch
   const rows = WORLD.series.map(x => { const app = appOf[x.id]; const w = app ? WATCH[app] : (x.watch || []); return [x, w.filter(v => v[0] !== "Official site")]; });
   const body = `<p class="lede">Where to stream or watch every major racing series in the United States, with free options marked.</p><section class="card"><table><tr><th>Series</th><th>Watch in the US</th></tr>${rows.map(([x, w]) => `<tr><td><a href="/series/${x.id}/">${esc(x.short || x.name)}</a></td><td>${w.map(v => `<a href="${esc(v[1])}" rel="noopener">${esc(v[0])}</a>${v[2] ? " (free)" : ""}`).join(", ") || esc(x.watch_us || "")}</td></tr>`).join("")}</table></section>`;
-  write("/watch/", page({ url: "/watch/", title: "How to Watch Racing in the US (2026): F1, NASCAR, IndyCar, MotoGP, IMSA & More", desc: "Where to watch every racing series in the US: F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, WRC, Supercross and more, including free streams.", h1: "How to watch racing in the US", crumbs: [{ name: "How to watch", item: SITE + "/watch/" }], body }));
+  const top = ["f1", "nascar-cup", "indycar", "motogp", "imsa", "wec", "formulae", "wrc", "supercars", "supercross", "nhra", "gtwc-america"];
+  const wqa = top.map(id => rows.find(r => r[0].id === id)).filter(r => r && r[1].length).map(([x, w]) => { const fr = w.filter(v => v[2]).map(v => v[0]);
+    return [`How can I watch ${x.short || x.name} in the US?`, `${esc(x.short || x.name)} is on ${esc(listAnd(w.map(v => v[0])))}.${fr.length ? ` Free option: ${esc(listAnd(fr))}.` : ""} <a href="/series/${x.id}/">${esc(x.short || x.name)} schedule</a>.`]; });
+  const sumUp = top.slice(0, 6).map(id => rows.find(r => r[0].id === id)).filter(r => r && r[1].length).map(([x, w]) => `${esc(x.short || x.name)} on ${esc(listAnd(w.slice(0, 2).map(v => v[0])))}`);
+  const wbody = `<p class="answer">In the US: ${listAnd(sumUp)}. The table below lists all ${rows.length} series, with free options marked.</p>` + body.replace('<section class="card"><table>', '<section class="card"><h2>Every series and where to watch it</h2><table>') + faqHTML(wqa);
+  write("/watch/", page({ url: "/watch/", title: "How to Watch Racing in the US: F1, NASCAR, IndyCar & More", jsonld: faqLD(wqa), desc: "Where to watch every racing series in the US: F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, WRC, Supercross and more, including free streams.", h1: "How to watch racing in the US", crumbs: [{ name: "How to watch", item: SITE + "/watch/" }], body: wbody }));
 }
 { // Tickets
   const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
@@ -244,11 +295,13 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
 
 // ---- About, Privacy, 404 ----
 const CONTACT = "contact@premierracinginfo.com";
-write("/about/", page({ url: "/about/", title: "About Premier Racing Info", desc: "Premier Racing Info is a free, independent fan site and app for following racing: start times in your time zone, how to watch, tickets, standings, alerts and a picks game.", h1: "About", crumbs: [{ name: "About", item: SITE + "/about/" }],
-  body: `<section class="card"><p>Premier Racing Info started as a way for a few friends in San Antonio, Texas to keep up with F1, IMSA and WEC race weekends without doing time-zone math. It grew into a free app and site covering ${WORLD.series.length} racing series worldwide.</p>
-  <p>What you get: start times in your own time zone, where to watch in the US, ticket links, results and standings, lock-screen alerts, news, and a season-long picks game to play with friends.</p>
-  <p>It's an independent fan project and isn't affiliated with any series, team, circuit or broadcaster. Series and team names belong to their owners. Results and dates are checked against official sources but can change, so confirm with the official site before you travel.</p>
-  <p>Questions, corrections or ideas: <a href="mailto:${CONTACT}">${CONTACT}</a></p></section><p><a class="btn p" href="/">Open the app ›</a></p>` }));
+write("/about/", page({ url: "/about/", title: "About Premier Racing Info: Who We Are & How We Check Data", desc: "Premier Racing Info is a free, independent fan site and app for following racing: start times in your time zone, how to watch, tickets, standings, alerts and a picks game.", h1: "About Premier Racing Info", crumbs: [{ name: "About", item: SITE + "/about/" }],
+  body: `<p class="answer">Premier Racing Info is a free, independent guide to ${WORLD.series.length} racing series: start times in your own time zone, where to watch in the US, tickets near you, and standings, all in one place.</p>
+  <section class="card"><h2>Who runs it</h2><p>It's built and run by an independent motorsport fan and sim racer in San Antonio, Texas. It started as a way for a few friends to keep up with F1, IMSA and WEC race weekends without doing time-zone math, and grew into a free app and site covering ${WORLD.series.length} series worldwide.</p></section>
+  <section class="card"><h2>What you get</h2><ul class="list"><li>Session start times converted to your own time zone</li><li>Where to watch every series in the US, with free options marked</li><li>Ticket links to the official seller for each race, and races near you by country and state</li><li>Results and championship standings for 21 series</li><li>Lock-screen race alerts, news and a season-long picks game with friends</li></ul></section>
+  <section class="card"><h2>How the information is checked</h2><p>Calendars, session times and TV listings come from the official series, circuit and broadcaster sites. Standings are updated after each round and dated on the page; series facts list the date they were checked and a source. News headlines link to the original publishers. Photos are free-licensed from Wikimedia Commons and credited, or used with the photographer's permission.</p></section>
+  <section class="card"><h2>Independence</h2><p>It isn't affiliated with any series, team, circuit or broadcaster. Series and team names belong to their owners. Dates can change, so confirm with the official site before you travel. See the <a href="/terms/">terms</a> and <a href="/privacy/">privacy policy</a>.</p></section>
+  <section class="card"><h2>Contact</h2><p>Questions, corrections or ideas: <a href="mailto:${CONTACT}">${CONTACT}</a></p></section><p><a class="btn p" href="/">Open the app ›</a></p>` }));
 write("/privacy/", page({ url: "/privacy/", title: "Privacy Policy – Premier Racing Info", desc: "What Premier Racing Info stores, why, and how to delete it.", h1: "Privacy policy", crumbs: [{ name: "Privacy", item: SITE + "/privacy/" }],
   body: `<section class="card"><p><b>Last updated:</b> ${today}</p>
   <h2>What we store</h2><ul>
@@ -321,6 +374,41 @@ if(!reduce){var tick=false;function onScroll(){if(tick)return;tick=true;requestA
 })();
 `;
   fs.writeFileSync(path.join(root, "hero.js"), js);
+}
+
+// ---- llms.txt: a plain map of the site for AI crawlers (GEO) ----
+{
+  const upcoming = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start)).slice(0, 12);
+  fs.writeFileSync(path.join(root, "llms.txt"), `# Premier Racing Info
+
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for ${WORLD.series.length} racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated ${today}.
+
+## Main guides
+- [Racing calendar](${SITE}/calendar/): every upcoming race with dates and start times
+- [How to watch racing in the US](${SITE}/watch/): streaming and TV for every series, free options marked
+- [Race tickets](${SITE}/tickets/): official sellers for every upcoming race
+- [Races near you](${SITE}/races-in/): races by region, country and US state
+- [All series](${SITE}/series/): champions, standings and how to watch for ${WORLD.series.length} series
+- [Tracks](${SITE}/tracks/): every circuit and what races there
+- [About](${SITE}/about/): who runs the site and how data is checked
+
+## Next races
+${upcoming.map(e => `- [${SERIES_FULL[e.s]} ${e.name} ${e.year}](${SITE}/races/${e.slug}/): ${range(e.start, e.end)}, ${e.circuit}`).join("\n")}
+
+## Notes
+- Times on race pages are given in US Central time in the HTML and converted to the reader's time zone in the browser.
+- Not affiliated with any series, team, circuit or broadcaster.
+`);
+}
+// ---- Homepage: crawlable summary inside the app shell (replaced by the live app when JavaScript runs) ----
+{
+  const ix = path.join(root, "index.html"); let app = fs.readFileSync(ix, "utf8");
+  const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
+  const wk = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10), now = up.filter(e => e.start <= wk), next = up.filter(e => e.start > wk).slice(0, 8);
+  const line = e => { const m = (SESSIONS[e.id] || []).filter(x => !x[2]).slice(-1)[0]; return `<li><a href="/races/${e.slug}/">${esc(SERIES_FULL[e.s])}: ${esc(e.name)}</a> · ${esc(e.circuit)} · ${range(e.start, e.end)}${m ? ` · race starts ${fDay.format(new Date(m[1]))} at ${fTime.format(new Date(m[1]))}` : ""}</li>`; };
+  const html = `<!--seo--><div class="seo-static"><h1>Race start times in your time zone</h1><p>Premier Racing Info is a free guide to ${WORLD.series.length} racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p>${now.length ? `<h2>Racing this week</h2><ul>${now.map(line).join("")}</ul>` : ""}<h2>Coming up</h2><ul>${next.map(line).join("")}</ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/about/">About</a></p><p>Updated ${fUpd.format(new Date(today))}.</p></div><!--/seo-->`;
+  app = app.includes("<!--seo-->") ? app.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, html) : app.replace('<div id="weekendTop"></div>', `<div id="weekendTop">${html}</div>`);
+  fs.writeFileSync(ix, app);
 }
 
 // ---- Sitemap & robots ----

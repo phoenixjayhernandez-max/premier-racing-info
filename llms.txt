@@ -1,0 +1,30 @@
+# Premier Racing Info
+
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 98 racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-01.
+
+## Main guides
+- [Racing calendar](https://premierracinginfo.com/calendar/): every upcoming race with dates and start times
+- [How to watch racing in the US](https://premierracinginfo.com/watch/): streaming and TV for every series, free options marked
+- [Race tickets](https://premierracinginfo.com/tickets/): official sellers for every upcoming race
+- [Races near you](https://premierracinginfo.com/races-in/): races by region, country and US state
+- [All series](https://premierracinginfo.com/series/): champions, standings and how to watch for 98 series
+- [Tracks](https://premierracinginfo.com/tracks/): every circuit and what races there
+- [About](https://premierracinginfo.com/about/): who runs the site and how data is checked
+
+## Next races
+- [Formula 1 Mexico City Grand Prix 2026](https://premierracinginfo.com/races/f1-mexico-city-grand-prix-2026/): Oct 30 – Nov 1, 2026, Autódromo Hermanos Rodríguez
+- [GT World Challenge Asia Shanghai finale 2026](https://premierracinginfo.com/races/gt-asia-shanghai-finale-2026/): Oct 30 – Nov 1, 2026, Shanghai International Circuit
+- [Formula 1 São Paulo Grand Prix 2026](https://premierracinginfo.com/races/f1-sao-paulo-grand-prix-2026/): Nov 6–8, 2026, Interlagos
+- [World Endurance 6 Hours of Monza 2026](https://premierracinginfo.com/races/wec-6-hours-of-monza-2026/): Nov 6–8, 2026, Monza
+- [Formula 1 Las Vegas Grand Prix 2026](https://premierracinginfo.com/races/f1-las-vegas-grand-prix-2026/): Nov 19–21, 2026, Las Vegas Strip Circuit
+- [GT World Challenge Australia Adelaide 2026](https://premierracinginfo.com/races/gt-australia-adelaide-2026/): Nov 26–29, 2026, Adelaide Street Circuit
+- [Formula 1 Qatar Grand Prix 2026](https://premierracinginfo.com/races/f1-qatar-grand-prix-2026/): Nov 27–29, 2026, Lusail International Circuit
+- [Formula 1 Abu Dhabi Grand Prix 2026](https://premierracinginfo.com/races/f1-abu-dhabi-grand-prix-2026/): Dec 4–6, 2026, Yas Marina
+- [Ford Mustang Challenge Daytona 2027](https://premierracinginfo.com/races/mustang-challenge-daytona-2027/): Jan 22–24, 2027, Daytona International Speedway
+- [Porsche Carrera Cup North America Daytona 2027](https://premierracinginfo.com/races/carrera-cup-na-daytona-2027/): Jan 27–29, 2027, Daytona International Speedway
+- [IMSA WeatherTech Rolex 24 at Daytona 2027](https://premierracinginfo.com/races/imsa-rolex-24-at-daytona-2027/): Jan 28–31, 2027, Daytona International Speedway
+- [Formula 1 Bahrain Grand Prix 2027](https://premierracinginfo.com/races/f1-bahrain-grand-prix-2027/): Mar 12–14, 2027, Bahrain International Circuit
+
+## Notes
+- Times on race pages are given in US Central time in the HTML and converted to the reader's time zone in the browser.
+- Not affiliated with any series, team, circuit or broadcaster.
