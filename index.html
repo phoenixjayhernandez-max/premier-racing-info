@@ -65,7 +65,7 @@
   --signal:var(--color-accent); --signal-ink:var(--color-accent-ink); --plate-ink:oklch(99% 0.003 250); --done:oklch(68% 0.012 250); --green:oklch(55% 0.16 150);
   --band:oklch(16% 0.080 260); --band-ink:oklch(98% 0.005 250); --container:1200px; --display:var(--font-display); --ui:var(--font-body); --mono:var(--font-outlier); --r:var(--radius-card);
   --scrim:oklch(16% 0.080 260 / 0.55); --scrim-strong:oklch(16% 0.080 260 / 0.82); --scrim-mid:oklch(16% 0.080 260 / 0.45); --scrim-soft:oklch(16% 0.080 260 / 0.15); --scrim-foot:oklch(16% 0.080 260 / 0.6); --photo-bg:var(--color-paper-2); --credit-bg:oklch(16% 0.080 260 / 0.6); --credit-ink:var(--color-paper);
-  --f1:#D7261E; --imsa:#2563B8; --wec:#0F8A6C; --gtwc:#C2410C; --gte:#6D28D9; --gtas:#BE185D; --gtau:#0E7490; --psc:#4B5563; --pccna:#3F6212; --mustang:#7F1D1D;
+  --f1:#D7261E; --imsa:#2563B8; --wec:#0F8A6C; --gtwc:#C2410C; --gte:#6D28D9; --gtas:#BE185D; --gtau:#0E7490; --psc:#4B5563; --pccna:#3F6212; --mustang:#7F1D1D; --nascar:#A16207; --indy:#1E3A8A; --motogp:#86198F;
   --d-ow:#D7261E; --d-sc:#0F8A6C; --d-gt:#C2410C; --d-om:#6B7280; --d-stk:#1D4ED8; --d-tc:#7C3AED; --d-ral:#B45309; --d-off:#92400E; --d-drg:#BE123C; --d-dft:#DB2777; --d-dirt:#78350F; --d-gr:#4D7C0F; --d-hc:#0369A1; --d-mr:#0E7490; --d-mx:#A16207; --d-mo:#475569;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
@@ -104,7 +104,7 @@ button, input, select, textarea { font: inherit; }
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
-.f1{--c:var(--f1)} .imsa{--c:var(--imsa)} .wec{--c:var(--wec)} .gtwc{--c:var(--gtwc)} .gte{--c:var(--gte)} .gtas{--c:var(--gtas)} .gtau{--c:var(--gtau)} .psc{--c:var(--psc)} .pccna{--c:var(--pccna)} .mustang{--c:var(--mustang)}
+.f1{--c:var(--f1)} .imsa{--c:var(--imsa)} .wec{--c:var(--wec)} .gtwc{--c:var(--gtwc)} .gte{--c:var(--gte)} .gtas{--c:var(--gtas)} .gtau{--c:var(--gtau)} .psc{--c:var(--psc)} .pccna{--c:var(--pccna)} .mustang{--c:var(--mustang)} .nascar{--c:var(--nascar)} .indy{--c:var(--indy)} .motogp{--c:var(--motogp)}
 
 /* Header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--rule)}
@@ -993,7 +993,7 @@ main{max-width:1200px}
   --color-rule:oklch(33% 0.030 255); --color-rule-2:oklch(80% 0.020 250);
   --color-accent-deep:oklch(76% 0.130 263); --color-focus:oklch(76% 0.130 263);
   --done:oklch(52% 0.015 250); --green:oklch(72% 0.17 150); --plate-ink:oklch(99% 0.003 250);
-  --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5;
+  --f1:#FF5A4E; --imsa:#6FA2EE; --wec:#34C79D; --gtwc:#FF8A3D; --gte:#B39BFF; --gtas:#FF7DBE; --gtau:#3FD6EE; --psc:#CBD5E1; --pccna:#A3E635; --mustang:#FCA5A5; --nascar:#FACC15; --indy:#A5B4FC; --motogp:#F0ABFC;
   --scrim-mid:oklch(8% 0.03 260 / 0.6); --plate-ink-dark:oklch(14% 0.03 258);
 }
 :root[data-theme="dark"] .plate text{fill:var(--plate-ink-dark)}
@@ -1105,7 +1105,7 @@ main{max-width:1200px}
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
-    <div id="weekendTop"><!--seo--><div class="seo-static"><h1>Race start times in your time zone</h1><p>Premier Racing Info is a free guide to 98 racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/f1-mexico-city-grand-prix-2026/">Formula 1: Mexico City Grand Prix</a> · Autódromo Hermanos Rodríguez · Oct 30 – Nov 1, 2026 · race starts Sun, Nov 1 at 2:00 PM CST</li><li><a href="/races/gt-asia-shanghai-finale-2026/">GT World Challenge Asia: Shanghai finale</a> · Shanghai International Circuit · Oct 30 – Nov 1, 2026 · race starts Sun, Nov 1 at 12:05 AM CDT</li><li><a href="/races/f1-sao-paulo-grand-prix-2026/">Formula 1: São Paulo Grand Prix</a> · Interlagos · Nov 6–8, 2026 · race starts Sun, Nov 8 at 11:00 AM CST</li><li><a href="/races/wec-6-hours-of-monza-2026/">World Endurance: 6 Hours of Monza</a> · Monza · Nov 6–8, 2026 · race starts Sun, Nov 8 at 4:00 AM CST</li></ul><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li><li><a href="/races/imsa-rolex-24-at-daytona-2027/">IMSA WeatherTech: Rolex 24 at Daytona</a> · Daytona International Speedway · Jan 28–31, 2027</li><li><a href="/races/f1-bahrain-grand-prix-2027/">Formula 1: Bahrain Grand Prix</a> · Bahrain International Circuit · Mar 12–14, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/about/">About</a></p><p>Updated November 1, 2026.</p></div><!--/seo--></div>
+    <div id="weekendTop"><!--seo--><div class="seo-static"><h1>Race start times in your time zone</h1><p>Premier Racing Info is a free guide to 98 racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/f1-mexico-city-grand-prix-2026/">Formula 1: Mexico City Grand Prix</a> · Autódromo Hermanos Rodríguez · Oct 30 – Nov 1, 2026 · race starts Sun, Nov 1 at 2:00 PM CST</li><li><a href="/races/gt-asia-shanghai-finale-2026/">GT World Challenge Asia: Shanghai finale</a> · Shanghai International Circuit · Oct 30 – Nov 1, 2026 · race starts Sun, Nov 1 at 12:05 AM CDT</li><li><a href="/races/nascar-xfinity-500-2026/">NASCAR Cup Series: Xfinity 500</a> · Martinsville Speedway · Oct 30 – Nov 1, 2026</li><li><a href="/races/motogp-malaysian-grand-prix-2026/">MotoGP: Malaysian Grand Prix</a> · Sepang International Circuit · Oct 30 – Nov 1, 2026</li><li><a href="/races/f1-sao-paulo-grand-prix-2026/">Formula 1: São Paulo Grand Prix</a> · Interlagos · Nov 6–8, 2026 · race starts Sun, Nov 8 at 11:00 AM CST</li><li><a href="/races/wec-6-hours-of-monza-2026/">World Endurance: 6 Hours of Monza</a> · Monza · Nov 6–8, 2026 · race starts Sun, Nov 8 at 4:00 AM CST</li><li><a href="/races/nascar-championship-race-2026/">NASCAR Cup Series: Championship Race</a> · Homestead-Miami Speedway · Nov 6–8, 2026</li><li><a href="/races/motogp-qatar-grand-prix-2026/">MotoGP: Qatar Grand Prix</a> · Lusail International Circuit · Nov 6–8, 2026</li></ul><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026</li><li><a href="/races/motogp-portuguese-grand-prix-2026/">MotoGP: Portuguese Grand Prix</a> · Algarve International Circuit · Nov 20–22, 2026</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/about/">About</a></p><p>Updated November 1, 2026.</p></div><!--/seo--></div>
     <div id="installBox"></div>
     <section class="sec" id="newsSec" aria-label="News"></section>
     <div class="sec" id="mySec"></div>
@@ -1374,9 +1374,92 @@ const RAW = [
   ["mustang-vir-27","mustang","VIRginia International Raceway","VIRginia International Raceway","Alton, VA","2027-08-20","2027-08-22",["Provisional"]],
   ["mustang-cota-27","mustang","Circuit of The Americas","Circuit of the Americas","Austin, TX","2027-09-10","2027-09-12",["Provisional", "With WEC"]],
   ["mustang-atlanta-27","mustang","Road Atlanta","Michelin Raceway Road Atlanta","Braselton, GA","2027-10-06","2027-10-09",["Provisional", "Finale"]],
+  // NASCAR Cup, IndyCar and MotoGP (added Nov 1, 2026; 2027 calendars as published by each series)
+  ["nascar-martinsville","nascar","Xfinity 500","Martinsville Speedway","Ridgeway, VA","2026-10-30","2026-11-01",["Chase","Round of 8"]],
+  ["nascar-homestead","nascar","Championship Race","Homestead-Miami Speedway","Homestead, FL","2026-11-06","2026-11-08",["Chase","Finale"]],
+  ["nascar-clash-27","nascar","Clash","Daytona International Speedway","Daytona Beach, FL","2027-02-12","2027-02-13",["Exhibition"]],
+  ["nascar-daytona-500-27","nascar","Daytona 500","Daytona International Speedway","Daytona Beach, FL","2027-02-16","2027-02-21",["Duels Feb 18"]],
+  ["nascar-autotrader-400-27","nascar","Autotrader 400","EchoPark Speedway","Hampton, GA","2027-02-26","2027-02-28",[]],
+  ["nascar-duramax-grand-prix-27","nascar","DuraMAX Grand Prix","Circuit of the Americas","Austin, TX","2027-03-05","2027-03-07",[]],
+  ["nascar-straight-talk-wireless-500-27","nascar","Straight Talk Wireless 500","Phoenix Raceway","Avondale, AZ","2027-03-12","2027-03-14",[]],
+  ["nascar-pennzoil-400-27","nascar","Pennzoil 400","Las Vegas Motor Speedway","Las Vegas, NV","2027-03-19","2027-03-21",[]],
+  ["nascar-goodyear-400-27","nascar","Goodyear 400","Darlington Raceway","Darlington, SC","2027-04-02","2027-04-04",[]],
+  ["nascar-food-city-500-27","nascar","Food City 500","Bristol Motor Speedway","Bristol, TN","2027-04-09","2027-04-11",[]],
+  ["nascar-cook-out-400-martinsville-27","nascar","Cook Out 400 (Martinsville)","Martinsville Speedway","Ridgeway, VA","2027-04-16","2027-04-18",[]],
+  ["nascar-jack-link-s-500-27","nascar","Jack Link's 500","Talladega Superspeedway","Lincoln, AL","2027-04-23","2027-04-25",[]],
+  ["nascar-w-rth-400-27","nascar","Würth 400","Texas Motor Speedway","Fort Worth, TX","2027-04-30","2027-05-02",[]],
+  ["nascar-adventhealth-400-27","nascar","AdventHealth 400","Kansas Speedway","Kansas City, KS","2027-05-07","2027-05-09",[]],
+  ["nascar-dover-27","nascar","Dover","Dover Motor Speedway","Dover, DE","2027-05-14","2027-05-16",[]],
+  ["nascar-all-star-race-27","nascar","All-Star Race","North Wilkesboro Speedway","North Wilkesboro, NC","2027-05-21","2027-05-23",["Exhibition"]],
+  ["nascar-coca-cola-600-27","nascar","Coca-Cola 600","Charlotte Motor Speedway","Concord, NC","2027-05-28","2027-05-30",[]],
+  ["nascar-cracker-barrel-400-27","nascar","Cracker Barrel 400","Nashville Superspeedway","Lebanon, TN","2027-06-04","2027-06-06",[]],
+  ["nascar-the-great-american-getaway-400-27","nascar","The Great American Getaway 400","Pocono Raceway","Long Pond, PA","2027-06-11","2027-06-13",[]],
+  ["nascar-firekeepers-casino-400-27","nascar","FireKeepers Casino 400","Michigan International Speedway","Brooklyn, MI","2027-06-18","2027-06-20",[]],
+  ["nascar-eero-400-27","nascar","eero 400","Chicagoland Speedway","Joliet, IL","2027-06-25","2027-06-27",[]],
+  ["nascar-iowa-corn-350-27","nascar","Iowa Corn 350","Iowa Speedway","Newton, IA","2027-07-02","2027-07-04",[]],
+  ["nascar-toyota-save-mart-350-27","nascar","Toyota/Save Mart 350","Sonoma Raceway","Sonoma, CA","2027-07-09","2027-07-11",[]],
+  ["nascar-dollar-tree-400-27","nascar","Dollar Tree 400","EchoPark Speedway","Hampton, GA","2027-07-16","2027-07-18",[]],
+  ["nascar-brickyard-400-27","nascar","Brickyard 400","Indianapolis Motor Speedway","Indianapolis, IN","2027-07-23","2027-07-25",[]],
+  ["nascar-anduril-250-27","nascar","Anduril 250","Coronado Street Course","San Diego, CA","2027-07-30","2027-08-01",[]],
+  ["nascar-bass-pro-shops-night-race-27","nascar","Bass Pro Shops Night Race","Bristol Motor Speedway","Bristol, TN","2027-08-13","2027-08-14",[]],
+  ["nascar-enjoy-illinois-300-27","nascar","Enjoy Illinois 300","World Wide Technology Raceway","Madison, IL","2027-08-20","2027-08-22",[]],
+  ["nascar-coke-zero-sugar-400-27","nascar","Coke Zero Sugar 400","Daytona International Speedway","Daytona Beach, FL","2027-08-27","2027-08-28",[]],
+  ["nascar-southern-500-27","nascar","Southern 500","Darlington Raceway","Darlington, SC","2027-09-03","2027-09-05",[]],
+  ["nascar-cook-out-400-richmond-27","nascar","Cook Out 400 (Richmond)","Richmond Raceway","Richmond, VA","2027-09-10","2027-09-11",[]],
+  ["nascar-go-bowling-at-the-glen-27","nascar","Go Bowling at The Glen","Watkins Glen International","Watkins Glen, NY","2027-09-17","2027-09-19",[]],
+  ["nascar-dollar-tree-301-27","nascar","Dollar Tree 301","New Hampshire Motor Speedway","Loudon, NH","2027-09-24","2027-09-26",[]],
+  ["nascar-hollywood-casino-400-27","nascar","Hollywood Casino 400","Kansas Speedway","Kansas City, KS","2027-10-01","2027-10-03",[]],
+  ["nascar-south-point-400-27","nascar","South Point 400","Las Vegas Motor Speedway","Las Vegas, NV","2027-10-08","2027-10-10",[]],
+  ["nascar-bank-of-america-400-27","nascar","Bank of America 400","Charlotte Motor Speedway","Concord, NC","2027-10-15","2027-10-17",[]],
+  ["nascar-freeway-insurance-500-27","nascar","Freeway Insurance 500","Phoenix Raceway","Avondale, AZ","2027-10-22","2027-10-24",[]],
+  ["nascar-yellawood-500-27","nascar","YellaWood 500","Talladega Superspeedway","Lincoln, AL","2027-10-29","2027-10-31",[]],
+  ["nascar-xfinity-500-27","nascar","Xfinity 500","Martinsville Speedway","Ridgeway, VA","2027-11-05","2027-11-07",[]],
+  ["nascar-championship-race-27","nascar","Championship Race","Homestead-Miami Speedway","Homestead, FL","2027-11-12","2027-11-14",["Finale"]],
+  ["indy-grand-prix-of-st-petersburg-27","indy","Grand Prix of St. Petersburg","Streets of St. Petersburg","St. Petersburg, FL","2027-03-05","2027-03-07",[]],
+  ["indy-phoenix-27","indy","Phoenix","Phoenix Raceway","Avondale, AZ","2027-03-12","2027-03-13",[]],
+  ["indy-grand-prix-of-arlington-27","indy","Grand Prix of Arlington","Streets of Arlington","Arlington, TX","2027-03-19","2027-03-21",[]],
+  ["indy-grand-prix-of-alabama-27","indy","Grand Prix of Alabama","Barber Motorsports Park","Birmingham, AL","2027-04-02","2027-04-04",[]],
+  ["indy-grand-prix-of-long-beach-27","indy","Grand Prix of Long Beach","Streets of Long Beach","Long Beach, CA","2027-04-16","2027-04-18",[]],
+  ["indy-indianapolis-road-course-27","indy","Indianapolis Road Course","Indianapolis Motor Speedway","Indianapolis, IN","2027-05-14","2027-05-15",[]],
+  ["indy-indianapolis-500-27","indy","Indianapolis 500","Indianapolis Motor Speedway","Indianapolis, IN","2027-05-21","2027-05-30",[]],
+  ["indy-detroit-grand-prix-27","indy","Detroit Grand Prix","Streets of Detroit","Detroit, MI","2027-06-04","2027-06-06",[]],
+  ["indy-world-wide-technology-raceway-27","indy","World Wide Technology Raceway","World Wide Technology Raceway","Madison, IL","2027-06-11","2027-06-13",[]],
+  ["indy-road-america-27","indy","Road America","Road America","Elkhart Lake, WI","2027-06-25","2027-06-27",[]],
+  ["indy-mid-ohio-27","indy","Mid-Ohio","Mid-Ohio Sports Car Course","Lexington, OH","2027-07-02","2027-07-04",[]],
+  ["indy-barcelona-27","indy","Barcelona","Circuit de Barcelona-Catalunya","Montmeló, Spain","2027-07-16","2027-07-18",[]],
+  ["indy-portland-27","indy","Portland","Portland International Raceway","Portland, OR","2027-07-30","2027-08-01",[]],
+  ["indy-markham-27","indy","Markham","Streets of Markham","Markham, ON","2027-08-13","2027-08-15",[]],
+  ["indy-milwaukee-mile-doubleheader-27","indy","Milwaukee Mile doubleheader","Milwaukee Mile","West Allis, WI","2027-08-27","2027-08-29",["Races Aug 28 & 29"]],
+  ["indy-monterey-27","indy","Monterey","WeatherTech Raceway Laguna Seca","Monterey, CA","2027-09-03","2027-09-05",["Finale"]],
+  ["motogp-malaysia","motogp","Malaysian Grand Prix","Sepang International Circuit","Sepang, Malaysia","2026-10-30","2026-11-01",[]],
+  ["motogp-qatar","motogp","Qatar Grand Prix","Lusail International Circuit","Lusail, Qatar","2026-11-06","2026-11-08",["Moved from April"]],
+  ["motogp-portugal","motogp","Portuguese Grand Prix","Algarve International Circuit","Portimão, Portugal","2026-11-20","2026-11-22",[]],
+  ["motogp-valencia","motogp","Valencia Grand Prix","Circuit Ricardo Tormo","Cheste, Spain","2026-11-27","2026-11-29",["Finale"]],
+  ["motogp-thailand-27","motogp","Thailand Grand Prix","Chang International Circuit","Buriram, Thailand","2027-03-05","2027-03-07",[]],
+  ["motogp-qatar-27","motogp","Qatar Grand Prix","Lusail International Circuit","Lusail, Qatar","2027-03-12","2027-03-14",[]],
+  ["motogp-brazilian-27","motogp","Brazilian Grand Prix","Autódromo Internacional Ayrton Senna","Goiânia, Brazil","2027-04-02","2027-04-04",[]],
+  ["motogp-argentine-27","motogp","Argentine Grand Prix","Autódromo Oscar y Juan Gálvez","Buenos Aires, Argentina","2027-04-09","2027-04-11",["New venue"]],
+  ["motogp-americas-27","motogp","Grand Prix of the Americas","Circuit of the Americas","Austin, TX","2027-04-23","2027-04-25",[]],
+  ["motogp-spanish-27","motogp","Spanish Grand Prix","Circuito de Jerez","Jerez, Spain","2027-05-07","2027-05-09",[]],
+  ["motogp-french-27","motogp","French Grand Prix","Bugatti Circuit","Le Mans, France","2027-05-14","2027-05-16",[]],
+  ["motogp-italian-27","motogp","Italian Grand Prix","Mugello","Scarperia, Italy","2027-05-28","2027-05-30",[]],
+  ["motogp-catalan-27","motogp","Catalan Grand Prix","Circuit de Barcelona-Catalunya","Montmeló, Spain","2027-06-11","2027-06-13",[]],
+  ["motogp-dutch-tt-27","motogp","Dutch TT","TT Circuit Assen","Assen, Netherlands","2027-06-25","2027-06-27",[]],
+  ["motogp-german-27","motogp","German Grand Prix","Sachsenring","Hohenstein-Ernstthal, Germany","2027-07-09","2027-07-11",[]],
+  ["motogp-czech-27","motogp","Czech Grand Prix","Brno Circuit","Brno, Czechia","2027-07-16","2027-07-18",[]],
+  ["motogp-british-27","motogp","British Grand Prix","Silverstone","Silverstone, UK","2027-08-13","2027-08-15",[]],
+  ["motogp-austrian-27","motogp","Austrian Grand Prix","Red Bull Ring","Spielberg, Austria","2027-08-27","2027-08-29",[]],
+  ["motogp-san-marino-27","motogp","San Marino Grand Prix","Misano World Circuit","Misano Adriatico, Italy","2027-09-10","2027-09-12",[]],
+  ["motogp-aragon-27","motogp","Aragon Grand Prix","MotorLand Aragón","Alcañiz, Spain","2027-09-17","2027-09-19",[]],
+  ["motogp-portuguese-27","motogp","Portuguese Grand Prix","Algarve International Circuit","Portimão, Portugal","2027-10-01","2027-10-03",[]],
+  ["motogp-japanese-27","motogp","Japanese Grand Prix","Mobility Resort Motegi","Motegi, Japan","2027-10-15","2027-10-17",[]],
+  ["motogp-malaysian-27","motogp","Malaysian Grand Prix","Sepang International Circuit","Sepang, Malaysia","2027-10-22","2027-10-24",[]],
+  ["motogp-indonesian-27","motogp","Indonesian Grand Prix","Mandalika International Circuit","Lombok, Indonesia","2027-10-29","2027-10-31",[]],
+  ["motogp-australian-27","motogp","Australian Grand Prix","Adelaide Street Circuit","Adelaide, SA","2027-11-12","2027-11-14",["New venue"]],
+  ["motogp-valencia-27","motogp","Valencia Grand Prix","Circuit Ricardo Tormo","Cheste, Spain","2027-11-26","2027-11-28",["Finale"]],
 ];
-const SERIES = {f1:"F1", imsa:"IMSA", wec:"WEC", gtwc:"GT America", gte:"GT Europe", gtas:"GT Asia", gtau:"GT Australia", psc:"Supercup", pccna:"Carrera Cup NA", mustang:"Mustang Challenge"};
-const SERIES_FULL = {f1:"Formula 1", imsa:"IMSA WeatherTech", wec:"World Endurance", gtwc:"GT World Challenge America", gte:"GT World Challenge Europe", gtas:"GT World Challenge Asia", gtau:"GT World Challenge Australia", psc:"Porsche Mobil 1 Supercup", pccna:"Porsche Carrera Cup North America", mustang:"Ford Mustang Challenge"};
+const SERIES = {f1:"F1", imsa:"IMSA", wec:"WEC", gtwc:"GT America", gte:"GT Europe", gtas:"GT Asia", gtau:"GT Australia", psc:"Supercup", pccna:"Carrera Cup NA", mustang:"Mustang Challenge", nascar:"NASCAR", indy:"IndyCar", motogp:"MotoGP"};
+const SERIES_FULL = {f1:"Formula 1", imsa:"IMSA WeatherTech", wec:"World Endurance", gtwc:"GT World Challenge America", gte:"GT World Challenge Europe", gtas:"GT World Challenge Asia", gtau:"GT World Challenge Australia", psc:"Porsche Mobil 1 Supercup", pccna:"Porsche Carrera Cup North America", mustang:"Ford Mustang Challenge", nascar:"NASCAR Cup Series", indy:"IndyCar", motogp:"MotoGP"};
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -1488,6 +1571,9 @@ const MAKERS = {
   psc:{ title:"The car (one-make series)", list:[["Porsche","911 GT3 Cup (992)"]] },
   pccna:{ title:"The car (one-make series)", list:[["Porsche","911 GT3 Cup (992)"]] },
   mustang:{ title:"The car (one-make series)", list:[["Ford","Mustang Dark Horse R"]] },
+  nascar:{ title:"The cars (Next Gen)", list:[["Chevrolet","Camaro ZL1"],["Ford","Mustang Dark Horse"],["Toyota","Camry XSE"]] },
+  indy:{ title:"The cars", list:[["Dallara","IR-18 chassis"],["Chevrolet","engine"],["Honda","engine"]] },
+  motogp:{ title:"The manufacturers", list:[["Ducati"],["Aprilia"],["KTM"],["Yamaha"],["Honda"]] }
 };
 // Where to watch in the US
 const WATCH = {
@@ -1501,6 +1587,9 @@ const WATCH = {
   psc:[["Apple TV","https://tv.apple.com/",false,"Shown with F1 coverage in the US"]],
   pccna:[["IMSA on YouTube","https://www.youtube.com/@IMSA",true,"Support races streamed live"],["Peacock","https://www.peacocktv.com/",false,"IMSA race weekends"]],
   mustang:[["IMSA on YouTube","https://www.youtube.com/@IMSA",true,"Support races streamed live"],["Peacock","https://www.peacocktv.com/",false,"IMSA race weekends"]],
+  nascar:[["FOX Sports / FS1","https://www.foxsports.com/",false,"TV and the FOX Sports app"],["Prime Video","https://www.primevideo.com/",false,"Summer races"],["TNT / HBO Max","https://www.hbomax.com/",false,"In-season tournament"],["NBC / USA / Peacock","https://www.peacocktv.com/",false,"The Chase"]],
+  indy:[["FOX Sports / FS1","https://www.foxsports.com/",false,"TV and the FOX Sports app"]],
+  motogp:[["FOX Sports / FS1","https://www.foxsports.com/",false,"FS1/FS2 and the FOX Sports app"]]
 };
 // Session times in US Central, where known
 const SESSIONS = {
@@ -1783,7 +1872,7 @@ const STATS = {
 
 
 // ================= UI =================
-const ORDER = ["f1","imsa","wec","gtwc","gte","gtas","gtau","psc","pccna","mustang"];
+const ORDER = ["f1","nascar","indy","motogp","imsa","wec","gtwc","gte","gtas","gtau","psc","pccna","mustang"];
 function today(){ const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
 function phase(e){ const t = today(); if (e.cancelled) return "cancelled"; if (t > e.end) return "past"; if (t >= e.start) return "now"; return "future"; }
 const dayDiff = (a,b) => Math.round((b - a) / 86400000);
@@ -1800,7 +1889,8 @@ function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt
 const PLATE = {
   f1:{code:"F1"}, imsa:{code:"IMSA"}, wec:{code:"WEC"},
   psc:{code:"CUP",reg:"EU"}, pccna:{code:"CUP",reg:"NA"}, mustang:{code:"MC",reg:"DH"},
-  gtwc:{code:"GT",reg:"US"}, gte:{code:"GT",reg:"EU"}, gtas:{code:"GT",reg:"AS"}, gtau:{code:"GT",reg:"AU"}
+  gtwc:{code:"GT",reg:"US"}, gte:{code:"GT",reg:"EU"}, gtas:{code:"GT",reg:"AS"}, gtau:{code:"GT",reg:"AU"},
+  nascar:{code:"NAS",reg:"CUP"}, indy:{code:"INDY",reg:"USA"}, motogp:{code:"MOTO",reg:"GP"}
 };
 function plate(s, h = 30){
   const p = PLATE[s], w = Math.round(h * 44 / 32), fill = `fill:var(--${s})`;
@@ -2719,7 +2809,7 @@ function chipsHTML(sel, opts){
 }
 function renderCalChips(){
   document.getElementById("calChips").innerHTML = chipsHTML(calSeries,
-    [["all","All series"],["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gt","All GT World"],["gtwc","America","gtwc"],["gte","Europe","gte"],["gtas","Asia","gtas"],["gtau","Australia","gtau"],["cups","Porsche Cups"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang","mustang"]]);
+    [["all","All series"],["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gt","All GT World"],["gtwc","America","gtwc"],["gte","Europe","gte"],["gtas","Asia","gtas"],["gtau","Australia","gtau"],["cups","Porsche Cups"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang","mustang"],["nascar","NASCAR","nascar"],["indy","IndyCar","indy"],["motogp","MotoGP","motogp"]]);
 }
 function renderList(){
   const el = document.getElementById("list");
@@ -2861,7 +2951,7 @@ function ticketLinks(e){
 let lastFocus = null;
 function openRace(id){
   const e = events.find(x => x.id === id); if (!e) return;
-  const t = TRACKS[e.circuit], st = STATS[e.series], mk = MAKERS[e.series], c = e.series;
+  const t = TRACKS[e.circuit], st = STATS[e.series] || {}, mk = MAKERS[e.series] || { title: "", list: [] }, c = e.series;
   const ph = phase(e), [stt, cls] = statusOf(e);
   const others = events.filter(o => o.circuit === e.circuit && o.id !== e.id && !o.cancelled && o.start.getFullYear() === e.start.getFullYear());
   const pr = k => !!state[k][e.id];
@@ -2911,9 +3001,9 @@ function openRace(id){
   if (others.length) h += `<p class="fine">Also here in ${e.start.getFullYear()}: ${others.map(o => `${SERIES[o.series]} ${esc(o.name)} (${range(o)})`).join("; ")}</p>`;
   h += `</section>`;
 
-  h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
-  if (mk.extra) h += `<h3 class="h4">${esc(mk.extraTitle)}</h3><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
-  h += `</section>`;
+  if (mk.list.length) h += `<section class="card"><h3>${esc(mk.title)}</h3><div class="makers">${mk.list.map(m => `<span class="maker">${esc(m[0])}${m[1] ? `<small>${esc(m[1])}</small>` : ""}</span>`).join("")}</div>`;
+  if (mk.list.length && mk.extra) h += `<h3 class="h4">${esc(mk.extraTitle)}</h3><div class="makers">${mk.extra.map(m => `<span class="maker">${esc(m[0])}</span>`).join("")}</div>`;
+  if (mk.list.length) h += `</section>`;
   if (st.grid && inSeason(e)) h += `<section class="card"><h3>Drivers &amp; cars</h3><div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div><p class="fine">Season line-ups. Entries for a single race can change.</p></section>`;
   if (st.standings && !e.cancelled && ph !== "past" && inSeason(e)) h += `<section class="card"><h3>Title fight going in</h3>${pointsTower(st.standings.slice(0, 5), c)}</section>`;
   h += `</div>`;
@@ -3066,7 +3156,7 @@ document.addEventListener("click", ev => {
 
 // ---------- News (headlines collected every 30 min into news.json) ----------
 let NEWS = null, newsFilter = "all", newsQuery = "";
-const APP_TO_WORLD = {f1:"f1",imsa:"imsa",wec:"wec",gtwc:"gtwc-america",gte:"gtwc-europe",gtas:"gtwc-asia",gtau:"gtwc-australia",psc:"porsche-supercup",pccna:"carrera-cup-na",mustang:"mustang-challenge"};
+const APP_TO_WORLD = {f1:"f1",imsa:"imsa",wec:"wec",gtwc:"gtwc-america",gte:"gtwc-europe",gtas:"gtwc-asia",gtau:"gtwc-australia",psc:"porsche-supercup",pccna:"carrera-cup-na",mustang:"mustang-challenge",nascar:"nascar-cup",indy:"indycar",motogp:"motogp"};
 function ago(iso){
   const m = Math.max(1, Math.round((Date.now() - Date.parse(iso)) / 60000));
   return m < 60 ? `${m}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`;
@@ -3451,6 +3541,7 @@ document.addEventListener("click", ev => {
 const GEO = {
   // circuit → [country, state/province code or ""]
   places: {
+    "Martinsville Speedway":["United States", "VA"], "Homestead-Miami Speedway":["United States", "FL"], "EchoPark Speedway":["United States", "GA"], "Phoenix Raceway":["United States", "AZ"], "Las Vegas Motor Speedway":["United States", "NV"], "Darlington Raceway":["United States", "SC"], "Bristol Motor Speedway":["United States", "TN"], "Talladega Superspeedway":["United States", "AL"], "Texas Motor Speedway":["United States", "TX"], "Kansas Speedway":["United States", "KS"], "Dover Motor Speedway":["United States", "DE"], "North Wilkesboro Speedway":["United States", "NC"], "Charlotte Motor Speedway":["United States", "NC"], "Nashville Superspeedway":["United States", "TN"], "Pocono Raceway":["United States", "PA"], "Michigan International Speedway":["United States", "MI"], "Chicagoland Speedway":["United States", "IL"], "Iowa Speedway":["United States", "IA"], "Coronado Street Course":["United States", "CA"], "World Wide Technology Raceway":["United States", "IL"], "Richmond Raceway":["United States", "VA"], "New Hampshire Motor Speedway":["United States", "NH"], "Streets of St. Petersburg":["United States", "FL"], "Streets of Arlington":["United States", "TX"], "Portland International Raceway":["United States", "OR"], "Streets of Markham":["Canada", "ON"], "Milwaukee Mile":["United States", "WI"], "Circuit Ricardo Tormo":["Spain", ""], "Autódromo Internacional Ayrton Senna":["Brazil", ""], "Autódromo Oscar y Juan Gálvez":["Argentina", ""], "Circuito de Jerez":["Spain", ""], "Bugatti Circuit":["France", ""], "Mugello":["Italy", ""], "TT Circuit Assen":["Netherlands", ""], "Sachsenring":["Germany", ""], "Brno Circuit":["Czechia", ""], "MotorLand Aragón":["Spain", ""], "Mobility Resort Motegi":["Japan", ""],
     "Daytona International Speedway":["United States","FL"], "Sebring International Raceway":["United States","FL"], "Miami International Autodrome":["United States","FL"],
     "Streets of Long Beach":["United States","CA"], "WeatherTech Raceway Laguna Seca":["United States","CA"], "Sonoma Raceway":["United States","CA"],
     "Streets of Detroit":["United States","MI"], "Watkins Glen International":["United States","NY"], "Road America":["United States","WI"],

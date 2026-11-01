@@ -1,0 +1,186 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Premier Racing Info//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:IndyCar · Premier Racing Info
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:indy-grand-prix-of-st-petersburg-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270308
+SUMMARY:IndyCar · Grand Prix of St. Petersburg
+LOCATION:Streets of St. Petersburg\, St. Petersburg\, FL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-phoenix-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270312
+DTEND;VALUE=DATE:20270314
+SUMMARY:IndyCar · Phoenix
+LOCATION:Phoenix Raceway\, Avondale\, AZ
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-grand-prix-of-arlington-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270319
+DTEND;VALUE=DATE:20270322
+SUMMARY:IndyCar · Grand Prix of Arlington
+LOCATION:Streets of Arlington\, Arlington\, TX
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-grand-prix-of-alabama-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270402
+DTEND;VALUE=DATE:20270405
+SUMMARY:IndyCar · Grand Prix of Alabama
+LOCATION:Barber Motorsports Park\, Birmingham\, AL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-grand-prix-of-long-beach-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270416
+DTEND;VALUE=DATE:20270419
+SUMMARY:IndyCar · Grand Prix of Long Beach
+LOCATION:Streets of Long Beach\, Long Beach\, CA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-indianapolis-road-course-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270514
+DTEND;VALUE=DATE:20270516
+SUMMARY:IndyCar · Indianapolis Road Course
+LOCATION:Indianapolis Motor Speedway\, Indianapolis\, IN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-indianapolis-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270521
+DTEND;VALUE=DATE:20270531
+SUMMARY:IndyCar · Indianapolis 500
+LOCATION:Indianapolis Motor Speedway\, Indianapolis\, IN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-detroit-grand-prix-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270604
+DTEND;VALUE=DATE:20270607
+SUMMARY:IndyCar · Detroit Grand Prix
+LOCATION:Streets of Detroit\, Detroit\, MI
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-world-wide-technology-raceway-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270611
+DTEND;VALUE=DATE:20270614
+SUMMARY:IndyCar · World Wide Technology Raceway
+LOCATION:World Wide Technology Raceway\, Madison\, IL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-road-america-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270625
+DTEND;VALUE=DATE:20270628
+SUMMARY:IndyCar · Road America
+LOCATION:Road America\, Elkhart Lake\, WI
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-mid-ohio-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270702
+DTEND;VALUE=DATE:20270705
+SUMMARY:IndyCar · Mid-Ohio
+LOCATION:Mid-Ohio Sports Car Course\, Lexington\, OH
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-barcelona-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270716
+DTEND;VALUE=DATE:20270719
+SUMMARY:IndyCar · Barcelona
+LOCATION:Circuit de Barcelona-Catalunya\, Montmeló\, Spain
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-portland-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270730
+DTEND;VALUE=DATE:20270802
+SUMMARY:IndyCar · Portland
+LOCATION:Portland International Raceway\, Portland\, OR
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-markham-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270813
+DTEND;VALUE=DATE:20270816
+SUMMARY:IndyCar · Markham
+LOCATION:Streets of Markham\, Markham\, ON
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-milwaukee-mile-doubleheader-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270827
+DTEND;VALUE=DATE:20270830
+SUMMARY:IndyCar · Milwaukee Mile doubleheader
+LOCATION:Milwaukee Mile\, West Allis\, WI
+DESCRIPTION:Races Aug 28 & 29\nStart times are added about a week before.\
+ nhttps://premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:indy-monterey-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270903
+DTEND;VALUE=DATE:20270906
+SUMMARY:IndyCar · Monterey
+LOCATION:WeatherTech Raceway Laguna Seca\, Monterey\, CA
+DESCRIPTION:Finale\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

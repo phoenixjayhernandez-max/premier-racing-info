@@ -1,0 +1,450 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Premier Racing Info//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:NASCAR Cup Series · Premier Racing Info
+X-WR-TIMEZONE:America/Chicago
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:nascar-martinsville-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20261030
+DTEND;VALUE=DATE:20261102
+SUMMARY:NASCAR Cup Series · Xfinity 500
+LOCATION:Martinsville Speedway\, Ridgeway\, VA
+DESCRIPTION:Chase\, Round of 8\nStart times are added about a week before.
+ \nhttps://premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-homestead-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261109
+SUMMARY:NASCAR Cup Series · Championship Race
+LOCATION:Homestead-Miami Speedway\, Homestead\, FL
+DESCRIPTION:Chase\, Finale\nStart times are added about a week before.\nht
+ tps://premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-clash-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270212
+DTEND;VALUE=DATE:20270214
+SUMMARY:NASCAR Cup Series · Clash
+LOCATION:Daytona International Speedway\, Daytona Beach\, FL
+DESCRIPTION:Exhibition\nStart times are added about a week before.\nhttps:
+ //premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-daytona-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270216
+DTEND;VALUE=DATE:20270222
+SUMMARY:NASCAR Cup Series · Daytona 500
+LOCATION:Daytona International Speedway\, Daytona Beach\, FL
+DESCRIPTION:Duels Feb 18\nStart times are added about a week before.\nhttp
+ s://premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-autotrader-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270226
+DTEND;VALUE=DATE:20270301
+SUMMARY:NASCAR Cup Series · Autotrader 400
+LOCATION:EchoPark Speedway\, Hampton\, GA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-duramax-grand-prix-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270308
+SUMMARY:NASCAR Cup Series · DuraMAX Grand Prix
+LOCATION:Circuit of the Americas\, Austin\, TX
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-straight-talk-wireless-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270312
+DTEND;VALUE=DATE:20270315
+SUMMARY:NASCAR Cup Series · Straight Talk Wireless 500
+LOCATION:Phoenix Raceway\, Avondale\, AZ
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-pennzoil-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270319
+DTEND;VALUE=DATE:20270322
+SUMMARY:NASCAR Cup Series · Pennzoil 400
+LOCATION:Las Vegas Motor Speedway\, Las Vegas\, NV
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-goodyear-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270402
+DTEND;VALUE=DATE:20270405
+SUMMARY:NASCAR Cup Series · Goodyear 400
+LOCATION:Darlington Raceway\, Darlington\, SC
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-food-city-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270409
+DTEND;VALUE=DATE:20270412
+SUMMARY:NASCAR Cup Series · Food City 500
+LOCATION:Bristol Motor Speedway\, Bristol\, TN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-cook-out-400-martinsville-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270416
+DTEND;VALUE=DATE:20270419
+SUMMARY:NASCAR Cup Series · Cook Out 400 (Martinsville)
+LOCATION:Martinsville Speedway\, Ridgeway\, VA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-jack-link-s-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270423
+DTEND;VALUE=DATE:20270426
+SUMMARY:NASCAR Cup Series · Jack Link's 500
+LOCATION:Talladega Superspeedway\, Lincoln\, AL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-w-rth-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270430
+DTEND;VALUE=DATE:20270503
+SUMMARY:NASCAR Cup Series · Würth 400
+LOCATION:Texas Motor Speedway\, Fort Worth\, TX
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-adventhealth-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270507
+DTEND;VALUE=DATE:20270510
+SUMMARY:NASCAR Cup Series · AdventHealth 400
+LOCATION:Kansas Speedway\, Kansas City\, KS
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-dover-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270514
+DTEND;VALUE=DATE:20270517
+SUMMARY:NASCAR Cup Series · Dover
+LOCATION:Dover Motor Speedway\, Dover\, DE
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-all-star-race-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270521
+DTEND;VALUE=DATE:20270524
+SUMMARY:NASCAR Cup Series · All-Star Race
+LOCATION:North Wilkesboro Speedway\, North Wilkesboro\, NC
+DESCRIPTION:Exhibition\nStart times are added about a week before.\nhttps:
+ //premierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-coca-cola-600-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270528
+DTEND;VALUE=DATE:20270531
+SUMMARY:NASCAR Cup Series · Coca-Cola 600
+LOCATION:Charlotte Motor Speedway\, Concord\, NC
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-cracker-barrel-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270604
+DTEND;VALUE=DATE:20270607
+SUMMARY:NASCAR Cup Series · Cracker Barrel 400
+LOCATION:Nashville Superspeedway\, Lebanon\, TN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-the-great-american-getaway-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270611
+DTEND;VALUE=DATE:20270614
+SUMMARY:NASCAR Cup Series · The Great American Getaway 400
+LOCATION:Pocono Raceway\, Long Pond\, PA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-firekeepers-casino-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270618
+DTEND;VALUE=DATE:20270621
+SUMMARY:NASCAR Cup Series · FireKeepers Casino 400
+LOCATION:Michigan International Speedway\, Brooklyn\, MI
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-eero-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270625
+DTEND;VALUE=DATE:20270628
+SUMMARY:NASCAR Cup Series · eero 400
+LOCATION:Chicagoland Speedway\, Joliet\, IL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-iowa-corn-350-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270702
+DTEND;VALUE=DATE:20270705
+SUMMARY:NASCAR Cup Series · Iowa Corn 350
+LOCATION:Iowa Speedway\, Newton\, IA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-toyota-save-mart-350-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270709
+DTEND;VALUE=DATE:20270712
+SUMMARY:NASCAR Cup Series · Toyota/Save Mart 350
+LOCATION:Sonoma Raceway\, Sonoma\, CA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-dollar-tree-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270716
+DTEND;VALUE=DATE:20270719
+SUMMARY:NASCAR Cup Series · Dollar Tree 400
+LOCATION:EchoPark Speedway\, Hampton\, GA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-brickyard-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270723
+DTEND;VALUE=DATE:20270726
+SUMMARY:NASCAR Cup Series · Brickyard 400
+LOCATION:Indianapolis Motor Speedway\, Indianapolis\, IN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-anduril-250-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270730
+DTEND;VALUE=DATE:20270802
+SUMMARY:NASCAR Cup Series · Anduril 250
+LOCATION:Coronado Street Course\, San Diego\, CA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-bass-pro-shops-night-race-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270813
+DTEND;VALUE=DATE:20270815
+SUMMARY:NASCAR Cup Series · Bass Pro Shops Night Race
+LOCATION:Bristol Motor Speedway\, Bristol\, TN
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-enjoy-illinois-300-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270820
+DTEND;VALUE=DATE:20270823
+SUMMARY:NASCAR Cup Series · Enjoy Illinois 300
+LOCATION:World Wide Technology Raceway\, Madison\, IL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-coke-zero-sugar-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270827
+DTEND;VALUE=DATE:20270829
+SUMMARY:NASCAR Cup Series · Coke Zero Sugar 400
+LOCATION:Daytona International Speedway\, Daytona Beach\, FL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-southern-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270903
+DTEND;VALUE=DATE:20270906
+SUMMARY:NASCAR Cup Series · Southern 500
+LOCATION:Darlington Raceway\, Darlington\, SC
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-cook-out-400-richmond-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270910
+DTEND;VALUE=DATE:20270912
+SUMMARY:NASCAR Cup Series · Cook Out 400 (Richmond)
+LOCATION:Richmond Raceway\, Richmond\, VA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-go-bowling-at-the-glen-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270917
+DTEND;VALUE=DATE:20270920
+SUMMARY:NASCAR Cup Series · Go Bowling at The Glen
+LOCATION:Watkins Glen International\, Watkins Glen\, NY
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-dollar-tree-301-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20270924
+DTEND;VALUE=DATE:20270927
+SUMMARY:NASCAR Cup Series · Dollar Tree 301
+LOCATION:New Hampshire Motor Speedway\, Loudon\, NH
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-hollywood-casino-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271001
+DTEND;VALUE=DATE:20271004
+SUMMARY:NASCAR Cup Series · Hollywood Casino 400
+LOCATION:Kansas Speedway\, Kansas City\, KS
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-south-point-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271008
+DTEND;VALUE=DATE:20271011
+SUMMARY:NASCAR Cup Series · South Point 400
+LOCATION:Las Vegas Motor Speedway\, Las Vegas\, NV
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-bank-of-america-400-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271015
+DTEND;VALUE=DATE:20271018
+SUMMARY:NASCAR Cup Series · Bank of America 400
+LOCATION:Charlotte Motor Speedway\, Concord\, NC
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-freeway-insurance-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271022
+DTEND;VALUE=DATE:20271025
+SUMMARY:NASCAR Cup Series · Freeway Insurance 500
+LOCATION:Phoenix Raceway\, Avondale\, AZ
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-yellawood-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271029
+DTEND;VALUE=DATE:20271101
+SUMMARY:NASCAR Cup Series · YellaWood 500
+LOCATION:Talladega Superspeedway\, Lincoln\, AL
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-xfinity-500-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271105
+DTEND;VALUE=DATE:20271108
+SUMMARY:NASCAR Cup Series · Xfinity 500
+LOCATION:Martinsville Speedway\, Ridgeway\, VA
+DESCRIPTION:\nStart times are added about a week before.\nhttps://premierr
+ acinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nascar-championship-race-27-weekend@premier-racing-info
+DTSTAMP:20261101T070500Z
+DTSTART;VALUE=DATE:20271112
+DTEND;VALUE=DATE:20271115
+SUMMARY:NASCAR Cup Series · Championship Race
+LOCATION:Homestead-Miami Speedway\, Homestead\, FL
+DESCRIPTION:Finale\nStart times are added about a week before.\nhttps://pr
+ emierracinginfo.com/
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

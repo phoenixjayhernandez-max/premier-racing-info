@@ -19,8 +19,8 @@ const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GE
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS } = data;
-const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge" };
-const COLORS = { f1: "#D7261E", imsa: "#2563B8", wec: "#0F8A6C", gtwc: "#C2410C", gte: "#6D28D9", gtas: "#BE185D", gtau: "#0E7490", psc: "#4B5563", pccna: "#3F6212", mustang: "#7F1D1D" };
+const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
+const COLORS = { f1: "#D7261E", imsa: "#2563B8", wec: "#0F8A6C", gtwc: "#C2410C", gte: "#6D28D9", gtas: "#BE185D", gtau: "#0E7490", psc: "#4B5563", pccna: "#3F6212", mustang: "#7F1D1D" , nascar: "#A16207", indy: "#1E3A8A", motogp: "#86198F" };
 
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const slug = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -119,6 +119,7 @@ const raceLink = e => `<a href="/races/${e.slug}/">${esc(e.name)}</a>`;
 
 // ---- Race pages ----
 for (const e of EV) {
+  const nm = ["nascar", "indy", "motogp"].includes(e.s) && !e.name.includes(SERIES[e.s]) ? `${SERIES[e.s]} ${e.name}` : e.name;
   const full = SERIES_FULL[e.s], sess = SESSIONS[e.id] || [], tr = TRACKS[e.circuit], past = e.end < today;
   const mainRace = sess.filter(x => !x[2]).slice(-1)[0];
   let body = `<p class="lede">${esc(full)} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</p>`;
@@ -137,36 +138,36 @@ for (const e of EV) {
   body += `<p><a class="btn p" href="/?race=${e.id}">Open in the app for live updates, alerts and picks ›</a> <a class="btn" href="/series/${APP_TO_WORLD[e.s]}/">${esc(full)} calendar &amp; standings</a></p>`;
   // Direct answer up top + FAQ (start time, how to watch, free option, tickets, where)
   const place = GEO.places?.[e.circuit] || [], country = place[0] || "", watchN = (WATCH[e.s] || []).filter(w => !/timing|official site/i.test(w[0]));
-  const free = (WATCH[e.s] || []).filter(w => w[2]).map(w => w[0]);
+  const free = (WATCH[e.s] || []).filter(w => w[2] && !/search_query/.test(w[1])).map(w => w[0]);
   const where = `${e.circuit} in ${e.location}${country && !e.location.includes(country) && country !== "United States" ? ", " + country : ""}`;
   let answer, qa = [];
   if (mainRace && !past) {
     const d = new Date(mainRace[1]);
-    answer = `The ${full} ${e.name} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
-    qa.push([`What time does the ${e.name} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC). ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
+    answer = `The ${full} ${nm} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
+    qa.push([`What time does the ${nm} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC). ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
   } else if (!past) {
-    answer = `The ${full} ${e.name} ${e.year} runs ${range(e.start, e.end)} at ${esc(where)}. Session times are usually published about a week before; this page updates when they're out.`;
-    qa.push([`When is the ${e.name} ${e.year}?`, `The ${e.name} runs ${range(e.start, e.end)} at ${esc(where)}. Exact start times are usually published about a week before the race.`]);
+    answer = `The ${full} ${nm} ${e.year} runs ${range(e.start, e.end)} at ${esc(where)}. Session times are usually published about a week before; this page updates when they're out.`;
+    qa.push([`When is the ${nm} ${e.year}?`, `The ${nm} runs ${range(e.start, e.end)} at ${esc(where)}. Exact start times are usually published about a week before the race.`]);
   } else {
     const w = WINNERS[e.id];
-    answer = `The ${full} ${e.name} ${e.year} took place ${range(e.start, e.end)} at ${esc(where)}.${w ? ` Winner: ${esc(w)}.` : ""}`;
-    if (w) qa.push([`Who won the ${e.name} ${e.year}?`, esc(w) + "."]);
+    answer = `The ${full} ${nm} ${e.year} took place ${range(e.start, e.end)} at ${esc(where)}.${w ? ` Winner: ${esc(w)}.` : ""}`;
+    if (w) qa.push([`Who won the ${nm} ${e.year}?`, esc(w) + "."]);
   }
   body = `<p class="answer">${answer}</p>` + body;
-  if (watchN.length) qa.push([`How can I watch the ${e.name} in the US?`, `${esc(full)} is shown in the US on ${esc(listAnd(watchN.map(w => w[0])))}.${watchN[0][3] ? " " + esc(watchN[0][3]) + "." : ""}`]);
-  if (free.length) qa.push([`Is there a free way to watch the ${e.name}?`, `Yes: ${esc(listAnd(free))} ${free.length > 1 ? "are" : "is"} free to watch in the US.`]);
-  else if (watchN.length) qa.push([`Is the ${e.name} free to watch?`, `Not in the US. Live coverage is on ${esc(listAnd(watchN.map(w => w[0])))}, which needs a subscription.`]);
-  if (!past && tk[0] && !/google\.com/.test(tk[0][1])) qa.push([`Where can I buy tickets for the ${e.name}?`, `Buy from the official seller: <a href="${esc(tk[0][1])}" rel="noopener">${esc(tk[0][0])}</a>. Resale prices vary, so start there.`]);
-  qa.push([`Where is the ${e.name} held?`, `At ${esc(where)}${tr && tr[0] ? `, a ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) ${esc((tr[2] || "").toLowerCase()) || "circuit"}${tr[1] ? ` with ${tr[1]} corners` : ""}` : ""}.`]);
+  if (watchN.length) qa.push([`How can I watch the ${nm} in the US?`, `${esc(full)} is shown in the US on ${esc(listAnd(watchN.map(w => w[0])))}.${watchN[0][3] ? " " + esc(watchN[0][3]) + "." : ""}`]);
+  if (free.length) qa.push([`Is there a free way to watch the ${nm}?`, `Yes: ${esc(listAnd(free))} ${free.length > 1 ? "are" : "is"} free to watch in the US.`]);
+  else if (watchN.length) qa.push([`Is the ${nm} free to watch?`, `Not in the US. Live coverage is on ${esc(listAnd(watchN.map(w => w[0])))}, which needs a subscription.`]);
+  if (!past && tk[0] && !/google\.com/.test(tk[0][1])) qa.push([`Where can I buy tickets for the ${nm}?`, `Buy from the official seller: <a href="${esc(tk[0][1])}" rel="noopener">${esc(tk[0][0])}</a>. Resale prices vary, so start there.`]);
+  qa.push([`Where is the ${nm} held?`, `At ${esc(where)}${tr && tr[0] ? `, a ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) ${esc((tr[2] || "").toLowerCase()) || "circuit"}${tr[1] ? ` with ${tr[1]} corners` : ""}` : ""}.`]);
   body = body.replace('<p><a class="btn p" href="/?race=', faqHTML(qa) + '<p><a class="btn p" href="/?race=');
-  const title = fitTitle(`${e.name} ${e.year}${e.s === "f1" ? "" : " – " + SERIES[e.s]}: Start Times, How to Watch & Tickets`, `${e.name} ${e.year}: Start Times, How to Watch & Tickets`, `${e.name} ${e.year}: Start Times & How to Watch`, `${e.name} ${e.year} Start Times`);
-  const desc = `${full} ${e.name} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
-  const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${e.name} ${e.year}`, sport: "Motorsport",
+  const title = fitTitle(`${nm} ${e.year}${e.s === "f1" || nm !== e.name ? "" : " – " + SERIES[e.s]}: Start Times, How to Watch & Tickets`, `${nm} ${e.year}: Start Times, How to Watch & Tickets`, `${nm} ${e.year}: Start Times & How to Watch`, `${nm} ${e.year} Start Times`);
+  const desc = `${full} ${nm} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
+  const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${nm} ${e.year}`, sport: "Motorsport",
     startDate: mainRace ? mainRace[1] : e.start, endDate: e.end, eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: e.circuit, address: { "@type": "PostalAddress", addressLocality: e.location.split(",")[0], ...(place[1] ? { addressRegion: place[1] } : {}), ...(country ? { addressCountry: country } : {}) } }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png", description: desc };
   if (tk[0] && !/google\.com/.test(tk[0][1])) ld.offers = { "@type": "Offer", url: tk[0][1], availability: "https://schema.org/InStock" };
-  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${e.name} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`,
-    crumbs: [{ name: full, item: SITE + `/series/${APP_TO_WORLD[e.s]}/` }, { name: `${e.name} ${e.year}`, item: SITE + `/races/${e.slug}/` }], body }));
+  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${nm} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`,
+    crumbs: [{ name: full, item: SITE + `/series/${APP_TO_WORLD[e.s]}/` }, { name: `${nm} ${e.year}`, item: SITE + `/races/${e.slug}/` }], body }));
 }
 
 // ---- Series pages ----
@@ -190,7 +191,7 @@ for (const x of WORLD.series) {
   if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
   body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
   const name = x.name, sn = x.short && x.short.length < name.length ? x.short : name;
-  const wN = watch.filter(v => !/official site|timing/i.test(v[0])), frS = watch.filter(v => v[2]).map(v => v[0]);
+  const wN = watch.filter(v => !/official site|timing/i.test(v[0])), frS = watch.filter(v => v[2] && !/search_query/.test(v[1])).map(v => v[0]);
   const sqa = [];
   if (x.about) sqa.push([`What is ${sn}?`, `${esc(name)} is ${/^[aeiou]/i.test(x.level || "") ? "an" : "a"} ${esc((x.level || "racing").toLowerCase())} ${esc(x.discipline.toLowerCase())} series (${esc(x.region || "")}). ${esc(x.about)}`]);
   if (x.champion) sqa.push([`Who won the ${new Date().getFullYear()} ${sn} championship?`, `${esc(x.champion)}.`]);
@@ -280,7 +281,7 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
   const rows = WORLD.series.map(x => { const app = appOf[x.id]; const w = app ? WATCH[app] : (x.watch || []); return [x, w.filter(v => v[0] !== "Official site")]; });
   const body = `<p class="lede">Where to stream or watch every major racing series in the United States, with free options marked.</p><section class="card"><table><tr><th>Series</th><th>Watch in the US</th></tr>${rows.map(([x, w]) => `<tr><td><a href="/series/${x.id}/">${esc(x.short || x.name)}</a></td><td>${w.map(v => `<a href="${esc(v[1])}" rel="noopener">${esc(v[0])}</a>${v[2] ? " (free)" : ""}`).join(", ") || esc(x.watch_us || "")}</td></tr>`).join("")}</table></section>`;
   const top = ["f1", "nascar-cup", "indycar", "motogp", "imsa", "wec", "formulae", "wrc", "supercars", "supercross", "nhra", "gtwc-america"];
-  const wqa = top.map(id => rows.find(r => r[0].id === id)).filter(r => r && r[1].length).map(([x, w]) => { const fr = w.filter(v => v[2]).map(v => v[0]);
+  const wqa = top.map(id => rows.find(r => r[0].id === id)).filter(r => r && r[1].length).map(([x, w]) => { const fr = w.filter(v => v[2] && !/search_query/.test(v[1])).map(v => v[0]);
     return [`How can I watch ${x.short || x.name} in the US?`, `${esc(x.short || x.name)} is on ${esc(listAnd(w.map(v => v[0])))}.${fr.length ? ` Free option: ${esc(listAnd(fr))}.` : ""} <a href="/series/${x.id}/">${esc(x.short || x.name)} schedule</a>.`]; });
   const sumUp = top.slice(0, 6).map(id => rows.find(r => r[0].id === id)).filter(r => r && r[1].length).map(([x, w]) => `${esc(x.short || x.name)} on ${esc(listAnd(w.slice(0, 2).map(v => v[0])))}`);
   const wbody = `<p class="answer">In the US: ${listAnd(sumUp)}. The table below lists all ${rows.length} series, with free options marked.</p>` + body.replace('<section class="card"><table>', '<section class="card"><h2>Every series and where to watch it</h2><table>') + faqHTML(wqa);
