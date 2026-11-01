@@ -3,7 +3,8 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
-- Standings auto-update for the 10 series added Oct 30 (NASCAR Cup, IndyCar, MotoGP, Formula E, WRC, Supercars, Super GT, DTM, F2, ELMS).
+- Done Nov 1, 2026: standings auto-update now covers all 21 series; NASCAR Cup, IndyCar and MotoGP calendars added (82 races, rest of 2026 + 2027) with race pages.
+- "Racing this weekend" page, per-race share images, faster results, weekly email.
 - Friends' race photos: add them to `OWN_PHOTOS` in `index.html` once each photographer gives written permission (including for commercial use).
 - Direct ticket links per race for series without one official store (NASCAR, Supercars, NHRA and others).
 
