@@ -1038,6 +1038,16 @@ main{max-width:1200px}
 .hh-meta .hh-tz{margin:0}
 .hh-credit{margin:0;color:var(--color-muted)}
 .hh-band.sm{min-height:clamp(280px,44svh,420px)}
+.live-strip{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-xs);margin:0 0 var(--space-md)}
+.live-tag{display:inline-flex;align-items:center;gap:var(--space-2xs);background:#D7261E;color:#fff;font-family:var(--font-display);font-weight:var(--display-weight);text-transform:uppercase;font-size:var(--text-sm,.9rem);padding:var(--space-3xs,2px) var(--space-xs);border-radius:var(--radius-card)}
+.live-tag i{width:8px;height:8px;border-radius:50%;background:#fff;animation:livepulse 1.4s ease-in-out infinite}
+.live-tag.soon{background:var(--band-ink);color:var(--band)}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.25}}
+.live-item{display:inline-flex;align-items:center;flex-wrap:wrap;gap:var(--space-2xs) var(--space-xs);background:color-mix(in oklab,var(--band) 70%,transparent);border:1px solid color-mix(in oklab,var(--band-ink) 30%,transparent);border-radius:var(--radius-card);padding:var(--space-3xs,2px) var(--space-xs)}
+.live-open{display:inline-flex;align-items:center;gap:var(--space-xs);background:none;border:0;color:var(--band-ink);font:inherit;font-size:.92rem;cursor:pointer;padding:var(--space-3xs,2px) 0;min-height:32px;text-align:left}
+.live-open span{opacity:.85}
+.live-watch{color:var(--band-ink);font-size:.85rem;font-weight:600;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){.live-tag i{animation:none}}
 .hh-kick{margin:0 0 var(--space-2xs);font-size:var(--text-sm,.9rem);font-weight:600;color:var(--band-ink);opacity:.85}
 .hh-figs{display:flex;flex-wrap:wrap;gap:0;margin:var(--space-md) 0 0;padding:0}
 .hh-figs div{padding:var(--space-2xs) var(--space-lg) 0 0;margin-right:var(--space-lg);border-right:1px solid color-mix(in oklab,var(--band-ink) 30%,transparent)}
@@ -2003,6 +2013,37 @@ document.addEventListener("click", ev => {
   if (t) { setTZ(t.dataset.tzset); try { localStorage.setItem(TZKEY, tzPref); } catch(e){} if (typeof cloudPush === "function") cloudPush(); closeRace(); renderAll(); }
 });
 const txTime = iso => fmtTime.format(new Date(iso)).replace(":00 ", " ");
+// How long a session is on track, for the "Live now" strip
+function sessHours(e, name, support){
+  const h = /(\d+)\s*Hours?/i.exec(name) || /(\d+)\s*Hours?/i.exec(e.name);
+  if (h && /race|hours|grand prix/i.test(name + " " + e.name) && !/practice|qualif/i.test(name)) return Math.min(25, +h[1] + 0.5);
+  if (support) return 1;
+  if (/practice|qualif|shootout|warm/i.test(name)) return 1.25;
+  if (/sprint/i.test(name)) return e.series === "motogp" ? 0.75 : 1;
+  if (e.series === "nascar") return /600/.test(e.name) ? 4.5 : 3.5;
+  if (e.series === "indy") return /500/.test(e.name) ? 3.75 : 2.5;
+  if (e.series === "motogp") return 1;
+  return 2;
+}
+function liveSessions(){
+  const now = Date.now(), out = [];
+  for (const e of events) {
+    if (e.cancelled || phase(e) !== "now") continue;
+    for (const x of SESSIONS[e.id] || []) { const t = Date.parse(x[1]), end = t + sessHours(e, x[0], x[2]) * 3600000; if (t <= now && now < end) out.push({ e, name: x[0], support: !!x[2], end }); }
+  }
+  return out.sort((a, b) => a.support - b.support || ORDER.indexOf(a.e.series) - ORDER.indexOf(b.e.series));
+}
+function liveNowHTML(){
+  const L = liveSessions(), now = Date.now();
+  if (L.length) return `<div class="live-strip" role="status" aria-live="polite"><span class="live-tag"><i aria-hidden="true"></i>Live now</span>${L.slice(0, 4).map(x => { const w = (WATCH[x.e.series] || [])[0];
+    return `<span class="live-item ${x.e.series}"><button class="live-open" data-open="${x.e.id}">${plate(x.e.series, 18)}<b>${esc(x.name)}</b> <span>${esc(x.e.name)}</span></button>${w && !x.support ? `<a class="live-watch" href="${esc(w[1])}" target="_blank" rel="noopener">Watch on ${esc(w[0])}</a>` : ""}</span>`; }).join("")}</div>`;
+  // Nothing on track: the next start within 3 hours
+  let nx = null;
+  for (const e of events) { if (e.cancelled || phase(e) === "past") continue; for (const x of SESSIONS[e.id] || []) { const t = Date.parse(x[1]); if (!x[2] && t > now && t - now < 3 * 3600000 && (!nx || t < nx.t)) nx = { e, name: x[0], t }; } }
+  return nx ? `<div class="live-strip soon"><span class="live-tag soon">Starting soon</span><span class="live-item ${nx.e.series}"><button class="live-open" data-open="${nx.e.id}">${plate(nx.e.series, 18)}<b>${esc(nx.name)}</b> <span>${esc(nx.e.name)} · ${txTime(new Date(nx.t).toISOString())}</span></button></span></div>` : "";
+}
+// Keep the strip current without re-rendering the page
+setInterval(() => { const el = document.getElementById("liveNow"); if (el && !document.hidden) { const h = liveNowHTML(); if (el.innerHTML !== h) el.innerHTML = h; } }, 60000);
 function nextSession(id){
   const L = SESSIONS[id]; if (!L) return null;
   const now = Date.now();
@@ -2664,6 +2705,7 @@ function renderWeekend(){
       <div class="hh-band">
       <div class="hh-media" aria-hidden="true"><div class="hh-ph on" data-sphoto="${feat.series}" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo></div><div class="hh-ph b"></div></div>
       <div class="hh-copy">
+        <div id="liveNow">${liveNowHTML()}</div>
         <h1 id="homeTitle">Never miss a start</h1>
         <p class="lead">Every session of ${WORLD_LIST.length} racing series, in your time zone, with where to watch it.</p>
         <div class="hh-acts"><button class="cta cta-primary" data-alerts="1">Turn on alerts</button><button class="cta cta-secondary" data-gotab="calendar">Full calendar</button></div>
