@@ -1036,7 +1036,16 @@ main{max-width:1200px}
 .hh-meta{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-xs) var(--space-md);flex-wrap:wrap;margin-top:var(--space-md)}
 .hh-meta .hh-tz{margin:0}
 .hh-credit{margin:0;color:var(--color-muted)}
-.hh-band.sm{min-height:clamp(240px,38svh,360px)}
+.hh-band.sm{min-height:clamp(280px,44svh,420px)}
+.hh-kick{margin:0 0 var(--space-2xs);font-size:var(--text-sm,.9rem);font-weight:600;color:var(--band-ink);opacity:.85}
+.hh-figs{display:flex;flex-wrap:wrap;gap:0;margin:var(--space-md) 0 0;padding:0}
+.hh-figs div{padding:var(--space-2xs) var(--space-lg) 0 0;margin-right:var(--space-lg);border-right:1px solid color-mix(in oklab,var(--band-ink) 30%,transparent)}
+.hh-figs div:last-child{border-right:0;margin-right:0}
+.hh-figs dd{margin:0;font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--text-2xl,2rem);line-height:1;color:var(--band-ink);font-variant-numeric:tabular-nums;order:-1}
+.hh-figs div{display:flex;flex-direction:column}
+.hh-figs dt{font-size:var(--text-xs);color:var(--band-ink);opacity:.8;margin-top:var(--space-3xs,2px)}
+.hh-standings .hh-figs div:first-child dd{background:var(--color-accent);color:var(--color-accent-ink);padding:0 var(--space-2xs)}
+@media (max-width:520px){ .hh-figs div{padding-right:var(--space-sm);margin-right:var(--space-sm)} .hh-figs dd{font-size:1.6rem} }
 .hh-band .hh-title{font-family:var(--font-display);font-weight:var(--display-weight);text-transform:uppercase;letter-spacing:var(--tracking-display,-.015em);color:var(--band-ink);font-size:calc(var(--text-display) * .8);line-height:.94;margin:0 0 var(--space-xs);max-width:14ch}
 .hh-band.sm .hh-copy{padding-block:var(--space-xl) var(--space-lg)}
 .tab-credit{font-size:var(--text-xs);text-align:right;margin:var(--space-2xs) 0 var(--space-md)}
@@ -2054,9 +2063,9 @@ function loadFreePhotos(){
 // Hero slideshow: a new race photo every 7 seconds across every series. Pauses on hover, focus, the pause button, a hidden tab and reduced motion.
 let heroTimer = 0, heroPool = [], heroIdx = 0, heroPaused = false;
 function heroPoolFrom(first){
-  const byTag = new Map();
+  const byTag = new Map(), pref = [].concat(first || []).filter(Boolean), rank = t => { const i = pref.indexOf(t); return i < 0 ? 99 : i; };
   for (const n of PHOTO_POOL) { const t = n.tags[0]; if (!byTag.has(t)) byTag.set(t, []); byTag.get(t).push(n); }
-  const tags = [...byTag.keys()].sort((a, b) => (b === first) - (a === first) || (byTag.get(b)[0].own ? 1 : 0) - (byTag.get(a)[0].own ? 1 : 0));
+  const tags = [...byTag.keys()].sort((a, b) => rank(a) - rank(b) || (byTag.get(b)[0].own ? 1 : 0) - (byTag.get(a)[0].own ? 1 : 0));
   const pool = []; for (let i = 0; pool.length < 20 && i < 6; i++) for (const t of tags) { const x = byTag.get(t)[i]; if (x && pool.length < 20) pool.push(x); }
   return pool;
 }
@@ -2094,7 +2103,7 @@ function heroStart(){
 function heroSetup(){
   const band = curBand(); if (!band || !PHOTO_POOL.length) return;
   const ph = band.querySelector(".hh-ph"); if (!ph) return;
-  const first = band.dataset.hero === "standings" ? (APP_TO_WORLD[statsSeries] || statsSeries) : APP_TO_WORLD[ph.dataset.sphoto];
+  const first = band.dataset.hero ? tabHero(band.dataset.hero, band) : APP_TO_WORLD[ph.dataset.sphoto];
   heroBand = band; heroPool = heroPoolFrom(first); heroIdx = 0;
   if (heroPool.length > 1 && !band.querySelector(".hh-pause")) {
     band.insertAdjacentHTML("beforeend", `<button class="hh-pause" type="button" aria-label="${heroPaused ? "Play" : "Pause"} photos" aria-pressed="${heroPaused}"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ps" d="M8 5h3v14H8zM13 5h3v14h-3z"/><path class="pl" d="M8 5l11 7-11 7z"/></svg></button>`);
@@ -2795,7 +2804,7 @@ function renderStats(){
     + (r ? `<p class="asof" style="margin:0 0 var(--space-sm)">Latest: ${esc(r.name)}${r.where ? ", " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}</p>` : "")
     + pts + race + grid.replace("<details class=\"acc\" open>", "<details class=\"acc\">") + notes;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
-  if (!document.getElementById("v-standings").hidden) heroSetup();
+  if (!document.getElementById("v-standings").hidden) { tabHero("standings", document.querySelector(".hh-standings")); heroSetup(); }
 }
 
 // ---------- Sharing ----------
@@ -3709,16 +3718,55 @@ document.addEventListener("click", ev => {
 });
 
 // ---------- Tabs & events ----------
-// Photo header on every tab, like the home page: rotating credited race photos, title moves as you scroll.
-const TAB_HERO = {
-  calendar: ["Race calendar", "Every round of 98 series, in your time zone."],
-  standings: ["Standings", "Championship tables for 21 series, updated after every round."],
-  series: ["Every series", "98 championships, from F1 to Formula Drift. Star the ones you follow."],
-  tickets: ["Tickets", "Races near you, with the official seller for each one."],
-};
-for (const [n, [t, l]] of Object.entries(TAB_HERO)) {
+// Photo header on every tab, like the home page, but each tab's says something of its own and picks its own photos.
+for (const n of ["calendar", "standings", "series", "tickets"]) {
   const v = document.getElementById("v-" + n);
-  if (v) v.insertAdjacentHTML("afterbegin", `<div class="hh-band sm" data-hero="${n}"><div class="hh-media" aria-hidden="true"><div class="hh-ph on"></div><div class="hh-ph b"></div></div><div class="hh-copy"><h2 class="hh-title">${esc(t)}</h2><p class="lead">${esc(l)}</p></div></div><p class="hh-credit tab-credit"></p>`);
+  if (v) v.insertAdjacentHTML("afterbegin", `<div class="hh-band sm hh-${n}" data-hero="${n}"><div class="hh-media" aria-hidden="true"><div class="hh-ph on"></div><div class="hh-ph b"></div></div><div class="hh-copy"></div></div><p class="hh-credit tab-credit"></p>`);
+}
+const figs = list => `<dl class="hh-figs">${list.filter(Boolean).map(([v, l]) => `<div><dt>${esc(l)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`;
+// Fills the tab's header and returns the series whose photos it should show first.
+function tabHero(n, band){
+  const c = band.querySelector(".hh-copy"), up = events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start), t = today();
+  const W = s => APP_TO_WORLD[s] || s;
+  if (n === "calendar") {
+    const nx = up.find(e => phase(e) === "future") || up[0];
+    const soon = up.filter(e => dayDiff(t, e.start) <= 30).length;
+    const d = nx ? dayDiff(t, nx.start) : 0;
+    c.innerHTML = `<p class="hh-kick">Race calendar · next up</p><h2 class="hh-title">${esc(nx ? nx.name : "Race calendar")}</h2>
+      <p class="lead">${nx ? `${esc(SERIES_FULL[nx.series])} at ${esc(nx.circuit)}, ${range(nx)}` : "Every round, in your time zone."}</p>
+      ${figs([nx && [d <= 0 ? "Now" : d, d === 1 ? "day to go" : d <= 0 ? "on track" : "days to go"], [soon, "races in the next 30 days"], [up.length, "races ahead"]])}`;
+    return [...new Set(up.slice(0, 8).map(e => W(e.series)))];
+  }
+  if (n === "standings") {
+    const st = STATS[statsSeries] || MORE_STATS[statsSeries] || {}, rows = st.standings || [], wl = worldById(W(statsSeries));
+    const name = SERIES_FULL[statsSeries] || (wl && (wl.short || wl.name)) || "Standings";
+    const L = rows[0], P2 = rows[1], pts = r => r[r.length - 1];
+    const champ = st.champs && st.champs[0];
+    c.innerHTML = `<p class="hh-kick">Standings · ${esc(name)}</p><h2 class="hh-title">${L ? `${esc(L[0])} ${champ ? "is champion" : "leads"}` : esc(name)}</h2>
+      <p class="lead">${L ? `${esc(L[1] || "")}${P2 ? ` · ${esc(P2[0])} is next, ${pts(L) - pts(P2)} behind` : ""}` : "Championship tables for 21 series."}</p>
+      ${L ? figs([[pts(L), "points"], P2 && [pts(L) - pts(P2), "point lead"], [rows.length, "in the table"]]) : ""}`;
+    return [W(statsSeries)];
+  }
+  if (n === "series") {
+    const disc = new Set(WORLD_LIST.map(x => x.discipline)), live = WORLD_LIST.filter(x => x.status === "In progress").length, mine = WORLD_LIST.filter(x => isMine(x.id));
+    c.innerHTML = `<p class="hh-kick">Every series</p><h2 class="hh-title">${mine.length ? "Your series, and the rest" : "Find your next series"}</h2>
+      <p class="lead">${mine.length ? `You follow ${mine.slice(0, 3).map(x => esc(x.short || x.name)).join(", ")}${mine.length > 3 ? ` and ${mine.length - 3} more` : ""}. Star more below.` : "From F1 to Formula Drift. Star the ones you follow and they come first everywhere."}</p>
+      ${figs([[WORLD_LIST.length, "series"], [disc.size, "kinds of racing"], [live, "in progress"]])}`;
+    // one photo per kind of racing, your series first
+    const order = mine.map(x => x.id); const seen = new Set();
+    for (const x of PHOTO_POOL) { const d = picDisc(x.tags[0]); if (!seen.has(d)) { seen.add(d); order.push(x.tags[0]); } }
+    return order;
+  }
+  if (n === "tickets") {
+    const a = myArea(), loc = a.state ? `s:${a.country}|${a.state}` : a.country ? `c:${a.country}` : "all";
+    const near = up.filter(e => locMatch(e, loc)), nx = near[0];
+    const place = loc === "all" ? "the world" : locLabel(loc);
+    c.innerHTML = `<p class="hh-kick">Tickets · near you</p><h2 class="hh-title">${near.length ? `${near.length} race${near.length === 1 ? "" : "s"} in ${esc(place)}` : `Races in ${esc(place)}`}</h2>
+      <p class="lead">${nx ? `Next: ${esc(nx.name)} at ${esc(nx.circuit)}, ${range(nx)}.` : "Pick your state, country or region below."}</p>
+      ${figs([[near.length, `in ${place}`], nx && [Math.max(0, dayDiff(t, nx.start)), "days to the next one"], [up.length, "worldwide"]])}`;
+    return [...new Set((near.length ? near : up).slice(0, 8).map(e => W(e.series)))];
+  }
+  return [];
 }
 function showTab(name){
   for (const n of ["weekend","calendar","standings","series","tickets"]) {
@@ -3727,9 +3775,10 @@ function showTab(name){
   }
   try { localStorage.setItem(KEY + "-tab", name); } catch(e){}
   window.scrollTo(0, 0);
+  const tb = document.querySelector("#v-" + name + " .hh-band[data-hero]"); if (tb) tabHero(name, tb);
   heroSetup();
 }
-function renderAll(){ setTimeout(() => fillPics(), 0); renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
+function renderAll(){ setTimeout(() => { fillPics(); const b = document.querySelector(".view:not([hidden]) .hh-band[data-hero]"); if (b) tabHero(b.dataset.hero, b); }, 0); renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
 
 { const top = document.querySelector(".top"), setTop = () => document.documentElement.style.setProperty("--top-h", top.offsetHeight + "px"); setTop(); if ("ResizeObserver" in window) new ResizeObserver(setTop).observe(top); }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-alerts]")) { openReminders(); return; } });
