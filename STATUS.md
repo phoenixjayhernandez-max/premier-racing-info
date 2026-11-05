@@ -5,8 +5,8 @@ Checked 2026-11-05 by `node tools/check-site.mjs`. Sections are in the order we 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ⚠️ 1 |
-| 2 | Results & picks | ⚠️ 6 |
-| 3 | Standings | ⚠️ 5 |
+| 2 | Results & picks | ⚠️ 4 |
+| 3 | Standings | ⚠️ 4 |
 | 4 | Series directory | ⚠️ 30 |
 | 5 | Watch | ⚠️ 6 |
 | 6 | Tickets | ⚠️ 5 |
@@ -35,34 +35,34 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
-- [ ] Missing winner (recent): Mexico City Grand Prix (Formula 1, 2026-11-01)
 - [ ] Missing winner (recent): Shanghai finale (GT World Challenge Asia, 2026-11-01)
 - [ ] Missing winner (recent): Xfinity 500 (NASCAR Cup Series, 2026-11-01)
 - [ ] Missing winner (recent): Malaysian Grand Prix (MotoGP, 2026-11-01)
 - [ ] Older races with no winner listed (35): imsa-longbeach, imsa-laguna, imsa-detroit, imsa-glen, imsa-ctmp, imsa-roadam, imsa-vir, imsa-indy, f1-aus, f1-jpn, f1-mia, f1-can, f1-mon, f1-bcn, f1-aut, f1-gbr, f1-bel, f1-hun, f1-ned, f1-ita, f1-mad, f1-aze, wec-imola, wec-spa, wec-lm, wec-sp, gte-nring, gtas-sepang, gtas-mandalika, gtas-shanghai, gtas-fuji, gtas-okayama, gtau-qld, gtau-sydney, pccna-indy
-- [ ] Picks can't be scored, no top three: Mexico City Grand Prix (Formula 1, 2026-11-01)
 
-<details><summary>Up to date (5)</summary>
+<details><summary>Up to date (7)</summary>
 
 - Winner saved: United States Grand Prix (Formula 1, 2026-10-25)
+- Winner saved: Mexico City Grand Prix (Formula 1, 2026-11-01)
 - Winner saved: 6 Hours of Barcelona (World Endurance, 2026-10-18)
 - Winner saved: 3 Hours of Portimão (GT World Challenge Europe, 2026-10-18)
 - Winner saved: Circuit of The Americas (Porsche Carrera Cup North America, 2026-10-25)
 - Picks scored: United States Grand Prix (Formula 1, 2026-10-25)
+- Picks scored: Mexico City Grand Prix (Formula 1, 2026-11-01)
 
 </details>
 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 1: standings are after United States Grand Prix (2026-10-25), but Mexico City Grand Prix finished 2026-11-01
 - [ ] GT Asia: standings are after Beijing (2026-10-04), but Shanghai finale finished 2026-11-01
 - [ ] NASCAR Cup: standings are after YellaWood 500 at Talladega (2026-10-25), but Xfinity 500 finished 2026-11-01
 - [ ] MotoGP: standings are after Australian GP (Phillip Island) (2026-10-25), but Malaysian Grand Prix finished 2026-11-01
 - [ ] Formula 2: last race in standings is Baku (2026-09-26), 40 days ago — check for newer rounds
 
-<details><summary>Up to date (15)</summary>
+<details><summary>Up to date (16)</summary>
 
+- Formula 1: current (Mexico City Grand Prix)
 - IMSA WeatherTech: current (Motul Petit Le Mans (season finale))
 - FIA WEC: current (6 Hours of Barcelona)
 - GT Europe: current (3 Hours of Portimão)
@@ -225,7 +225,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (290 headlines)
+- News last collected 0.3 hours ago (291 headlines)
 
 </details>
 
