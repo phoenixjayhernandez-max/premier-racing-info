@@ -172,6 +172,26 @@ for (const e of EV) {
 
 // ---- Series pages ----
 const appOf = Object.fromEntries(Object.entries(APP_TO_WORLD).map(([a, w]) => [w, a]));
+// Keep "Next round" current: tracked series read their calendar, others drop a date that has passed
+{
+  const M3 = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+  const endOf = txt => { // last day of the first date range in text like "Monza · Nov 6–8", as YYYY-MM-DD
+    const m = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? (\d{1,2})(?:\s*[–-]\s*(?:(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* )?(\d{1,2}))?/.exec(txt || "");
+    if (!m) return null;
+    const t = new Date(today + "T12:00:00Z"), y = t.getUTCFullYear(), m1 = M3.indexOf(m[1].toLowerCase()), m2 = m[3] ? M3.indexOf(m[3].toLowerCase()) : m1;
+    let b = new Date(Date.UTC(y, m2, +(m[4] || m[2])));
+    if (m2 < m1) b = new Date(Date.UTC(y + 1, m2, +(m[4] || m[2])));
+    if (b < new Date(Date.UTC(y, t.getUTCMonth() - 2, 1))) b.setUTCFullYear(y + 1); // "Jan 9" seen in November = next year
+    return b.toISOString().slice(0, 10);
+  };
+  for (const x of WORLD.series) {
+    const app = appOf[x.id];
+    if (app) {
+      const nx = EV.filter(e => e.s === app && e.end >= today).sort((a, b) => a.start.localeCompare(b.start))[0];
+      x.next = nx ? `${nx.name} · ${(nx.year === today.slice(0, 4) ? range(nx.start, nx.end).replace(/, \d{4}$/, "") : range(nx.start, nx.end))}` : "";
+    } else if (x.next) { const e = endOf(x.next); if (e && e < today) x.next = ""; }
+  }
+}
 for (const x of WORLD.series) {
   const app = appOf[x.id];
   const watch = app ? WATCH[app] : (x.watch || []);
