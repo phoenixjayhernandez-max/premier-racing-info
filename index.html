@@ -1145,7 +1145,7 @@ main{max-width:1200px}
 
   <section class="view" id="v-standings" role="tabpanel" aria-labelledby="t-standings" hidden>
     <div class="chips" id="statChips" role="toolbar" aria-label="Series"></div>
-    <p class="asof" id="statsAsof" hidden>Updated Friday, October 30, 2026: F1 after the United States Grand Prix; WEC after Barcelona; GT World Challenge Australia after Sydney (Round 5); GT World Challenge Asia after Beijing (Shanghai finale this weekend). IMSA, GT America, GT Europe, Supercup, Carrera Cup NA and Mustang Challenge seasons are complete. Also: NASCAR Cup after Talladega, MotoGP after the Phillip Island Sprint, Supercars after the Gold Coast, Super GT after Autopolis, F2 after Baku; IndyCar, Formula E, WRC, DTM and ELMS final.</p>
+    <p class="asof" id="statsAsof" hidden>Updated Thursday, November 5, 2026: F1 after the Mexico City Grand Prix (Antonelli champion); WEC after Barcelona; GT World Challenge Australia after Sydney (Round 5); GT World Challenge Asia after Beijing (Shanghai finale this weekend). IMSA, GT America, GT Europe, Supercup, Carrera Cup NA and Mustang Challenge seasons are complete. Also: NASCAR Cup after Talladega, MotoGP after the Phillip Island Sprint, Supercars after the Gold Coast, Super GT after Autopolis, F2 after Baku; IndyCar, Formula E, WRC, DTM and ELMS final.</p>
     <div id="statsBody"></div>
   </section>
 
@@ -1490,7 +1490,7 @@ const WINNERS = {
   "wec-cota":"Ferrari", "wec-fuji":"#8 Toyota",
   "gtwc-sonoma":"#34 JMF Mercedes-AMG", "gtwc-cota":"#34 JMF Mercedes-AMG", "gtwc-sebring":"#29 Turner BMW",
   "gtwc-roadatl":"#12 AF Corse USA Ferrari", "gtwc-roadam":"#29 Turner BMW", "gtwc-barber":"#12 AF Corse USA Ferrari",
-  "f1-sgp":"Max Verstappen, Red Bull", "f1-usa":"Kimi Antonelli, Mercedes", "gtwc-indy":"#32 GMG Porsche",
+  "f1-sgp":"Max Verstappen, Red Bull", "f1-usa":"Kimi Antonelli, Mercedes", "f1-mex":"Max Verstappen, Red Bull", "gtwc-indy":"#32 GMG Porsche",
   "gte-ricard":"#7 Comtoyou Aston Martin", "gte-monza":"#66 Attempto Audi", "gte-spa":"#80 Lionspeed Porsche",
   "gte-brands":"R1 #50 AF Corse Ferrari · R2 #80 Lionspeed Porsche", "gte-misano":"#32 WRT BMW, both races",
   "gte-magny":"R1 #3 Verstappen Racing Mercedes · R2 #80 Lionspeed Porsche", "gte-zandvoort":"R1 #58 Garage 59 McLaren · R2 #69 Emil Frey Ferrari",
@@ -1639,10 +1639,11 @@ const WINNERS_LIVE = {};
 // Top three finishers of each race, used to score prediction picks. Add one line per finished race.
 const PODIUMS = {
   "f1-usa":["Kimi Antonelli","Charles Leclerc","Max Verstappen"],
+  "f1-mex":["Max Verstappen","Lewis Hamilton","Kimi Antonelli"],
 };
 
 // Races that have full results in the stats snapshot
-const RESULT_FOR = { "f1-usa":"f1", "imsa-petit":"imsa", "wec-bcn":"wec", "gtwc-indy":"gtwc", "gte-portimao":"gte", "gtas-beijing":"gtas"};
+const RESULT_FOR = { "f1-usa":"f1", "f1-mex":"f1", "imsa-petit":"imsa", "wec-bcn":"wec", "gtwc-indy":"gtwc", "gte-portimao":"gte", "gtas-beijing":"gtas"};
 
 
 // ---------- Stats snapshot (Oct 4, 2026) ----------
@@ -1746,33 +1747,33 @@ const MORE_ORDER = [["nascar-cup","NASCAR Cup"],["indycar","IndyCar"],["motogp",
 
 const STATS = {
   f1: {
-    race: { name:"United States Grand Prix", where:"Circuit of the Americas · Oct 25",
-      note:"Antonelli won from pole after a strong opening lap and Verstappen's slow start, making a one-stop strategy work while many rivals stopped twice. Leclerc took second late on and Verstappen held third despite problems with his Red Bull. A Virtual Safety Car for Bottas's stopped Cadillac came in the final laps; Colapinto retired after contact with Lindblad.",
-      rows:[["1","12","Kimi Antonelli","Mercedes","1:35:16.650 · 25 pts"],["2","16","Charles Leclerc","Ferrari","+13.078"],["3","3","Max Verstappen","Red Bull","+17.485"],
-        ["4","44","Lewis Hamilton","Ferrari","+18.515"],["5","1","Lando Norris","McLaren","+30.521"],["6","6","Isack Hadjar","Red Bull","+34.373"],
-        ["7","81","Oscar Piastri","McLaren","+52.674"],["8","63","George Russell","Mercedes","+54.303"],["9","30","Liam Lawson","Racing Bulls","+79.183"],
-        ["10","10","Pierre Gasly","Alpine","+87.516"],["11","27","Nico Hülkenberg","Audi","+94.945"],["12","41","Arvid Lindblad","Racing Bulls","+1 lap"],
-        ["13","5","Gabriel Bortoleto","Audi","+1 lap"],["14","31","Esteban Ocon","Haas","+1 lap"],["15","18","Lance Stroll","Aston Martin","+1 lap"],
-        ["16","14","Fernando Alonso","Aston Martin","+1 lap"],["17","23","Alex Albon","Williams","+1 lap"],["18","55","Carlos Sainz","Williams","+1 lap"],
-        ["19","11","Sergio Pérez","Cadillac","+1 lap"],["DNF","77","Valtteri Bottas","Cadillac","DNF · lap 48"],["DNF","43","Franco Colapinto","Alpine","DNF · lap 35"],["DNF","87","Oliver Bearman","Haas","DNF · lap 24"]],
-      quali:[["1","12","Kimi Antonelli","Mercedes","1:34.035"],["2","3","Max Verstappen","Red Bull","+0.179"],["3","6","Isack Hadjar","Red Bull","+0.215"],
-        ["4","16","Charles Leclerc","Ferrari","+0.232"],["5","44","Lewis Hamilton","Ferrari","+0.276"],["6","63","George Russell","Mercedes","+0.441"],
-        ["7","81","Oscar Piastri","McLaren","+0.768"],["8","1","Lando Norris","McLaren","+1.014 · lap deleted"],["9","41","Arvid Lindblad","Racing Bulls","Q3 · 5-place grid penalty"],
-        ["10","30","Liam Lawson","Racing Bulls","Q3"],["11","10","Pierre Gasly","Alpine","Q2"],["12","27","Nico Hülkenberg","Audi","Q2"],
-        ["13","5","Gabriel Bortoleto","Audi","Q2 · grid penalty"],["14","43","Franco Colapinto","Alpine","Q2 · 10-place grid penalty"],["15","14","Fernando Alonso","Aston Martin","Q2"],
-        ["16","87","Oliver Bearman","Haas","Q2"],["17","31","Esteban Ocon","Haas","Q1"],["18","18","Lance Stroll","Aston Martin","Q1"],
-        ["19","55","Carlos Sainz","Williams","Q1"],["20","23","Alex Albon","Williams","Q1"],["21","11","Sergio Pérez","Cadillac","Q1"],["22","77","Valtteri Bottas","Cadillac","Q1"]],
-      qualiNote:"Lindblad (5 places), Colapinto (10 places) and Bortoleto took power-unit grid penalties, so the starting grid differed from this order." },
-    champs: null,
+    race: { name:"Mexico City Grand Prix", where:"Autódromo Hermanos Rodríguez · Nov 1",
+      note:"Verstappen won by 0.8 seconds from polesitter Hamilton, with Antonelli third, enough to clinch his first world title with four rounds to spare. The result changed after the race: Piastri got a time penalty for colliding with Lindblad, and both Alpines were penalised for yellow-flag infringements and dropped out of the points.",
+      rows:[["1","3","Max Verstappen","Red Bull","71 laps · 25 pts"],["2","44","Lewis Hamilton","Ferrari","+0.799"],["3","12","Kimi Antonelli","Mercedes","+4.006"],
+        ["4","16","Charles Leclerc","Ferrari","+10.707"],["5","1","Lando Norris","McLaren","+11.778"],["6","63","George Russell","Mercedes","+12.263"],
+        ["7","30","Liam Lawson","Racing Bulls","+20.899"],["8","5","Gabriel Bortoleto","Audi","+22.041"],["9","6","Isack Hadjar","Red Bull","+22.503"],
+        ["10","","Ryo Hirakawa","Haas","+25.373"],["11","23","Alex Albon","Williams","+27.562"],["12","55","Carlos Sainz","Williams","+28.638"],
+        ["13","81","Oscar Piastri","McLaren","+29.475 · time penalty"],["14","27","Nico Hülkenberg","Audi","+29.977"],["15","43","Franco Colapinto","Alpine","+30.204 · penalty"],
+        ["16","11","Sergio Pérez","Cadillac","+30.695"],["17","10","Pierre Gasly","Alpine","+51.483 · penalty"],["DNF","41","Arvid Lindblad","Racing Bulls","DNF · crash"],
+        ["DNF","87","Oliver Bearman","Haas","DNF · damage"],["DNF","77","Valtteri Bottas","Cadillac","DNF · crash"],["DNF","18","Lance Stroll","Aston Martin","DNF · technical"],["DNF","14","Fernando Alonso","Aston Martin","DNF · technical"]],
+      quali:[["1","44","Lewis Hamilton","Ferrari","1:16.514"],["2","63","George Russell","Mercedes","+0.009"],["3","16","Charles Leclerc","Ferrari","+0.119"],
+        ["4","3","Max Verstappen","Red Bull","+0.178"],["5","12","Kimi Antonelli","Mercedes","+0.193"],["6","1","Lando Norris","McLaren","+0.310"],
+        ["7","6","Isack Hadjar","Red Bull","+0.386"],["8","30","Liam Lawson","Racing Bulls","+0.515"],["9","41","Arvid Lindblad","Racing Bulls","+0.603"],
+        ["10","10","Pierre Gasly","Alpine","+0.639"],["11","27","Nico Hülkenberg","Audi","Q2"],["12","43","Franco Colapinto","Alpine","Q2"],
+        ["13","81","Oscar Piastri","McLaren","Q2"],["14","5","Gabriel Bortoleto","Audi","Q2"],["15","87","Oliver Bearman","Haas","Q2"],
+        ["16","55","Carlos Sainz","Williams","Q2"],["17","23","Alex Albon","Williams","Q1"],["18","14","Fernando Alonso","Aston Martin","Q1"],
+        ["19","","Ryo Hirakawa","Haas","Q1"],["20","18","Lance Stroll","Aston Martin","Q1"],["21","11","Sergio Pérez","Cadillac","Q1"],["22","77","Valtteri Bottas","Cadillac","Q1"]],
+      qualiNote:"Hamilton took pole by 0.009s from Russell. Ryo Hirakawa drove the second Haas this weekend." },
+    champs:[["Drivers","Kimi Antonelli","Mercedes · 380 pts, first title, clinched in Mexico City with four rounds left"]],
     standingsTitle:"Drivers' championship",
-    standings:[["Kimi Antonelli","Mercedes",365],["George Russell","Mercedes",242],["Lewis Hamilton","Ferrari",241],["Max Verstappen","Red Bull",236],
-      ["Charles Leclerc","Ferrari",233],["Lando Norris","McLaren",211],["Oscar Piastri","McLaren",144],["Isack Hadjar","Red Bull",105],
-      ["Liam Lawson","Racing Bulls",77],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
-      ["Oliver Bearman","Haas",23],["Nico Hülkenberg","Audi",13],["Gabriel Bortoleto","Audi",10],["Esteban Ocon","Haas",7],
+    standings:[["Kimi Antonelli","Mercedes",380],["Max Verstappen","Red Bull",261],["Lewis Hamilton","Ferrari",259],["George Russell","Mercedes",250],
+      ["Charles Leclerc","Ferrari",245],["Lando Norris","McLaren",221],["Oscar Piastri","McLaren",144],["Isack Hadjar","Red Bull",107],
+      ["Liam Lawson","Racing Bulls",83],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
+      ["Oliver Bearman","Haas",23],["Gabriel Bortoleto","Audi",14],["Nico Hülkenberg","Audi",13],["Esteban Ocon","Haas",7],
       ["Fernando Alonso","Aston Martin",7],["Carlos Sainz","Williams",7],["Alex Albon","Williams",5],["Yuki Tsunoda","Racing Bulls",1],
-      ["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
+      ["Ryo Hirakawa","Haas",1],["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
     makersTitle:"Constructors' championship",
-    makers:[["Mercedes",607],["Ferrari",474],["McLaren",355],["Red Bull",341],["Racing Bulls",116],["Alpine",69],["Haas",30],["Audi",23],["Williams",12],["Aston Martin",7],["Cadillac",0]],
+    makers:[["Mercedes",630],["Ferrari",504],["Red Bull",382],["McLaren",365],["Racing Bulls",108],["Alpine",69],["Haas",31],["Audi",27],["Williams",12],["Aston Martin",7],["Cadillac",0]],
     gridTitle:"The grid",
     grid:[["Mercedes","Mercedes power","Kimi Antonelli · George Russell"],["Ferrari","Ferrari power","Lewis Hamilton · Charles Leclerc"],
       ["McLaren","Mercedes power","Lando Norris · Oscar Piastri"],["Red Bull","Red Bull Ford power","Max Verstappen · Isack Hadjar"],
@@ -1780,7 +1781,7 @@ const STATS = {
       ["Haas","Ferrari power","Oliver Bearman · Esteban Ocon"],["Audi","Audi power","Gabriel Bortoleto · Nico Hülkenberg"],
       ["Williams","Mercedes power","Carlos Sainz · Alex Albon"],["Aston Martin","Honda power","Fernando Alonso · Lance Stroll"],
       ["Cadillac","Ferrari power","Valtteri Bottas · Sergio Pérez"]],
-    notes:["Antonelli leads Russell by 123 points with five rounds (125 points) left. He can clinch the title in Mexico City next weekend unless he loses more than 22 points to Russell there.","Antonelli's Austin win came from pole on a one-stop strategy; Leclerc has finished 2nd in back-to-back races.","Russell, Hamilton, Verstappen and Leclerc are covered by 9 points in the fight for 2nd.","McLaren lead Red Bull by 14 in the fight for 3rd in the constructors'. Constructors' totals here are the sum of each team's drivers."]
+    notes:["Kimi Antonelli is the 2026 world champion, clinched with third in Mexico City with four rounds to go.","Verstappen's Mexico win lifts him to 2nd, two points ahead of Hamilton; Russell and Leclerc are within 16 points of him.","Mercedes lead Ferrari by 126 points in the constructors' with four rounds left.","Red Bull passed McLaren for 3rd in the constructors' (382 to 365)."]
   },
   imsa: {
     race: { name:"Motul Petit Le Mans (season finale)", where:"Road Atlanta · Oct 3 · GTP class",
