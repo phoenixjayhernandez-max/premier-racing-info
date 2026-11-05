@@ -3,7 +3,7 @@ name: Rebuild search pages
 on:
   push:
     branches: [main]
-    paths: ["index.html", "world.js", "tools/build-pages.mjs"]
+    paths: ["index.html", "world.js", "tools/build-pages.mjs", "tools/check-site.mjs"]
   schedule:
     - cron: "17 11 * * *"
   workflow_dispatch:
@@ -26,9 +26,11 @@ jobs:
           node-version: 20
       - name: Build pages
         run: node tools/build-pages.mjs
+      - name: Check every section for out-of-date data
+        run: node tools/check-site.mjs --write > /dev/null
       - name: Save if anything changed
         run: |
-          git add -A races series tracks calendar/index.html watch tickets texas races-in about privacy terms 404.html sitemap.xml robots.txt hero.js llms.txt index.html
+          git add -A races series tracks calendar/index.html watch tickets texas races-in about privacy terms 404.html sitemap.xml robots.txt hero.js llms.txt index.html STATUS.md
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git config user.name "pages-bot"
           git config user.email "pages-bot@users.noreply.github.com"

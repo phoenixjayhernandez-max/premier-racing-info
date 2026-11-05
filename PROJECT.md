@@ -21,10 +21,13 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - SEO: answer sentence + "Questions fans ask" FAQ (FAQPage schema) on race/series/watch pages; titles ≤60 chars.
 
 ## Automatic updater (scheduled task "Premier Racing Info auto-update")
-Runs Thu–Sun at 10:25 AM, 4:25 PM, 10:25 PM Central (saves usage). Thursday: start times, watch links, Series directory. Fri–Sun: live + final results and standings. It edits only the data constants and pushes to main.
+Runs Thu, Sat and Sun at 10:25 PM Central. It starts from `node tools/check-site.mjs` sections 1–5 and works every item. Thursday: start times, watch links, late results, Series directory. Sat/Sun: results and standings. It edits only the data constants and pushes to main.
 
 ## Working tips
 - Clone: `git clone https://github.com/phoenixjayhernandez-max/premier-racing-info`
 - Test locally: `python3 -m http.server 8765` then load it with Playwright (Chromium is preinstalled).
 - Commit, then push with `git pull --rebase` retries (robots push often).
 - Plans and ideas: see `ROADMAP.md`.
+
+## Keeping it up to date, section by section
+The site is split into 13 sections (calendar, results, standings, series directory, watch, tickets, tracks, news, search pages, photos, accounts, design, legal). See `SECTIONS.md`. Run `node tools/check-site.mjs` to list what's out of date in each one (the daily rebuild saves it to `STATUS.md`), then fix one section at a time, lowest number first.
