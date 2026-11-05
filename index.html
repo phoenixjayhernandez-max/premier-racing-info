@@ -1916,6 +1916,29 @@ function range(e){
   if (s.getMonth() === f.getMonth()) return `${MON[s.getMonth()]} ${s.getDate()}–${f.getDate()}`;
   return `${MON[s.getMonth()]} ${s.getDate()} – ${MON[f.getMonth()]} ${f.getDate()}`;
 }
+// ---------- Affiliate links (all OFF until a program approves the site) ----------
+// See MONETIZATION.md. To turn one on: paste the network's tracking-link template into "wrap"
+// (with {url} where the destination goes) and set on:true. Affiliate links are always labeled,
+// use rel="sponsored", come after the official seller, and show a disclosure line.
+const AFFILIATE = {
+  tickets: { on:false, name:"StubHub", wrap:"", search:"https://www.stubhub.com/secure/search?q={q}" },   // Partnerize
+  hotels:  { on:false, name:"Booking.com", wrap:"", search:"https://www.booking.com/searchresults.html?ss={q}" }, // Awin
+  stream:  { on:false, name:"Fubo", wrap:"", url:"https://www.fubo.tv/", series:["nascar","indy","motogp"] },  // FOX / FS1 coverage
+};
+const AFF_NOTE = "Links marked “affiliate” may earn Premier Racing Info a commission, at no extra cost to you.";
+function affLink(kind, q){
+  const a = AFFILIATE[kind];
+  if (!a || !a.on || !a.wrap) return null;
+  const dest = a.search ? a.search.replace("{q}", encodeURIComponent(q || "")) : a.url;
+  return a.wrap.replace("{url}", encodeURIComponent(dest));
+}
+// Ticket search link: the affiliate partner when switched on, otherwise a plain web search
+function ticketSearch(q){
+  const u = affLink("tickets", q);
+  return u ? [`${AFFILIATE.tickets.name} tickets · affiliate`, u, "aff"] : ["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(q)];
+}
+const relOf = t => t && t[2] === "aff" ? "sponsored noopener" : "noopener";
+
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 // Original series plates (not the series' logos)
@@ -2092,8 +2115,9 @@ function schedHTML(id, compact, lit = true){
   }).join("")}</table>`;
 }
 function watchButtons(series, n = 9, lead = ""){
-  return WATCH[series].slice(0, n).map((w, i) =>
-    `<a class="btn ${i === 0 ? "watch " + series : ""}" href="${w[1]}" target="_blank" rel="noopener">${i === 0 && lead ? (/ on /.test(w[0]) ? "Watch" : lead) + " " : ""}${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("");
+  const st = AFFILIATE.stream, su = n > 1 && st.series.includes(series) && affLink("stream");
+  return WATCH[series].slice(0, n).concat(su ? [[`${st.name} · affiliate`, su, false, "aff"]] : []).map((w, i) =>
+    `<a class="btn ${i === 0 ? "watch " + series : ""}" href="${w[1]}" target="_blank" rel="${w[3] === "aff" ? "sponsored noopener" : "noopener"}">${i === 0 && lead ? (/ on /.test(w[0]) ? "Watch" : lead) + " " : ""}${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("");
 }
 function weekendEvents(){
   const t = today(), dow = t.getDay();
@@ -3125,7 +3149,9 @@ function ticketLinks(e){
   if (TICKETS[e.id]) out.push(TICKETS[e.id]);
   if (e.series === "f1") out.push(["F1 official tickets", "https://tickets.formula1.com/en"]);
   else if (CIRCUIT_SITES[e.circuit]) out.push(["Circuit website", CIRCUIT_SITES[e.circuit]]);
-  out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.end.getFullYear()} tickets`)]);
+  out.push(ticketSearch(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.end.getFullYear()} tickets`));
+  const hotel = affLink("hotels", `${e.location}`);
+  if (hotel) out.push([`Hotels near the track · affiliate`, hotel, "aff"]);
   return out;
 }
 
@@ -3155,7 +3181,7 @@ function openRace(id){
     h += `</section>`;
   }
   const tk = ticketLinks(e);
-  if (tk.length) h += `<section class="card"><h3>Tickets</h3><div class="mine" style="margin:8px 0 0">${tk.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])} ↗</a>`).join("")}</div><p class="fine">Buy from the official seller where you can; resale prices vary.</p></section>`;
+  if (tk.length) h += `<section class="card"><h3>Tickets</h3><div class="mine" style="margin:8px 0 0">${tk.map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="${relOf(t)}">${esc(t[0])} ↗</a>`).join("")}</div><p class="fine">Buy from the official seller where you can; resale prices vary.${tk.some(t => t[2] === "aff") ? " " + AFF_NOTE : ""}</p></section>`;
   if (LIVE[e.id]) {
     const L = LIVE[e.id];
     h += `<section class="card"><h3>This weekend so far</h3><p class="lede">Updated ${esc(L.updated)}</p>` +
@@ -3825,11 +3851,12 @@ function tkEvents(){ return events.filter(e => !e.cancelled && phase(e) !== "pas
 function tkMonthKey(e){ return e.start.getFullYear() + "-" + String(e.start.getMonth() + 1).padStart(2, "0"); }
 function tkMonthLabel(k){ const [y, m] = k.split("-"); return MONTHS[+m - 1] + " " + y; }
 function ticketLinksFull(e){
-  const out = ticketLinks(e).filter(t => t[0] !== "Search tickets");
+  const out = ticketLinks(e).filter(t => t[0] !== "Search tickets" && !/tickets · affiliate$/.test(t[0]));
   // Support races on an F1 weekend: an F1 ticket gets you in.
   if (e.series !== "f1" && events.some(o => o.series === "f1" && o.circuit === e.circuit && !o.cancelled && o.start <= e.end && o.end >= e.start))
     out.unshift(["F1 weekend tickets", "https://tickets.formula1.com/en"]);
-  out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.circuit} ${e.end.getFullYear()} tickets`)]);
+  const ts = ticketSearch(`${SERIES_FULL[e.series] || ""} ${e.name} ${e.circuit} ${e.end.getFullYear()} tickets`), hi = out.findIndex(t => /^Hotels/.test(t[0]));
+  if (hi >= 0) out.splice(hi, 0, ts); else out.push(ts);
   const seen = new Set(); return out.filter(t => !seen.has(t[1]) && seen.add(t[1]));
 }
 // Official ticket stores for whole series (checked Oct 30, 2026). Others use the series' own site plus a ticket search.
@@ -3844,7 +3871,8 @@ function seriesTicketLinks(x){
   if (SERIES_TICKETS[x.id]) out.push(["Official tickets", SERIES_TICKETS[x.id]]);
   else if (x.site) out.push(["Official site", x.site]);
   const where = x.next && x.status !== "Finished" ? x.next.split(" · ")[0] + " " : "";
-  out.push(["Find tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${x.short || x.name} ${where}tickets`)]);
+  const ts = ticketSearch(`${x.short || x.name} ${where}tickets`);
+  out.push(ts[2] ? ts : ["Find tickets", ts[1]]);
   return out;
 }
 function tkSeriesHTML(){

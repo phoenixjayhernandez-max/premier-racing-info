@@ -38,7 +38,7 @@ Phoenix's idea (Oct 31, 2026): make "My account" feel personal, and grow it into
 - Possible later: sponsored "photo of the weekend" or merch tie-ins.
 
 ## Monetization (when traffic grows)
+- Done Nov 5, 2026: affiliate links for tickets (StubHub), hotels (Booking.com) and streaming (Fubo) are built but switched off. See `MONETIZATION.md` for the programs, the checklist before turning them on, and how to switch each one on.
 - Ads (needs the EU/UK consent prompt that is already in place).
-- Ticket affiliate links, labeled as such (promised in the Terms).
 - Merch from Phoenix's print shop.
 - Before turning on money-making: an LLC or other business setup, and a quick legal check.

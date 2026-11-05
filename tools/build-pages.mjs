@@ -13,11 +13,12 @@ const SITE = "https://premierracinginfo.com";
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + ";return {AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
+const { AFFILIATE, AFF_NOTE, affLink, ticketSearch, relOf } = data;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS } = data;
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const COLORS = { f1: "#D7261E", imsa: "#2563B8", wec: "#0F8A6C", gtwc: "#C2410C", gte: "#6D28D9", gtas: "#BE185D", gtau: "#0E7490", psc: "#4B5563", pccna: "#3F6212", mustang: "#7F1D1D" , nascar: "#A16207", indy: "#1E3A8A", motogp: "#86198F" };
@@ -47,7 +48,9 @@ function ticketLinks(e){
   if (TICKETS[e.id]) out.push(TICKETS[e.id]);
   if (e.s === "f1" || EV.some(o => o.s === "f1" && o.circuit === e.circuit && o.start <= e.end && o.end >= e.start)) out.push([e.s === "f1" ? "F1 official tickets" : "F1 weekend tickets", "https://tickets.formula1.com/en"]);
   else if (CIRCUIT_SITES[e.circuit]) out.push(["Circuit website", CIRCUIT_SITES[e.circuit]]);
-  out.push(["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(`${SERIES_FULL[e.s]} ${e.name} ${e.circuit} ${e.year} tickets`)]);
+  out.push(ticketSearch(`${SERIES_FULL[e.s]} ${e.name} ${e.circuit} ${e.year} tickets`));
+  const hotel = affLink("hotels", e.location);
+  if (hotel) out.push(["Hotels near the track · affiliate", hotel, "aff"]);
   const seen = new Set(); return out.filter(t => !seen.has(t[1]) && seen.add(t[1]));
 }
 
@@ -131,7 +134,7 @@ for (const e of EV) {
   } else if (WINNERS[e.id]) body += `<section class="card"><h2>Winner</h2><p>${esc(WINNERS[e.id])}</p></section>`;
   body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watchList(e.s)}</div></section>`;
   const tk = ticketLinks(e);
-  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
+  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="${relOf(t)}">${esc(t[0])}</a>`).join("")}</div>${tk.some(t => t[2] === "aff") ? `<p><small>${esc(AFF_NOTE)}</small></p>` : ""}</section>`;
   body += `<section class="card"><h2>The track</h2><p><a href="/tracks/${trackSlug(e.circuit)}/">${esc(e.circuit)}</a>, ${esc(e.location)}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km lap" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}. ${esc(tr[3])}.` : ""}</p></section>`;
   const same = EV.filter(o => o.circuit === e.circuit && o.id !== e.id && o.start <= e.end && o.end >= e.start);
   if (same.length) body += `<section class="card"><h2>Also racing this weekend</h2><ul class="list">${same.map(o => `<li>${raceLink(o)} <small>${esc(SERIES_FULL[o.s])}</small></li>`).join("")}</ul></section>`;
@@ -246,7 +249,7 @@ for (const c of circuits) {
   const past = list.filter(e => e.end < today);
   if (past.length) body += `<section class="card"><h2>Earlier in 2026</h2><ul class="list">${past.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${WINNERS[e.id] ? " · " + esc(WINNERS[e.id]) : ""}</small></li>`).join("")}</ul></section>`;
   const tk = up[0] ? ticketLinks(up[0]) : [];
-  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>`).join("")}</div></section>`;
+  if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="${relOf(t)}">${esc(t[0])}</a>`).join("")}</div>${tk.some(t => t[2] === "aff") ? `<p><small>${esc(AFF_NOTE)}</small></p>` : ""}</section>`;
   const sl = trackSlug(c), yrs = [...new Set(list.map(e => e.year))].join("–");
   write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: fitTitle(`${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, `${c} Race Schedule ${yrs}: Dates & Tickets`, `${c} Race Schedule ${yrs}`, `${c} Races ${yrs}`), desc: `All races at ${c} (${loc}) in ${yrs}: ${[...new Set(list.map(e => SERIES_FULL[e.s]))].join(", ")}. Dates, start times in Central time and tickets.`,
     h1: c, photo: [...new Set(list.map(e => APP_TO_WORLD[e.s]))], tick: [c, loc].concat([...new Set(list.map(e => SERIES_FULL[e.s]))]), crumbs: [{ name: "Tracks", item: SITE + "/tracks/" }, { name: c, item: SITE + `/tracks/${sl}/` }], body,
@@ -310,7 +313,7 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
 { // Tickets
   const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
   const body = `<p class="lede">Ticket links for every upcoming race: the official seller first, then the circuit and a ticket search.</p>` +
-    Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => { const t = ticketLinks(e)[0]; return `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}${t ? ` · <a href="${esc(t[1])}" rel="noopener">${esc(t[0])}</a>` : ""}</small></li>`; }).join("")}</ul></section>`).join("");
+    Object.entries(byMonth(up)).map(([k, l]) => `<section class="card"><h2>${monthLabel(k)}</h2><ul class="list">${l.map(e => { const t = ticketLinks(e)[0]; return `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${esc(e.circuit)} · ${range(e.start, e.end)}${t ? ` · <a href="${esc(t[1])}" rel="${relOf(t)}">${esc(t[0])}</a>` : ""}</small></li>`; }).join("")}</ul></section>`).join("");
   write("/tickets/", page({ url: "/tickets/", title: "Race Tickets 2026–2027: F1, IMSA, WEC & GT Races", desc: "Where to buy tickets for every upcoming F1, IMSA, WEC, GT World Challenge, Porsche Cup and Mustang Challenge race, from the official sellers.", h1: "Race tickets", crumbs: [{ name: "Tickets", item: SITE + "/tickets/" }], body }));
 }
 
