@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-05 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-06 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,10 +8,10 @@ Checked 2026-11-05 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ⚠️ 1 |
 | 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 30 |
-| 5 | Watch | ⚠️ 6 |
+| 5 | Watch | ⚠️ 3 |
 | 6 | Tickets | ⚠️ 5 |
 | 7 | Tracks & races near you | ⚠️ 56 |
-| 8 | News | ✅ 0 |
+| 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
 | 10 | Photos | by hand |
 | 11 | Accounts, alerts & picks game | by hand |
@@ -21,7 +21,7 @@ Checked 2026-11-05 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- [ ] Coming the week after, still without start times: Las Vegas Grand Prix (Formula 1, 2026-11-21)
+- [ ] Coming the week after, still without start times: Las Vegas Grand Prix (Formula 1, 2026-11-21); Portuguese Grand Prix (MotoGP, 2026-11-22)
 
 <details><summary>Up to date (4)</summary>
 
@@ -35,7 +35,7 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
-- [ ] Older races with no winner listed (35): imsa-longbeach, imsa-laguna, imsa-detroit, imsa-glen, imsa-ctmp, imsa-roadam, imsa-vir, imsa-indy, f1-aus, f1-jpn, f1-mia, f1-can, f1-mon, f1-bcn, f1-aut, f1-gbr, f1-bel, f1-hun, f1-ned, f1-ita, f1-mad, f1-aze, wec-imola, wec-spa, wec-lm, wec-sp, gte-nring, gtas-sepang, gtas-mandalika, gtas-shanghai, gtas-fuji, gtas-okayama, gtau-qld, gtau-sydney, pccna-indy
+- [ ] Older races with no winner listed (32): imsa-longbeach, imsa-laguna, imsa-detroit, imsa-glen, imsa-ctmp, imsa-roadam, imsa-vir, f1-aus, f1-jpn, f1-mia, f1-can, f1-mon, f1-bcn, f1-aut, f1-gbr, f1-bel, f1-hun, f1-ned, f1-mad, wec-imola, wec-spa, wec-lm, wec-sp, gte-nring, gtas-sepang, gtas-mandalika, gtas-shanghai, gtas-fuji, gtas-okayama, gtau-qld, gtau-sydney, pccna-indy
 
 <details><summary>Up to date (10)</summary>
 
@@ -55,7 +55,7 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 40 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 41 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
@@ -84,7 +84,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 98 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (8 days ago)
+- [ ] Directory last researched Oct 28, 2026 (9 days ago)
 - [ ] FR Americas: season finished but no champion listed
 - [ ] Italian F4: next round "Mugello (finale) · Oct 30–Nov 1" has passed (hidden on the site)
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
@@ -118,14 +118,11 @@ _All 98 series: status, champion or leader, next round, season dates (world.js)_
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Old start times to clear from WORLD_TIMES: nhra
 - [ ] GB3 races this weekend (Barcelona (finale) · Nov 7–8) with no start time
-- [ ] Super GT races this weekend (Motegi (2 races) · Nov 7–8) with no start time
 - [ ] NASCAR Mexico races this weekend (Mexico City (Autódromo Hermanos Rodríguez) · Nov 8) with no start time
-- [ ] Supercars races this weekend (Sandown 500 · Nov 6–8 (Adelaide Grand Final Nov 26–29)) with no start time
 - [ ] SCORE races this weekend (Baja 1000 · Nov 9–15) with no start time
 
-<details><summary>Up to date (13)</summary>
+<details><summary>Up to date (15)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -140,6 +137,8 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- Super GT: start time saved for this weekend
+- Supercars: start time saved for this weekend
 
 </details>
 
@@ -221,11 +220,11 @@ _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 ## 8. News
 _Headlines collected every 30 minutes (news.json, news.yml)_
 
-- Nothing to do.
+- [ ] GT Australia: no headlines in the last 7 days
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.3 hours ago (292 headlines)
+- News last collected 0.2 hours ago (297 headlines)
 
 </details>
 
@@ -236,7 +235,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 5, 2026
+- Pages last rebuilt November 6, 2026
 - 532 pages in the sitemap
 
 </details>
