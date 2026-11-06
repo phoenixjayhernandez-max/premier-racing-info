@@ -7,9 +7,9 @@ Checked 2026-11-06 by `node tools/check-site.mjs`. Sections are in the order we 
 | 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ⚠️ 1 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 30 |
-| 5 | Watch | ⚠️ 3 |
-| 6 | Tickets | ⚠️ 5 |
+| 4 | Series directory | ⚠️ 23 |
+| 5 | Watch | ✅ 0 |
+| 6 | Tickets | ⚠️ 3 |
 | 7 | Tracks & races near you | ⚠️ 56 |
 | 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
@@ -86,7 +86,6 @@ _All 98 series: status, champion or leader, next round, season dates (world.js)_
 
 - [ ] Directory last researched Oct 28, 2026 (9 days ago)
 - [ ] FR Americas: season finished but no champion listed
-- [ ] Italian F4: next round "Mugello (finale) · Oct 30–Nov 1" has passed (hidden on the site)
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
 - [ ] VP SportsCar: season finished but no champion listed
 - [ ] ADAC GT Masters: season finished but no champion listed
@@ -97,32 +96,24 @@ _All 98 series: status, champion or leader, next round, season dates (world.js)_
 - [ ] Ferrari Chall NA: season ended 2026-09-13 but status is still "In progress"
 - [ ] Lambo ST NA: season finished but no champion listed
 - [ ] Carrera Cup GB: season finished but no champion listed
-- [ ] O'Reilly Series: next round "Martinsville · Oct 31 (finale Homestead-Miami Nov 7)" has passed (hidden on the site)
-- [ ] Truck Series: next round "Martinsville · Oct 30 (finale Homestead-Miami Nov 6)" has passed (hidden on the site)
-- [ ] NASCAR Brasil: next round "Chapecó · Oct 31–Nov 1" has passed (hidden on the site)
 - [ ] TCR S. America: In progress, no next round listed
 - [ ] Stock Car Pro: In progress, no next round listed
 - [ ] TC: In progress, no next round listed
 - [ ] TC2000: no status (in progress or finished?) and no next round
-- [ ] NHRA: next round "Las Vegas Nationals · Oct 29–Nov 1" has passed (hidden on the site)
 - [ ] KOH / Ultra4: no status (in progress or finished?) and no next round
 - [ ] WoO Sprints: no status (in progress or finished?) and no next round
 - [ ] High Limit: no status (in progress or finished?) and no next round
 - [ ] SST: no status (in progress or finished?) and no next round
 - [ ] Lemons: no status (in progress or finished?) and no next round
-- [ ] Moto2: next round "Sepang · Oct 30–Nov 1" has passed (hidden on the site)
-- [ ] Moto3: next round "Sepang · Oct 30–Nov 1" has passed (hidden on the site)
 - [ ] All Japan RR: season ended 2026-10-25 but status is still "In progress"
 - [ ] Isle of Man TT: season finished but no champion listed
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] GB3 races this weekend (Barcelona (finale) · Nov 7–8) with no start time
-- [ ] NASCAR Mexico races this weekend (Mexico City (Autódromo Hermanos Rodríguez) · Nov 8) with no start time
-- [ ] SCORE races this weekend (Baja 1000 · Nov 9–15) with no start time
+- Nothing to do.
 
-<details><summary>Up to date (15)</summary>
+<details><summary>Up to date (21)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -137,23 +128,27 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- GB3: start time saved for this weekend
 - Super GT: start time saved for this weekend
+- O'Reilly Series: start time saved for this weekend
+- Truck Series: start time saved for this weekend
+- NASCAR Mexico: start time saved for this weekend
 - Supercars: start time saved for this weekend
+- Moto2: start time saved for this weekend
+- Moto3: start time saved for this weekend
 
 </details>
 
 ## 6. Tickets
 _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT_SITES)_
 
-- [ ] Only a Google search for tickets: Championship Race (NASCAR Cup Series, 2026-11-08)
 - [ ] Only a Google search for tickets: Valencia Grand Prix (MotoGP, 2026-11-29)
-- [ ] Italian F4: no official ticket store or site
 - [ ] Eurocup-3: no official ticket store or site
 - [ ] GB3: no official ticket store or site
 
 <details><summary>Up to date (1)</summary>
 
-- 8 of 10 races in the next 60 days have an official ticket or circuit link
+- 9 of 10 races in the next 60 days have an official ticket or circuit link
 
 </details>
 
@@ -224,7 +219,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (297 headlines)
+- News last collected 0.2 hours ago (297 headlines)
 
 </details>
 
