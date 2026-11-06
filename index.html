@@ -1626,6 +1626,12 @@ const SESSIONS = {
 // Start times for directory series (no full calendar here) racing in the next few days.
 // worldId: [[session, UTC time, network?, link?], ...]. Kept current by the updater.
 const WORLD_TIMES = {
+  "moto3":[["Qatar race (Sun)","2026-11-08T13:00Z"]],
+  "moto2":[["Qatar race (Sun)","2026-11-08T14:15Z"]],
+  "nascar-truck":[["Championship race","2026-11-07T00:30Z"]],
+  "nascar-oreilly":[["Championship race","2026-11-07T22:00Z"]],
+  "gb3":[["Race 1 (Sat)","2026-11-07T14:00Z"],["Race 2 (Sun)","2026-11-08T10:10Z"],["Race 3 (Sun)","2026-11-08T13:50Z"]],
+  "nascar-mexico":[["La Gran Final 150 (Sun)","2026-11-08T21:00Z"]],
   "supergt":[["Round 3 final race (Sat)","2026-11-07T05:00Z"],["Round 8 final race (Sun)","2026-11-08T05:00Z"]],
   "supercars":[["Race 33 (Sat)","2026-11-07T04:30Z"],["Race 34 (Sun)","2026-11-08T04:30Z"]],
 };
@@ -3129,6 +3135,7 @@ document.addEventListener("click", ev => {
 // ---------- Tickets ----------
 // Official sellers checked Oct 28, 2026; other rounds link to the circuit's own site, then a ticket search.
 const TICKETS = {
+  "nascar-homestead": ["Homestead-Miami Speedway (official)", "https://www.homesteadmiamispeedway.com/events/champ/"],
   "wec-monza": ["TicketOne (official)", "https://www.ticketone.it/en/artist/world-endurance-championship/wec-6-hours-of-monza-2026-4204139/"],
   "gtau-adelaide": ["Supercars (official)", "https://www.supercars.com/events/2026-adelaide"],
 };
