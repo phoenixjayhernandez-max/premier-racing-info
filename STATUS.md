@@ -1,13 +1,13 @@
 # Site status
 
-Checked 2026-11-06 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-07 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ⚠️ 1 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 23 |
+| 4 | Series directory | ⚠️ 24 |
 | 5 | Watch | ✅ 0 |
 | 6 | Tickets | ⚠️ 3 |
 | 7 | Tracks & races near you | ⚠️ 56 |
@@ -55,7 +55,7 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 41 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 42 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
@@ -84,7 +84,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 98 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (9 days ago)
+- [ ] Directory last researched Oct 28, 2026 (10 days ago)
 - [ ] FR Americas: season finished but no champion listed
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
 - [ ] VP SportsCar: season finished but no champion listed
@@ -96,6 +96,7 @@ _All 98 series: status, champion or leader, next round, season dates (world.js)_
 - [ ] Ferrari Chall NA: season ended 2026-09-13 but status is still "In progress"
 - [ ] Lambo ST NA: season finished but no champion listed
 - [ ] Carrera Cup GB: season finished but no champion listed
+- [ ] Truck Series: season ended 2026-11-06 but status is still "In progress"
 - [ ] TCR S. America: In progress, no next round listed
 - [ ] Stock Car Pro: In progress, no next round listed
 - [ ] TC: In progress, no next round listed
@@ -113,7 +114,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 
 - Nothing to do.
 
-<details><summary>Up to date (21)</summary>
+<details><summary>Up to date (20)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -131,7 +132,6 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - GB3: start time saved for this weekend
 - Super GT: start time saved for this weekend
 - O'Reilly Series: start time saved for this weekend
-- Truck Series: start time saved for this weekend
 - NASCAR Mexico: start time saved for this weekend
 - Supercars: start time saved for this weekend
 - Moto2: start time saved for this weekend
@@ -219,7 +219,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (297 headlines)
+- News last collected 0.4 hours ago (300 headlines)
 
 </details>
 
@@ -230,7 +230,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 6, 2026
+- Pages last rebuilt November 7, 2026
 - 532 pages in the sitemap
 
 </details>
