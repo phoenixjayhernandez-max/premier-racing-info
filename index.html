@@ -508,11 +508,19 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .pick-grid{display:grid;grid-template-columns:auto 1fr;gap:var(--space-xs) var(--space-xs);align-items:center;margin:var(--space-xs) 0}
 .pick-grid label{font-family:var(--display);font-weight:800;font-size:1.05rem}
 .pick-grid select{font:inherit;padding:var(--space-xs) var(--space-xs);border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
-.p27-promo{display:flex;gap:var(--space-md);align-items:center;justify-content:space-between;flex-wrap:wrap;margin:var(--space-lg) 0;padding:var(--space-md);border:1px solid var(--rule);border-left:4px solid var(--accent, #1f6bff);border-radius:var(--r);background:var(--panel)}
+.p27-promo{display:flex;gap:var(--space-md);align-items:center;justify-content:space-between;flex-wrap:wrap;margin:var(--space-lg) 0;padding:var(--space-md);border:1px solid var(--rule);border-left:4px solid var(--signal);border-radius:var(--r);background:var(--panel)}
 .p27-promo > div{flex:1 1 240px;min-width:0}.p27-promo h2{margin:2px 0 4px}.p27-promo .fine{margin:0}
-.p27-k{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--accent, #1f6bff)}
+.p27-k{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--signal)}
 .p27-h{display:flex;align-items:center;gap:8px}.p27-crowd span{color:var(--sub)}.p27-intro .btn{margin-top:10px}
-.free-tag{display:inline-block;vertical-align:middle;margin-left:6px;font-size:.66rem;font-weight:700;letter-spacing:.02em;padding:1px 6px;border-radius:3px;border:1px solid currentColor;color:var(--accent, #1f6bff)}
+.free-tag{display:inline-block;vertical-align:middle;margin-left:6px;font-size:.66rem;font-weight:700;letter-spacing:.02em;padding:1px 6px;border-radius:3px;border:1px solid currentColor;color:var(--signal)}
+.pa-list{display:grid;gap:10px;margin:6px 0 4px}.pa-row{border:1px solid var(--rule);border-radius:var(--r);padding:10px}
+.pa-name{display:flex;align-items:center;gap:8px}.pa-name small{display:block;color:var(--sub);font-size:.72rem}.pa-name > div{flex:1}
+.pa-x{background:none;border:0;color:var(--sub);font-size:1.3rem;line-height:1;padding:4px 8px;cursor:pointer}
+.pa-dp{font-size:.6rem;padding:2px 4px;min-width:30px;text-align:center}
+.pa-seg{display:grid;grid-template-columns:repeat(3,1fr);margin-top:8px;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.pa-seg button{font:inherit;font-size:.78rem;font-weight:600;padding:7px 4px;background:var(--panel);color:var(--ink);border:0;border-left:1px solid var(--rule);cursor:pointer}
+.pa-seg button:first-child{border-left:0}.pa-seg button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
+.pa-more{font:inherit;width:100%;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
 .lb-row{display:grid;grid-template-columns:28px 1fr auto;gap:var(--space-xs);align-items:center;padding:var(--space-xs) 0;border-bottom:1px solid var(--rule)}
 .lb-row:last-child{border-bottom:0}
 .lb-row.me{font-weight:600}
@@ -3207,7 +3215,7 @@ function openRace(id){
       <button class="btn star" data-k="starred" data-id="${e.id}" aria-pressed="${pr("starred")}">★ Can't miss</button>
       <button class="btn" data-k="going" data-id="${e.id}" aria-pressed="${pr("going")}">Going</button>
       <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
-      <button class="btn" data-share="race:${e.id}">Share</button></div>`;
+      <button class="btn" data-share="race:${e.id}">Share</button>${alertBtn(e.series, "Alerts for " + SERIES[e.series])}</div>`;
 
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
@@ -3358,7 +3366,7 @@ function openWorld(id){
   const ww = worldWatch(x).filter(w => !(x.site && w[1] === x.site)).sort((a, b) => isFreeLink(b) - isFreeLink(a));
   h += `<section class="card ${cls}"><h3>Watch in the US</h3><div class="mine" style="margin:8px 0 0">${ww.map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" href="${esc(w[1])}" target="_blank" rel="noopener" title="${esc(w[3] || "")}">${esc(w[0])}${isFreeLink(w) ? ` <span class="free">Free</span>` : ""}</a>`).join("")}</div>
     <p class="fine">Free means a live stream with no subscription needed.</p><div class="mine" style="margin:12px 0 0">`;
-  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">Share</button>`;
+  h += `<button class="btn star" data-mystar="${esc(x.id)}" aria-pressed="${isMine(x.id)}">${isMine(x.id) ? "★ In my series" : "☆ Add to my series"}</button><button class="btn" data-share="series:${esc(x.id)}">Share</button>${alertBtn(x.app || x.id)}`;
   if (x.app) h += `<button class="btn" data-goapp="${esc(x.app)}" aria-pressed="true">Open calendar in app</button>`;
   if (x.site) h += `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Official site ↗</a>`;
   { const tl = seriesTicketLinks(x); h += `<a class="btn" href="${esc(tl[0][0] === "Official tickets" ? tl[0][1] : tl[tl.length - 1][1])}" target="_blank" rel="noopener">Tickets ↗</a>`; }
@@ -3504,8 +3512,9 @@ document.addEventListener("click", ev => {
 // ---------- Lock-screen notifications (Web Push) ----------
 const VAPID_PUBLIC = "BD4h-3AEuLOTSx84cDe5cVF_OJMN6QvzN7HlXgn3txL2ayo1ookp6P3mMzHI7qMjtGqMl1y0tSgdzSKThfZu1oY";
 const PKEY = KEY + "-push";
-let pushPrefs = { types: { soon: true, live: true, result: true, news: false }, series: [] };
+let pushPrefs = { types: { soon: true, live: true, result: true, news: false }, series: [], level: {} };
 try { pushPrefs = Object.assign(pushPrefs, JSON.parse(localStorage.getItem(PKEY) || "{}")); } catch(e){}
+if (!pushPrefs.level) pushPrefs.level = {};
 let pushSub = null, pushMsg = "";
 const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
 function b64ToBytes(b64){ const p = "=".repeat((4 - b64.length % 4) % 4); const s = atob((b64 + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...s].map(c => c.charCodeAt(0))); }
@@ -3513,7 +3522,23 @@ async function pushRpc(fn, body){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${SUPABASE_ANON_KEY}`, "content-type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error("HTTP " + r.status);
 }
-function pushPayloadPrefs(){ return { types: pushPrefs.types, series: pushPrefs.series, favs: favs.map(f => f.n) }; }
+function pushPayloadPrefs(){ return { types: pushPrefs.types, series: pushPrefs.series, level: pushPrefs.level, favs: favs.map(f => f.n) }; }
+// Per-series alert levels. Ids are app ids (f1, nascar…) or Series-tab ids for the other series.
+const ALERT_LEVELS = [["race", "Races"], ["quali", "Quali + race"], ["all", "Every session"]];
+const alertId = id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id) || id;
+const alertName = id => SERIES[id] || ((WORLD_LIST.find(x => x.id === id) || {}).short) || id;
+const alertPlate = id => SERIES[id] ? plate(id, 18) : `<span class="dplate pa-dp ${DISC_CLS[(WORLD_LIST.find(x => x.id === id) || {}).discipline] || "d-mo"}">${esc(dirCode(WORLD_LIST.find(x => x.id === id) || { short: id }))}</span>`;
+function alertToggle(id, on){
+  id = alertId(id);
+  const has = pushPrefs.series.includes(id);
+  if (on === undefined) on = !has;
+  if (on && !has) { pushPrefs.series = pushPrefs.series.concat(id); if (!pushPrefs.level[id]) pushPrefs.level[id] = "quali"; track("alert_series_on", { series: id }); }
+  if (!on && has) { pushPrefs.series = pushPrefs.series.filter(y => y !== id); delete pushPrefs.level[id]; }
+  pushSave();
+  return on;
+}
+const alertOn = id => pushPrefs.series.includes(alertId(id));
+const alertBtn = (id, label) => `<button class="btn" data-palert="${esc(id)}" aria-pressed="${alertOn(id)}">${alertOn(id) ? "🔔 Alerts on" : "🔕 " + esc(label || "Get alerts")}</button>`;
 async function pushSave(){
   try { localStorage.setItem(PKEY, JSON.stringify(pushPrefs)); } catch(e){}
   if (!pushSub) return;
@@ -3556,8 +3581,14 @@ function renderPush(){
     const t = pushPrefs.types, sel = new Set(pushPrefs.series);
     const tog = (k, label) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${t[k] ? "checked" : ""}> ${label}</label>`;
     h += tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
-    h += `<h3 class="h4">Series</h3><div class="feeds">${ORDER.map(x => `<button class="btn" data-pseries="${x}" aria-pressed="${sel.has(x)}">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
-      <p class="fine">${sel.size ? `${sel.size} selected.` : "None selected, so you'll get alerts for all of them."} Start times and results come from the series this app follows in full.</p>
+    h += `<h3 class="h4">Your series</h3>`;
+    if (!sel.size) h += `<p class="fine" style="margin-top:0">No series picked yet, so you get alerts for every series in the app, every session. Pick series below to choose exactly what you get.</p>`;
+    else h += `<div class="pa-list">${pushPrefs.series.map(id => { const lv = pushPrefs.level[id] || "all", world = !SERIES[id]; return `<div class="pa-row"><div class="pa-name">${alertPlate(id)}<div style="min-width:0"><b>${esc(alertName(id))}</b>${world ? `<small>Alerts when start times are posted for that weekend</small>` : ""}</div><button class="pa-x" data-pseries="${esc(id)}" aria-label="Stop alerts for ${esc(alertName(id))}">×</button></div>
+        <div class="pa-seg" role="group" aria-label="What to alert for ${esc(alertName(id))}">${ALERT_LEVELS.map(([v, l]) => `<button data-plevel="${esc(id)}|${v}" aria-pressed="${lv === v}">${l}</button>`).join("")}</div></div>`; }).join("")}</div>`;
+    const more = WORLD_LIST.filter(x => !x.app && !sel.has(x.id)).sort((a, b) => (a.short || a.name).localeCompare(b.short || b.name));
+    h += `<h3 class="h4">Add a series</h3><div class="feeds">${ORDER.filter(x => !sel.has(x)).map(x => `<button class="btn" data-pseries="${x}" aria-pressed="false">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
+      <label class="fine" for="paMore" style="display:block;margin-top:8px">More series</label><select id="paMore" class="pa-more"><option value="">Choose a series…</option>${more.map(x => `<option value="${esc(x.id)}">${esc(x.short || x.name)}</option>`).join("")}</select>
+      <p class="fine">Races = starting soon and green flag. Quali + race adds qualifying and sprints. Every session adds practice.</p>
       <div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
   }
   if (pushMsg) h += `<p class="fine" style="font-weight:600">${esc(pushMsg)}</p>`;
@@ -3567,11 +3598,16 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("#pushOn")) { pushEnable(); return; }
   if (ev.target.closest("#pushOff")) { pushDisable(); return; }
   const ps = ev.target.closest("[data-pseries]");
-  if (ps) { const x = ps.dataset.pseries; pushPrefs.series = pushPrefs.series.includes(x) ? pushPrefs.series.filter(y => y !== x) : pushPrefs.series.concat(x); pushSave(); renderPush(); }
+  if (ps) { alertToggle(ps.dataset.pseries); renderPush(); return; }
+  const pl = ev.target.closest("[data-plevel]");
+  if (pl) { const [id, v] = pl.dataset.plevel.split("|"); pushPrefs.level[id] = v; pushSave(); renderPush(); return; }
+  const pa = ev.target.closest("[data-palert]");
+  if (pa) { ev.stopPropagation(); const on = alertToggle(pa.dataset.palert); document.querySelectorAll(`[data-palert="${pa.dataset.palert}"]`).forEach(b => b.outerHTML = alertBtn(pa.dataset.palert)); if (on && !pushSub) openReminders(); return; }
 });
 document.addEventListener("change", ev => {
   const pt = ev.target.closest("[data-ptype]");
   if (pt) { pushPrefs.types[pt.dataset.ptype] = pt.checked; pushSave(); }
+  if (ev.target.id === "paMore" && ev.target.value) { alertToggle(ev.target.value, true); renderPush(); }
 });
 
 // ---------- Predictions: app forecast + picks game (F1) ----------

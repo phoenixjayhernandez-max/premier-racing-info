@@ -1,6 +1,8 @@
 // Sends lock-screen push notifications to phones that turned them on in the app.
 // Run by GitHub Actions every 15 minutes (.github/workflows/push.yml). Needs the PUSH_SECRET repository secret.
-//   Starting soon : a session of a followed series starts within 45 minutes
+//   Starting soon : a session of a followed series starts within 45 minutes. Each person picks per series:
+//                   race (races only), quali (qualifying, sprints and races) or all (every session, the default).
+//                   Series from the Series tab get alerts from WORLD_TIMES when their start times are posted.
 //   Live now      : a race (not practice/qualifying) has just started
 //   Results       : a new winner, pole or session result was added to the app
 //   Favorite news : a new headline names one of the person's favorite drivers or teams (off by default)
@@ -19,6 +21,8 @@ const SESSIONS = grab(/const SESSIONS = (\{[\s\S]*?\n\});/, "SESSIONS");
 const FULL = grab(/const SERIES_FULL = (\{[^\n]*\});/, "SERIES_FULL");
 const SHORT = grab(/const SERIES = (\{[^\n]*\});/, "SERIES");
 const WINNERS = grab(/const WINNERS = (\{[\s\S]*?\n\});/, "WINNERS", {});
+const WORLD_TIMES = grab(/const WORLD_TIMES = (\{[\s\S]*?\n\});/, "WORLD_TIMES", {});
+const WORLD_SHORT = (() => { try { const w = {}; Function("window", fs.readFileSync(path.join(root, "world.js"), "utf8"))(w); return Object.fromEntries(w.WORLD.series.map(x => [x.id, x.short || x.name])); } catch (e) { return {}; } })();
 const WINNERS_LIVE = grab(/const WINNERS_LIVE = (\{[\s\S]*?\});/, "WINNERS_LIVE", {});
 const SUPABASE_URL = process.env.SUPABASE_URL_TEST || grab(/const SUPABASE_URL = ("[^"]*");/, "SUPABASE_URL");
 const SUPABASE_KEY = grab(/const SUPABASE_ANON_KEY = ("[^"]*");/, "SUPABASE_ANON_KEY");
@@ -35,13 +39,24 @@ const EV = Object.fromEntries(RAW.map(([id, s, name, circuit, loc, start, end, t
 // ---- Work out what to announce ----
 const alerts = []; // {key, type, series, title, body, url}
 const isRace = t => /race|grand prix|\bhours?\b|feature|sprint(?! qualifying| shootout)/i.test(t) && !/practice|qualifying|shootout|warm/i.test(t);
+const kindOf = t => isRace(t) ? "race" : /qualif|shootout|pole|sprint/i.test(t) ? "quali" : "practice";
+const levelAllows = (level, kind) => level === "all" || kind === "race" || (level === "quali" && kind === "quali");
 for (const [id, list] of Object.entries(SESSIONS)) {
   const e = EV[id]; if (!e || e.status === "cancelled") continue;
   for (const [title, iso, support] of list) {
     if (support) continue;
     const t = Date.parse(iso), mins = Math.round((t - now) / 60000);
-    if (mins > 0 && mins <= 45) alerts.push({ key: `soon:${id}:${title}`, type: "soon", series: e.s, title: `${SHORT[e.s] || e.s}: ${title} in ${mins} min`, body: `${e.name} · ${e.circuit}. Tap for times and where to watch.`, url: SITE + "#weekend" });
-    if (isRace(title) && mins <= 0 && mins >= -25) alerts.push({ key: `live:${id}:${title}`, type: "live", series: e.s, title: `🟢 ${SHORT[e.s] || e.s} is live`, body: `${e.name}: ${title} has started. Tap to watch.`, url: SITE + "#weekend" });
+    if (mins > 0 && mins <= 45) alerts.push({ key: `soon:${id}:${title}`, type: "soon", kind: kindOf(title), series: e.s, title: `${SHORT[e.s] || e.s}: ${title} in ${mins} min`, body: `${e.name} · ${e.circuit}. Tap for times and where to watch.`, url: SITE + "#weekend" });
+    if (isRace(title) && mins <= 0 && mins >= -25) alerts.push({ key: `live:${id}:${title}`, type: "live", kind: "race", series: e.s, title: `🟢 ${SHORT[e.s] || e.s} is live`, body: `${e.name}: ${title} has started. Tap to watch.`, url: SITE + "#weekend" });
+  }
+}
+// Other series (Series tab): start times posted in WORLD_TIMES. Only sent to people who picked that series.
+for (const [wid, list] of Object.entries(WORLD_TIMES)) {
+  const nm = WORLD_SHORT[wid] || wid;
+  for (const [title, iso] of list || []) {
+    const t = Date.parse(iso), mins = Math.round((t - now) / 60000);
+    if (mins > 0 && mins <= 45) alerts.push({ key: `soon:w:${wid}:${title}:${iso}`, type: "soon", kind: kindOf(title), series: wid, world: true, title: `${nm}: ${title} in ${mins} min`, body: "Tap for times and where to watch.", url: SITE + "?series=" + wid });
+    if (isRace(title) && mins <= 0 && mins >= -25) alerts.push({ key: `live:w:${wid}:${title}:${iso}`, type: "live", kind: "race", series: wid, world: true, title: `🟢 ${nm} is live`, body: `${title} has started. Tap to watch.`, url: SITE + "?series=" + wid });
   }
 }
 for (const [id, w] of Object.entries(WINNERS)) {
@@ -111,7 +126,13 @@ for (const sub of subs) {
   const favNames = (p.favs || []).filter(n => n && n.length > 3);
   const out = [];
   if (TEST) out.push({ title: "Premier Racing Info", body: "Notifications are working. You'll get race alerts here.", url: SITE, tag: "test" });
-  for (const a of fresh) if (types[a.type] && (!series || series.has(a.series))) out.push({ title: a.title, body: a.body, url: a.url, tag: a.key });
+  const level = p.level || {};
+  for (const a of fresh) {
+    if (!types[a.type]) continue;
+    if (series ? !series.has(a.series) : a.world) continue; // no picks = every app series, none of the others
+    if (a.kind && !levelAllows(level[a.series] || "all", a.kind)) continue;
+    out.push({ title: a.title, body: a.body, url: a.url, tag: a.key });
+  }
   if (types.news && favNames.length) {
     const hit = freshNews.find(x => favNames.some(n => x.title.includes(n)));
     if (hit) out.push({ title: `📰 ${hit.source}`, body: hit.title, url: hit.link, tag: "news:" + hit.link });
