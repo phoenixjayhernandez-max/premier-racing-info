@@ -3587,6 +3587,16 @@ function renderPush(){
   const el = document.getElementById("pushBox"); if (!el) return;
   const p = platform();
   let h = `<section class="card"><h3>Lock screen alerts</h3>`;
+  const sel = new Set(pushPrefs.series);
+  let ps = `<h3 class="h4">Your series</h3>`;
+  if (!sel.size) ps += `<p class="fine" style="margin-top:0">No series picked yet, so you get alerts for every series in the app, every session. Pick series below to choose exactly what you get.</p>`;
+  else ps += `<div class="pa-list">${pushPrefs.series.map(id => { const lv = pushPrefs.level[id] || "all", world = !SERIES[id]; return `<div class="pa-row"><div class="pa-name">${alertPlate(id)}<div style="min-width:0"><b>${esc(alertName(id))}</b>${world ? `<small>Alerts when start times are posted for that weekend</small>` : ""}</div><button class="pa-x" data-pseries="${esc(id)}" aria-label="Stop alerts for ${esc(alertName(id))}">×</button></div>
+      <div class="pa-seg" role="group" aria-label="What to alert for ${esc(alertName(id))}">${ALERT_LEVELS.map(([v, l]) => `<button data-plevel="${esc(id)}|${v}" aria-pressed="${lv === v}">${l}</button>`).join("")}</div></div>`; }).join("")}</div>`;
+  const more = WORLD_LIST.filter(x => !x.app && !sel.has(x.id)).sort((a, b) => (a.short || a.name).localeCompare(b.short || b.name));
+  ps += `<h3 class="h4">Add a series</h3><div class="feeds">${ORDER.filter(x => !sel.has(x)).map(x => `<button class="btn" data-pseries="${x}" aria-pressed="false">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
+    <label class="fine" for="paMore" style="display:block;margin-top:8px">More series</label><select id="paMore" class="pa-more"><option value="">Choose a series…</option>${more.map(x => `<option value="${esc(x.id)}">${esc(x.short || x.name)}</option>`).join("")}</select>
+    <p class="fine">Races = starting soon and green flag. Quali + race adds qualifying and sprints. Every session adds practice.</p>`;
+
   if (!pushSupported() || (p === "ios" && !isStandalone())) {
     h += p === "ios" && !isStandalone()
       ? `<p style="margin:2px 0 0">On iPhone, alerts work from the app on your Home Screen. Tap Share → <b>Add to Home Screen</b>, open Racing Info from that icon, then come back here.</p>`
@@ -3594,19 +3604,12 @@ function renderPush(){
   } else if (!pushSub) {
     h += `<p style="margin:2px 0 10px">Get a notification before sessions start, when the race goes live, and when results come in.</p><button class="btn star" aria-pressed="true" id="pushOn">Turn on alerts</button>`;
   } else {
-    const t = pushPrefs.types, sel = new Set(pushPrefs.series);
+    const t = pushPrefs.types;
     const tog = (k, label) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${t[k] ? "checked" : ""}> ${label}</label>`;
     h += tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
-    h += `<h3 class="h4">Your series</h3>`;
-    if (!sel.size) h += `<p class="fine" style="margin-top:0">No series picked yet, so you get alerts for every series in the app, every session. Pick series below to choose exactly what you get.</p>`;
-    else h += `<div class="pa-list">${pushPrefs.series.map(id => { const lv = pushPrefs.level[id] || "all", world = !SERIES[id]; return `<div class="pa-row"><div class="pa-name">${alertPlate(id)}<div style="min-width:0"><b>${esc(alertName(id))}</b>${world ? `<small>Alerts when start times are posted for that weekend</small>` : ""}</div><button class="pa-x" data-pseries="${esc(id)}" aria-label="Stop alerts for ${esc(alertName(id))}">×</button></div>
-        <div class="pa-seg" role="group" aria-label="What to alert for ${esc(alertName(id))}">${ALERT_LEVELS.map(([v, l]) => `<button data-plevel="${esc(id)}|${v}" aria-pressed="${lv === v}">${l}</button>`).join("")}</div></div>`; }).join("")}</div>`;
-    const more = WORLD_LIST.filter(x => !x.app && !sel.has(x.id)).sort((a, b) => (a.short || a.name).localeCompare(b.short || b.name));
-    h += `<h3 class="h4">Add a series</h3><div class="feeds">${ORDER.filter(x => !sel.has(x)).map(x => `<button class="btn" data-pseries="${x}" aria-pressed="false">${plate(x, 18)} ${esc(SERIES[x])}</button>`).join("")}</div>
-      <label class="fine" for="paMore" style="display:block;margin-top:8px">More series</label><select id="paMore" class="pa-more"><option value="">Choose a series…</option>${more.map(x => `<option value="${esc(x.id)}">${esc(x.short || x.name)}</option>`).join("")}</select>
-      <p class="fine">Races = starting soon and green flag. Quali + race adds qualifying and sprints. Every session adds practice.</p>
-      <div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
   }
+  h += (pushSub ? "" : `<p class="fine" style="margin:12px 0 0"><b>Pick your series now.</b> They're saved on this phone and apply as soon as alerts are on.</p>`) + ps;
+  if (pushSub) h += `<div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
   if (pushMsg) h += `<p class="fine" style="font-weight:600">${esc(pushMsg)}</p>`;
   el.innerHTML = h + `</section>`;
 }
