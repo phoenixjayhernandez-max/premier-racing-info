@@ -3980,6 +3980,7 @@ function openSettings(){
     <p class="set-h">About</p><div class="set-grp">
       ${!isStandalone() ? setRow({ go: "install", icon: "📲", label: "Add to Home Screen", sub: "Open it like an app, with alerts on iPhone" }) : ""}
       ${setRow({ go: "share", icon: "↗", label: "Share Premier Racing Info" })}
+      ${setRow({ href: "mailto:contact@premierracinginfo.com", icon: "✉️", label: "Contact us", sub: "Questions, corrections or ideas", value: "contact@premierracinginfo.com" })}
       ${setRow({ href: "/about/", icon: "ℹ️", label: "About" })}
       ${setRow({ href: "/privacy/", icon: "🔒", label: "Privacy policy" })}
       ${setRow({ href: "/terms/", icon: "📄", label: "Terms of use" })}
