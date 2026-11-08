@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 8, 2026: honest "Free" badges (YouTube search links are now "YouTube highlights", not free), "Free to watch" filter on the Series tab, "Free stream" tag on home. Added 11 US series: Trans Am, CARS Tour, Whelen Modified Tour, ASA STARS, USAC Sprints, Lucas Oil Late Models, WoO Late Models, Super DIRTcar, MX-5 Cup, USF Juniors, GNCC (109 total). Still to verify: free live streams for NLS, 24H Series, Pikes Peak, TCR, ARA, MX-5 Cup; Lucas Oil and GNCC 2026 champions.
 - Done Nov 8, 2026: GA4 event tracking (pick_saved, alerts_on, sign_up, login, share, watch_click, ticket_click, add_to_calendar, race_starred, race_going, tab_view, p27_promo_click). Mark pick_saved, alerts_on and sign_up as key events in GA (Admin → Events).
 - Done Nov 8, 2026: 2027 season predictions (F1, NASCAR Cup, IndyCar, MotoGP) under Standings → "2027 predictions", home-page promo, share link `/#predict27`. Locks are rows `p27:<series>` in Supabase `pick_locks`. When a 2027 season ends, fill `P27_FINAL` in index.html. Swap driver lists to 2027 grids when they're set (`P27` in index.html).
 - Done Nov 1, 2026: standings auto-update now covers all 21 series; NASCAR Cup, IndyCar and MotoGP calendars added (82 races, rest of 2026 + 2027) with race pages.

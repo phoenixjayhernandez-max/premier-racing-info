@@ -1,13 +1,13 @@
 # Premier Racing Info
 
-> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 98 racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-08.
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-08.
 
 ## Main guides
 - [Racing calendar](https://premierracinginfo.com/calendar/): every upcoming race with dates and start times
 - [How to watch racing in the US](https://premierracinginfo.com/watch/): streaming and TV for every series, free options marked
 - [Race tickets](https://premierracinginfo.com/tickets/): official sellers for every upcoming race
 - [Races near you](https://premierracinginfo.com/races-in/): races by region, country and US state
-- [All series](https://premierracinginfo.com/series/): champions, standings and how to watch for 98 series
+- [All series](https://premierracinginfo.com/series/): champions, standings and how to watch for 109 series
 - [Tracks](https://premierracinginfo.com/tracks/): every circuit and what races there
 - [About](https://premierracinginfo.com/about/): who runs the site and how data is checked
 
