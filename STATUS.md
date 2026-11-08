@@ -115,7 +115,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Old start times to clear from WORLD_TIMES: nascar-truck
+- [ ] Old start times to clear from WORLD_TIMES: nascar-truck, nascar-oreilly
 - [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
 - [ ] Trans Am races this weekend (Circuit of The Americas (finale) · Nov 5–8) with no start time
 
