@@ -14,12 +14,12 @@
 <meta name="msvalidate.01" content="39499259BA78204D8885CFD2FC9AF31C">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:url" content="https://premierracinginfo.com/">
 <meta property="og:title" content="Premier Racing Info – Race Times, How to Watch & Tickets"><meta property="og:description" content="Every race weekend in your time zone: F1, IMSA, WEC, GT World Challenge and more. Start times, where to watch, tickets, standings and alerts.">
-<meta property="og:image" content="https://premierracinginfo.com/icons/og.png?v=2"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image" content="https://premierracinginfo.com/icons/og.png?v=3"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://premierracinginfo.com/#org","name":"Premier Racing Info","url":"https://premierracinginfo.com/","logo":"https://premierracinginfo.com/icons/icon-512.png","email":"contact@premierracinginfo.com"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","@id":"https://premierracinginfo.com/#site","name":"Premier Racing Info","url":"https://premierracinginfo.com/","publisher":{"@id":"https://premierracinginfo.com/#org"},"inLanguage":"en-US"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Premier Racing Info","url":"https://premierracinginfo.com/","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Race weekends in your time zone: start times, how to watch in the US, tickets, standings, alerts and picks for F1, IMSA, WEC, GT World Challenge and more."}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg"><link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <title>Race Start Times in Your Time Zone | Premier Racing Info</title>
 <link rel="preload" href="/fonts/albert-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/saira-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,6 +35,8 @@
 /* Hallmark · dismissed F7 · chips, buttons and rows share a recipe on purpose in an app; panels are ruled, not boxed */
 /* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4 · weakest: P, a schedule app argues little; took the stand that the weekend is a printed race programme, times in mono, one volt light */
 @font-face{font-family:"Saira Condensed";font-style:normal;font-weight:800;font-display:swap;src:url(/fonts/saira-condensed-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Archivo Logo";font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(/fonts/archivo-logo-normal.woff2) format("woff2")}
+@font-face{font-family:"Archivo Logo";font-style:italic;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url(/fonts/archivo-logo-italic.woff2) format("woff2")}
 @font-face{font-family:"Albert Sans";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/albert-sans-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:"Albert Sans";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/albert-sans-latin-600-normal.woff2) format("woff2")}
 @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}
@@ -782,6 +784,16 @@ body{font-size:15px}
   .tk-list .tk-btns{margin-top:0;justify-content:flex-end}
 }
 
+/* ===== Logo: Speed Cut PRI + wide wordmark ===== */
+.logo{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:var(--color-ink)}
+.logo:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px;border-radius:4px}
+.pri-mark{height:24px;width:auto;flex:none;display:block}
+.pri-mark .pm-l{fill:var(--color-ink)}.pri-mark .pm-s{fill:var(--color-accent)}
+.lw{display:flex;flex-direction:column;justify-content:center;gap:2px;padding-left:10px;border-left:1px solid var(--color-rule);line-height:1;min-width:0;white-space:nowrap}
+.lw1{font-family:"Archivo Logo",var(--font-display);font-stretch:125%;font-weight:700;font-size:12px;letter-spacing:.4em;margin-right:-.4em;color:var(--color-ink)}
+.lw2{font-family:"Archivo Logo",var(--font-display);font-style:italic;font-stretch:78%;font-weight:900;font-size:13.5px;color:var(--color-accent)}
+:root[data-theme="dark"] .lw2{color:var(--color-accent-deep)}
+@media (max-width:460px){.lw{display:none}.pri-mark{height:22px}}
 /* ===== Sport system: race-programme layer ===== */
 body{font-size:var(--text-md);line-height:1.55}
 h1,h2,.feat-name,.sh-head h2,.card > h3:not(.h4),.h2,.wm{text-transform:uppercase;letter-spacing:var(--tracking-display)}
@@ -1129,8 +1141,7 @@ main{max-width:1200px}
 <header class="top">
   <div class="top-in">
     <div class="brand">
-      <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" style="fill:var(--ink)"/><g style="fill:var(--bg)"><rect x="5" y="5" width="4" height="4"/><rect x="13" y="5" width="4" height="4"/><rect x="9" y="9" width="4" height="4"/><rect x="17" y="9" width="4" height="4"/><rect x="5" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><rect x="9" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/></g></svg>
-      <a class="wm" href="./" aria-label="Premier Racing Info home">Premier Racing <span>Info</span></a>
+      <a class="logo" href="./" aria-label="Premier Racing Info home"><svg class="pri-mark" viewBox="-640 -700 2490 710" aria-hidden="true" focusable="false"><defs><mask id="priCut" maskUnits="userSpaceOnUse" x="-640" y="-700" width="2490" height="710"><rect x="-640" y="-700" width="2490" height="710" fill="#fff"/><polygon points="-120,-401 1850,-401 1842,-321 -128,-321" fill="#000"/></mask></defs><path class="pm-l" d="M27 0 149 -688H547Q605 -688 647.5 -663.5Q690 -639 714.0 -595.0Q738 -551 738 -494Q738 -437 719.5 -387.5Q701 -338 666.5 -301.0Q632 -264 584.5 -243.0Q537 -222 478 -222H287L248 0ZM316 -383H431Q459 -383 476.5 -395.0Q494 -407 502.5 -427.0Q511 -447 511 -471Q511 -497 495.5 -511.0Q480 -525 449 -525H341Z M720 0 841 -688H1262Q1332 -688 1378.0 -664.0Q1424 -640 1446.5 -600.5Q1469 -561 1469 -512Q1469 -448 1449.5 -401.0Q1430 -354 1395.5 -321.5Q1361 -289 1315 -268L1403 0H1158L1094 -231H982L941 0ZM1009 -384H1154Q1174 -384 1194.0 -395.5Q1214 -407 1227.0 -427.0Q1240 -447 1240 -473Q1240 -499 1226.0 -515.0Q1212 -531 1189 -531H1034Z M1467 0 1589 -688H1810L1688 0Z" mask="url(#priCut)"/><polygon class="pm-s" points="-640,-413 112,-413 98,-309 -640,-309"/></svg><span class="lw" aria-hidden="true"><span class="lw1">PREMIER</span><span class="lw2">RACING INFO</span></span></a>
       <span class="hbtns"><button class="hbtn alt" id="settingsBtn" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button class="hbtn" id="favBtn" aria-label="Favorite drivers and teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg></button><button class="hbtn alt" id="bellBtn" aria-label="Alerts and reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></button><button class="hbtn alt acct" id="acctBtn" aria-label="Log in" hidden><span class="ico"><svg class="ico-sv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span> <span id="acctLbl">Log in</span></button></span>
       <span class="sync" id="sync" hidden><i></i><b id="syncText" style="font-weight:500">Saved on this device</b></span>
     </div>

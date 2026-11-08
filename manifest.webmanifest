@@ -1,11 +1,11 @@
 {
   "name": "Premier Racing Info",
   "short_name": "Racing Info",
-  "description": "Race weekends, results, standings and start times in Texas time.",
+  "description": "Race start times in your time zone, where to watch, standings and alerts for 100+ racing series.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F7F9FB",
+  "background_color": "#07101C",
   "theme_color": "#F7F9FB",
   "icons": [
     {

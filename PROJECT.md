@@ -14,6 +14,13 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - `sw.js`: service worker, network-first. Bump the cache name (`pri-vNN`) on every UI change.
 - GitHub Actions: news.yml (news.json), push.yml (alerts), pages.yml (daily rebuild). Supabase holds accounts/picks/alerts (publishable key only — never commit secrets).
 
+## Logo (Nov 8, 2026)
+- "Speed Cut" PRI mark + wide wordmark (PREMIER / RACING INFO), all in Archivo. The mark's outlines and a `markSVG()` helper live in `tools/logo.mjs`; index.html has an inline copy in its header. The cut is a transparent mask, so the mark works on any background.
+- Colors: electric blue #2461E9 (stripe, light-mode "RACING INFO"), light blue #85B0FF ("RACING INFO" on dark), navy #00082E, night #07101C.
+- Font: `fonts/archivo-logo-*.woff2`, subset to capitals, loaded as "Archivo Logo".
+- Phones under 460px show just the PRI mark in the app header.
+- Regenerate icons, favicon and share image with `python3 tools/make-icons.py`; bump `og.png?v=N` in index.html and build-pages.mjs when the share image changes.
+
 ## Rules we settled on
 - Photos: only licensed photos (Wikimedia Commons searches per series, Openverse backup), credited. Strict per-series matching: F1≠F2≠F3≠F4≠FE, NASCAR Cup only Cup, MotoGP≠Moto2≠Moto3; only GT3 regions and Porsche Cups share. No photo is better than a wrong one. Friends' photos go in `OWN_PHOTOS` once they give written permission (incl. commercial use).
 - Legal: Terms + Privacy pages, "not affiliated" notice, EU/UK analytics consent, no press-agency photos. Don't publish Phoenix's personal email on the site.
