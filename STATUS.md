@@ -7,8 +7,8 @@ Checked 2026-11-08 by `node tools/check-site.mjs`. Sections are in the order we 
 | 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ⚠️ 1 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 25 |
-| 5 | Watch | ⚠️ 2 |
+| 4 | Series directory | ⚠️ 27 |
+| 5 | Watch | ⚠️ 3 |
 | 6 | Tickets | ⚠️ 3 |
 | 7 | Tracks & races near you | ⚠️ 56 |
 | 8 | News | ⚠️ 1 |
@@ -82,7 +82,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 </details>
 
 ## 4. Series directory
-_All 98 series: status, champion or leader, next round, season dates (world.js)_
+_All 109 series: status, champion or leader, next round, season dates (world.js)_
 
 - [ ] Directory last researched Oct 28, 2026 (11 days ago)
 - [ ] FR Americas: season finished but no champion listed
@@ -109,12 +109,15 @@ _All 98 series: status, champion or leader, next round, season dates (world.js)_
 - [ ] Lemons: no status (in progress or finished?) and no next round
 - [ ] All Japan RR: season ended 2026-10-25 but status is still "In progress"
 - [ ] Isle of Man TT: season finished but no champion listed
+- [ ] Lucas Oil Late Models: season finished but no champion listed
+- [ ] GNCC: season finished but no champion listed
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
 - [ ] Old start times to clear from WORLD_TIMES: nascar-truck
 - [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
+- [ ] Trans Am races this weekend (Circuit of The Americas (finale) · Nov 5–8) with no start time
 
 <details><summary>Up to date (19)</summary>
 
@@ -220,7 +223,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.3 hours ago (300 headlines)
+- News last collected 0.2 hours ago (300 headlines)
 
 </details>
 
@@ -232,6 +235,6 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 <details><summary>Up to date (2)</summary>
 
 - Pages last rebuilt November 8, 2026
-- 532 pages in the sitemap
+- 543 pages in the sitemap
 
 </details>
