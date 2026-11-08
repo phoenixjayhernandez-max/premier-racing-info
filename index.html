@@ -508,6 +508,10 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .pick-grid{display:grid;grid-template-columns:auto 1fr;gap:var(--space-xs) var(--space-xs);align-items:center;margin:var(--space-xs) 0}
 .pick-grid label{font-family:var(--display);font-weight:800;font-size:1.05rem}
 .pick-grid select{font:inherit;padding:var(--space-xs) var(--space-xs);border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);min-width:0;width:100%}
+.p27-promo{display:flex;gap:var(--space-md);align-items:center;justify-content:space-between;flex-wrap:wrap;margin:var(--space-lg) 0;padding:var(--space-md);border:1px solid var(--rule);border-left:4px solid var(--accent, #1f6bff);border-radius:var(--r);background:var(--panel)}
+.p27-promo > div{flex:1 1 240px;min-width:0}.p27-promo h2{margin:2px 0 4px}.p27-promo .fine{margin:0}
+.p27-k{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--accent, #1f6bff)}
+.p27-h{display:flex;align-items:center;gap:8px}.p27-crowd span{color:var(--sub)}.p27-intro .btn{margin-top:10px}
 .lb-row{display:grid;grid-template-columns:28px 1fr auto;gap:var(--space-xs);align-items:center;padding:var(--space-xs) 0;border-bottom:1px solid var(--rule)}
 .lb-row:last-child{border-bottom:0}
 .lb-row.me{font-weight:600}
@@ -2677,7 +2681,7 @@ async function initAccounts(){
     me = data.session ? data.session.user : null;
     if (me) await cloudPull();
     acctLabel();
-    sb.auth.onAuthStateChange((_e, session) => { const was = me && me.id; me = session ? session.user : null; acctLabel(); if ((me && me.id) !== was) { picksRows = null; if (statsSeries === "predict") renderStats(); } });
+    sb.auth.onAuthStateChange((_e, session) => { const was = me && me.id; me = session ? session.user : null; acctLabel(); if ((me && me.id) !== was) { picksRows = null; p27Rows = null; if (statsSeries === "predict" || statsSeries === "p27") renderStats(); } });
   } catch(e) { sb = null; acctError = "The sign-in service didn't load. Check your connection and reopen the app."; }
 }
 let acctError = "";
@@ -2732,8 +2736,9 @@ function openAccount(msg){
     if (acctMode === "signup") {
       myName = (document.getElementById("aName").value || "").trim();
       res = await sb.auth.signUp({ email, password, options: { data: { display_name: myName } } });
-      if (!res.error && !res.data.session) { acctMode = "signin"; openAccount("Check your email to confirm your account, then sign in."); return; }
+      if (!res.error && !res.data.session) { track("sign_up", { method: "email", confirm: true }); acctMode = "signin"; openAccount("Check your email to confirm your account, then sign in."); return; }
     } else res = await sb.auth.signInWithPassword({ email, password });
+    if (!res.error) track(acctMode === "signup" ? "sign_up" : "login", { method: "email" });
     if (res.error) { err.textContent = res.error.message === "Invalid login credentials" ? "That email and password don't match. Try again." : res.error.message; return; }
     me = res.data.user; await cloudPull(); openAccount();
   });
@@ -2832,7 +2837,7 @@ function renderWeekend(){
     items = wk;
   } else {
     const next = events.filter(e => !e.cancelled && phase(e) === "future").sort((a,b) => a.start - b.start);
-    if (!next.length) { el.innerHTML = `<div class="empty">That's the 2026 season done. Check back when the 2027 calendars are out.</div>`; return; }
+    if (!next.length) { el.innerHTML = p27PromoHTML() + `<div class="empty">That's the 2026 season done. Check back when the 2027 calendars are out.</div>`; return; }
     const d = dayDiff(t, next[0].start);
     countLbl = "Next race in";
     countNum = d;
@@ -2863,6 +2868,7 @@ function renderWeekend(){
       ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">Also this weekend</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
       ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">More racing this weekend</h2><div class="wk-rows">${W.map(worldRow).join("")}</div></div>` : ""; })()}
     </section>
+    ${p27PromoHTML()}
     ${tickerHTML()}
     <section class="guide" aria-labelledby="guideTitle">
       <div class="sec-head"><h2 id="guideTitle">${wk.length ? "On this weekend" : "Coming up"}</h2><p class="sec-aside">${wk.length ? `${wk.length} race${wk.length === 1 ? "" : "s"}, every session in ${esc(tzLabel())}` : "The next race weekend"}</p></div>
@@ -3073,7 +3079,7 @@ document.addEventListener("click", ev => {
   document.querySelectorAll("[data-spane]").forEach(b => b.setAttribute("aria-selected", b === t));
   document.querySelectorAll("[data-spanebody]").forEach(p => p.hidden = p.dataset.spanebody !== statsPane);
 });
-const STAT_SERIES = [["f1","Formula 1","f1"],["predict","F1 predictions","f1"],["imsa","IMSA","imsa"],["wec","FIA WEC","wec"],["gtwc","GT World Challenge America","gtwc"],["gte","GT World Challenge Europe","gte"],["gtas","GT World Challenge Asia","gtas"],["gtau","GT World Challenge Australia","gtau"],["psc","Porsche Supercup","psc"],["pccna","Porsche Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]];
+const STAT_SERIES = [["f1","Formula 1","f1"],["predict","F1 predictions","f1"],["p27","2027 predictions","f1"],["imsa","IMSA","imsa"],["wec","FIA WEC","wec"],["gtwc","GT World Challenge America","gtwc"],["gte","GT World Challenge Europe","gte"],["gtas","GT World Challenge Asia","gtas"],["gtau","GT World Challenge Australia","gtau"],["psc","Porsche Supercup","psc"],["pccna","Porsche Carrera Cup NA","pccna"],["mustang","Mustang Challenge","mustang"]];
 function renderStatChips(){
   const more = MORE_ORDER.find(x => x[0] === statsSeries), mw = more && worldById(more[0]);
   const cur = more ? [more[0], more[1], null] : (STAT_SERIES.find(x => x[0] === statsSeries) || STAT_SERIES[0]);
@@ -3082,6 +3088,13 @@ function renderStatChips(){
       <p class="sd-group">More series</p>${MORE_ORDER.map(([v, l]) => { const w = worldById(v); return `<button class="chip sd-item" role="listitem" data-v="${v}" aria-pressed="${v === statsSeries}"><span class="dplate ${w ? DISC_CLS[w.discipline] || "" : ""}">${esc(w ? dirCode(w) : v)}</span><span>${esc(l)}</span></button>`; }).join("")}</div></details>`;
 }
 function renderStats(){
+  if (statsSeries === "p27") {
+    const el = document.getElementById("statsBody");
+    if (!window.__locksLoaded) { window.__locksLoaded = true; loadLocks().then(() => { if (statsSeries === "p27") renderP27(el); }); }
+    renderP27(el);
+    if (p27Rows === null && !window.__p27l) { window.__p27l = loadP27().finally(() => { window.__p27l = null; if (statsSeries === "p27") renderP27(el); }); }
+    return;
+  }
   if (statsSeries === "predict") {
     const el = document.getElementById("statsBody");
     if (!window.__locksLoaded) { window.__locksLoaded = true; loadLocks().then(() => { if (statsSeries === "predict") renderPredict(el); }); }
@@ -3112,12 +3125,23 @@ function renderStats(){
   if (!document.getElementById("v-standings").hidden) { tabHero("standings", document.querySelector(".hh-standings")); heroSetup(); }
 }
 
+// ---------- Analytics events (GA4). Key events to mark in GA: pick_saved, alerts_on, sign_up ----------
+function track(name, params){ try { if (window.gtag) gtag("event", name, params || {}); } catch(e){} }
+document.addEventListener("click", ev => {
+  const a = ev.target.closest("a[href]"); if (!a) return;
+  const h = a.getAttribute("href") || "";
+  if (/^webcal:|\.ics(\?|$)/i.test(h)) track("add_to_calendar", { feed: h.split("/").pop().replace(/\.ics.*/, "") });
+  else if (a.classList.contains("tlink") || /stubhub|ticket/i.test(h)) track("ticket_click", { link_url: h });
+  else if (a.classList.contains("watch") || /^Watch/.test(a.textContent.trim()) || a.closest(".acts")) track("watch_click", { link_url: h, label: a.textContent.trim().slice(0, 60) });
+}, true);
+
 // ---------- Sharing ----------
 const slugify = t => String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const SITE_URL = "https://premierracinginfo.com";
 const raceURL = e => `${SITE_URL}/races/${slugify(`${SERIES[e.series]} ${e.name} ${e.start.getFullYear()}`)}/`;
 async function shareIt(title, text, url, btn){
   try {
+    track("share", { item: url.replace(SITE_URL, "") || "/" });
     if (navigator.share) { await navigator.share({ title, text, url }); return; }
     await navigator.clipboard.writeText(url);
     if (btn) { const o = btn.textContent; btn.textContent = "✓ Link copied"; setTimeout(() => btn.textContent = o, 1800); }
@@ -3128,6 +3152,7 @@ document.addEventListener("click", ev => {
   ev.stopPropagation();
   const [kind, id] = b.dataset.share.split(":");
   if (kind === "race") { const e = events.find(x => x.id === id); if (e) { const s = nextSession(e.id); shareIt(`${e.name} ${e.start.getFullYear()}`, `${SERIES_FULL[e.series]} ${e.name}${s ? ` · ${s[0]} ${fmtDow.format(new Date(s[1]))} ${txTime(s[1])}` : ""} · start times, how to watch & tickets`, raceURL(e), b); } }
+  else if (kind === "p27") shareIt("2027 racing predictions", "Who wins F1, NASCAR, IndyCar and MotoGP in 2027? Make your picks and beat me:", SITE_URL + "/#predict27", b);
   else if (kind === "series") { const x = WORLD_LIST.find(w => w.id === id); if (x) shareIt(x.name, `${x.name}: calendar, standings & how to watch`, `${SITE_URL}/series/${x.id}/`, b); }
   else shareIt("Premier Racing Info", "Race times in your time zone, how to watch, tickets, standings, alerts and a picks game with friends.", SITE_URL + "/", b);
 });
@@ -3506,7 +3531,7 @@ async function pushEnable(){
     pushSub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
     if (!pushPrefs.series.length) pushPrefs.series = [...new Set(favs.map(f => f.s).concat(mySeries.map(id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id)).filter(Boolean)))];
     await pushSave();
-    if (!pushMsg) pushMsg = "Alerts are on. You'll get them on your lock screen.";
+    if (!pushMsg) { pushMsg = "Alerts are on. You'll get them on your lock screen."; track("alerts_on", { series: pushPrefs.series.join(",") }); }
   } catch(e) { pushMsg = "Couldn't turn on alerts on this device (" + (e.message || e) + ")."; }
   renderPush();
 }
@@ -3667,6 +3692,7 @@ async function savePick(key, pick){
   const { error } = await sb.from("picks").upsert({ user_id: me.id, key, pick, display_name: name });
   if (error && /locked|not open yet/i.test(error.message)) return error.message + ".";
   if (error) return (/relation|does not exist|schema cache/i.test(error.message) ? "Picks aren't set up yet (Supabase step). " : "Couldn't save. ") + "Supabase says: " + (error.code ? error.code + " " : "") + error.message;
+  track("pick_saved", { pick_type: key.split(":")[0] === "f1" ? (key === "f1:season" ? "f1_season" : "f1_race") : key.replace(":", "_") });
   await loadPicks();
   return "";
 }
@@ -3767,6 +3793,95 @@ document.addEventListener("click", ev => {
   if (ev.target.closest("#pickSignIn")) { openAccount(); return; }
   if (ev.target.closest("[data-gopredict]")) { ev.stopImmediatePropagation(); statsSeries = "predict"; renderStatChips(); renderStats(); showTab("standings"); return; }
 });
+
+// ---------- 2027 season predictions: call each champion before the season starts (keys "p27:<series>" in Supabase "picks") ----------
+// Locks come from pick_locks (server); fallback = 12:00 UTC on the first points race. Driver lists are the 2026 top 10.
+// When a 2027 season ends, put the final top 3 in P27_FINAL (e.g. f1: ["A","B","C"]) and the leaderboard scores it.
+const P27 = [
+  { id: "f1", name: "Formula 1", plate: "f1", first: "f1-bhr-27", names: () => STATS.f1.standings.map(r => r[0]) },
+  { id: "nascar", name: "NASCAR Cup Series", plate: "nascar", first: "nascar-daytona-500-27", names: () => MORE_STATS["nascar-cup"].standings.map(r => r[0]) },
+  { id: "indy", name: "IndyCar", plate: "indy", first: "indy-grand-prix-of-st-petersburg-27", names: () => MORE_STATS.indycar.standings.map(r => r[0]) },
+  { id: "motogp", name: "MotoGP", plate: "motogp", first: "motogp-thailand-27", names: () => MORE_STATS.motogp.standings.map(r => r[0]) },
+];
+const P27_FINAL = {};
+let p27Rows = null, p27Err = "", p27Msg = {}, p27Draft = {};
+const p27Lock = sr => { const k = "p27:" + sr.id; if (LOCKS[k]) return LOCKS[k]; const e = RAW.find(x => x[0] === sr.first); return e ? Date.parse(e[6] + "T12:00:00Z") : 0; };
+async function loadP27(){
+  if (!sb) { p27Rows = []; return; }
+  const { data, error } = await sb.from("picks").select("user_id,key,pick,display_name,updated_at").like("key", "p27:%");
+  if (error) { p27Err = error.message; p27Rows = []; } else { p27Err = ""; p27Rows = data || []; }
+}
+function p27Board(){
+  const users = {};
+  (p27Rows || []).forEach(r => {
+    const sr = P27.find(x => "p27:" + x.id === r.key); if (!sr || Date.parse(r.updated_at) > p27Lock(sr)) return;
+    const u = users[r.user_id] || (users[r.user_id] = { id: r.user_id, name: r.display_name || "Player", pts: 0, picks: 0 });
+    if (r.display_name) u.name = r.display_name;
+    u.picks++; u.pts += scoreSeason(r.pick, P27_FINAL[sr.id] || null);
+  });
+  return Object.values(users).sort((a, b) => b.pts - a.pts || b.picks - a.picks);
+}
+function p27Crowd(sr){
+  const rows = (p27Rows || []).filter(r => r.key === "p27:" + sr.id && r.pick && r.pick.p1);
+  if (rows.length < 3) return "";
+  const c = {}; rows.forEach(r => c[r.pick.p1] = (c[r.pick.p1] || 0) + 1);
+  const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  return `<p class="fine p27-crowd"><b>Fans' pick for champion:</b> ${top.map(([n, k]) => `${esc(n)} ${Math.round(k / rows.length * 100)}%`).join(" · ")} <span>(${rows.length} picks)</span></p>`;
+}
+function p27Days(){ const l = Math.min(...P27.map(p27Lock).filter(x => x > Date.now())); return isFinite(l) ? Math.max(0, Math.ceil((l - Date.now()) / 86400000)) : 0; }
+function renderP27(el){
+  const made = me ? P27.filter(sr => myRow27(sr)).length : 0;
+  let h = `<div class="f1"><section class="card p27-intro"><h3>Call the 2027 champions</h3>
+    <p class="lede" style="margin:0">Pick the top 3 for each series before its season starts. Champion right is 10 pts, 2nd and 3rd 15 pts each, and 5 pts for a top-3 driver in the wrong spot. Change your picks any time until the first race.</p>
+    ${me ? `<p class="fine" style="font-weight:600">${made} of ${P27.length} series picked${made < P27.length ? " · finish the set to max out your score" : " ✓"}</p>` : `<button class="btn star" aria-pressed="true" id="p27SignIn" style="margin-top:10px">Sign in to play</button>`}
+    <button class="btn" data-share="p27">Challenge a friend</button></section>`;
+  P27.forEach(sr => {
+    const lock = p27Lock(sr), locked = Date.now() >= lock, mine = myRow27(sr), first = events.find(e => e.id === sr.first);
+    h += `<section class="card"><h3 class="p27-h">${plate(sr.plate, 24)} ${esc(sr.name)}</h3>
+      <p class="lede" style="margin:0">${locked ? "Locked" : "Locks"} ${lock ? fmtDay.format(new Date(lock)) : ""}${first ? " · " + esc(first.name) : ""}</p>`;
+    if (P27_FINAL[sr.id]) h += `<p class="fine"><b>Final top 3:</b> ${P27_FINAL[sr.id].map(esc).join(", ")}</p>`;
+    if (me) {
+      if (!locked && mine && !p27Draft[sr.id]) h += `<p class="fine" style="font-weight:600;margin:8px 0 0">✓ Saved: ${["p1", "p2", "p3"].map(k => esc(mine.pick[k])).join(", ")}</p>`;
+      h += pickSelects("p27" + sr.id, sr.names(), (!locked && p27Draft[sr.id]) || (mine && mine.pick), locked);
+      if (!locked) h += `<button class="btn star" aria-pressed="true" data-savep27="${sr.id}">${mine ? "Update pick" : "Save pick"}</button>`;
+      if (p27Msg[sr.id]) h += `<p class="fine" style="font-weight:600">${esc(p27Msg[sr.id])}</p>`;
+    }
+    h += p27Crowd(sr) + `</section>`;
+  });
+  h += `<section class="card"><h3>2027 leaderboard</h3>`;
+  if (!me) h += `<p class="lede" style="margin:0">Sign in to see how you rank.</p>`;
+  else if (p27Err) h += `<p class="lede" style="margin:0">Couldn't load the leaderboard.</p><p class="fine">Supabase says: ${esc(p27Err)}</p>`;
+  else if (p27Rows === null) h += `<p class="lede" style="margin:0">Loading…</p>`;
+  else { const lb = p27Board(); h += lb.length ? lb.map((u, i) => `<div class="lb-row ${u.id === me.id ? "me" : ""}"><div class="ps" style="font-family:var(--display);font-weight:700;text-align:center">${i + 1}</div><div>${esc(u.name)}<div class="tm" style="font-size:.75rem;color:var(--sub);font-weight:500">${u.picks} of ${P27.length} series picked</div></div><div class="pts">${u.pts}</div></div>`).join("") : `<p class="lede" style="margin:0">No picks yet. Be the first!</p>`; }
+  h += `<p class="fine">Points come in as each 2027 season ends. Driver lists are this year's top 10 and get updated when the 2027 grids are set.</p></section></div>`;
+  el.innerHTML = h;
+}
+const myRow27 = sr => (p27Rows || []).find(r => me && r.user_id === me.id && r.key === "p27:" + sr.id);
+async function onSaveP27(id){
+  const sr = P27.find(x => x.id === id); if (!sr) return;
+  await loadLocks();
+  if (Date.now() >= p27Lock(sr)) { p27Msg[id] = "Too late: this season has started."; renderStats(); return; }
+  const pick = Object.fromEntries(["p1", "p2", "p3"].map(k => [k, document.getElementById(`p27${id}-${k}`).value]));
+  p27Draft[id] = pick;
+  const vals = Object.values(pick);
+  if (vals.some(v => !v)) { p27Msg[id] = "Pick a driver for P1, P2 and P3."; renderStats(); return; }
+  if (new Set(vals).size < 3) { p27Msg[id] = "Pick three different drivers."; renderStats(); return; }
+  p27Msg[id] = "Saving…"; renderStats();
+  const err = await savePick("p27:" + id, pick);
+  if (!err) { delete p27Draft[id]; await loadP27(); }
+  p27Msg[id] = err || "Saved ✓"; renderStats();
+}
+function goP27(){ statsSeries = "p27"; renderStatChips(); renderStats(); showTab("standings"); }
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-savep27]"); if (b) { onSaveP27(b.dataset.savep27); return; }
+  if (ev.target.closest("#p27SignIn")) { openAccount(); return; }
+  if (ev.target.closest("[data-gop27]")) { ev.stopImmediatePropagation(); track("p27_promo_click"); goP27(); return; }
+}, true);
+function p27PromoHTML(){
+  if (!P27.some(sr => Date.now() < p27Lock(sr))) return "";
+  const d = p27Days();
+  return `<section class="p27-promo" aria-label="2027 predictions"><div><p class="p27-k">2027 predictions are open</p><h2 class="h4">Who wins F1, NASCAR, IndyCar and MotoGP next year?</h2><p class="fine">Lock in your champions now and see how you rank when the seasons end.${d ? ` First picks lock in ${d} days.` : ""}</p></div><button class="cta cta-primary" data-gop27="1">Make your picks</button></section>`;
+}
 
 // ---------- Tickets tab: every upcoming race with ticket links, filter by place (your state, country, region or anywhere), series and month ----------
 const GEO = {
@@ -4094,6 +4209,7 @@ function tabHero(n, band){
   return [];
 }
 function showTab(name){
+  if (showTab.cur && showTab.cur !== name) track("tab_view", { tab: name }); showTab.cur = name;
   for (const n of ["weekend","calendar","standings","series","tickets"]) {
     document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
     document.getElementById("v-" + n).hidden = n !== name;
@@ -4157,7 +4273,7 @@ document.addEventListener("click", ev => {
   if (k) {
     ev.stopPropagation();
     const { k: key, id } = k.dataset;
-    if (state[key][id]) delete state[key][id]; else state[key][id] = true;
+    if (state[key][id]) delete state[key][id]; else { state[key][id] = true; track(key === "starred" ? "race_starred" : key === "going" ? "race_going" : "race_" + key, { race: id }); }
     save();
     document.querySelectorAll(`[data-k="${key}"][data-id="${id}"]`).forEach(b => b.setAttribute("aria-pressed", !!state[key][id]));
     renderList();
@@ -4187,6 +4303,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   let t = ["weekend","calendar","standings","series","tickets"].includes(h) ? h : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
   showTab(["weekend","calendar","standings","series","tickets"].includes(t) ? t : "weekend");
+  if (h === "predict27") goP27();
 })();
 setInterval(renderAll, 60 * 60 * 1000);
 // Deep links from the search pages: /?race=<id> or /?series=<id>

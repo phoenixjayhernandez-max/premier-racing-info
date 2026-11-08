@@ -3,6 +3,8 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 8, 2026: GA4 event tracking (pick_saved, alerts_on, sign_up, login, share, watch_click, ticket_click, add_to_calendar, race_starred, race_going, tab_view, p27_promo_click). Mark pick_saved, alerts_on and sign_up as key events in GA (Admin → Events).
+- Done Nov 8, 2026: 2027 season predictions (F1, NASCAR Cup, IndyCar, MotoGP) under Standings → "2027 predictions", home-page promo, share link `/#predict27`. Locks are rows `p27:<series>` in Supabase `pick_locks`. When a 2027 season ends, fill `P27_FINAL` in index.html. Swap driver lists to 2027 grids when they're set (`P27` in index.html).
 - Done Nov 1, 2026: standings auto-update now covers all 21 series; NASCAR Cup, IndyCar and MotoGP calendars added (82 races, rest of 2026 + 2027) with race pages.
 - "Racing this weekend" page, per-race share images, faster results, weekly email.
 - Friends' race photos: add them to `OWN_PHOTOS` in `index.html` once each photographer gives written permission (including for commercial use).

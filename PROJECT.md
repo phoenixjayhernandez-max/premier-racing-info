@@ -7,7 +7,7 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 
 ## How it's built
 - `index.html`: the whole app (one file: CSS in one `<style>`, data constants + UI in the first big `<script>`). Light/dark theme, electric-blue accent, Saira Condensed + Albert Sans (self-hosted in `/fonts`).
-- Data constants in index.html: `RAW` (calendar: 13 series f1, nascar, indy, motogp, imsa, wec, gtwc, gte, gtas, gtau, psc, pccna, mustang; 2027 ids end `-27`), `SESSIONS` (UTC times), `SESSION_WATCH` (per-session stream links), `WORLD_TIMES` (start times for other series), `STATS` + `MORE_STATS` (standings for 21 series), `WINNERS`, `LIVE`, `PODIUMS` (picks game; never remove lines), `WATCH`, `TICKETS`, `CIRCUIT_SITES`, `GEO`, `PHOTO_QUERIES`/`PHOTO_NEED`/`OWN_PHOTOS`.
+- Data constants in index.html: `RAW` (calendar: 13 series f1, nascar, indy, motogp, imsa, wec, gtwc, gte, gtas, gtau, psc, pccna, mustang; 2027 ids end `-27`), `SESSIONS` (UTC times), `SESSION_WATCH` (per-session stream links), `WORLD_TIMES` (start times for other series), `STATS` + `MORE_STATS` (standings for 21 series), `WINNERS`, `LIVE`, `PODIUMS` (picks game; never remove lines), `P27`/`P27_FINAL` (2027 season predictions), `WATCH`, `TICKETS`, `CIRCUIT_SITES`, `GEO`, `PHOTO_QUERIES`/`PHOTO_NEED`/`OWN_PHOTOS`.
 - `world.js`: directory of 98 series (Series tab). Series with an `app` field are full calendars.
 - `tools/build-pages.mjs`: generates ~530 SEO pages (races/, series/, tracks/, races-in/, calendar/, watch/, tickets/, about/, privacy/, terms/), `hero.js`, `llms.txt`, sitemap, and the crawlable block between `<!--seo-->` and `<!--/seo-->` in index.html. Run `node tools/build-pages.mjs` after data changes.
 - `tools/build-ics.mjs`: calendar feeds in `calendar/`.
@@ -17,7 +17,7 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 ## Rules we settled on
 - Photos: only licensed photos (Wikimedia Commons searches per series, Openverse backup), credited. Strict per-series matching: F1≠F2≠F3≠F4≠FE, NASCAR Cup only Cup, MotoGP≠Moto2≠Moto3; only GT3 regions and Porsche Cups share. No photo is better than a wrong one. Friends' photos go in `OWN_PHOTOS` once they give written permission (incl. commercial use).
 - Legal: Terms + Privacy pages, "not affiliated" notice, EU/UK analytics consent, no press-agency photos. Don't publish Phoenix's personal email on the site.
-- Analytics: Google Analytics G-2XEE8686TF + Cloudflare Web Analytics. Search Console verified, sitemap submitted.
+- Analytics: Google Analytics G-2XEE8686TF + Cloudflare Web Analytics. Custom events go through `track()` in index.html; key events are pick_saved, alerts_on, sign_up. Search Console verified, sitemap submitted.
 - SEO: answer sentence + "Questions fans ask" FAQ (FAQPage schema) on race/series/watch pages; titles ≤60 chars.
 
 ## Automatic updater (scheduled task "Premier Racing Info auto-update")
