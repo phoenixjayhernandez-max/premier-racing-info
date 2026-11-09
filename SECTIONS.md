@@ -8,7 +8,7 @@
 3. Fix everything in it, run the check again until it's clear, then commit.
 4. Write the date in the "Last done" column below, then move to the next section.
 
-Sections 1–9 are checked by the script. Sections 10–13 can't be judged by a script, so we go through their checklist by hand about once a month.
+Sections 1–9 and 14 are checked by the script. Sections 10–13 can't be judged by a script, so we go through their checklist by hand about once a month.
 
 | # | Section | What it covers | Data it comes from | Done means | Last done |
 |---|---|---|---|---|---|
@@ -25,6 +25,7 @@ Sections 1–9 are checked by the script. Sections 10–13 can't be judged by a 
 | 11 | Accounts, alerts & picks game | Sign-in, profile, push alerts, predictions | Supabase, `tools/send-push.mjs` | See checklist below | |
 | 12 | Design & speed | Looks, phone layout, load time | `index.html` CSS/UI, `sw.js` | See checklist below | |
 | 13 | Legal pages | Terms, Privacy, consent | `about/`, `privacy/`, `terms/` | See checklist below | |
+| 14 | eSports | Sim racing events, pro champions, official games on the eSports tab and `/esports/` | `ESPORTS` | Checked in the last 7 days; at least 3 upcoming events; finished seasons have a champion; next seasons added once announced | 2026-11-09 |
 
 ## Hand checklists
 

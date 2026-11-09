@@ -13,12 +13,12 @@ const read = f => fs.readFileSync(path.join(root, f), "utf8");
 const html = read("index.html");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES_FULL,WINNERS,PODIUMS,STATS,MORE_STATS,WATCH,WORLD_TIMES};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES_FULL,WINNERS,PODIUMS,STATS,MORE_STATS,WATCH,WORLD_TIMES,ESPORTS};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO"), SERIES_TICKETS = grabObj("SERIES_TICKETS");
 global.window = {}; eval(read("world.js"));
 const WORLD = global.window.WORLD;
-const { RAW, SESSIONS, SERIES_FULL, WINNERS, PODIUMS, STATS, MORE_STATS, WATCH, WORLD_TIMES } = data;
+const { RAW, SESSIONS, SERIES_FULL, WINNERS, PODIUMS, STATS, MORE_STATS, WATCH, WORLD_TIMES, ESPORTS } = data;
 
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const WORLD_TO_APP = Object.fromEntries(Object.entries(APP_TO_WORLD).map(([a, w]) => [w, a]));
@@ -145,6 +145,20 @@ const SECTIONS = [
     (!built || daysAgo(built) > 1 ? todo : ok).push(built ? `Pages last rebuilt ${m[1]}` : "Can't find the rebuild date in index.html");
     const sm = read("sitemap.xml"), urls = (sm.match(/<loc>/g) || []).length;
     ok.push(`${urls} pages in the sitemap`);
+    return { todo, ok };
+  }],
+  [14, "eSports", "Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)", () => {
+    const todo = [], ok = [];
+    const age = daysAgo(ESPORTS.asof);
+    (age > 7 ? todo : ok).push(`eSports tab last checked ${ESPORTS.asof} (${age} days ago)`);
+    const ahead = ESPORTS.events.filter(e => e[5] >= today);
+    (ahead.length >= 3 ? ok : todo).push(`${ahead.length} upcoming eSports events listed${ahead.length < 3 ? " — add the next iRacing special events, pro finals and new seasons" : ""}`);
+    for (const x of ESPORTS.series) {
+      if (x.status === "In progress") { const fin = ESPORTS.events.filter(e => e[8] && e[0].startsWith(x.id.split("-")[0])); if (fin.length && fin.every(e => e[5] < today)) todo.push(`${x.name}: finals are over, add the champion and set status to Finished`); else ok.push(`${x.name} in progress`); }
+      else if (x.status === "Finished" && !x.champs.length) todo.push(`${x.name} is finished but has no champion`);
+      else ok.push(`${x.name}: ${x.status}`);
+      if (/not announced/i.test(x.next || "")) todo.push(`${x.name}: check whether the next season has been announced`);
+    }
     return { todo, ok };
   }],
 ];

@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 9, 2026: eSports tab (`/#esports`) and `/esports/` page: upcoming iRacing special events and pro finals, 2026 champions (F1 Sim Racing, eNASCAR, Porsche Esports Supercup), Gran Turismo World Series, and the official games of real series. Later ideas: add 2027 seasons when announced, start times for pro finals, an iRacing Daytona 24 entry once dated.
 - Done Nov 8, 2026: Thursday "this weekend" push alert; data clean-up batch; 2026 season-in-review pages (/recap/, built by build-pages.mjs, only for series tracked all season; NASCAR, IndyCar and MotoGP get theirs in 2027).
 - Done Nov 8, 2026: per-race share images for Instagram (tools/make-weekend-post.py), sent to Phoenix every Thursday. Not published on the site.
 - Done Nov 8, 2026: fixed a wrong (rugby) home photo. The home hero now only uses the series' own race photos, and track photos must come from a racetrack article (TRACK_TITLE). New "Get the app" guide (iPhone, Android, Mac, Windows; one-click install where the browser allows), in Settings, the footer, the home install box and `/#app`.

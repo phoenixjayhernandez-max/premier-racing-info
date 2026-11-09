@@ -10,6 +10,7 @@
 - [All series](https://premierracinginfo.com/series/): champions, standings and how to watch for 109 series
 - [Tracks](https://premierracinginfo.com/tracks/): every circuit and what races there
 - [2026 seasons in review](https://premierracinginfo.com/recap/): champions, most wins and every race winner per series
+- [eSports](https://premierracinginfo.com/esports/): sim racing championships (F1 Sim Racing, eNASCAR, Porsche Esports Supercup, Gran Turismo World Series), upcoming events and the official games
 - [About](https://premierracinginfo.com/about/): who runs the site and how data is checked
 
 ## Next races

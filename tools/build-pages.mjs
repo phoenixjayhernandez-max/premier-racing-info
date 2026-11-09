@@ -14,7 +14,7 @@ const SITE = "https://premierracinginfo.com";
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + ";return {AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + ";return {ESPORTS,AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const MORE_STATS = grabObj("MORE_STATS"), MORE_KEY = { nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const statsOf = app => STATS[app] || MORE_STATS[MORE_KEY[app]] || null;
@@ -117,7 +117,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <section class="ph-hero" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true"><div class="ph-l"></div><div class="ph-l"></div></div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
 <p class="wrap ph-credit"></p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
 <main class="wrap">${body}<p class="updated">Page updated <time datetime="${today}">${fUpd.format(new Date(today))}</time>. Dates, start times and TV listings can change, so check the official series site before you travel.</p></main>
-<footer class="wrap"><a href="/">App</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/recap/">2026 season reviews</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
+<footer class="wrap"><a href="/">App</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/esports/">eSports</a><a href="/recap/">2026 season reviews</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -487,6 +487,7 @@ if (!reduce) { var tick = false; function onScroll(){ if (tick) return; tick = t
 - [All series](${SITE}/series/): champions, standings and how to watch for ${WORLD.series.length} series
 - [Tracks](${SITE}/tracks/): every circuit and what races there
 - [2026 seasons in review](${SITE}/recap/): champions, most wins and every race winner per series
+- [eSports](${SITE}/esports/): sim racing championships (F1 Sim Racing, eNASCAR, Porsche Esports Supercup, Gran Turismo World Series), upcoming events and the official games
 - [About](${SITE}/about/): who runs the site and how data is checked
 
 ## Next races
@@ -497,13 +498,33 @@ ${upcoming.map(e => `- [${SERIES_FULL[e.s]} ${e.name} ${e.year}](${SITE}/races/$
 - Not affiliated with any series, team, circuit or broadcaster.
 `);
 }
+
+// ---- eSports guide (data: ESPORTS in index.html) ----
+{
+  const { ESPORTS: ES } = data;
+  const evs = ES.events.map(([id, name, sim, venue, s, e, about, link, pro]) => ({ id, name, sim, venue, s, e, about, link, pro })).filter(x => x.e >= today).sort((a, b) => a.s.localeCompare(b.s));
+  const done = ES.series.filter(x => x.champs.length), live = ES.series.filter(x => x.status === "In progress");
+  const wName = id => { const w = WORLD.series.find(x => x.id === id); return w ? (w.short || w.name) : id; };
+  const champLine = x => `${x.champs[0][1]}${x.champs[0][2] ? ` (${x.champs[0][2].split(" · ")[0]})` : ""}`;
+  const answer = `Sim racing in ${today.slice(0, 4)}: ${listAnd(done.map(x => `${champLine(x)} won the ${x.name}`))}.${evs[0] ? ` Next up: ${evs[0].name} (${evs[0].sim}), ${range(evs[0].s, evs[0].e)}.` : ""}`;
+  let body = `<p class="lede">${esc(answer)}</p>`;
+  body += `<section class="card"><h2>Coming up</h2>${evs.length ? `<table><tr><th>Dates</th><th>Event</th><th>Game</th></tr>${evs.map(x => `<tr><td>${range(x.s, x.e)}</td><td><a href="${esc(x.link)}" rel="noopener">${esc(x.name)}</a>${x.pro ? ' <span class="tag">pro final</span>' : ""}<br><small>${esc([x.venue, x.about].filter(Boolean).join(" · "))}</small></td><td>${esc(x.sim)}</td></tr>`).join("")}</table>` : "<p>No events listed right now.</p>"}</section>`;
+  for (const x of ES.series) body += `<section class="card"><h2>${esc(x.name)}</h2><p>${esc(x.sim)} · ${esc(x.season)} · ${esc(x.status)}</p><p>${esc(x.about)}</p>${x.champs.length ? `<ul>${x.champs.map(c => `<li><strong>${esc(c[0])}:</strong> ${esc(c[1])}${c[2] ? `, ${esc(c[2])}` : ""}</li>`).join("")}</ul>` : ""}${x.note || x.next ? `<p>${esc([x.note, x.next].filter(Boolean).join(" "))}</p>` : ""}<p>${x.watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}</a>`).join("")}<a class="btn" href="${esc(x.site)}" rel="noopener">Official site</a>${x.real ? `<a class="btn" href="/series/${esc(x.real)}/">Real ${esc(wName(x.real))}</a>` : ""}</p></section>`;
+  body += `<section class="card"><h2>Race it yourself: the official games</h2><ul>${ES.games.map(([g, by, about, real, link]) => `<li><a href="${esc(link)}" rel="noopener"><strong>${esc(g)}</strong></a> (${esc(by)}): ${esc(about)}${real.length ? ` Real series: ${real.map(r => `<a href="/series/${esc(r)}/">${esc(wName(r))}</a>`).join(", ")}.` : ""}</li>`).join("")}</ul><p>${esc(ES.off)}</p></section>`;
+  const qa = [];
+  for (const x of done) qa.push([`Who won the ${today.slice(0, 4)} ${x.name}?`, `${esc(champLine(x))}.${x.champs[1] ? ` ${esc(x.champs[1][1])} won the ${esc(x.champs[1][0].toLowerCase())} title.` : ""} ${esc(x.note || "")}`.trim()]);
+  for (const x of live) { const fin = evs.find(e => e.pro && e.name.startsWith(x.name.split(" ").slice(0, 2).join(" "))); if (fin) qa.push([`When are the ${x.name} finals?`, `${esc(fin.name)}: ${range(fin.s, fin.e)} in ${esc(fin.venue)}.`]); }
+  for (const [g, , about, real] of ES.games.filter(g => g[3].length)) qa.push([`What is ${g}?`, esc(about)]);
+  body += faqHTML(qa);
+  write("/esports/", page({ url: "/esports/", appLink: "/#esports", title: fitTitle(`Sim Racing eSports ${today.slice(0, 4)}: Champions & Schedule`, "Sim Racing eSports: Champions & Schedule"), desc: `${answer} Plus the official games of F1, NASCAR, WEC and GT World Challenge.`, h1: "eSports: sim racing", crumbs: [{ name: "eSports", item: SITE + "/esports/" }], jsonld: faqLD(qa), body, tick: ["eSports", "Sim racing", "F1 Sim Racing", "eNASCAR", "Porsche Esports Supercup", "Gran Turismo World Series", "iRacing"] }));
+}
 // ---- Homepage: crawlable summary inside the app shell (replaced by the live app when JavaScript runs) ----
 {
   const ix = path.join(root, "index.html"); let app = fs.readFileSync(ix, "utf8");
   const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
   const wk = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10), now = up.filter(e => e.start <= wk), next = up.filter(e => e.start > wk).slice(0, 8);
   const line = e => { const m = (SESSIONS[e.id] || []).filter(x => !x[2]).slice(-1)[0]; return `<li><a href="/races/${e.slug}/">${esc(SERIES_FULL[e.s])}: ${esc(e.name)}</a> · ${esc(e.circuit)} · ${range(e.start, e.end)}${m ? ` · race starts ${fDay.format(new Date(m[1]))} at ${fTime.format(new Date(m[1]))}` : ""}</li>`; };
-  const html = `<!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to ${WORLD.series.length} racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p>${now.length ? `<h2>Racing this week</h2><ul>${now.map(line).join("")}</ul>` : ""}<h2>Coming up</h2><ul>${next.map(line).join("")}</ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/about/">About</a></p><p>Updated ${fUpd.format(new Date(today))}.</p></div><!--/seo-->`;
+  const html = `<!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to ${WORLD.series.length} racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p>${now.length ? `<h2>Racing this week</h2><ul>${now.map(line).join("")}</ul>` : ""}<h2>Coming up</h2><ul>${next.map(line).join("")}</ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated ${fUpd.format(new Date(today))}.</p></div><!--/seo-->`;
   app = app.includes("<!--seo-->") ? app.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, html) : app.replace('<div id="weekendTop"></div>', `<div id="weekendTop">${html}</div>`);
   fs.writeFileSync(ix, app);
 }

@@ -1248,6 +1248,41 @@ main{max-width:1200px}
   .mcal-dots i{width:8px;height:8px;border-radius:50%;background:var(--c)}
   .mcal-dow div{font-size:11px;padding:6px 0;letter-spacing:.04em}
 }
+
+/* eSports tab */
+.hh-esports{background:var(--band)}
+.hh-esports .es-lines{position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(100deg,transparent 0 58%,color-mix(in oklab,var(--signal) 85%,transparent) 58% 60.5%,transparent 60.5% 63%,color-mix(in oklab,var(--signal) 45%,transparent) 63% 64%,transparent 64%),
+  repeating-linear-gradient(0deg,color-mix(in oklab,var(--band-ink) 7%,transparent) 0 1px,transparent 1px 28px),
+  repeating-linear-gradient(90deg,color-mix(in oklab,var(--band-ink) 7%,transparent) 0 1px,transparent 1px 28px)}
+.hh-esports::after{background:linear-gradient(90deg,var(--band) 0%,color-mix(in oklab,var(--band) 70%,transparent) 55%,transparent 100%)}
+.es-list{padding-block:var(--space-2xs)}
+.es-ev{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-bottom:1px solid var(--rule)}
+.es-ev:last-child,.es-game:last-child{border-bottom:0}
+.es-ev .d{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.88rem;padding-top:2px}
+.es-ev .n{font-weight:700;line-height:1.25;min-width:0}
+.es-ev .n small{display:block;font-weight:600;color:var(--sub);font-size:.78rem;margin-top:2px}
+.es-ev .ab,.es-game .ab{display:block;font-weight:400;color:var(--sub);font-size:.82rem;margin:4px 0 0;line-height:1.4}
+.es-ev .w{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:.78rem;color:var(--sub);font-weight:600;white-space:nowrap}
+.es-ev.pro .d{color:var(--signal)}
+.es-pro{margin-left:6px;vertical-align:2px;color:var(--signal);border-color:currentColor;background:transparent}
+.es-live{color:var(--signal);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.es-live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:5px;vertical-align:1px}
+.es-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-md)}
+.es-grid .card{margin:0;display:flex;flex-direction:column}
+.es-card h3{margin:var(--space-xs) 0 2px}
+.es-top{display:flex;gap:6px;flex-wrap:wrap}
+.es-on{color:var(--signal);border-color:currentColor}
+.es-season{margin:0 0 var(--space-xs);font-size:.8rem;font-weight:600;color:var(--sub)}
+.es-card .champs{margin-top:var(--space-xs)}
+.es-btns{margin:auto 0 0;padding-top:var(--space-sm)}
+.es-game{display:flex;gap:var(--space-sm);align-items:flex-start;justify-content:space-between;padding:var(--space-sm) 0;border-bottom:1px solid var(--rule)}
+.es-game .nm{font-weight:700}
+.es-game .nm small{font-weight:600;color:var(--sub);font-size:.78rem;margin-left:4px}
+.es-real{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.es-real .tag{all:unset;cursor:pointer;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--rule);color:var(--ink)}
+.es-real .tag:hover,.es-real .tag:focus-visible{border-color:var(--signal);color:var(--signal)}
+@media (max-width:560px){ .es-ev{grid-template-columns:minmax(0,1fr);gap:4px} .es-ev .d{font-size:.8rem;color:var(--sub);padding:0} .es-ev.pro .d{color:var(--signal)} .es-ev .w{flex-direction:row;align-items:center;justify-content:space-between;margin-top:4px} }
 </style>
 </head>
 <body>
@@ -1266,13 +1301,14 @@ main{max-width:1200px}
       <button class="tab" role="tab" id="t-standings" aria-controls="v-standings" aria-selected="false">Standings</button>
       <button class="tab" role="tab" id="t-series" aria-controls="v-series" aria-selected="false">Series</button>
       <button class="tab" role="tab" id="t-tickets" aria-controls="v-tickets" aria-selected="false">Tickets</button>
+      <button class="tab" role="tab" id="t-esports" aria-controls="v-esports" aria-selected="false">eSports</button>
     </nav>
   </div>
 </header>
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
-    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026 · race starts Sat, Nov 21 at 10:00 PM CST</li><li><a href="/races/motogp-portuguese-grand-prix-2026/">MotoGP: Portuguese Grand Prix</a> · Algarve International Circuit · Nov 20–22, 2026 · race starts Sun, Nov 22 at 7:00 AM CST</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/about/">About</a></p><p>Updated November 9, 2026.</p></div><!--/seo--></div>
+    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026 · race starts Sat, Nov 21 at 10:00 PM CST</li><li><a href="/races/motogp-portuguese-grand-prix-2026/">MotoGP: Portuguese Grand Prix</a> · Algarve International Circuit · Nov 20–22, 2026 · race starts Sun, Nov 22 at 7:00 AM CST</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 9, 2026.</p></div><!--/seo--></div>
     <div id="installBox"></div>
     <section class="sec" id="newsSec" aria-label="News"></section>
     <div class="sec" id="mySec"></div>
@@ -1317,6 +1353,11 @@ main{max-width:1200px}
     <div class="chips" id="dirChips" role="toolbar" aria-label="Type of racing"></div>
     <p class="asof" id="dirAsof"></p>
     <div id="dirBody"></div>
+  </section>
+
+  <section class="view" id="v-esports" role="tabpanel" aria-labelledby="t-esports" hidden>
+    <div class="hh-band sm hh-esports" data-hero="esports"><div class="es-lines" aria-hidden="true"></div><div class="hh-copy"></div></div>
+    <div id="esBody"></div>
   </section>
 </main>
 
@@ -2087,6 +2128,51 @@ function ticketSearch(q){
   return u ? [`${AFFILIATE.tickets.name} tickets · affiliate`, u, "aff"] : ["Search tickets", "https://www.google.com/search?q=" + encodeURIComponent(q)];
 }
 const relOf = t => t && t[2] === "aff" ? "sponsored noopener" : "noopener";
+// eSports: sim racing championships, big online events and the official games. Checked by the Thursday updater (section 14 in SECTIONS.md).
+// events: [id, name, sim, venue, startISO, endISO, about, link, pro]  (pro = a pro championship final or live event, used for the tab header)
+const ESPORTS = {
+  asof: "2026-11-09",
+  events: [
+    ["ir-mountain-showdown-2026", "Mountain Showdown", "iRacing", "Mount Panorama, Bathurst", "2026-11-13", "2026-11-15", "Super Formula Lights special event, open to every iRacing member", "https://www.iracing.com/specialevents/", false],
+    ["ir-runoffs-2026", "iRacing SCCA Runoffs", "iRacing", "Road America", "2026-11-17", "2026-11-21", "A week of qualifying, then title races in six classes, from USF 2000 and GT4 to MX-5 and Formula Vee", "https://www.iracing.com/specialevents/", false],
+    ["ir-992-endurance-2026", "992 Endurance Cup", "iRacing", "", "2026-11-27", "2026-11-29", "12 hours in the Porsche 911 Cup (992.2), one class", "https://www.iracing.com/specialevents/", false],
+    ["ir-winter-derby-2026", "Winter Derby", "iRacing", "Five Flags Speedway", "2026-12-02", "2026-12-07", "300 laps in Super Late Models on the half-mile", "https://www.iracing.com/specialevents/", false],
+    ["gtws-finals-2026", "Gran Turismo World Series Finals", "Gran Turismo 7", "Tokyo, Japan", "2026-12-05", "2026-12-06", "Season finale of Gran Turismo's official world championship, live with tickets on sale", "https://www.gran-turismo.com/us/gt7/championships/2026", true],
+    ["ir-chili-bowl-2026", "Chili Bowl", "iRacing", "Chili Bowl, Tulsa", "2026-12-15", "2026-12-20", "Dirt midget heats building to a 55-lap A-Main", "https://www.iracing.com/specialevents/", false],
+    ["ir-pcc-vir-2026", "THE Production Car Challenge", "iRacing", "VIRginia International Raceway", "2026-12-18", "2026-12-19", "4 hours in production cars (MX-5, BMW M2 CS, GR86, Clio), solo or as a team", "https://www.iracing.com/specialevents/", false],
+  ],
+  // Pro championships. champs: [title, who, detail]
+  series: [
+    { id: "f1-sim", name: "F1 Sim Racing World Championship", sim: "F1 25", real: "f1", status: "Finished", season: "Mar 27 – May 28, 2026 · 12 races at 4 live events",
+      about: "Formula 1's official esports championship. The ten F1 teams field sim racers, with a $750,000 prize fund paid to the teams.",
+      champs: [["Drivers' champion", "Otis Lawrence", "Alpine Sim Racing · 156 pts"], ["Teams' champion", "Oracle Red Bull Sim Racing", "227 pts"]],
+      note: "Lawrence became the youngest champion in the series, two points ahead of Ferrari's Ismael Fahssi.", next: "2027 season not announced yet.",
+      watch: [["F1 on YouTube", "https://www.youtube.com/@Formula1"]], site: "https://www.formula1.com/en/latest/article/2026-f1-sim-racing-world-championship-what-it-is-how-it-works-and-why-you.10PQVfjB1HUaltYRFKRWDf" },
+    { id: "enascar", name: "eNASCAR Coca-Cola iRacing Series", sim: "iRacing", real: "nascar-cup", status: "Finished", season: "May 19 – Oct 14, 2026 · 13 races",
+      about: "NASCAR's official sim racing series, with real Cup teams and a playoff that ends in a Championship 4 race.",
+      champs: [["Champion", "Steven Wilson", "Spire Motorsports · his third title"], ["Team champion", "Spire Motorsports", ""]],
+      note: "Wilson beat Connor Yeroschak, Bobby Zalenski and Wyatt Tinsley in the Homestead-Miami finale, raced at the NASCAR Hall of Fame.", next: "Back for its 18th season in 2027.",
+      watch: [["Replays on YouTube", "https://www.youtube.com/results?search_query=eNASCAR+Coca-Cola+iRacing+Series"]], site: "https://www.enascar.com" },
+    { id: "porsche-esports-supercup", name: "Porsche Esports Supercup", sim: "iRacing", real: "porsche-supercup", status: "Finished", season: "Sep 19 – Oct 24, 2026 · 5 rounds",
+      about: "Porsche's global sim championship in the 911 GT3 Cup. Regional series feed a five-round World Championship with a sprint and a main race each round.",
+      champs: [["Champion", "Florian Lebigre", "Verstappen Sim Racing · 276 pts"]],
+      note: "Lebigre won the Monza finale to beat Mitchell deJong by 9 points. Charlie Collins was third.", next: "2027 plans not announced yet.",
+      watch: [["Porsche on Twitch", "https://www.twitch.tv/porsche"], ["iRacing on Twitch", "https://www.twitch.tv/iracing"]], site: "https://www.iracing.com/pesc/" },
+    { id: "gt-world-series", name: "Gran Turismo World Series", sim: "Gran Turismo 7", real: "", status: "In progress", season: "May 23 – Dec 6, 2026 · Milan, Tokyo, Singapore, then the finals",
+      about: "Gran Turismo's official world championship, with the Nations Cup for drivers and the Manufacturers Cup for car brands.",
+      champs: [], note: "World Finals in Tokyo on December 5–6.", next: "",
+      watch: [["Find it on YouTube", "https://www.youtube.com/results?search_query=Gran+Turismo+World+Series+2026"]], site: "https://www.gran-turismo.com/us/gt7/championships/2026" },
+  ],
+  // Official games of real series: [game, maker or platform, what it covers, real-world series ids, link]
+  games: [
+    ["F1 25", "EA Sports", "The official F1 game, with a 2026 season expansion. Used for the F1 Sim Racing World Championship.", ["f1"], "https://www.ea.com/games/f1/f1-25"],
+    ["Assetto Corsa Competizione", "Kunos Simulazioni", "The official GT World Challenge game: GT3 cars, tracks and team liveries.", ["gtwc-europe", "gtwc-america"], "https://www.assettocorsa.it/competizione/"],
+    ["Le Mans Ultimate", "Studio 397", "The official game of the FIA World Endurance Championship, with Hypercars, LMGT3 and the 24 Hours of Le Mans.", ["wec"], "https://lemansultimate.com"],
+    ["iRacing", "Online subscription", "Home of eNASCAR, the Porsche Esports Supercup and big special events like the Daytona 24. Real NASCAR, IMSA and Porsche cars.", ["nascar-cup", "imsa", "porsche-supercup"], "https://www.iracing.com"],
+    ["Gran Turismo 7", "Polyphony Digital", "PlayStation's driving game and the platform for the Gran Turismo World Series.", [], "https://www.gran-turismo.com/us/gt7/"],
+  ],
+  off: "Not running in 2026: the Esports World Cup dropped sim racing for Trackmania, and the Le Mans Virtual Series hasn't announced a new season.",
+};
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
@@ -2521,7 +2607,7 @@ function heroStart(){
 }
 function heroSetup(){
   const band = curBand(); if (!band || !PHOTO_POOL.length) return;
-  const ph = band.querySelector(".hh-ph"); if (!ph) return;
+  const ph = band.querySelector(".hh-ph"); if (!ph) { clearInterval(heroTimer); heroBand = null; return; }
   const first = band.dataset.hero ? tabHero(band.dataset.hero, band) : APP_TO_WORLD[ph.dataset.sphoto];
   heroBand = band; heroPool = heroPoolFrom(first); heroIdx = 0;
   if (heroPool.length > 1 && !band.querySelector(".hh-pause")) {
@@ -4638,6 +4724,46 @@ document.addEventListener("click", ev => {
   if (g) { ev.stopImmediatePropagation(); closeRace(); statsSeries = g.dataset.gostats; renderStatChips(); renderStats(); showTab("standings"); }
 });
 
+
+// ---------- eSports (data: ESPORTS) ----------
+const esDate = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+function esRange(e){
+  const a = e.s, b = e.e, ma = MON[a.getMonth()], mb = MON[b.getMonth()];
+  return +a === +b ? `${ma} ${a.getDate()}` : ma === mb ? `${ma} ${a.getDate()}–${b.getDate()}` : `${ma} ${a.getDate()} – ${mb} ${b.getDate()}`;
+}
+function esEvents(){
+  const t = today();
+  return ESPORTS.events.map(([id, name, sim, venue, s, e, about, link, pro]) => ({ id, name, sim, venue, s: esDate(s), e: esDate(e), about, link, pro }))
+    .filter(e => e.e >= t).map(e => ({ ...e, ph: e.s <= t ? "now" : "future" })).sort((a, b) => a.s - b.s);
+}
+const esWorld = id => { const w = worldById(id); return w ? (w.short || w.name) : id; };
+function renderEsports(){
+  const el = document.getElementById("esBody"); if (!el) return;
+  const t = today(), ev = esEvents();
+  const when = e => e.ph === "now" ? `<span class="es-live">Live</span>` : (d => d === 1 ? "Tomorrow" : `${d} days`)(dayDiff(t, e.s));
+  let h = `<section class="sec"><h2 class="h2">Coming up</h2><p class="kicker">Pro finals and the big iRacing special events anyone with the game can enter. Start times are on each event’s page.</p>`;
+  h += ev.length ? `<div class="card es-list">${ev.map(e => `<div class="es-ev ${e.ph}${e.pro ? " pro" : ""}">
+      <span class="d">${esRange(e)}</span>
+      <span class="n">${esc(e.name)}${e.pro ? `<span class="tag es-pro">Pro final</span>` : ""}<small>${esc(e.sim)}${e.venue ? ` · ${esc(e.venue)}` : ""}</small><span class="ab">${esc(e.about)}</span></span>
+      <span class="w">${when(e)}<a class="btn" href="${esc(e.link)}" target="_blank" rel="noopener" data-es="${esc(e.id)}">Details</a></span></div>`).join("")}</div>`
+    : `<div class="card"><p class="lede" style="margin:0">No sim racing events listed right now. Check back soon.</p></div>`;
+  h += `</section><section class="sec"><h2 class="h2">Pro championships</h2><p class="kicker">The official esports series of real championships, and who won them in ${SEASON}.</p><div class="es-grid">`;
+  for (const x of ESPORTS.series) {
+    h += `<article class="card es-card"><div class="es-top"><span class="tag">${esc(x.sim)}</span><span class="tag ${x.status === "In progress" ? "es-on" : ""}">${esc(x.status)}</span></div>
+      <h3>${esc(x.name)}</h3><p class="es-season">${esc(x.season)}</p><p class="lede">${esc(x.about)}</p>
+      ${x.champs.length ? `<div class="champs">${x.champs.map(c => `<div class="champ"><div class="cl">${esc(c[0])}</div><div class="w">${esc(c[1])}</div>${c[2] ? `<div class="x">${esc(c[2])}</div>` : ""}</div>`).join("")}</div>` : ""}
+      ${x.note || x.next ? `<p class="fine">${esc([x.note, x.next].filter(Boolean).join(" "))}</p>` : ""}
+      <div class="mine es-btns">${x.watch.map(w => `<a class="btn star" aria-pressed="true" href="${esc(w[1])}" target="_blank" rel="noopener" data-es="${esc(x.id)}">${esc(w[0])}</a>`).join("")}<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener" data-es="${esc(x.id)}">Official site</a>${x.real ? `<button class="btn" data-world="${esc(x.real)}">Real ${esc(esWorld(x.real))}</button>` : ""}</div></article>`;
+  }
+  h += `</div></section><section class="sec"><h2 class="h2">Race it yourself</h2><p class="kicker">The official games of the series on this site. Tap a series to see its real calendar.</p><div class="card es-list">`;
+  for (const [g, by, about, real, link] of ESPORTS.games) {
+    h += `<div class="es-game"><div><div class="nm">${esc(g)} <small>${esc(by)}</small></div><p class="ab">${esc(about)}</p>${real.length ? `<div class="es-real">${real.map(r => `<button class="tag" data-world="${esc(r)}">${esc(esWorld(r))}</button>`).join("")}</div>` : ""}</div><a class="btn" href="${esc(link)}" target="_blank" rel="noopener" data-es="${esc(g)}">Get it</a></div>`;
+  }
+  h += `</div></section><p class="fine">${esc(ESPORTS.off)} Checked ${esc(esDate(ESPORTS.asof).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }))}. Not affiliated with any series, team or game maker.</p>`;
+  el.innerHTML = h;
+}
+document.addEventListener("click", ev => { const a = ev.target.closest("a[data-es]"); if (a) track("esports_click", { item: a.dataset.es }); });
+
 // ---------- Tabs & events ----------
 // Photo header on every tab, like the home page, but each tab's says something of its own and picks its own photos.
 for (const n of ["calendar", "standings", "series", "tickets"]) {
@@ -4678,6 +4804,14 @@ function tabHero(n, band){
     for (const x of PHOTO_POOL) { const d = picDisc(x.tags[0]); if (!seen.has(d)) { seen.add(d); order.push(x.tags[0]); } }
     return order;
   }
+  if (n === "esports") {
+    const ev = esEvents(), live = ev.filter(e => e.ph === "now"), pro = ev.find(e => e.pro) || ev[0];
+    const champs = ESPORTS.series.filter(x => x.champs.length).length, d = pro ? dayDiff(t, pro.s) : 0;
+    c.innerHTML = `<p class="hh-kick">eSports · sim racing</p><h2 class="hh-title">${pro ? esc(pro.name) : "Sim racing"}</h2>
+      <p class="lead">${pro ? `${esc(pro.sim)}${pro.venue ? ` · ${esc(pro.venue)}` : ""} · ${esRange(pro)}.` : "Pro championships, big online races and the games behind them."}${live.length ? ` Live now: ${live.map(e => esc(e.name)).join(", ")}.` : ""}</p>
+      ${figs([pro && [d <= 0 ? "Now" : d, d === 1 ? "day to go" : d <= 0 ? "on now" : "days to go"], [ev.length, "events ahead"], [champs, `${SEASON} champions`]])}`;
+    return [];
+  }
   if (n === "tickets") {
     const a = myArea(), loc = a.state ? `s:${a.country}|${a.state}` : a.country ? `c:${a.country}` : "all";
     const near = up.filter(e => locMatch(e, loc)), nx = near[0];
@@ -4691,7 +4825,7 @@ function tabHero(n, band){
 }
 function showTab(name){
   if (showTab.cur && showTab.cur !== name) track("tab_view", { tab: name }); showTab.cur = name;
-  for (const n of ["weekend","calendar","standings","series","tickets"]) {
+  for (const n of ["weekend","calendar","standings","series","tickets","esports"]) {
     document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
     document.getElementById("v-" + n).hidden = n !== name;
   }
@@ -4700,7 +4834,7 @@ function showTab(name){
   const tb = document.querySelector("#v-" + name + " .hh-band[data-hero]"); if (tb) tabHero(name, tb);
   heroSetup();
 }
-function renderAll(){ setTimeout(() => { fillPics(); const b = document.querySelector(".view:not([hidden]) .hh-band[data-hero]"); if (b) tabHero(b.dataset.hero, b); }, 0); renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); }
+function renderAll(){ setTimeout(() => { fillPics(); const b = document.querySelector(".view:not([hidden]) .hh-band[data-hero]"); if (b) tabHero(b.dataset.hero, b); }, 0); renderInstall(); renderWeekend(); renderFavs(); renderReminders(); renderSeriesGrid(); renderCalChips(); renderList(); renderStatChips(); renderStats(); renderDirChips(); renderDir(); renderMySeries(); renderNews(); renderTickets(); renderEsports(); }
 
 { const top = document.querySelector(".top"), setTop = () => document.documentElement.style.setProperty("--top-h", top.offsetHeight + "px"); setTop(); if ("ResizeObserver" in window) new ResizeObserver(setTop).observe(top); }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-alerts]")) { openReminders(); return; } });
@@ -4782,9 +4916,10 @@ setInterval(loadNews, 15 * 60 * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) loadNews(); });
 (() => {
   const h = (location.hash || "").slice(1);
-  let t = ["weekend","calendar","standings","series","tickets"].includes(h) ? h : null;
+  const TABS = ["weekend","calendar","standings","series","tickets","esports"];
+  let t = TABS.includes(h) ? h : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
-  showTab(["weekend","calendar","standings","series","tickets"].includes(t) ? t : "weekend");
+  showTab(TABS.includes(t) ? t : "weekend");
   if (h === "predict27") goP27();
   if (h === "settings") setTimeout(openSettings, 0);
   if (h === "start") setTimeout(openOnboard, 0);
