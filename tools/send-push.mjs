@@ -5,6 +5,7 @@
 //                   Series from the Series tab get alerts from WORLD_TIMES when their start times are posted.
 //   Live now      : a race (not practice/qualifying) has just started
 //   Results       : a new winner, pole or session result was added to the app
+//   This weekend  : Thursday from 5 PM Central, one summary of the weekend's races in the person's series and time zone
 //   Favorite news : a new headline names one of the person's favorite drivers or teams (off by default)
 // Subscriptions and the sending key live in Supabase and are read through a function that checks PUSH_SECRET.
 // push-state.json remembers what was already sent so nobody gets the same alert twice.
@@ -67,6 +68,41 @@ for (const [id, w] of Object.entries(WINNERS_LIVE)) {
   const e = EV[id]; if (!e || !w) continue;
   alerts.push({ key: `wl:${id}:${w}`, type: "result", series: e.s, title: `${SHORT[e.s] || e.s}: ${e.name}`, body: `${w}. Tap for the latest order.`, url: SITE + "#weekend" });
 }
+// ---- Thursday "this weekend" summary (sent once per weekend, Thu 5 PM Central until Fri noon) ----
+const CT_PARTS = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "numeric", hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date(now)).map(p => [p.type, p.value]));
+const ctDate = `${CT_PARTS.year}-${CT_PARTS.month}-${CT_PARTS.day}`, ctHour = +CT_PARTS.hour;
+const addDays = (s, n) => { const d = new Date(s + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const weekWindow = (CT_PARTS.weekday === "Thu" && ctHour >= 17) || (CT_PARTS.weekday === "Fri" && ctHour < 12);
+const weekFri = CT_PARTS.weekday === "Thu" ? addDays(ctDate, 1) : ctDate, weekSun = addDays(weekFri, 2);
+const weekRaces = []; // {series, name, iso}
+if (weekWindow) {
+  const inWeekend = iso => { const d = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Chicago" }).format(new Date(iso)); return d >= weekFri && d <= weekSun; };
+  for (const [id, s, name, circuit, loc, start, end, tags, status] of RAW) {
+    if (status === "cancelled" || start > weekSun || end < weekFri) continue;
+    const list = (SESSIONS[id] || []).filter(x => !x[2]);
+    const main = list[list.length - 1];
+    weekRaces.push({ series: s, label: `${SHORT[s] || s} ${name.replace(/Grand Prix/, "GP")}`, iso: main && inWeekend(main[1]) ? main[1] : null, start });
+  }
+  for (const [wid, list] of Object.entries(WORLD_TIMES)) {
+    const hits = (list || []).filter(([t, iso]) => inWeekend(iso) && isRace(t));
+    if (hits.length) weekRaces.push({ series: wid, world: true, label: WORLD_SHORT[wid] || wid, iso: hits[hits.length - 1][1], start: weekFri });
+  }
+  weekRaces.sort((a, b) => (a.iso || a.start + "T23:59Z").localeCompare(b.iso || b.start + "T23:59Z"));
+}
+const weekKey = `week:${weekFri}`;
+function weekAlert(seriesSet, tz){
+  const mine = weekRaces.filter(r => seriesSet ? seriesSet.has(r.series) : !r.world);
+  if (!mine.length) return null;
+  let zone = "America/Chicago"; try { if (tz) { new Intl.DateTimeFormat("en-US", { timeZone: tz }); zone = tz; } } catch (e) {}
+  const f = new Intl.DateTimeFormat("en-US", { timeZone: zone, weekday: "short", hour: "numeric", minute: "2-digit" });
+  const tzName = new Intl.DateTimeFormat("en-US", { timeZone: zone, timeZoneName: "short" }).formatToParts(new Date(now)).find(p => p.type === "timeZoneName")?.value || "";
+  const parts = mine.map(r => r.iso ? `${r.label} ${f.format(new Date(r.iso)).replace(":00", "")}` : `${r.label} (times TBA)`);
+  let body = parts.join(" · ");
+  if (body.length > 170) { let out = ""; let i = 0; for (; i < parts.length && (out + parts[i]).length < 140; i++) out += (i ? " · " : "") + parts[i]; body = `${out} +${parts.length - i} more`; }
+  const n = mine.length;
+  return { title: `🏁 ${n} race${n === 1 ? "" : "s"} this weekend`, body: `${body}${tzName ? ` (${tzName})` : ""}`, url: SITE + "#weekend", tag: weekKey };
+}
+
 let news = [];
 try { news = JSON.parse(fs.readFileSync(path.join(root, "news.json"), "utf8")).items || []; } catch (e) {}
 news = news.filter(x => now - Date.parse(x.time) < 3 * 3600000);
@@ -78,6 +114,7 @@ if (!state.seeded) {
   state.seeded = true;
 }
 const fresh = alerts.filter(a => !state.sent[a.key]);
+const weekDue = weekRaces.length > 0 && !state.sent[weekKey];
 const freshNews = news.filter(x => !state.sent["news:" + x.link]);
 
 // ---- Load subscriptions ----
@@ -101,7 +138,7 @@ try {
   state.lockSync = { at: new Date().toISOString(), result: n, races: Object.keys(locks).length };
   if (n === -1) console.log("Lock sync: secret not accepted");
 } catch (e) { state.lockSync = { at: new Date().toISOString(), error: String(e.message).slice(0, 160) }; console.log("Lock sync skipped:", String(e.message).slice(0, 120)); }
-if (!fresh.length && !freshNews.length && !TEST) { save(); console.log("Nothing new to send"); process.exit(0); }
+if (!fresh.length && !freshNews.length && !weekDue && !TEST) { save(); console.log("Nothing new to send"); process.exit(0); }
 const cfg = await rpc("get_push_config", { p_secret: SECRET });
 if (!cfg || !cfg.vapid_private) { console.log("Supabase didn't return the push settings. Check that setup/push.sql was run and PUSH_SECRET matches."); process.exit(1); }
 webpush.setVapidDetails("mailto:premier-racing-info@users.noreply.github.com", cfg.vapid_public, cfg.vapid_private);
@@ -121,7 +158,7 @@ async function send(sub, payload){
 }
 for (const sub of subs) {
   const p = sub.prefs || {};
-  const types = Object.assign({ soon: true, live: true, result: true, news: false }, p.types || {});
+  const types = Object.assign({ week: true, soon: true, live: true, result: true, news: false }, p.types || {});
   const series = Array.isArray(p.series) && p.series.length ? new Set(p.series) : null;
   const favNames = (p.favs || []).filter(n => n && n.length > 3);
   const out = [];
@@ -133,6 +170,7 @@ for (const sub of subs) {
     if (a.kind && !levelAllows(level[a.series] || "all", a.kind)) continue;
     out.push({ title: a.title, body: a.body, url: a.url, tag: a.key });
   }
+  if (weekDue && types.week !== false) { const w = weekAlert(series, p.tz); if (w) out.unshift(w); }
   if (types.news && favNames.length) {
     const hit = freshNews.find(x => favNames.some(n => x.title.includes(n)));
     if (hit) out.push({ title: `📰 ${hit.source}`, body: hit.title, url: hit.link, tag: "news:" + hit.link });
@@ -141,6 +179,7 @@ for (const sub of subs) {
 }
 for (const a of fresh) state.sent[a.key] = new Date().toISOString();
 for (const x of freshNews) state.sent["news:" + x.link] = new Date().toISOString();
+if (weekDue) state.sent[weekKey] = new Date().toISOString();
 if (gone.length) await rpc("drop_push_subs", { p_secret: SECRET, p_endpoints: gone }).catch(e => console.log(e.message));
 state.lastRun = { at: new Date().toISOString(), phones: subs.length, sent: sentCount, failed: failCount, expired: gone.length, test: TEST };
 save();

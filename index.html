@@ -3556,7 +3556,7 @@ document.addEventListener("click", ev => {
 // ---------- Lock-screen notifications (Web Push) ----------
 const VAPID_PUBLIC = "BD4h-3AEuLOTSx84cDe5cVF_OJMN6QvzN7HlXgn3txL2ayo1ookp6P3mMzHI7qMjtGqMl1y0tSgdzSKThfZu1oY";
 const PKEY = KEY + "-push";
-let pushPrefs = { types: { soon: true, live: true, result: true, news: false }, series: [], level: {} };
+let pushPrefs = { types: { week: true, soon: true, live: true, result: true, news: false }, series: [], level: {} };
 try { pushPrefs = Object.assign(pushPrefs, JSON.parse(localStorage.getItem(PKEY) || "{}")); } catch(e){}
 if (!pushPrefs.level) pushPrefs.level = {};
 let pushSub = null, pushMsg = "";
@@ -3566,7 +3566,7 @@ async function pushRpc(fn, body){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${SUPABASE_ANON_KEY}`, "content-type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error("HTTP " + r.status);
 }
-function pushPayloadPrefs(){ return { types: pushPrefs.types, series: pushPrefs.series, level: pushPrefs.level, favs: favs.map(f => f.n) }; }
+function pushPayloadPrefs(){ let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){} return { types: pushPrefs.types, series: pushPrefs.series, level: pushPrefs.level, favs: favs.map(f => f.n), tz }; }
 // Per-series alert levels. Ids are app ids (f1, nascar…) or Series-tab ids for the other series.
 const ALERT_LEVELS = [["race", "Races"], ["quali", "Quali + race"], ["all", "Every session"]];
 const alertId = id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id) || id;
@@ -3633,8 +3633,8 @@ function renderPush(){
     h += `<p style="margin:2px 0 10px">Get a notification before sessions start, when the race goes live, and when results come in.</p><button class="btn star" aria-pressed="true" id="pushOn">Turn on alerts</button>`;
   } else {
     const t = pushPrefs.types;
-    const tog = (k, label) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${t[k] ? "checked" : ""}> ${label}</label>`;
-    h += tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
+    const tog = (k, label, on) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${(on ? t[k] !== false : t[k]) ? "checked" : ""}> ${label}</label>`;
+    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
   }
   h += (pushSub ? "" : `<p class="fine" style="margin:12px 0 0"><b>Pick your series now.</b> They're saved on this phone and apply as soon as alerts are on.</p>`) + ps;
   if (pushSub) h += `<div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
