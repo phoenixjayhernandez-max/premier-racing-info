@@ -539,6 +539,17 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .set-sw:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .set-foot{text-align:center;margin:var(--space-md) 0 0}
 .set-back{all:unset;cursor:pointer;display:inline-block;margin:0 0 6px;padding:4px 0;font-weight:600;color:var(--signal)}.set-back:focus-visible{outline:2px solid var(--signal)}
+.ob-card{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-sm) var(--space-md);margin:var(--space-md) 0;padding:var(--space-md);border:1px solid var(--rule);border-radius:var(--r);background:var(--panel)}
+.ob-card > div:first-child{flex:1 1 260px;min-width:0}.ob-card h2{margin:0 0 4px}.ob-card .fine{margin:0}.ob-acts{display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap}
+.ob-step{margin:0 0 var(--space-lg)}.ob-step h3{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:1.05rem}
+.ob-n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--signal);color:var(--signal-ink);font-size:.85rem;font-weight:700;flex:none}
+.ob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}
+.ob-pick,.ob-race{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--panel);color:var(--ink);min-height:52px}
+.ob-pick{cursor:pointer}.ob-pick span,.ob-rn{display:flex;flex-direction:column;min-width:0}.ob-pick small,.ob-rn small{color:var(--sub);font-size:.78rem;line-height:1.3}
+.ob-pick[aria-pressed="true"]{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal);background:color-mix(in oklab,var(--signal) 8%,var(--panel))}
+.ob-pick:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.ob-next{display:grid;gap:8px}.ob-foot{position:sticky;bottom:calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));margin:0 calc(-1 * var(--space-md)) calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));padding:var(--space-sm) var(--space-md) calc(var(--space-lg) + env(safe-area-inset-bottom,0px));background:var(--color-paper);border-top:1px solid var(--color-rule)}
+.ob-foot .cta{width:100%;justify-content:center}.ob-foot .cta[disabled]{opacity:.5;cursor:not-allowed}
 .lb-row{display:grid;grid-template-columns:28px 1fr auto;gap:var(--space-xs);align-items:center;padding:var(--space-xs) 0;border-bottom:1px solid var(--rule)}
 .lb-row:last-child{border-bottom:0}
 .lb-row.me{font-weight:600}
@@ -2898,6 +2909,7 @@ function renderWeekend(){
       </div>
       </div>
     </section>
+    ${startCardHTML()}
     <section class="feat-sec" aria-label="Featured race">
       <div class="hh-meta"><p class="fine hh-tz">${tzLine()}</p><p class="fine hh-credit" aria-live="off"></p></div>
       ${featHTML(feat)}
@@ -3366,7 +3378,7 @@ function renderMySeries(){
   const el = document.getElementById("mySec");
   const list = mySeries.map(id => WORLD_LIST.find(x => x.id === id)).filter(Boolean);
   if (!list.length) {
-    el.innerHTML = `<p class="perso">Star the series you follow${favs.length ? "" : " and pick favorite drivers"} to see their news and results first. <span class="perso-btns"><button class="tlink" data-gotab="series">Choose series</button>${favs.length ? "" : `<button class="tlink" data-favpick="1">Choose drivers</button>`}</span></p>`;
+    el.innerHTML = `<p class="perso">Star the series you follow${favs.length ? "" : " and pick favorite drivers"} to see their news and results first. <span class="perso-btns"><button class="tlink" data-onboard="1">Start here</button><button class="tlink" data-gotab="series">Choose series</button>${favs.length ? "" : `<button class="tlink" data-favpick="1">Choose drivers</button>`}</span></p>`;
     return;
   }
   el.innerHTML = `<h2 class="h2">My series</h2><p class="kicker">Tap one for details. <button class="btn" data-gotab="series" style="margin-left:6px">Add more</button></p><div class="my-list">${list.map(srowHTML).join("")}</div>`;
@@ -3980,6 +3992,7 @@ function openSettings(){
       <div class="set-row set-static"><span class="set-ic" aria-hidden="true">🌓</span><span class="set-l">Appearance</span>
         <div class="pa-seg set-seg" role="group" aria-label="Appearance">${[["light", "Light"], ["dark", "Dark"], ["system", "Auto"]].map(([v, l]) => `<button data-settheme="${v}" aria-pressed="${tm === v}">${l}</button>`).join("")}</div></div>
       ${setRow({ go: "home", icon: "📍", label: "Home area", sub: "For races near you and tickets", value: esc(areaLbl) })}
+      ${setRow({ go: "onboard", icon: "🏁", label: "Start here setup", sub: "Pick series, add calendar and alerts in one go" })}
       ${setRow({ go: "myseries", icon: "★", label: "My series", value: mySeries.length ? mySeries.length + " picked" : "None" })}
       ${setRow({ go: "favs", icon: "🏎️", label: "Favorite drivers & teams", value: favs.length ? favs.length + " followed" : "None" })}
     </div>
@@ -4020,6 +4033,7 @@ document.addEventListener("click", ev => {
   else if (go === "alerts") openReminders();
   else if (go === "calendar") { openReminders(); setTimeout(() => { const c = [...document.querySelectorAll("#sheet h3")].find(h => /calendar/i.test(h.textContent)); if (c) c.scrollIntoView({ block: "start" }); }, 50); }
   else if (go === "tz") openTZ();
+  else if (go === "onboard") openOnboard();
   else if (go === "home") openHome();
   else if (go === "favs") openFavPicker();
   else if (go === "credits") openCredits();
@@ -4039,6 +4053,79 @@ document.addEventListener("change", ev => {
   if (window.gtag) gtag("consent", "update", { analytics_storage: yes ? "granted" : "denied" });
   const b = document.querySelector(".consent"); if (b) b.remove();
 });
+
+// ---------- "Start here": a 30-second setup for new fans (pick series, see what's next, add calendar + alerts) ----------
+const OB_KEY = KEY + "-onboard";
+const OB_HINT = { f1: "The top level of open-wheel racing", nascar: "America's stock car series", indy: "Open-wheel, home of the Indy 500", motogp: "Top-level motorcycle racing", imsa: "US sports cars, Daytona to Petit Le Mans", wec: "World endurance, home of Le Mans", gtwc: "GT3 cars in North America, free streams", gte: "GT3 cars in Europe, free streams", gtas: "GT3 cars in Asia", gtau: "GT3 cars in Australia", psc: "Porsche one-make on F1 weekends", pccna: "Porsche one-make in North America", mustang: "Ford Mustang one-make series" };
+let obPick = [];
+const obDone = () => { try { return !!localStorage.getItem(OB_KEY); } catch(e){ return false; } };
+function startCardHTML(){
+  if (obDone() || mySeries.length) return "";
+  return `<section class="ob-card" aria-label="Start here"><div><h2 class="h4">New to racing? Start here</h2><p class="fine">Pick the series you want to follow. We'll show what's next in your time zone and set up your calendar and alerts. Takes 30 seconds.</p></div><div class="ob-acts"><button class="cta cta-primary" data-onboard="1">Start here</button><button class="linkbtn" data-obskip="1">No thanks</button></div></section>`;
+}
+function obNextHTML(){
+  const rows = obPick.map(sid => {
+    const e = events.filter(x => x.series === sid && !x.cancelled && (phase(x) === "future" || (phase(x) === "now" && nextSession(x.id)))).sort((a, b) => a.start - b.start)[0];
+    if (!e) return null;
+    const ns = nextSession(e.id);
+    return { e, ns, t: ns ? Date.parse(ns[1]) : e.start.getTime() };
+  }).filter(Boolean).sort((a, b) => a.t - b.t);
+  if (!rows.length) return `<p class="fine">No upcoming races for these yet. New calendars are added as soon as they're out.</p>`;
+  return `<div class="ob-next">${rows.map(({ e, ns }) => `<div class="ob-race">${plate(e.series, 24)}<span class="ob-rn"><b>${esc(e.name)}</b><small>${ns ? `${esc(ns[0])}: ${fmtDay.format(new Date(ns[1]))}, ${txTime(ns[1])}` : `${range(e)} (start times coming)`}</small></span></div>`).join("")}</div><p class="fine">Times are in ${esc(tzLabel())}.</p>`;
+}
+function renderOnboard(){
+  const el = document.getElementById("obBody"); if (!el) return;
+  const base = location.href.replace(/[#?].*$/, "").replace(/index\.html$/, "").replace(/\/?$/, "/");
+  const web = f => base.replace(/^https?:/, "webcal:") + "calendar/" + f + ".ics";
+  const iosBrowser = platform() === "ios" && !isStandalone();
+  let h = `<section class="ob-step"><h3><span class="ob-n">1</span> What do you want to follow?</h3><div class="ob-grid">${ORDER.map(sid => `<button class="ob-pick" data-obpick="${sid}" aria-pressed="${obPick.includes(sid)}">${plate(sid, 26)}<span><b>${esc(SERIES[sid])}</b><small>${esc(OB_HINT[sid] || SERIES_FULL[sid] || "")}</small></span></button>`).join("")}</div>
+    <p class="fine">Looking for something else? ${WORLD_LIST.length} series are in the <button class="linkbtn" data-gotab="series">Series tab</button>.</p></section>`;
+  if (obPick.length) {
+    h += `<section class="ob-step"><h3><span class="ob-n">2</span> Next up for you</h3>${obNextHTML()}</section>`;
+    h += `<section class="ob-step"><h3><span class="ob-n">3</span> Never miss a start</h3>
+      <p class="fine" style="margin-top:0">Add them to your phone's calendar, with a reminder before each session:</p>
+      <div class="feeds">${obPick.map(sid => `<a class="btn" href="${web(sid)}" data-obcal="${sid}">${plate(sid, 18)} Add ${esc(SERIES[sid])}</a>`).join("")}</div>
+      <p class="fine">Or get a lock screen alert before the race starts:</p>
+      ${iosBrowser ? `<p class="fine"><b>On iPhone:</b> tap Share, then <b>Add to Home Screen</b>, open the app from there and turn alerts on in Settings. Your picks are saved.</p>`
+        : `<button class="btn star" aria-pressed="true" data-obalerts="1">${pushSub ? "Alerts are on: add these series" : "Turn on alerts for these"}</button>`}
+      <p class="fine" id="obMsg" role="status"></p></section>`;
+  }
+  h += `<div class="ob-foot"><button class="cta cta-primary" data-obdone="1" ${obPick.length ? "" : "disabled"}>${obPick.length ? `Done: follow ${obPick.length} series` : "Pick at least one"}</button></div>`;
+  el.innerHTML = h;
+}
+function openOnboard(){
+  obPick = mySeries.map(id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id)).filter(Boolean);
+  const sheet = document.getElementById("sheet");
+  const fresh = document.getElementById("sheetBg").hidden;
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Start here</h2><div class="m">Three quick steps and you're set for race day</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div><div id="obBody"></div>`;
+  renderOnboard();
+  if (fresh) lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false;
+  document.body.style.overflow = "hidden";
+  sheet.scrollTop = 0;
+  document.getElementById("sheetClose").focus();
+  track("onboard_open");
+}
+function obFinish(){
+  obPick.forEach(sid => { const w = APP_TO_WORLD[sid]; if (w && !mySeries.includes(w)) mySeries.push(w); });
+  saveMySeries();
+  try { localStorage.setItem(OB_KEY, "done"); } catch(e){}
+  track("onboard_done", { series: obPick.join(","), count: obPick.length });
+  closeRace(); renderAll();
+}
+document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-onboard]")) { ev.preventDefault(); ev.stopPropagation(); openOnboard(); return; }
+  if (ev.target.closest("[data-obskip]")) { try { localStorage.setItem(OB_KEY, "skipped"); } catch(e){} const c = ev.target.closest(".ob-card"); if (c) c.remove(); track("onboard_skip"); return; }
+  const pk = ev.target.closest("[data-obpick]");
+  if (pk) { ev.stopPropagation(); const sid = pk.dataset.obpick; obPick = obPick.includes(sid) ? obPick.filter(x => x !== sid) : obPick.concat(sid); const y = document.getElementById("sheet").scrollTop; renderOnboard(); document.getElementById("sheet").scrollTop = y; return; }
+  if (ev.target.closest("[data-obalerts]")) {
+    ev.stopPropagation();
+    obPick.forEach(sid => alertToggle(sid, true));
+    (pushSub ? pushSave() : pushEnable()).then(() => { const m = document.getElementById("obMsg"); if (m) m.textContent = pushSub ? `Alerts set for ${obPick.map(x => SERIES[x]).join(", ")}. Change them any time in Settings.` : (pushMsg || "Alerts couldn't be turned on here."); });
+    return;
+  }
+  if (ev.target.closest("[data-obdone]")) { ev.stopPropagation(); if (obPick.length) obFinish(); return; }
+}, true);
 
 // ---------- Tickets tab: every upcoming race with ticket links, filter by place (your state, country, region or anywhere), series and month ----------
 const GEO = {
@@ -4463,6 +4550,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   showTab(["weekend","calendar","standings","series","tickets"].includes(t) ? t : "weekend");
   if (h === "predict27") goP27();
   if (h === "settings") setTimeout(openSettings, 0);
+  if (h === "start") setTimeout(openOnboard, 0);
 })();
 setInterval(renderAll, 60 * 60 * 1000);
 // Deep links from the search pages: /?race=<id> or /?series=<id>

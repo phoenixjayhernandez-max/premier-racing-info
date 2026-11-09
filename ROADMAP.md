@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 8, 2026: "Start here" setup for new fans (idea from Reddit feedback): pick series, see next sessions in your time zone, add calendar feeds and alerts, then they're saved to My series. Home card for first-time visitors, Settings row, link `/#start`. GA events onboard_open / onboard_done / onboard_skip.
 - Done Nov 8, 2026: new logo (Speed Cut PRI + wide wordmark) in the app and page headers, app icons, favicon and share image. Next: use it on Instagram/TikTok profile pictures and merch.
 - Done Nov 8, 2026: Settings page (gear icon in the header, footer link, `/#settings`): account, lock screen alerts, calendar sync, time zone, appearance (Light/Dark/Auto), home area, my series, favorites, analytics on/off, clear data, delete account, install, share, about/legal. The old light/dark header button moved into Settings.
 - Done Nov 8, 2026: per-series alerts. Fans pick any of the 109 series and, per series, Races / Quali + race / Every session (`pushPrefs.series` + `pushPrefs.level`, stored in push_subs.prefs). 🔔 bell on race and series sheets. Series outside the app's 13 get alerts from `WORLD_TIMES`, so the more start times the Thursday updater fills in there, the more alerts fans get. Old subscriptions keep getting everything (level defaults to "all").
