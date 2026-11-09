@@ -1,16 +1,16 @@
 # Site status
 
-Checked 2026-11-08 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-09 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
-| 2 | Results & picks | ⚠️ 1 |
+| 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 27 |
-| 5 | Watch | ⚠️ 3 |
-| 6 | Tickets | ⚠️ 3 |
-| 7 | Tracks & races near you | ⚠️ 56 |
+| 4 | Series directory | ⚠️ 30 |
+| 5 | Watch | ⚠️ 2 |
+| 6 | Tickets | ⚠️ 1 |
+| 7 | Tracks & races near you | ⚠️ 15 |
 | 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
 | 10 | Photos | by hand |
@@ -23,45 +23,39 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (4)</summary>
-
-- São Paulo Grand Prix (Formula 1, 2026-11-08) has start times
-- 6 Hours of Monza (World Endurance, 2026-11-08) has start times
-- Championship Race (NASCAR Cup Series, 2026-11-08) has start times
-- Qatar Grand Prix (MotoGP, 2026-11-08) has start times
-
-</details>
-
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
-- [ ] Older races with no winner listed (32): imsa-longbeach, imsa-laguna, imsa-detroit, imsa-glen, imsa-ctmp, imsa-roadam, imsa-vir, f1-aus, f1-jpn, f1-mia, f1-can, f1-mon, f1-bcn, f1-aut, f1-gbr, f1-bel, f1-hun, f1-ned, f1-mad, wec-imola, wec-spa, wec-lm, wec-sp, gte-nring, gtas-sepang, gtas-mandalika, gtas-shanghai, gtas-fuji, gtas-okayama, gtau-qld, gtau-sydney, pccna-indy
+- Nothing to do.
 
-<details><summary>Up to date (10)</summary>
+<details><summary>Up to date (13)</summary>
 
 - Winner saved: United States Grand Prix (Formula 1, 2026-10-25)
 - Winner saved: Mexico City Grand Prix (Formula 1, 2026-11-01)
-- Winner saved: 6 Hours of Barcelona (World Endurance, 2026-10-18)
-- Winner saved: 3 Hours of Portimão (GT World Challenge Europe, 2026-10-18)
+- Winner saved: São Paulo Grand Prix (Formula 1, 2026-11-08)
+- Winner saved: 6 Hours of Monza (World Endurance, 2026-11-08)
 - Winner saved: Shanghai finale (GT World Challenge Asia, 2026-11-01)
 - Winner saved: Circuit of The Americas (Porsche Carrera Cup North America, 2026-10-25)
 - Winner saved: Xfinity 500 (NASCAR Cup Series, 2026-11-01)
+- Winner saved: Championship Race (NASCAR Cup Series, 2026-11-08)
 - Winner saved: Malaysian Grand Prix (MotoGP, 2026-11-01)
+- Winner saved: Qatar Grand Prix (MotoGP, 2026-11-08)
 - Picks scored: United States Grand Prix (Formula 1, 2026-10-25)
 - Picks scored: Mexico City Grand Prix (Formula 1, 2026-11-01)
+- Picks scored: São Paulo Grand Prix (Formula 1, 2026-11-08)
 
 </details>
 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 43 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 44 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
-- Formula 1: current (Mexico City Grand Prix)
+- Formula 1: current (São Paulo Grand Prix)
 - IMSA WeatherTech: current (Motul Petit Le Mans (season finale))
-- FIA WEC: current (6 Hours of Barcelona)
+- FIA WEC: current (6 Hours of Monza (season finale))
 - GT Europe: current (3 Hours of Portimão)
 - GT Asia: current (Shanghai finale)
 - Supercup: current (Monza (season finale))
@@ -69,13 +63,13 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 - Mustang: current (Circuit of The Americas (season finale))
 - GT Australia: current (Sydney Motorsport Park (Round 5))
 - GT America: current (Indianapolis 8 Hour (season finale))
-- NASCAR Cup: current (Xfinity 500)
+- NASCAR Cup: current (Championship Race)
 - IndyCar: current (Grand Prix of Monterey (season finale))
-- MotoGP: current (Malaysian GP (Sepang))
+- MotoGP: current (Qatar GP (Lusail))
 - Formula E: last race London ePrix (season finale) (2026-08-16)
 - WRC: last race Rally Italia Sardegna (2026-10-04)
 - Supercars: last race Gold Coast 500 (2026-10-25)
-- Super GT: last race Autopolis GT 3 Hours (2026-10-18)
+- Super GT: last race Motegi Grand Final (season finale) (2026-11-08)
 - DTM: last race Hockenheim finale, Race 2 (2026-10-11)
 - ELMS: last race 4 Hours of Portimão (season finale) (2026-10-10)
 
@@ -84,9 +78,10 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (11 days ago)
+- [ ] Directory last researched Oct 28, 2026 (12 days ago)
 - [ ] FR Americas: season finished but no champion listed
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
+- [ ] GB3: season finished but no champion listed
 - [ ] VP SportsCar: season finished but no champion listed
 - [ ] ADAC GT Masters: season finished but no champion listed
 - [ ] NLS: season finished but no champion listed
@@ -96,8 +91,9 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 - [ ] Ferrari Chall NA: season ended 2026-09-13 but status is still "In progress"
 - [ ] Lambo ST NA: season finished but no champion listed
 - [ ] Carrera Cup GB: season finished but no champion listed
-- [ ] O'Reilly Series: season ended 2026-11-07 but status is still "In progress"
-- [ ] Truck Series: season ended 2026-11-06 but status is still "In progress"
+- [ ] O'Reilly Series: season finished but no champion listed
+- [ ] Truck Series: season finished but no champion listed
+- [ ] NASCAR Mexico: season finished but no champion listed
 - [ ] TCR S. America: In progress, no next round listed
 - [ ] Stock Car Pro: In progress, no next round listed
 - [ ] TC: In progress, no next round listed
@@ -109,17 +105,17 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 - [ ] Lemons: no status (in progress or finished?) and no next round
 - [ ] All Japan RR: season ended 2026-10-25 but status is still "In progress"
 - [ ] Isle of Man TT: season finished but no champion listed
+- [ ] Trans Am: season ended 2026-11-08 but status is still "In progress"
 - [ ] Lucas Oil Late Models: season finished but no champion listed
 - [ ] GNCC: season finished but no champion listed
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Old start times to clear from WORLD_TIMES: nascar-truck, nascar-oreilly, supergt, supercars
 - [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
-- [ ] Trans Am races this weekend (Circuit of The Americas (finale) · Nov 5–8) with no start time
+- [ ] SCORE races this weekend (Baja 1000 (Los Cabos) · race starts Nov 13) with no start time
 
-<details><summary>Up to date (19)</summary>
+<details><summary>Up to date (13)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -134,86 +130,37 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
-- GB3: start time saved for this weekend
-- Super GT: start time saved for this weekend
-- NASCAR Mexico: start time saved for this weekend
-- Supercars: start time saved for this weekend
-- Moto2: start time saved for this weekend
-- Moto3: start time saved for this weekend
 
 </details>
 
 ## 6. Tickets
 _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT_SITES)_
 
-- [ ] Only a Google search for tickets: Valencia Grand Prix (MotoGP, 2026-11-29)
 - [ ] Eurocup-3: no official ticket store or site
-- [ ] GB3: no official ticket store or site
 
 <details><summary>Up to date (1)</summary>
 
-- 9 of 10 races in the next 60 days have an official ticket or circuit link
+- 6 of 6 races in the next 60 days have an official ticket or circuit link
 
 </details>
 
 ## 7. Tracks & races near you
 _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 
-- [ ] No circuit website for Interlagos
-- [ ] No circuit website for Las Vegas Strip Circuit
-- [ ] No circuit website for Yas Marina
 - [ ] No circuit website for Adelaide Street Circuit
-- [ ] No circuit website for Jeddah Corniche Circuit
-- [ ] No circuit website for Albert Park
 - [ ] No circuit website for Shanghai International Circuit
-- [ ] No circuit website for Miami International Autodrome
-- [ ] No circuit website for Circuit Gilles Villeneuve
-- [ ] No circuit website for Circuit de Monaco
 - [ ] No circuit website for Madring
-- [ ] No circuit website for Baku City Circuit
 - [ ] No circuit website for Istanbul Park
-- [ ] No circuit website for Marina Bay
-- [ ] No circuit website for Autódromo Hermanos Rodríguez
+- [ ] No circuit website for Interlagos
 - [ ] No circuit website for Chang International Circuit
 - [ ] No circuit website for Beijing Street Circuit
-- [ ] No circuit website for Homestead-Miami Speedway
-- [ ] No circuit website for EchoPark Speedway
-- [ ] No circuit website for Phoenix Raceway
-- [ ] No circuit website for Las Vegas Motor Speedway
-- [ ] No circuit website for Darlington Raceway
-- [ ] No circuit website for Bristol Motor Speedway
-- [ ] No circuit website for Martinsville Speedway
-- [ ] No circuit website for Talladega Superspeedway
-- [ ] No circuit website for Texas Motor Speedway
-- [ ] No circuit website for Kansas Speedway
-- [ ] No circuit website for Dover Motor Speedway
-- [ ] No circuit website for North Wilkesboro Speedway
-- [ ] No circuit website for Charlotte Motor Speedway
-- [ ] No circuit website for Nashville Superspeedway
-- [ ] No circuit website for Pocono Raceway
-- [ ] No circuit website for Michigan International Speedway
-- [ ] No circuit website for Chicagoland Speedway
-- [ ] No circuit website for Iowa Speedway
 - [ ] No circuit website for Coronado Street Course
-- [ ] No circuit website for World Wide Technology Raceway
-- [ ] No circuit website for Richmond Raceway
-- [ ] No circuit website for New Hampshire Motor Speedway
-- [ ] No circuit website for Streets of St. Petersburg
 - [ ] No circuit website for Streets of Arlington
-- [ ] No circuit website for Portland International Raceway
 - [ ] No circuit website for Streets of Markham
 - [ ] No circuit website for Milwaukee Mile
-- [ ] No circuit website for Circuit Ricardo Tormo
 - [ ] No circuit website for Autódromo Internacional Ayrton Senna
 - [ ] No circuit website for Autódromo Oscar y Juan Gálvez
-- [ ] No circuit website for Circuito de Jerez
 - [ ] No circuit website for Bugatti Circuit
-- [ ] No circuit website for Mugello
-- [ ] No circuit website for TT Circuit Assen
-- [ ] No circuit website for Sachsenring
-- [ ] No circuit website for Brno Circuit
-- [ ] No circuit website for MotorLand Aragón
-- [ ] No circuit website for Mobility Resort Motegi
 - [ ] No circuit website for Mandalika International Circuit
 
 ## 8. News
@@ -223,7 +170,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (300 headlines)
+- News last collected 0.2 hours ago (300 headlines)
 
 </details>
 
@@ -235,6 +182,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 <details><summary>Up to date (2)</summary>
 
 - Pages last rebuilt November 9, 2026
-- 543 pages in the sitemap
+- 542 pages in the sitemap
 
 </details>
+

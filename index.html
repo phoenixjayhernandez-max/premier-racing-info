@@ -1306,7 +1306,7 @@ const RAW = [
   // GT World Challenge Asia
   ["gtas-sepang","gtas","Sepang","Sepang International Circuit","Sepang, Malaysia","2026-04-04","2026-04-05",["2 × 1 hour"]],
   ["gtas-mandalika","gtas","Mandalika","Mandalika International Circuit","Lombok, Indonesia","2026-05-02","2026-05-03",["2 × 1 hour"]],
-  ["gtas-shanghai","gtas","Shanghai","Shanghai International Circuit","Shanghai, China","2026-06-05","2026-06-06",["2 × 1 hour"]],
+  ["gtas-shanghai","gtas","Shanghai","Shanghai International Circuit","Shanghai, China","2026-06-05","2026-06-06",["Not held: season ran 6 rounds"],"cancelled"],
   ["gtas-fuji","gtas","Fuji","Fuji Speedway","Oyama, Japan","2026-07-11","2026-07-12",["2 × 1 hour"]],
   ["gtas-okayama","gtas","Okayama","Okayama International Circuit","Mimasaka, Japan","2026-08-29","2026-08-30",["2 × 1 hour"]],
   ["gtas-beijing","gtas","Beijing","Beijing Street Circuit","Beijing, China","2026-10-03","2026-10-04",["2 × 1 hour","Street circuit"]],
@@ -1554,7 +1554,8 @@ const WINNERS = {
   "pccna-sebring":"Tyler Maxson, both races", "pccna-longbeach":"Tom Sargent, both races", "pccna-miami":"Tyler Maxson", "pccna-glen":"Janne Stiak",
   "pccna-roadam":"Tyler Maxson", "pccna-atlanta":"Tyler Maxson, both races", "pccna-cota":"R1 Janne Stiak · R2 Tyler Maxson",
   "mustang-sebring":"Cole Loftsgard, both races", "mustang-laguna":"R1 Cole Loftsgard · R2 Devin Anderson", "mustang-midohio":"R1 Cole Loftsgard · R2 Devin Anderson",
-  "mustang-glen":"Cole Loftsgard, both races", "mustang-vir":"R1 Cole Loftsgard · R2 Will Lucas", "mustang-cota":"Devin Anderson, both races"
+  "mustang-glen":"Cole Loftsgard, both races", "mustang-vir":"R1 Cole Loftsgard · R2 Will Lucas", "mustang-cota":"Devin Anderson, both races",
+  "f1-aus":"George Russell, Mercedes", "f1-jpn":"Kimi Antonelli, Mercedes", "f1-mia":"Kimi Antonelli, Mercedes", "f1-can":"Kimi Antonelli, Mercedes", "f1-mon":"Kimi Antonelli, Mercedes", "f1-bcn":"Lewis Hamilton, Ferrari", "f1-aut":"George Russell, Mercedes", "f1-gbr":"Charles Leclerc, Ferrari", "f1-bel":"Kimi Antonelli, Mercedes", "f1-hun":"Lando Norris, McLaren", "f1-ned":"Lando Norris, McLaren", "f1-mad":"Kimi Antonelli, Mercedes", "f1-bra":"Lando Norris, McLaren", "imsa-longbeach":"Acura (van der Zande / Yelloly)", "imsa-laguna":"Porsche 963 (van der Helm / Heinrich)", "imsa-detroit":"#31 Cadillac (Aitken / Bamber)", "imsa-glen":"#31 Cadillac (Aitken / Bamber / Vesti)", "imsa-ctmp":"LMP2: Dillmann / Clarke (ORECA) · GTD Pro: Hawksworth / Barnicoat (Lexus)", "imsa-roadam":"#10 Wayne Taylor Cadillac (R. Taylor / Albuquerque)", "imsa-vir":"GTD Pro: Caldarelli / Mitchell (Lamborghini)", "wec-imola":"#8 Toyota (Buemi / Hartley / Hirakawa)", "wec-spa":"#20 BMW (Frijns / Rast / van der Linde)", "wec-lm":"#7 Toyota (Conway / Kobayashi / de Vries)", "wec-sp":"#15 BMW (Magnussen / Marciello / Vanthoor)", "wec-monza":"#38 Cadillac Jota (Aitken / Bourdais / Bamber)", "gte-nring":"#7 Comtoyou Aston Martin (Drudi / Sørensen / Thiim)", "gtas-sepang":"Pro-Am: R1 #911 Huang / Ghiretti · R2 #4 Lu / Picariello", "gtas-mandalika":"Pro-Am: R1 #15 Evans / Pato · R2 #37 Hartog / Liu", "gtas-fuji":"Pro-Am: R1 #60 Ogawa / Wakisaka · R2 #11 Lu / Heinrich", "gtas-okayama":"Pro-Am: R1 #89 Ruan / Verhagen · R2 #15 Evans / Pato", "gtau-qld":"Pro-Am: R1 #181 Davison / Gracie · R2 #44 Pires / Leitch", "gtau-sydney":"Pro-Am: R1 #56 Smollen / Targett · R2 #1 Feeney / Schumacher", "pccna-indy":"R1 Tyler Maxson · R2 Aaron Jeansonne", "nascar-homestead":"Ryan Blaney (Team Penske)", "motogp-qatar":"Marco Bezzecchi (Aprilia Racing)"
 };
 // Same-weekend clashes between different series
 for (const e of events) {
@@ -1680,14 +1681,6 @@ const SESSIONS = {
 // Start times for directory series (no full calendar here) racing in the next few days.
 // worldId: [[session, UTC time, network?, link?], ...]. Kept current by the updater.
 const WORLD_TIMES = {
-  "moto3":[["Qatar race (Sun)","2026-11-08T13:00Z"]],
-  "moto2":[["Qatar race (Sun)","2026-11-08T14:15Z"]],
-  "nascar-truck":[["Championship race","2026-11-07T00:30Z"]],
-  "nascar-oreilly":[["Championship race","2026-11-07T22:00Z"]],
-  "gb3":[["Race 1 (Sat)","2026-11-07T14:00Z"],["Race 2 (Sun)","2026-11-08T10:10Z"],["Race 3 (Sun)","2026-11-08T13:50Z"]],
-  "nascar-mexico":[["La Gran Final 150 (Sun)","2026-11-08T21:00Z"]],
-  "supergt":[["Round 3 final race (Sat)","2026-11-07T05:00Z"],["Round 8 final race (Sun)","2026-11-08T05:00Z"]],
-  "supercars":[["Race 33 (Sat)","2026-11-07T04:30Z"],["Race 34 (Sun)","2026-11-08T04:30Z"]],
 };
 const SESSION_WATCH = {
   "nascar-martinsville|Race":["NBC","https://www.nbcsports.com/motor-sports/nascar"],
@@ -1702,10 +1695,11 @@ const WINNERS_LIVE = {};
 const PODIUMS = {
   "f1-usa":["Kimi Antonelli","Charles Leclerc","Max Verstappen"],
   "f1-mex":["Max Verstappen","Lewis Hamilton","Kimi Antonelli"],
+  "f1-bra":["Lando Norris","Max Verstappen","Isack Hadjar"],
 };
 
 // Races that have full results in the stats snapshot
-const RESULT_FOR = { "f1-usa":"f1", "f1-mex":"f1", "gtas-shanghai-fin":"gtas", "imsa-petit":"imsa", "wec-bcn":"wec", "gtwc-indy":"gtwc", "gte-portimao":"gte", "gtas-beijing":"gtas"};
+const RESULT_FOR = { "f1-usa":"f1", "f1-mex":"f1", "f1-bra":"f1", "wec-monza":"wec", "gtas-shanghai-fin":"gtas", "imsa-petit":"imsa", "wec-bcn":"wec", "gtwc-indy":"gtwc", "gte-portimao":"gte", "gtas-beijing":"gtas"};
 
 
 // ---------- Stats snapshot (Oct 4, 2026) ----------
@@ -1713,13 +1707,13 @@ const RESULT_FOR = { "f1-usa":"f1", "f1-mex":"f1", "gtas-shanghai-fin":"gtas", "
 // Same shape as STATS. Updated Oct 30, 2026.
 const MORE_STATS = {
   "nascar-cup": {
-    race: { name:"Xfinity 500", where:"Martinsville Speedway · Nov 1",
-      note:"William Byron won at Martinsville. Kyle Larson finished 9th and keeps a 67-point lead over Christopher Bell going into the title race at Homestead-Miami on Nov 8.",
-      rows:[["1","24","William Byron","Hendrick Motorsports · Chevrolet","Winner"],["6","11","Denny Hamlin","Joe Gibbs Racing · Toyota",""],["9","5","Kyle Larson","Hendrick Motorsports · Chevrolet",""],["10","20","Christopher Bell","Joe Gibbs Racing · Toyota",""]], partial:true },
-    champs:null,
-    standingsTitle:"Chase standings (after Martinsville)",
+    race: { name:"Championship Race", where:"Homestead-Miami Speedway · Nov 8",
+      note:"Ryan Blaney passed Tyler Reddick with two laps to go to win the finale. Kyle Larson clinched his third Cup title in Stage 1 and finished 12th; Christopher Bell was fourth and Denny Hamlin sixth.",
+      rows:[["1","12","Ryan Blaney","Team Penske · Ford","Winner"],["2","45","Tyler Reddick","23XI Racing · Toyota",""],["3","24","William Byron","Hendrick Motorsports · Chevrolet",""],["4","20","Christopher Bell","Joe Gibbs Racing · Toyota",""],["5","23","Bubba Wallace","23XI Racing · Toyota",""],["6","11","Denny Hamlin","Joe Gibbs Racing · Toyota",""],["7","2","Austin Cindric","Team Penske · Ford",""],["8","","Daniel Suárez","",""],["9","","Noah Gragson","",""],["10","","Michael McDowell","",""],["12","5","Kyle Larson","Hendrick Motorsports · Chevrolet","Champion"]], partial:true },
+    champs:[["Drivers","Kyle Larson","Hendrick Motorsports · 3rd Cup title, clinched in Stage 1 at Homestead"]],
+    standingsTitle:"Chase standings (after Martinsville, before the finale)",
     standings:[["Kyle Larson","Hendrick Motorsports",2469],["Christopher Bell","Joe Gibbs Racing",2402],["Denny Hamlin","Joe Gibbs Racing",2399],["Chase Briscoe","Joe Gibbs Racing",2385],["Joey Logano","Team Penske",2366],["Tyler Reddick","23XI Racing",2344],["Ryan Blaney","Team Penske",2336],["Ty Gibbs","Joe Gibbs Racing",2309],["William Byron","Hendrick Motorsports",2303],["Chase Elliott","Hendrick Motorsports",2268]],
-    notes:["Larson leads Bell by 67 points with one race left.","The champion is decided at Homestead-Miami on Nov 8."]
+    notes:["Season complete. Kyle Larson is the 2026 Cup Series champion.","The 2027 season starts with the Daytona 500 in February."]
   },
   "indycar": {
     race: { name:"Grand Prix of Monterey (season finale)", where:"WeatherTech Raceway Laguna Seca · Sep 6",
@@ -1732,17 +1726,17 @@ const MORE_STATS = {
     notes:["Season complete."]
   },
   "motogp": {
-    race: { name:"Malaysian GP (Sepang)", where:"Sepang International Circuit · Nov 1",
-      note:"Marc Márquez won by 4.2 seconds from Pedro Acosta, with Álex Márquez third. Acosta won Saturday's Sprint. Jorge Martín sat the weekend out with a wrist fracture from Phillip Island, so Márquez now leads by 44 and can clinch the title in Qatar by stretching that to 74.",
-      rows:[["1","93","Marc Márquez","Ducati Lenovo Team","20 laps"],["2","37","Pedro Acosta","Red Bull KTM Factory Racing","+4.172"],["3","73","Álex Márquez","BK8 Gresini Racing","+5.955"],
-        ["4","79","Ai Ogura","Trackhouse MotoGP Team","+6.759"],["5","23","Enea Bastianini","Red Bull KTM Tech3","+10.896"],["6","72","Marco Bezzecchi","Aprilia Racing","+11.259"],
-        ["7","10","Luca Marini","Honda HRC Castrol","+17.724"],["8","49","Fabio Di Giannantonio","Pertamina Enduro VR46","+17.790"],["9","33","Brad Binder","Red Bull KTM Factory Racing","+23.729"],
-        ["10","21","Franco Morbidelli","Pertamina Enduro VR46","+25.097"]], partial:true },
+    race: { name:"Qatar GP (Lusail)", where:"Lusail International Circuit · Nov 8",
+      note:"Marco Bezzecchi won by 3.1 seconds from Marc Márquez, who won Saturday's Sprint. Márquez leads Jorge Martín by 60 points with 74 left, so the title fight goes to Portugal.",
+      rows:[["1","72","Marco Bezzecchi","Aprilia Racing","22 laps"],["2","93","Marc Márquez","Ducati Lenovo Team","+3.083"],["3","25","Raúl Fernández","Trackhouse MotoGP Team","+3.614"],
+        ["4","79","Ai Ogura","Trackhouse MotoGP Team","+4.885"],["5","23","Enea Bastianini","Red Bull KTM Tech3","+6.948"],["6","37","Pedro Acosta","Red Bull KTM Factory Racing","+7.413"],
+        ["7","89","Jorge Martín","Aprilia Racing","+14.023"],["8","49","Fabio Di Giannantonio","Pertamina Enduro VR46","+15.517"],["9","5","Johann Zarco","Castrol Honda LCR","+16.257"],
+        ["10","","Iker Lecuona","BK8 Gresini Racing","+17.958"]], partial:true },
     champs:null,
-    standingsTitle:"Riders' championship (after Malaysia)",
-    standings:[["Marc Márquez","Ducati Lenovo Team",399],["Jorge Martín","Aprilia Racing",355],["Marco Bezzecchi","Aprilia Racing",332],["Pedro Acosta","Red Bull KTM Factory Racing",295],["Ai Ogura","Trackhouse MotoGP Team",278],["Fabio Di Giannantonio","Pertamina Enduro VR46",265],["Raúl Fernández","Trackhouse MotoGP Team",236],["Álex Márquez","BK8 Gresini Racing",197],["Francesco Bagnaia","Ducati Lenovo Team",173],["Enea Bastianini","Red Bull KTM Tech3",134]],
+    standingsTitle:"Riders' championship (after Qatar, top three; others after Malaysia)",
+    standings:[["Marc Márquez","Ducati Lenovo Team",431],["Jorge Martín","Aprilia Racing",371],["Marco Bezzecchi","Aprilia Racing",357],["Pedro Acosta","Red Bull KTM Factory Racing",295],["Ai Ogura","Trackhouse MotoGP Team",278],["Fabio Di Giannantonio","Pertamina Enduro VR46",265],["Raúl Fernández","Trackhouse MotoGP Team",236],["Álex Márquez","BK8 Gresini Racing",197],["Francesco Bagnaia","Ducati Lenovo Team",173],["Enea Bastianini","Red Bull KTM Tech3",134]],
     makersTitle:"Constructors (after Indonesia)", makers:[["Aprilia",503],["Ducati",491],["KTM",311]],
-    notes:["Remaining: Qatar (Nov 8), Portugal (Nov 22), Valencia (Nov 29).","Márquez clinches in Qatar if he leaves with a 74-point lead."]
+    notes:["Remaining: Portugal (Nov 22) and Valencia (Nov 29), 74 points in all.","Márquez clinches in Portugal if he leaves with more than a 37-point lead."]
   },
   "formulae": {
     race: { name:"London ePrix (season finale)", where:"London · Aug 16",
@@ -1774,13 +1768,13 @@ const MORE_STATS = {
     notes:["Next: Sandown semi-final, Nov 6–8. The Grand Final is in Adelaide, Nov 26–29.","Payne leads Feeney by four points."]
   },
   "supergt": {
-    race: { name:"Autopolis GT 3 Hours", where:"Autopolis · Oct 18",
-      note:"Naoki Yamamoto and Tadasuke Makino won for Team Kunimitsu Honda. The au TOM'S Toyota finished eighth after a pit penalty but still leads by three points. K-tunes Lexus won GT300.",
-      rows:[["1","100","Yamamoto / Makino","Stanley Team Kunimitsu · Honda","Winner"],["2","38","Oyu / Kobayashi","KeePer Cerumo · Toyota","+1.363"],["3","23","Chiyo / Takaboshi","NISMO · Nissan","+7.972"]], partial:true },
-    champs:null,
-    standingsTitle:"GT500 drivers (after Autopolis)",
+    race: { name:"Motegi Grand Final (season finale)", where:"Mobility Resort Motegi · Nov 7–8",
+      note:"The #12 Impul Nissan (Hiramine / Baguette) won Saturday's race, Nissan's first win in a long time. Naoki Yamamoto and Tadasuke Makino won Sunday's race by 1.7 seconds in the #100 Kunimitsu Honda to take the GT500 title. Kondo Racing's #56 Nissan won the GT300 title.",
+      rows:[["R1","12","Hiramine / Baguette","TRS Impul · Nissan","Winner"],["R2","100","Yamamoto / Makino","Stanley Team Kunimitsu · Honda","Winner"],["2","17","Tsukakoshi / Nomura","Astemo Real Racing · Honda",""],["3","39","Sekiguchi / Fenestraz","SARD · Toyota",""]], partial:true },
+    champs:[["GT500","Naoki Yamamoto / Tadasuke Makino","#100 Stanley Team Kunimitsu Honda"],["GT300","João Paulo de Oliveira / Iori Kimura","#56 Kondo Racing Nissan GT-R"]],
+    standingsTitle:"GT500 drivers (after Autopolis, before the finale)",
     standings:[["Sho Tsuboi / Kenta Yamashita","au TOM'S · Toyota",61],["Naoki Yamamoto / Tadasuke Makino","Team Kunimitsu · Honda",58],["Koudai Tsukakoshi / Yuto Nomura","Astemo Real Racing · Honda",45]],
-    notes:["Next: a Motegi double-header in November decides the title."]
+    notes:["Season complete. Yamamoto and Makino are the 2026 GT500 champions."]
   },
   "dtm": {
     race: { name:"Hockenheim finale, Race 2", where:"Hockenheimring · Oct 11",
@@ -1812,33 +1806,22 @@ const MORE_ORDER = [["nascar-cup","NASCAR Cup"],["indycar","IndyCar"],["motogp",
 
 const STATS = {
   f1: {
-    race: { name:"Mexico City Grand Prix", where:"Autódromo Hermanos Rodríguez · Nov 1",
-      note:"Verstappen won by 0.8 seconds from polesitter Hamilton, with Antonelli third, enough to clinch his first world title with four rounds to spare. The result changed after the race: Piastri got a time penalty for colliding with Lindblad, and both Alpines were penalised for yellow-flag infringements and dropped out of the points.",
-      rows:[["1","3","Max Verstappen","Red Bull","71 laps · 25 pts"],["2","44","Lewis Hamilton","Ferrari","+0.799"],["3","12","Kimi Antonelli","Mercedes","+4.006"],
-        ["4","16","Charles Leclerc","Ferrari","+10.707"],["5","1","Lando Norris","McLaren","+11.778"],["6","63","George Russell","Mercedes","+12.263"],
-        ["7","30","Liam Lawson","Racing Bulls","+20.899"],["8","5","Gabriel Bortoleto","Audi","+22.041"],["9","6","Isack Hadjar","Red Bull","+22.503"],
-        ["10","","Ryo Hirakawa","Haas","+25.373"],["11","23","Alex Albon","Williams","+27.562"],["12","55","Carlos Sainz","Williams","+28.638"],
-        ["13","81","Oscar Piastri","McLaren","+29.475 · time penalty"],["14","27","Nico Hülkenberg","Audi","+29.977"],["15","43","Franco Colapinto","Alpine","+30.204 · penalty"],
-        ["16","11","Sergio Pérez","Cadillac","+30.695"],["17","10","Pierre Gasly","Alpine","+51.483 · penalty"],["DNF","41","Arvid Lindblad","Racing Bulls","DNF · crash"],
-        ["DNF","87","Oliver Bearman","Haas","DNF · damage"],["DNF","77","Valtteri Bottas","Cadillac","DNF · crash"],["DNF","18","Lance Stroll","Aston Martin","DNF · technical"],["DNF","14","Fernando Alonso","Aston Martin","DNF · technical"]],
-      quali:[["1","44","Lewis Hamilton","Ferrari","1:16.514"],["2","63","George Russell","Mercedes","+0.009"],["3","16","Charles Leclerc","Ferrari","+0.119"],
-        ["4","3","Max Verstappen","Red Bull","+0.178"],["5","12","Kimi Antonelli","Mercedes","+0.193"],["6","1","Lando Norris","McLaren","+0.310"],
-        ["7","6","Isack Hadjar","Red Bull","+0.386"],["8","30","Liam Lawson","Racing Bulls","+0.515"],["9","41","Arvid Lindblad","Racing Bulls","+0.603"],
-        ["10","10","Pierre Gasly","Alpine","+0.639"],["11","27","Nico Hülkenberg","Audi","Q2"],["12","43","Franco Colapinto","Alpine","Q2"],
-        ["13","81","Oscar Piastri","McLaren","Q2"],["14","5","Gabriel Bortoleto","Audi","Q2"],["15","87","Oliver Bearman","Haas","Q2"],
-        ["16","55","Carlos Sainz","Williams","Q2"],["17","23","Alex Albon","Williams","Q1"],["18","14","Fernando Alonso","Aston Martin","Q1"],
-        ["19","","Ryo Hirakawa","Haas","Q1"],["20","18","Lance Stroll","Aston Martin","Q1"],["21","11","Sergio Pérez","Cadillac","Q1"],["22","77","Valtteri Bottas","Cadillac","Q1"]],
-      qualiNote:"Hamilton took pole by 0.009s from Russell. Ryo Hirakawa drove the second Haas this weekend." },
-    champs:[["Drivers","Kimi Antonelli","Mercedes · 380 pts, first title, clinched in Mexico City with four rounds left"]],
+    race: { name:"São Paulo Grand Prix", where:"Interlagos · Nov 8",
+      note:"Lando Norris won a wet race by 14.6 seconds from Max Verstappen, with Isack Hadjar third after Red Bull swapped its cars. Antonelli spun and finished fifth, but Russell's fourth place sealed Mercedes' constructors' title, its ninth.",
+      rows:[["1","1","Lando Norris","McLaren","Winner · 25 pts"],["2","3","Max Verstappen","Red Bull","+14.602"],["3","6","Isack Hadjar","Red Bull","+24.485"],
+        ["4","63","George Russell","Mercedes",""],["5","12","Kimi Antonelli","Mercedes",""],["6","81","Oscar Piastri","McLaren",""],
+        ["7","16","Charles Leclerc","Ferrari",""],["8","30","Liam Lawson","Racing Bulls",""],["9","44","Lewis Hamilton","Ferrari",""],
+        ["10","27","Nico Hülkenberg","Audi",""]], partial:true },
+    champs:[["Drivers","Kimi Antonelli","Mercedes · first title, clinched in Mexico City with four rounds left"],["Constructors","Mercedes","Clinched in São Paulo · 9th title"]],
     standingsTitle:"Drivers' championship",
-    standings:[["Kimi Antonelli","Mercedes",380],["Max Verstappen","Red Bull",261],["Lewis Hamilton","Ferrari",259],["George Russell","Mercedes",250],
-      ["Charles Leclerc","Ferrari",245],["Lando Norris","McLaren",221],["Oscar Piastri","McLaren",144],["Isack Hadjar","Red Bull",107],
-      ["Liam Lawson","Racing Bulls",83],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
-      ["Oliver Bearman","Haas",23],["Gabriel Bortoleto","Audi",14],["Nico Hülkenberg","Audi",13],["Esteban Ocon","Haas",7],
+    standings:[["Kimi Antonelli","Mercedes",390],["Max Verstappen","Red Bull",279],["George Russell","Mercedes",262],["Lewis Hamilton","Ferrari",261],
+      ["Charles Leclerc","Ferrari",251],["Lando Norris","McLaren",246],["Oscar Piastri","McLaren",152],["Isack Hadjar","Red Bull",122],
+      ["Liam Lawson","Racing Bulls",87],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
+      ["Oliver Bearman","Haas",23],["Gabriel Bortoleto","Audi",14],["Nico Hülkenberg","Audi",14],["Esteban Ocon","Haas",7],
       ["Fernando Alonso","Aston Martin",7],["Carlos Sainz","Williams",7],["Alex Albon","Williams",5],["Yuki Tsunoda","Racing Bulls",1],
       ["Ryo Hirakawa","Haas",1],["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
     makersTitle:"Constructors' championship",
-    makers:[["Mercedes",630],["Ferrari",504],["Red Bull",382],["McLaren",365],["Racing Bulls",108],["Alpine",69],["Haas",31],["Audi",27],["Williams",12],["Aston Martin",7],["Cadillac",0]],
+    makers:[["Mercedes",652],["Ferrari",512],["Red Bull",415],["McLaren",398],["Racing Bulls",112],["Alpine",69],["Haas",31],["Audi",28],["Williams",12],["Aston Martin",7],["Cadillac",0]],
     gridTitle:"The grid",
     grid:[["Mercedes","Mercedes power","Kimi Antonelli · George Russell"],["Ferrari","Ferrari power","Lewis Hamilton · Charles Leclerc"],
       ["McLaren","Mercedes power","Lando Norris · Oscar Piastri"],["Red Bull","Red Bull Ford power","Max Verstappen · Isack Hadjar"],
@@ -1871,7 +1854,7 @@ const STATS = {
       ["#24 BMW M Team WRT","BMW M Hybrid V8","Sheldon van der Linde"],["#60 Acura MSR","Acura ARX-06","Tom Blomqvist · pole at Acura's final GTP race"]],
     notes:["Porsche swept Daytona, Sebring and Petit Le Mans, a first for one manufacturer in a single season.","Aitken clinched the GTP title just by starting Petit Le Mans.","GTD: the #57 Winward Mercedes won Petit Le Mans from pole.","Season complete. The 2027 season opens with the Rolex 24 in January."]
   },
-  wec: {"race":{"name":"6 Hours of Barcelona","where":"Circuit de Barcelona-Catalunya · Oct 18 · Hypercar","note":"Toyota scored a 1-2, the #8 beating the #7 by 0.583s, and clinched its eighth manufacturers' world title. The drivers' title goes to Monza between the two Toyota crews. The #92 Manthey Porsche won LMGT3.","rows":[["1","8","Buemi / Hartley / Hirakawa","Toyota","Winner"],["2","7","Conway / Kobayashi / de Vries","Toyota","+0.583"],["3","50","Fuoco / Molina / Nielsen","Ferrari 499P","+39.725"],["4","38","Bamber / Bourdais / Aitken","Cadillac V-Series.R","+52.811"],["5","83","Ye / Kubica / Hanson","Ferrari 499P","+53.353"],["6","12","Lynn / Stevens / Nato","Cadillac V-Series.R","+1:20.751"],["7","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8",""],["8","36","Gounon / Martins","Alpine A424",""],["9","009","Riberas / Sørensen","Aston Martin Valkyrie",""],["10","35","Milesi / Habsburg","Alpine A424",""]],"partial":true},"champs":[["Hypercar manufacturers","Toyota","Clinched at Barcelona · 8th world title"]],"standingsTitle":"Hypercar drivers' championship (after Barcelona)","standings":[["Buemi / Hartley / Hirakawa","#8 Toyota",114],["Conway / Kobayashi / de Vries","#7 Toyota",97],["Magnussen / Marciello","#15 BMW",75],["Rast / Frijns","#20 BMW",75],["Dries Vanthoor","#15 BMW",69],["Fuoco / Molina / Nielsen","#50 Ferrari",69]],"makersTitle":"Hypercar manufacturers (after Barcelona; Toyota has clinched)","makers":[["Toyota",212],["BMW",154],["Ferrari",130]],"extraTitle":"LMGT3 drivers","extra":[["Jonny Edgar","#33 TF Sport Corvette",86],["Nicky Catsburg","#33 TF Sport Corvette",82],["Ben Keating","#33 TF Sport Corvette",64],["James / Drudi / Robichon","#27 Heart of Racing Aston Martin",62],["Eastwood / Dempsey / Yoluç","#34 Racing Team Turkey Corvette",58]],"gridTitle":"Hypercar grid","grid":[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],"notes":["Monza (Nov 6–8) decides the drivers' title: the #8 Toyota leads the #7 by 17 points.","Toyota clinched the manufacturers' title with its 1-2 at Barcelona.","LMGT3 at Barcelona went to the #92 Manthey Porsche (Shahin / Pera / Lietz)."]},
+  wec: {"race":{"name":"6 Hours of Monza (season finale)","where":"Monza · Nov 8 · Hypercar","note":"The #38 Cadillac Jota won a chaotic finale from the #36 Alpine and #51 Ferrari. The #8 Toyota finished tenth but sealed the drivers' title for Buemi, Hartley and Hirakawa. The #92 Manthey Porsche won LMGT3 by 0.27s, and TF Sport's Jonny Edgar took the LMGT3 title.","rows":[["1","38","Aitken / Bourdais / Bamber","Cadillac V-Series.R","191 laps"],["2","36","Gounon / Martins","Alpine A424","+5.607"],["3","51","Pier Guidi / Calado / Giovinazzi","Ferrari 499P","+35.767"],["4","94","Duval / Jakobsen / Pourchaire","Peugeot 9X8","+54.890"],["5","15","Magnussen / Marciello / D. Vanthoor","BMW M Hybrid V8","+1:03.128"],["6","83","Ye / Kubica / Hanson","Ferrari 499P","+1:26.952"],["7","20","Frijns / Rast / S. van der Linde","BMW M Hybrid V8","+1:29.925"],["8","93","Di Resta / Cassidy / Quinn","Peugeot 9X8","+1:31.878"],["9","50","Fuoco / Molina / Nielsen","Ferrari 499P","+1:32.899"],["10","8","Buemi / Hartley / Hirakawa","Toyota","1 lap"]],"partial":true},"champs":[["Hypercar drivers","Buemi / Hartley / Hirakawa","#8 Toyota · sealed at Monza"],["Hypercar manufacturers","Toyota","Clinched at Barcelona · 8th world title"],["LMGT3 drivers","Jonny Edgar","#33 TF Sport · 107 pts"]],"standingsTitle":"Hypercar drivers' championship (after Barcelona, before the finale)","standings":[["Buemi / Hartley / Hirakawa","#8 Toyota",114],["Conway / Kobayashi / de Vries","#7 Toyota",97],["Magnussen / Marciello","#15 BMW",75],["Rast / Frijns","#20 BMW",75],["Dries Vanthoor","#15 BMW",69],["Fuoco / Molina / Nielsen","#50 Ferrari",69]],"makersTitle":"Hypercar manufacturers (after Barcelona; Toyota has clinched)","makers":[["Toyota",212],["BMW",154],["Ferrari",130]],"extraTitle":"Final LMGT3 drivers","extra":[["Jonny Edgar","#33 TF Sport Corvette",107],["Nicky Catsburg","#33 TF Sport Corvette",103],["Shahin / Pera / Lietz","#92 Manthey Porsche",99]],"gridTitle":"Hypercar grid","grid":[["#7 Toyota Racing","Toyota","Conway · Kobayashi · de Vries"],["#8 Toyota Racing","Toyota","Buemi · Hartley · Hirakawa"],["#15 BMW M Team WRT","BMW M Hybrid V8","Magnussen · Marciello · D. Vanthoor"],["#20 BMW M Team WRT","BMW M Hybrid V8","Rast · Frijns · S. van der Linde"],["#35 Alpine","Alpine A424","Milesi · Habsburg · Félix da Costa"],["#36 Alpine","Alpine A424","Gounon · Martins · Makowiecki"],["#12 Cadillac Hertz Team Jota","Cadillac V-Series.R","Nato · Stevens · Lynn"],["#38 Cadillac Hertz Team Jota","Cadillac V-Series.R","Bamber · Bourdais · Aitken"],["#50 Ferrari AF Corse","Ferrari 499P","Fuoco · Molina · Nielsen"],["#51 Ferrari AF Corse","Ferrari 499P","Pier Guidi · Calado · Giovinazzi"],["#83 AF Corse","Ferrari 499P","Hanson · Kubica · Ye"],["#93 Peugeot","Peugeot 9X8","Di Resta · Vandoorne · Cassidy"],["#94 Peugeot","Peugeot 9X8","Duval · Jakobsen · Pourchaire"],["#007 Aston Martin THOR","Aston Martin Valkyrie","Tincknell · Gamble · Gunn"],["#009 Aston Martin THOR","Aston Martin Valkyrie","Riberas · Sørensen · De Angelis"],["#17 Genesis Magma Racing","Genesis GMR-001","Lotterer · Derani · Jaubert"],["#19 Genesis Magma Racing","Genesis GMR-001","Jaminet · Chatin · Juncadella"]],"notes":["Season complete. The #8 Toyota crew are the 2026 Hypercar world champions.","Toyota won the manufacturers' title, clinched at Barcelona.","Cadillac won the finale; the #92 Manthey Porsche won LMGT3."]},
   gte: {"race":{"name":"3 Hours of Portimão","where":"Algarve International Circuit · Oct 17 · Endurance Cup finale","note":"Mercedes-AMG Team GetSpeed won the finale, ahead of Lionspeed GP's Porsche and Boutsen VDS's pole-sitting Porsche. Max Verstappen finished ninth on his series debut after starting 24th.","rows":[["1","17","Ralf Aron / Maximilian Götz / Fabian Schiller","Mercedes-AMG · GetSpeed","Winner"],["2","","Lionspeed GP","Porsche 911 GT3 R",""],["3","","Boutsen VDS","Porsche 911 GT3 R",""],["9","3","Max Verstappen and crew","Mercedes-AMG · Verstappen Racing",""]],"partial":true},"champs":[["Overall Pro drivers","Lucas Auer / Maro Engel","#48 Mercedes-AMG Mann-Filter (Winward) · 131.5 pts"],["Gold Cup","ROWE Racing",""],["Silver Cup","Team WRT",""]],"standingsTitle":null,"standings":null,"makersTitle":null,"makers":null,"extraTitle":null,"extra":null,"gridTitle":"Crews to know","grid":[["#80 Lionspeed GP","Porsche 911 GT3 R","Bastian Buus · Ricardo Feller · Thomas Preining"],["#48 Mercedes-AMG Team Mann-Filter","Mercedes-AMG GT3 Evo","Lucas Auer · Maro Engel · Luca Stolz"],["#32 Team WRT","BMW M4 GT3 Evo","Kelvin van der Linde · Charles Weerts"],["#7 Comtoyou Racing","Aston Martin Vantage AMR GT3 Evo","Mattia Drudi · Marco Sørensen · Nicki Thiim"],["#3 Verstappen Racing","Mercedes-AMG GT3 Evo","Jules Gounon · Daniel Juncadella"],["#69 Emil Frey Racing","Ferrari 296 GT3 Evo","Ben Green · Thierry Vermeulen"],["#58 Garage 59","McLaren 720S GT3 Evo","Tom Fleming · Louis Prette"],["#50 AF Corse","Ferrari 296 GT3 Evo","Arthur Leclerc · Thomas Neubauer"]],"notes":["Season complete. Auer and Engel are the 2026 overall champions.","Max Verstappen made his GT World Challenge debut at Portimão and finished ninth.","2027 starts at Paul Ricard, April 16–18."]},
   gtas: {"race":{"name":"Shanghai finale","where":"Shanghai International Circuit · Oct 31–Nov 1","note":"Liu Kaishun and Chen Weian (Harmony Racing Ferrari) won Race 1. Lu Wei and Laurin Heinrich won Race 2 from pole in the #11 Origine Porsche, and Lu Wei clinched the overall title.","rows":[["R1","96","Liu Kaishun / Chen Weian","Ferrari 296 GT3 · Harmony Racing","Winner"],["R2","11","Lu Wei / Laurin Heinrich","Porsche 911 GT3 R · Origine Motorsport","Winner"]],"partial":true},"champs":[["Overall","Lu Wei","#11 Origine Motorsport Porsche"],["Silver Cup","Yu Kuai / Cheng Congfu","#16 Phantom Audi"],["Silver-Am","Brian Lee / Maxime Oosten","Team KRC BMW"],["Am","Setiawan Santoso / Zhou Bihuang","Climax Mercedes-AMG"]],"standingsTitle":null,"standings":null,"makersTitle":null,"makers":null,"gridTitle":"Format","grid":[["6 rounds","2 one-hour races each","Sepang, Mandalika, Fuji, Okayama, Beijing, Shanghai"],["Classes","Pro-Am, Silver-Am, Am","Most cars share a pro with an amateur driver"]],"notes":["Lu Wei won the title by 14 points after winning the final race of the year.","Yu Kuai earned an SRO Academy drive at the 2027 24 Hours of Spa."]},
   psc: {
@@ -3213,11 +3196,10 @@ document.addEventListener("click", ev => {
 // ---------- Tickets ----------
 // Official sellers checked Oct 28, 2026; other rounds link to the circuit's own site, then a ticket search.
 const TICKETS = {
-  "nascar-homestead": ["Homestead-Miami Speedway (official)", "https://www.homesteadmiamispeedway.com/events/champ/"],
-  "wec-monza": ["TicketOne (official)", "https://www.ticketone.it/en/artist/world-endurance-championship/wec-6-hours-of-monza-2026-4204139/"],
-  "gtau-adelaide": ["Supercars (official)", "https://www.supercars.com/events/2026-adelaide"],
+  "gtau-adelaide": ["Supercars (official)", "https://www.supercars.com/events/2026-adelaide"]
 };
 const CIRCUIT_SITES = {
+  "Las Vegas Strip Circuit":"https://www.f1lasvegasgp.com", "Yas Marina":"https://www.yasmarinacircuit.com", "Jeddah Corniche Circuit":"https://www.saudiarabiangp.com", "Albert Park":"https://www.grandprix.com.au", "Miami International Autodrome":"https://f1miamigp.com", "Circuit Gilles Villeneuve":"https://www.gpcanada.ca", "Circuit de Monaco":"https://acm.mc", "Baku City Circuit":"https://www.bakucitycircuit.com", "Marina Bay":"https://www.singaporegp.sg", "Autódromo Hermanos Rodríguez":"https://www.mexicogp.mx", "EchoPark Speedway":"https://www.echoparkspeedway.com", "Phoenix Raceway":"https://www.phoenixraceway.com", "Las Vegas Motor Speedway":"https://www.lvms.com", "Darlington Raceway":"https://www.darlingtonraceway.com", "Bristol Motor Speedway":"https://www.bristolmotorspeedway.com", "Martinsville Speedway":"https://www.martinsvillespeedway.com", "Talladega Superspeedway":"https://www.talladegasuperspeedway.com", "Texas Motor Speedway":"https://www.texasmotorspeedway.com", "Kansas Speedway":"https://www.kansasspeedway.com", "Dover Motor Speedway":"https://www.dovermotorspeedway.com", "North Wilkesboro Speedway":"https://www.northwilkesborospeedway.com", "Charlotte Motor Speedway":"https://www.charlottemotorspeedway.com", "Nashville Superspeedway":"https://www.nashvillesuperspeedway.com", "Pocono Raceway":"https://www.poconoraceway.com", "Michigan International Speedway":"https://www.mispeedway.com", "Chicagoland Speedway":"https://www.chicagolandspeedway.com", "Iowa Speedway":"https://www.iowaspeedway.com", "World Wide Technology Raceway":"https://www.wwtraceway.com", "Richmond Raceway":"https://www.richmondraceway.com", "New Hampshire Motor Speedway":"https://www.nhms.com", "Homestead-Miami Speedway":"https://www.homesteadmiamispeedway.com", "Streets of St. Petersburg":"https://gpstpete.com", "Portland International Raceway":"https://www.portlandraceway.com", "Circuit Ricardo Tormo":"https://www.circuitricardotormo.com", "Circuito de Jerez":"https://www.circuitodejerez.com", "Mugello":"https://www.mugellocircuit.com", "TT Circuit Assen":"https://www.ttcircuit.com", "Sachsenring":"https://www.sachsenring-circuit.com", "Brno Circuit":"https://www.automotodrombrno.cz", "MotorLand Aragón":"https://www.motorlandaragon.com", "Mobility Resort Motegi":"https://www.mr-motegi.jp",
   "Daytona International Speedway":"https://www.daytonainternationalspeedway.com", "Sebring International Raceway":"https://www.sebringraceway.com",
   "Streets of Long Beach":"https://gplb.com", "WeatherTech Raceway Laguna Seca":"https://www.weathertechraceway.com", "Streets of Detroit":"https://detroitgp.com",
   "Watkins Glen International":"https://www.theglen.com", "Road America":"https://www.roadamerica.com", "VIRginia International Raceway":"https://virnow.com",
