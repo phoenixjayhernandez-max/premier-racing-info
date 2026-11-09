@@ -47,9 +47,11 @@ const PHOTO_NEED = {
 const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
   "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
 // Never on track (whole words only, so "Toyota" or "designing" don't trip it)
-const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?)\b/i;
+const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?|rugby|football|soccer|futbol|calcio|cricket|tennis|basketball|baseball|softball|hockey|lacrosse|volleyball|handball|athletics|marathon|runners?|sprinters?|cycling|cyclists?|bicycles?|giro d|tour de france|horses?|equestrian|jockeys?|greyhounds?|rowing|regatta|sailing|yachts?|swimm(ing|ers?)|ski(ing|ers?)?|snowboard|golf|boxing|wrestling|fans? cheering|cheerleaders?|referees?|stadio|olimpico|six nations|sei nazioni|national team)\b/i;
+// Every photo must also say it is motor racing somewhere in its title or categories.
+const PHOTO_YES = /\b(rac(e|es|ing|ed)|motor ?sport|motorsports?|grand prix|gp|circuit|speedway|raceway|autodromo|aut[oó]dromo|rally|endurance|laps?|pit ?(lane|stop|wall)|grid|qualifying|practice|formula|f[1-4]|nascar|indy ?car|indy|motogp|moto[23e]|gt[34]?|gtp|lmp[23]|lmgt3|hypercar|superbike|motorcycles?|sports? ?cars?|touring cars?|stock cars?|sprint cars?|dirt track|hill ?climb|supercars?|carrera cup|supercup|mustang|porsche|ferrari|lamborghini|mclaren|mercedes|bmw|audi|aston martin|corvette|cadillac|toyota|honda|ford|chevrolet|lexus|acura|ducati|aprilia|yamaha|ktm|dragsters?|drag racing|top fuel|funny cars?|off-?road|trophy trucks?|kart(ing)?|nhra|imsa|wec|le mans|daytona|sebring|monza|spa|n[uü]rburgring|bathurst|cota)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics2";
+const PHOTOKEY = KEY + "-racepics3"; // bumped Nov 2026 after a rugby photo slipped through
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
 try { ["-freepics1", "-freepics2", "-img2", "-racepics1"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
@@ -64,12 +66,13 @@ function buildPool(){
 function savePhotos(){ try { localStorage.setItem(PHOTOKEY, JSON.stringify(PHOTO_CACHE)); } catch(e){} }
 // Does this photo show this series on track?
 function photoFits(wid, text, title){
-  if (PHOTO_NOT.test(text)) return false;
+  if (PHOTO_NOT.test(text) || !PHOTO_YES.test(text)) return false;
   const need = PHOTO_NEED[wid];
   if (need) { if (!need[0].test(text)) return false; if (need[1] && need[1].test(need[2] ? title : text)) return false; return true; }
   // directory series without their own rule: the series' name has to be in the photo's title, tags or categories
   const w = typeof worldById === "function" ? worldById(wid) : null, names = w ? [w.short, w.name, w.code].filter(n => n && n.length >= 3) : [];
-  return !names.length || names.some(n => fold(text).includes(fold(n).replace(/\s*\(.*$/, "")));
+  const ft = " " + fold(text).replace(/[^a-z0-9]+/g, " ") + " ";
+  return !names.length || names.some(n => ft.includes(" " + fold(n).replace(/\s*\(.*$/, "").replace(/[^a-z0-9]+/g, " ").trim() + " "));
 }
 function queriesFor(wid){
   if (PHOTO_QUERIES[wid]) return PHOTO_QUERIES[wid];
@@ -115,7 +118,7 @@ function seriesPhotos(wid){
   });
 }
 function loadFreePhotos(){
-  try { const c = JSON.parse(localStorage.getItem(PHOTOKEY) || "null"); if (c && c.by && Date.now() - c.t < 7 * 864e5) { PHOTO_CACHE = c; buildPool(); if (PHOTO_POOL.length) return Promise.resolve(); } } catch(e){}
+  try { const c = JSON.parse(localStorage.getItem(PHOTOKEY) || "null"); if (c && c.by && Date.now() - c.t < 7 * 864e5) { for (const w in c.by) c.by[w] = (c.by[w] || []).filter(x => photoFits(w, x.about || "", String(x.about || "").split(" · ")[0])); PHOTO_CACHE = c; buildPool(); if (PHOTO_POOL.length) return Promise.resolve(); } } catch(e){}
   PHOTO_CACHE = { t: Date.now(), by: {}, tried: {} };
   const ids = Object.keys(PHOTO_QUERIES);
   let i = 0; const worker = () => i < ids.length ? seriesPhotos(ids[i++]).then(worker) : Promise.resolve();
