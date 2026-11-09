@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 8, 2026: fixed a wrong (rugby) home photo. The home hero now only uses the series' own race photos, and track photos must come from a racetrack article (TRACK_TITLE). New "Get the app" guide (iPhone, Android, Mac, Windows; one-click install where the browser allows), in Settings, the footer, the home install box and `/#app`.
 - Done Nov 8, 2026: "Start here" setup for new fans (idea from Reddit feedback): pick series, see next sessions in your time zone, add calendar feeds and alerts, then they're saved to My series. Home card for first-time visitors, Settings row, link `/#start`. GA events onboard_open / onboard_done / onboard_skip.
 - Done Nov 8, 2026: new logo (Speed Cut PRI + wide wordmark) in the app and page headers, app icons, favicon and share image. Next: use it on Instagram/TikTok profile pictures and merch.
 - Done Nov 8, 2026: Settings page (gear icon in the header, footer link, `/#settings`): account, lock screen alerts, calendar sync, time zone, appearance (Light/Dark/Auto), home area, my series, favorites, analytics on/off, clear data, delete account, install, share, about/legal. The old light/dark header button moved into Settings.

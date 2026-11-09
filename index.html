@@ -550,6 +550,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .ob-pick:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .ob-next{display:grid;gap:8px}.ob-foot{position:sticky;bottom:calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));margin:0 calc(-1 * var(--space-md)) calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));padding:var(--space-sm) var(--space-md) calc(var(--space-lg) + env(safe-area-inset-bottom,0px));background:var(--color-paper);border-top:1px solid var(--color-rule)}
 .ob-foot .cta{width:100%;justify-content:center}.ob-foot .cta[disabled]{opacity:.5;cursor:not-allowed}
+.in-os.here{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal)}
 .lb-row{display:grid;grid-template-columns:28px 1fr auto;gap:var(--space-xs);align-items:center;padding:var(--space-xs) 0;border-bottom:1px solid var(--rule)}
 .lb-row:last-child{border-bottom:0}
 .lb-row.me{font-weight:600}
@@ -1215,7 +1216,7 @@ main{max-width:1200px}
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Guides"><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
+<footer class="site-foot"><nav aria-label="Guides"><a href="#app" data-getapp="1">Get the app</a><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
 <nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
 <p>An independent fan site, not affiliated with, endorsed by or sponsored by any series, team, circuit or broadcaster. Series names and marks belong to their owners and are used only to identify them.</p>
 <nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav></footer>
@@ -2215,20 +2216,22 @@ function pointsTower(list, c){
 
 
 // ---------- Photos (Wikipedia lead images, loaded on the phone) ----------
-const IMGKEY = KEY + "-img3";
+const IMGKEY = KEY + "-img4";
 let imgCache = {};
 try { imgCache = JSON.parse(localStorage.getItem(IMGKEY) || "{}"); } catch(e){ imgCache = {}; }
 const imgPending = {};
-function photoSlot(q, cls = ""){ return `<div class="photo ${cls}" data-img="${esc(q)}"></div>`; }
-function wikiImage(q, size = 800, photoOnly = false){
-  const ck = q + "|" + size + (photoOnly ? "|p" : "");
+function photoSlot(q, cls = "", track = false){ return `<div class="photo ${cls}" data-img="${esc(q)}"${track ? ' data-track' : ""}></div>`; }
+// A track photo is only used when the Wikipedia article it comes from is a racetrack (never a city, club or stadium).
+const TRACK_TITLE = /circuit|raceway|speedway|aut[oó]dromo|autodromo|motorsport|motor speedway|ring\b|international raceway|street circuit|racing|race ?track|grand prix|park|course|piste|sepang|suzuka|monza|silverstone|interlagos|spa-francorchamps|zandvoort|imola|daytona|sebring|le mans|indianapolis/i;
+function wikiImage(q, size = 800, photoOnly = false, track = false){
+  const ck = q + "|" + size + (photoOnly ? "|p" : "") + (track ? "|t" : "");
   if (ck in imgCache) return Promise.resolve(imgCache[ck]);
   if (imgPending[ck]) return imgPending[ck];
   const url = "https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&prop=pageimages&piprop=thumbnail|name&pilicense=free&pithumbsize=" + size + "&gsrsearch=" + encodeURIComponent(q);
   return imgPending[ck] = fetch(url).then(r => r.json()).then(d => {
     const pages = Object.values((d.query && d.query.pages) || {}).sort((a, b) => a.index - b.index);
     // Photo-only: just the top search result, and only a real photo (no logos, maps or drawings).
-    const pg = photoOnly ? (pages[0] && pages[0].thumbnail && /\.jpe?g($|\/|\?)/i.test(pages[0].thumbnail.source) && !/\.svg/i.test(pages[0].thumbnail.source) ? pages[0] : null) : pages.find(p => p.thumbnail);
+    const pg = photoOnly ? (pages[0] && pages[0].thumbnail && /\.jpe?g($|\/|\?)/i.test(pages[0].thumbnail.source) && !/\.svg/i.test(pages[0].thumbnail.source) ? pages[0] : null) : pages.find(p => p.thumbnail && (!track || TRACK_TITLE.test(p.title || "")));
     if (!pg || !pg.thumbnail || !pg.pageimage) { imgCache[ck] = 0; return 0; }
     return fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=url|extmetadata&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent("File:" + pg.pageimage)).then(r => r.json()).then(d2 => {
       const p2 = Object.values((d2.query && d2.query.pages) || {})[0], ii = p2 && p2.imageinfo && p2.imageinfo[0], m = (ii && ii.extmetadata) || {};
@@ -2494,7 +2497,7 @@ function openCredits(){
 document.addEventListener("click", ev => { if (ev.target.closest("[data-credits]")) { ev.preventDefault(); openCredits(); } });
 function loadPhoto(el){
   const size = +(el.dataset.sz || 800), photoOnly = el.hasAttribute("data-photo");
-  wikiImage(el.dataset.img, size, photoOnly).then(v => {
+  wikiImage(el.dataset.img, size, photoOnly, el.hasAttribute("data-track")).then(v => {
     if (!v || el.classList.contains("from-news")) return;
     if (el.classList.contains("photo")) {
       el.innerHTML = `<img src="${esc(v.src)}" alt="">${creditLink(v)}`;
@@ -2835,7 +2838,7 @@ function renderInstall(){
   try { if (localStorage.getItem(KEY + "-installhide") === "1" && !deferredInstall) hidden = true; } catch(e){}
   if (hidden) { el.innerHTML = ""; return; }
   const h = installHow();
-  el.innerHTML = `<div class="install"><img src="icons/icon-192.png" alt=""><div class="tx"><b>Get the Racing Info app</b>${esc(h.text)}</div>
+  el.innerHTML = `<div class="install"><img src="icons/icon-192.png" alt=""><div class="tx"><b>Get the app${/mac|windows/.test(deviceOS()) ? ` for ${deviceOS() === "mac" ? "Mac" : "Windows"}` : ""}</b>${esc(h.text)} <button class="linkbtn" data-getapp="1">How to install</button></div>
     ${h.btn ? `<button class="btn star" aria-pressed="true" id="doInstall">Install</button>` : ""}<button class="x2" id="hideInstall" aria-label="Hide">×</button></div>`;
 }
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; renderInstall(); });
@@ -2902,7 +2905,7 @@ function renderWeekend(){
   el.innerHTML = `
     <section class="home-hero" aria-labelledby="homeTitle">
       <div class="hh-band">
-      <div class="hh-media" aria-hidden="true"><div class="hh-ph on" data-sphoto="${feat.series}" data-img="${esc(trackQuery(feat))}" data-sz="1600" data-photo></div><div class="hh-ph b"></div></div>
+      <div class="hh-media" aria-hidden="true"><div class="hh-ph on" data-sphoto="${feat.series}"></div><div class="hh-ph b"></div></div>
       <div class="hh-copy">
         <div id="liveNow">${liveNowHTML()}</div>
         <h1 id="homeTitle">Never miss a start</h1>
@@ -3280,7 +3283,7 @@ function openRace(id){
     h += `<section class="card"><h3>Results</h3><p class="lede" style="margin:0">${ph === "past" ? "Results for this round aren't loaded yet." : "Qualifying and race results show here during and after the weekend."}</p></section>`;
   }
 
-  h += `<section class="card"><h3>The track</h3>${photoSlot(trackQuery(e))}<p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
+  h += `<section class="card"><h3>The track</h3>${photoSlot(`${e.circuit} race track`, "", true)}<p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
   if (t) {
     h += `<div class="facts">
       <div class="fact"><div class="k">Lap</div><div class="v">${t[0] ? t[0].toFixed(2) + " km" : "—"}</div><div class="fine" style="margin:0">${t[0] ? (t[0] * 0.621371).toFixed(2) + " mi" : ""}</div></div>
@@ -4004,7 +4007,7 @@ function openSettings(){
       ${setRow({ href: "/privacy/#delete", icon: "🗑️", label: "Delete my account", sub: "How to remove your account and data" })}
     </div>
     <p class="set-h">About</p><div class="set-grp">
-      ${!isStandalone() ? setRow({ go: "install", icon: "📲", label: "Add to Home Screen", sub: "Open it like an app, with alerts on iPhone" }) : ""}
+      ${setRow({ go: "install", icon: "📲", label: "Get the app", sub: isStandalone() ? "Installed on this device" : "iPhone, Android, Mac and Windows" })}
       ${setRow({ go: "share", icon: "↗", label: "Share Premier Racing Info" })}
       ${setRow({ href: "mailto:contact@premierracinginfo.com", icon: "✉️", label: "Contact us", sub: "Questions, corrections or ideas", value: "contact@premierracinginfo.com" })}
       ${setRow({ href: "/about/", icon: "ℹ️", label: "About" })}
@@ -4041,7 +4044,7 @@ document.addEventListener("click", ev => {
   else if (go === "credits") openCredits();
   else if (go === "myseries") { closeRace(); dirGroup = "mine"; showTab("series"); renderDirChips(); renderDir(); }
   else if (go === "share") shareIt("Premier Racing Info", "Race times in your time zone, how to watch, tickets, standings, alerts and a picks game with friends.", SITE_URL + "/", g.querySelector(".set-l"));
-  else if (go === "install") { if (deferredInstall) { deferredInstall.prompt(); } else document.getElementById("setMsg").textContent = platform() === "ios" ? "In Safari, tap Share, then Add to Home Screen." : "Use your browser's menu and choose Install app or Add to Home Screen."; }
+  else if (go === "install") openInstall();
   else if (go === "clear") {
     if (!confirm("Clear everything this site saved on this phone? Your account (if you have one) isn't affected.")) return;
     try { Object.keys(localStorage).filter(k => k.startsWith(KEY) || k.startsWith("pri-")).forEach(k => localStorage.removeItem(k)); } catch(e){}
@@ -4128,6 +4131,52 @@ document.addEventListener("click", ev => {
   }
   if (ev.target.closest("[data-obdone]")) { ev.stopPropagation(); if (obPick.length) obFinish(); return; }
 }, true);
+
+// ---------- Get the app: install on iPhone, Android, Mac and Windows ----------
+function deviceOS(){
+  const ua = navigator.userAgent;
+  if (platform() === "ios") return "ios";
+  if (/Android/.test(ua)) return "android";
+  if (/Windows/.test(ua)) return "windows";
+  if (/Macintosh/.test(ua)) return "mac";
+  return "other";
+}
+const INSTALL_STEPS = {
+  mac: { name: "Mac", icon: "💻", steps: [
+    ["Chrome", "Click the install icon at the right end of the address bar (a screen with a down arrow), then Install. Or open the ⋮ menu → Cast, save, and share → Install page as app."],
+    ["Edge", "Click the app icon in the address bar, or open the ⋯ menu → Apps → Install this site as an app."],
+    ["Safari", "In the menu bar, choose File → Add to Dock (macOS Sonoma or newer)."]],
+    after: "It opens in its own window and lives in your Dock and Launchpad." },
+  windows: { name: "Windows", icon: "🖥️", steps: [
+    ["Edge", "Click the app icon in the address bar, or open the ⋯ menu → Apps → Install this site as an app."],
+    ["Chrome", "Click the install icon at the right end of the address bar, then Install. Or open the ⋮ menu → Cast, save, and share → Install page as app."]],
+    after: "It shows up in the Start menu, and you can pin it to the taskbar." },
+  ios: { name: "iPhone & iPad", icon: "📱", steps: [
+    ["Safari", "Tap Share (the square with the arrow), scroll down, then tap Add to Home Screen → Add."]],
+    after: "Open it from your Home Screen. Lock screen alerts on iPhone only work from the installed app." },
+  android: { name: "Android", icon: "🤖", steps: [
+    ["Chrome", "Tap the ⋮ menu, then Install app (or Add to Home screen)."]],
+    after: "It appears in your app drawer like any other app." },
+};
+function openInstall(){
+  const os = deviceOS(), order = [os, "mac", "windows", "ios", "android"].filter((x, i, a) => INSTALL_STEPS[x] && a.indexOf(x) === i);
+  const sheet = document.getElementById("sheet"), fresh = document.getElementById("sheetBg").hidden;
+  const top = isStandalone() ? `<p class="lede" style="margin:0">✓ You're using the app. Nice.</p>`
+    : deferredInstall ? `<button class="cta cta-primary" data-doinstall="1">Install on this ${os === "android" ? "phone" : "computer"}</button><p class="fine">One click, free. It opens in its own window, no browser tabs.</p>`
+    : `<p class="lede" style="margin:0">Free, no app store needed. It opens in its own window with alerts, and keeps working with a weak connection.</p>`;
+  const card = k => { const x = INSTALL_STEPS[k]; return `<section class="card in-os${k === os ? " here" : ""}"><h3>${x.icon} ${esc(x.name)}${k === os ? ` <span class="free-tag">This device</span>` : ""}</h3><ol class="steps">${x.steps.map(([b, t]) => `<li><b>${esc(b)}:</b> ${esc(t)}</li>`).join("")}</ol><p class="fine">${esc(x.after)}</p></section>`; };
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Get the app</h2><div class="m">On your phone, Mac or Windows PC</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
+    <section class="card">${top}</section>${order.map(card).join("")}<p class="fine">Firefox can't install web apps. Use Chrome, Edge or Safari.</p>`;
+  if (fresh) lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; sheet.scrollTop = 0;
+  document.getElementById("sheetClose").focus();
+  track("install_open", { os });
+}
+document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-getapp]")) { ev.preventDefault(); ev.stopPropagation(); openInstall(); return; }
+  if (ev.target.closest("[data-doinstall]")) { ev.stopPropagation(); if (deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.then(c => { track("install_choice", { outcome: c && c.outcome }); }).finally(() => { deferredInstall = null; renderInstall(); openInstall(); }); } return; }
+}, true);
+window.addEventListener("appinstalled", () => track("app_installed", { os: deviceOS() }));
 
 // ---------- Tickets tab: every upcoming race with ticket links, filter by place (your state, country, region or anywhere), series and month ----------
 const GEO = {
@@ -4553,6 +4602,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   if (h === "predict27") goP27();
   if (h === "settings") setTimeout(openSettings, 0);
   if (h === "start") setTimeout(openOnboard, 0);
+  if (h === "app") setTimeout(openInstall, 0);
 })();
 setInterval(renderAll, 60 * 60 * 1000);
 // Deep links from the search pages: /?race=<id> or /?series=<id>
