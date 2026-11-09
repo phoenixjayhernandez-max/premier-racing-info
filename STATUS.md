@@ -4,7 +4,7 @@ Checked 2026-11-08 by `node tools/check-site.mjs`. Sections are in the order we 
 
 | # | Section | To do |
 |---|---|---|
-| 1 | Calendar & race pages | ⚠️ 1 |
+| 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ⚠️ 1 |
 | 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 27 |
@@ -21,7 +21,7 @@ Checked 2026-11-08 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- [ ] Coming the week after, still without start times: Las Vegas Grand Prix (Formula 1, 2026-11-21); Portuguese Grand Prix (MotoGP, 2026-11-22)
+- Nothing to do.
 
 <details><summary>Up to date (4)</summary>
 
@@ -115,7 +115,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Old start times to clear from WORLD_TIMES: nascar-truck, nascar-oreilly
+- [ ] Old start times to clear from WORLD_TIMES: nascar-truck, nascar-oreilly, supercars
 - [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
 - [ ] Trans Am races this weekend (Circuit of The Americas (finale) · Nov 5–8) with no start time
 
@@ -223,7 +223,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (300 headlines)
+- News last collected 0.3 hours ago (300 headlines)
 
 </details>
 
