@@ -1145,6 +1145,58 @@ main{max-width:1200px}
 .acc-body{padding-bottom:var(--space-lg)}
 .acc-wrap{border-bottom:1px solid var(--color-rule)}
 @media (prefers-reduced-motion:reduce){ .sd-caret,.acc-caret{transition:none} }
+
+/* ---- Eye candy (Nov 2026): cinematic hero, countdown marquee, "On track" photo rail ---- */
+.hh-media .hh-ph.on.ok{animation:kb 22s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.02) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-2.5%,-1.5%,0)}}
+.hh-word{position:absolute;left:0;bottom:clamp(-18px,-1vw,-6px);z-index:-1;display:flex;white-space:nowrap;pointer-events:none;font-family:"Archivo Logo",var(--display);font-style:italic;font-weight:900;font-stretch:78%;font-size:clamp(96px,17vw,250px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.16);letter-spacing:-.01em;animation:hhword 60s linear infinite}
+.hh-word span{padding-right:.3em}
+@keyframes hhword{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.hh-stripe{position:absolute;left:-40px;bottom:0;width:min(46vw,560px);height:10px;background:var(--color-accent,#2461E9);transform:skewX(-14deg);transform-origin:left;animation:stripe 1.1s cubic-bezier(.2,.8,.2,1) both .2s;z-index:1}
+@keyframes stripe{from{transform:skewX(-14deg) scaleX(0)}to{transform:skewX(-14deg) scaleX(1)}}
+.hh-copy h1{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+.hh-copy .lead{animation:rise .8s cubic-bezier(.2,.8,.2,1) .12s both}
+.hh-copy .hh-acts{animation:rise .8s cubic-bezier(.2,.8,.2,1) .24s both}
+@keyframes rise{from{opacity:0;transform:translate3d(0,24px,0)}to{opacity:1;transform:none}}
+
+.mq{display:flex;align-items:stretch;margin:0 calc(50% - 50vw);background:var(--color-accent,#2461E9);color:#fff;overflow:hidden;font-family:var(--display)}
+.mq-lab{flex:none;display:flex;align-items:center;padding:0 var(--space-md);background:#00082E;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:14px;position:relative;z-index:1;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);padding-right:calc(var(--space-md) + 12px)}
+.mq-win{flex:1;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.mq-track{display:inline-flex;white-space:nowrap;padding:12px 0;animation:mq 55s linear infinite}
+.mq:hover .mq-track,.mq:focus-within .mq-track{animation-play-state:paused}
+.mq-dup{display:inline-flex}
+@keyframes mq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.mq-item{display:inline-flex;align-items:center;gap:10px;font-size:18px}
+.mq-item b{font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.mq-when{opacity:.85;font-weight:600}
+.mq-cd{font-family:var(--mono,ui-monospace),monospace;font-variant-numeric:tabular-nums;background:rgba(0,8,46,.35);border-radius:6px;padding:2px 8px;font-size:15px}
+.mq-sep{padding:0 22px;opacity:.55;font-size:12px}
+
+.gal{margin:var(--space-2xl) calc(50% - 50vw) 0;padding:var(--space-xl) 0;background:var(--band);color:var(--band-ink);overflow:hidden}
+.gal .sec-head{max-width:1200px;margin:0 auto var(--space-lg);padding:0 var(--space-md)}
+.gal .sec-head h2{color:var(--band-ink);font-style:italic;text-transform:uppercase;letter-spacing:-.01em}
+.gal .sec-aside{color:var(--band-ink);opacity:.75}
+.gal .tlink{color:var(--band-ink)}
+.gal-win{overflow:hidden}
+.gal-track{display:flex;gap:16px;width:max-content;padding:0 16px;animation:gal 90s linear infinite}
+.gal-win:hover .gal-track,.gal-win:focus-within .gal-track{animation-play-state:paused}
+@keyframes gal{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(-50% - 8px),0,0)}}
+.gal-tile{position:relative;flex:none;width:clamp(240px,26vw,340px);aspect-ratio:3/4;border-radius:var(--radius-card,14px);overflow:hidden;cursor:pointer;background:#0b1424;transform:translateZ(0)}
+.gal-tile .gal-ph{position:absolute;inset:0;border-radius:0;background-position:50% 50%;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.gal-tile:hover .gal-ph,.gal-tile:focus-visible .gal-ph{transform:scale(1.07)}
+.gal-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,9,20,.92) 0%,rgba(4,9,20,.35) 45%,transparent 70%);pointer-events:none}
+.gal-copy::before{content:"";display:block;width:64px;height:6px;margin:0 0 12px -2px;background:var(--c,#2461E9);transform:skewX(-14deg)}
+.gal-copy{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px}
+.gal-copy h3{margin:10px 0 4px;color:#fff;font-family:var(--display);font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.2vw,28px);line-height:1}
+.gal-copy p{margin:0;color:rgba(255,255,255,.85);font-size:15px}
+.gal-cr{position:absolute;right:8px;top:8px;z-index:2;max-width:70%;font-size:10px;line-height:1.3;color:rgba(255,255,255,.8);background:rgba(0,0,0,.45);padding:2px 6px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-cr:empty{display:none}
+.gal-tile:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+@media (max-width:640px){ .mq-item{font-size:15px} .mq-cd{font-size:13px} .mq-sep{padding:0 14px} .gal-tile{width:66vw} }
+@media (prefers-reduced-motion:reduce){
+  .hh-word,.mq-track,.gal-track,.hh-media .hh-ph.on.ok{animation:none !important}
+  .mq-win,.gal-win{overflow-x:auto} .mq-dup,.gal-tile[aria-hidden="true"]{display:none}
+}
 </style>
 </head>
 <body>
@@ -2453,7 +2505,7 @@ function fillPics(root = document){
     el.style.backgroundImage = `url("${x.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(x);
   });
 }
-{ let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => fillPics(), 30); }).observe(document.body, { childList: true, subtree: true }); }
+{ let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => { fillPics(); document.querySelectorAll(".gal-tile").forEach(g => { const ph = g.querySelector(".pic.ok"), cr = g.querySelector(".gal-cr"); if (ph && cr && !cr.textContent && ph.title) cr.textContent = "📷 " + ph.title; }); }, 30); }).observe(document.body, { childList: true, subtree: true }); }
 function applyNewsPhotos(root = document){
   fillPics(root);
   heroSetup();
@@ -2895,8 +2947,11 @@ function renderWeekend(){
         <p class="lead">Every session of ${WORLD_LIST.length} racing series, in your time zone, with where to watch it.</p>
         <div class="hh-acts"><button class="cta cta-primary" data-alerts="1">Turn on alerts</button><button class="cta cta-secondary" data-gotab="calendar">Full calendar</button></div>
       </div>
+      <div class="hh-word" aria-hidden="true"><span>LIGHTS OUT</span><span>LIGHTS OUT</span><span>LIGHTS OUT</span><span>LIGHTS OUT</span></div>
+      <div class="hh-stripe" aria-hidden="true"></div>
       </div>
     </section>
+    ${marqueeHTML()}
     ${startCardHTML()}
     <section class="feat-sec" aria-label="Featured race">
       <div class="hh-meta"><p class="fine hh-tz">${tzLine()}</p><p class="fine hh-credit" aria-live="off"></p></div>
@@ -2905,6 +2960,7 @@ function renderWeekend(){
       ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">More racing this weekend</h2><div class="wk-rows">${W.map(worldRow).join("")}</div></div>` : ""; })()}
     </section>
     ${p27PromoHTML()}
+    ${galleryHTML()}
     ${tickerHTML()}
     <section class="guide" aria-labelledby="guideTitle">
       <div class="sec-head"><h2 id="guideTitle">${wk.length ? "On this weekend" : "Coming up"}</h2><p class="sec-aside">${wk.length ? `${wk.length} race${wk.length === 1 ? "" : "s"}, every session in ${esc(tzLabel())}` : "The next race weekend"}</p></div>
@@ -2951,6 +3007,28 @@ function tickerHTML(){
   const up = events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start).slice(0, 12);
   const row = (list, dir) => { const inner = list.map(e => `<span class="tk-item">${plate(e.series, 26)}<span>${esc(e.name)}</span></span>`).join(""); return `<div class="tick-row" data-dir="${dir}"><div class="tick-track">${inner}${inner}</div></div>`; };
   return `<div class="ticker" aria-hidden="true">${row(up.slice(0, 6), 1)}${row(up.slice(6, 12).length ? up.slice(6, 12) : up.slice(0, 6).reverse(), -1)}</div>`;
+}
+// Live countdown marquee under the hero: every upcoming race, its start in the visitor's time zone, ticking down.
+function raceIso(e){ const L = (SESSIONS[e.id] || []).filter(x => !x[2]); const r = L[L.length - 1]; return r && Date.parse(r[1]) + 3 * 3600000 > Date.now() ? r[1] : null; }
+function marqueeHTML(){
+  const list = events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start).slice(0, 8);
+  if (!list.length) return "";
+  const item = e => { const iso = raceIso(e); return `<span class="mq-item">${plate(e.series, 22)}<b>${esc(e.name)}</b>${iso ? `<span class="mq-when">${esc(fmtDow.format(new Date(iso)))} ${esc(fmtTime.format(new Date(iso)))}</span><span class="mq-cd" data-cd="${esc(iso)}">${esc(cdText(iso))}</span>` : `<span class="mq-when">${esc(range(e))}</span>`}</span><span class="mq-sep" aria-hidden="true">◆</span>`; };
+  const inner = list.map(item).join("");
+  return `<div class="mq" aria-label="Next races"><div class="mq-lab">Next up</div><div class="mq-win"><div class="mq-track">${inner}<span aria-hidden="true" class="mq-dup">${inner}</span></div></div></div>`;
+}
+// "On track": a full-width, slowly moving rail of big photos, one per series, each opening that series' next race.
+function galleryHTML(){
+  const ids = Object.keys(SERIES), t = today();
+  const tiles = ids.map(s => { const nx = events.filter(e => e.series === s && !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start)[0]; return nx ? { s, nx } : null; }).filter(Boolean)
+    .sort((a, b) => a.nx.start - b.nx.start);
+  if (tiles.length < 3) return "";
+  const tile = ({ s, nx }, dup) => { const d = dayDiff(t, nx.start);
+    return `<article class="gal-tile ${s}" data-open="${nx.id}" role="button" tabindex="${dup ? -1 : 0}"${dup ? ` aria-hidden="true"` : ` aria-label="${esc(SERIES_FULL[s])}: ${esc(nx.name)}"`}>
+      ${picHTML(s, `${nx.id}-gal`, "gal-ph")}<div class="gal-copy">${plate(s, 26)}<h3>${esc(SERIES_FULL[s])}</h3><p>${esc(nx.name)} · ${d <= 0 ? "this weekend" : d === 1 ? "tomorrow" : `in ${d} days`}</p></div><span class="gal-cr"></span></article>`; };
+  const row = tiles.map(x => tile(x)).join("");
+  return `<section class="gal" aria-labelledby="galTitle"><div class="sec-head wrapish"><h2 id="galTitle">On track</h2><p class="sec-aside">Every series we follow, and when it races next. <button class="tlink" data-credits>Photo credits</button></p></div>
+    <div class="gal-win"><div class="gal-track">${row}${tiles.map(x => tile(x, true)).join("")}</div></div></section>`;
 }
 function upNextHTML(skip){
   const t = today(), list = events.filter(e => !e.cancelled && phase(e) === "future" && !skip.includes(e)).sort((a, b) => a.start - b.start).slice(0, 6);
