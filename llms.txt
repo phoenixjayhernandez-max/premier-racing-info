@@ -1,6 +1,6 @@
 # Premier Racing Info
 
-> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-08.
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-09.
 
 ## Main guides
 - [Racing calendar](https://premierracinginfo.com/calendar/): every upcoming race with dates and start times
@@ -12,10 +12,6 @@
 - [About](https://premierracinginfo.com/about/): who runs the site and how data is checked
 
 ## Next races
-- [Formula 1 São Paulo Grand Prix 2026](https://premierracinginfo.com/races/f1-sao-paulo-grand-prix-2026/): Nov 6–8, 2026, Interlagos
-- [World Endurance 6 Hours of Monza 2026](https://premierracinginfo.com/races/wec-6-hours-of-monza-2026/): Nov 6–8, 2026, Monza
-- [NASCAR Cup Series Championship Race 2026](https://premierracinginfo.com/races/nascar-championship-race-2026/): Nov 6–8, 2026, Homestead-Miami Speedway
-- [MotoGP Qatar Grand Prix 2026](https://premierracinginfo.com/races/motogp-qatar-grand-prix-2026/): Nov 6–8, 2026, Lusail International Circuit
 - [Formula 1 Las Vegas Grand Prix 2026](https://premierracinginfo.com/races/f1-las-vegas-grand-prix-2026/): Nov 19–21, 2026, Las Vegas Strip Circuit
 - [MotoGP Portuguese Grand Prix 2026](https://premierracinginfo.com/races/motogp-portuguese-grand-prix-2026/): Nov 20–22, 2026, Algarve International Circuit
 - [GT World Challenge Australia Adelaide 2026](https://premierracinginfo.com/races/gt-australia-adelaide-2026/): Nov 26–29, 2026, Adelaide Street Circuit
@@ -24,6 +20,10 @@
 - [Formula 1 Abu Dhabi Grand Prix 2026](https://premierracinginfo.com/races/f1-abu-dhabi-grand-prix-2026/): Dec 4–6, 2026, Yas Marina
 - [Ford Mustang Challenge Daytona 2027](https://premierracinginfo.com/races/mustang-challenge-daytona-2027/): Jan 22–24, 2027, Daytona International Speedway
 - [Porsche Carrera Cup North America Daytona 2027](https://premierracinginfo.com/races/carrera-cup-na-daytona-2027/): Jan 27–29, 2027, Daytona International Speedway
+- [IMSA WeatherTech Rolex 24 at Daytona 2027](https://premierracinginfo.com/races/imsa-rolex-24-at-daytona-2027/): Jan 28–31, 2027, Daytona International Speedway
+- [NASCAR Cup Series Clash 2027](https://premierracinginfo.com/races/nascar-clash-2027/): Feb 12–13, 2027, Daytona International Speedway
+- [NASCAR Cup Series Daytona 500 2027](https://premierracinginfo.com/races/nascar-daytona-500-2027/): Feb 16–21, 2027, Daytona International Speedway
+- [NASCAR Cup Series Autotrader 400 2027](https://premierracinginfo.com/races/nascar-autotrader-400-2027/): Feb 26–28, 2027, EchoPark Speedway
 
 ## Notes
 - Times on race pages are given in US Central time in the HTML and converted to the reader's time zone in the browser.
