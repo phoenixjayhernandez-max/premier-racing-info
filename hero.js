@@ -48,7 +48,7 @@ const PHOTO_NEED = {
   "speedway": [/Speedway Grand Prix|Speedway GP|speedway riders?|speedway racing/i], "aft": [/Flat ?Track/i], "ara": [/American Rally Association|Rally America|\bARA\b/i],
   "dm": [/Drift Masters/i], "usac-sprint": [/USAC/i], "highlimit": [/High Limit/i],
   "lucas-lm": [/Lucas Oil Late Model|Lucas Oil Dirt/i], "woo-lm": [/World of Outlaws/i, /sprint/i], "super-dirtcar": [/DIRTcar|big[- ]block modifieds?|modifieds?/i],
-  "asa-stars": [/ASA|ASA STARS/i], "ultra4": [/Ultra4|King of the Hammers/i], "kotb": [/King of the Baggers|baggers?/i],
+  "asa-stars": [/\bASA\b|ASA STARS/i], "ultra4": [/Ultra4|King of the Hammers/i], "kotb": [/King of the Baggers|baggers?/i],
   "gncc": [/GNCC|Grand National Cross Country|cross[- ]country motorcycle/i], "froceania": [/Formula Regional Oceania|Toyota Racing Series|Castrol Toyota|FT-60/i],
   "sflights": [/Super Formula Lights|SF Lights|Japanese F3|All-Japan Formula 3/i], "gtcup": [/GT Cup Open/i], "gt4am": [/GT4 America|SprintX GT4|Pirelli GT4/i],
   "gtam": [/GT America/i], "fchna": [/Ferrari Challenge/i], "lstna": [/Super Trofeo/i], "grcup": [/GR Cup|GR86 Cup|Toyota GR86/i], "pccas": [/Carrera Cup Asia/i],
