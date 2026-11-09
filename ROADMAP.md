@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 8, 2026: Thursday "this weekend" push alert; data clean-up batch; 2026 season-in-review pages (/recap/, built by build-pages.mjs, only for series tracked all season; NASCAR, IndyCar and MotoGP get theirs in 2027).
 - Done Nov 8, 2026: per-race share images for Instagram (tools/make-weekend-post.py), sent to Phoenix every Thursday. Not published on the site.
 - Done Nov 8, 2026: fixed a wrong (rugby) home photo. The home hero now only uses the series' own race photos, and track photos must come from a racetrack article (TRACK_TITLE). New "Get the app" guide (iPhone, Android, Mac, Windows; one-click install where the browser allows), in Settings, the footer, the home install box and `/#app`.
 - Done Nov 8, 2026: "Start here" setup for new fans (idea from Reddit feedback): pick series, see next sessions in your time zone, add calendar feeds and alerts, then they're saved to My series. Home card for first-time visitors, Settings row, link `/#start`. GA events onboard_open / onboard_done / onboard_skip.

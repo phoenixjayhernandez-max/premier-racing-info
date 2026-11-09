@@ -16,6 +16,8 @@ const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/sc
 const data = new Function("window", "document", "localStorage",
   src.slice(0, src.indexOf("function esc")) + ";return {AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
+const MORE_STATS = grabObj("MORE_STATS"), MORE_KEY = { nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
+const statsOf = app => STATS[app] || MORE_STATS[MORE_KEY[app]] || null;
 const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
@@ -115,7 +117,7 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <section class="ph-hero" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true"><div class="ph-l"></div><div class="ph-l"></div></div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
 <p class="wrap ph-credit"></p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
 <main class="wrap">${body}<p class="updated">Page updated <time datetime="${today}">${fUpd.format(new Date(today))}</time>. Dates, start times and TV listings can change, so check the official series site before you travel.</p></main>
-<footer class="wrap"><a href="/">App</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
+<footer class="wrap"><a href="/">App</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/recap/">2026 season reviews</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -204,7 +206,7 @@ for (const x of WORLD.series) {
   if (x.about) body += `<p>${esc(x.about)}</p>`;
   body += `<section class="card"><h2>${new Date().getFullYear()} season</h2><table>${[["Status", x.status], ["Champion", x.champion], ["Leader", x.leader], ["Next round", x.next], ["Season", x.season], ["Rounds", x.rounds], [x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars]].filter(r => r[1] || r[1] === 0).map(r => `<tr><th style="width:30%">${r[0]}</th><td>${esc(r[1])}</td></tr>`).join("")}</table></section>`;
   if (app) {
-    const st = STATS[app] || {};
+    const st = statsOf(app) || {};
     for (const yr of ["2026", "2027"]) {
       const list = EV.filter(e => e.s === app && e.year === yr);
       if (list.length) body += `<section class="card"><h2>${yr} calendar</h2><ul class="list">${list.map(e => `<li>${raceLink(e)} <small>${range(e.start, e.end)} · ${esc(e.circuit)}${WINNERS[e.id] ? " · " + esc(WINNERS[e.id]) : ""}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
@@ -214,6 +216,7 @@ for (const x of WORLD.series) {
     if (st.grid) body += `<section class="card"><h2>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Teams and drivers")}</h2><ul class="list">${st.grid.map(g => `<li><b>${esc(g[0])}</b> <small>${esc(g[1])} · ${esc(g[2])}</small></li>`).join("")}</ul></section>`;
   }
   if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
+  if (app) body += `<p><a class="btn" href="/recap/${app}-2026/">2026 season in review ›</a></p>`;
   body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
   const name = x.name, sn = x.short && x.short.length < name.length ? x.short : name;
   const wN = watch.filter(v => !/official site|timing/i.test(v[0])), frS = watch.filter(v => v[2] && !/search_query/.test(v[1])).map(v => v[0]);
@@ -238,6 +241,62 @@ for (const x of WORLD.series) {
   const body = `<p class="lede">${WORLD.series.length} racing series from around the world: champions, leaders, next rounds and how to watch from the US.</p>` +
     Object.entries(groups).map(([g, l]) => `<section class="card"><h2>${esc(g)}</h2><ul class="list">${l.map(x => `<li><a href="/series/${x.id}/">${esc(x.name)}</a> <small>${esc(x.region || "")}${x.champion ? " · " + esc(x.champion) : x.leader ? " · Leader: " + esc(x.leader) : ""}</small></li>`).join("")}</ul></section>`).join("");
   write("/series/", page({ url: "/series/", title: "Every Racing Series: Champions, Calendars & How to Watch", desc: `All ${WORLD.series.length} major racing series worldwide — F1, NASCAR, IndyCar, IMSA, WEC, MotoGP, WRC and more — with champions, standings and how to watch in the US.`, h1: "Every racing series", crumbs: [{ name: "All series", item: SITE + "/series/" }], body }));
+}
+
+// ---- Season recap pages: /recap/<series>-2026/ (off-season traffic: "2026 F1 season in review") ----
+{
+  const YEAR = "2026", NEXT = "2027";
+  const winnerName = (s, w) => { // a single winner's name, or null for multi-race / crew entries
+    if (!w || /·|R1|R2|both races|\//.test(w)) return null;
+    if (s === "f1") return w.split(",")[0].trim();
+    if (["nascar", "motogp", "indy"].includes(s)) return w.replace(/\s*\(.*\)\s*$/, "").trim();
+    if (["psc", "pccna", "mustang"].includes(s)) return w.trim();
+    return null;
+  };
+  const recaps = [];
+  for (const app of Object.keys(SERIES)) {
+    const list = EV.filter(e => e.s === app && e.year === YEAR).sort((a, b) => a.start.localeCompare(b.start));
+    const st = statsOf(app) || {}, world = WORLD.series.find(w => w.id === APP_TO_WORLD[app]) || {};
+    if (!list.length || (world.rounds && list.length < world.rounds)) continue; // only seasons we tracked from the start (NASCAR, IndyCar, MotoGP start in 2027)
+    const done = list.filter(e => e.end < today), left = list.filter(e => e.end >= today);
+    const complete = !left.length, full = SERIES_FULL[app], sn = SERIES[app];
+    const champs = st.champs || [], driverChamp = champs[0];
+    const tally = {};
+    for (const e of done) { const n = winnerName(app, WINNERS[e.id]); if (n) tally[n] = (tally[n] || 0) + 1; }
+    const top = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+    const next = EV.filter(e => e.s === app && e.year === NEXT).sort((a, b) => a.start.localeCompare(b.start));
+    const title1 = c => `${c[0].replace(/\b[A-Z][a-z]+/g, m => m.toLowerCase()).replace(/drivers$/, "drivers'").replace(/riders$/, "riders'").replace(/manufacturers$/, "manufacturers'").replace(/constructors$/, "constructors'")} title`;
+    const plural = n => /\/| and /.test(n);
+    const lede = complete
+      ? `The ${YEAR} ${full} season is over: ${done.length} races${driverChamp ? `. ${driverChamp[1]} won the ${title1(driverChamp)}` : ""}.`
+      : `${done.length} of ${list.length} races done in the ${YEAR} ${full} season, ${left.length} to go.${driverChamp ? ` ${driverChamp[1]} ${/clinch/i.test(driverChamp[2] || "") ? (plural(driverChamp[1]) ? "have" : "has") + " already clinched the " + title1(driverChamp) : "won the " + title1(driverChamp)}.` : st.standings ? ` ${st.standings[0][0]} leads the standings.` : ""}`;
+    let body = `<p class="lede">${esc(lede)}</p>`;
+    if (champs.length) body += `<section class="card"><h2>${YEAR} champions</h2><ul class="list">${champs.map(c => `<li><b>${esc(c[1])}</b> <small>${esc(c[0])}${c[2] ? " · " + esc(c[2]) : ""}</small></li>`).join("")}</ul></section>`;
+    if (top.length) {
+      body += `<section class="card"><h2>Most wins</h2><table><tr><th>Driver</th><th style="text-align:right">Wins</th></tr>${top.slice(0, 8).map(([n, c]) => `<tr><td>${esc(n)}</td><td class="r">${c}</td></tr>`).join("")}</table><p class="fine">${top.length} different winners in ${done.length} races${complete ? "" : " so far"}.</p></section>`;
+    }
+    if (st.standings) body += `<section class="card"><h2>${esc(st.standingsTitle || "Standings")}</h2><table><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr>${st.standings.slice(0, 10).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r[0])}${r.length > 2 ? `<br><small>${esc(r[1])}</small>` : ""}</td><td class="r">${r[r.length - 1]}</td></tr>`).join("")}</table></section>`;
+    if (st.makers) body += `<section class="card"><h2>${esc(st.makersTitle || "Teams")}</h2><table>${st.makers.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r[0])}</td><td class="r">${r[1]}</td></tr>`).join("")}</table></section>`;
+    body += `<section class="card"><h2>Every race and winner</h2><table><tr><th>Race</th><th>Winner</th></tr>${list.map(e => `<tr><td>${raceLink(e)}<br><small>${range(e.start, e.end)} · ${esc(e.circuit)}</small></td><td>${e.end < today ? esc(WINNERS[e.id] || "—") : `<small>Coming up</small>`}</td></tr>`).join("")}</table></section>`;
+    if (st.notes && st.notes.length) body += `<section class="card"><h2>Notes</h2><ul class="list">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul></section>`;
+    if (next.length) body += `<section class="card"><h2>What's next: ${NEXT}</h2><p>The ${NEXT} season starts with ${raceLink(next[0])} (${range(next[0].start, next[0].end)}), ${next.length} races in all.${app === "f1" || app === "nascar" || app === "indy" || app === "motogp" ? ` Make your ${NEXT} title picks in the app's predictions game.` : ""}</p><div class="btns"><a class="btn" href="/series/${APP_TO_WORLD[app]}/">${NEXT} calendar</a>${["f1", "nascar", "indy", "motogp"].includes(app) ? `<a class="btn p" href="/#predict">${NEXT} predictions ›</a>` : ""}</div></section>`;
+    const qa = [];
+    if (driverChamp) qa.push([`Who won the ${YEAR} ${sn} championship?`, `${esc(driverChamp[1])} (${esc(driverChamp[0].toLowerCase())}${driverChamp[2] ? ", " + esc(driverChamp[2]) : ""}).`]);
+    if (top.length) qa.push([`Who won the most ${sn} races in ${YEAR}?`, `${esc(top[0][0])}, with ${top[0][1]} win${top[0][1] > 1 ? "s" : ""}${top[1] && top[1][1] === top[0][1] ? " (tied with " + esc(top[1][0]) + ")" : ""}.`]);
+    qa.push([`How many races were in the ${YEAR} ${sn} season?`, `${list.length}${complete ? "" : `, with ${left.length} still to run as of ${range(today, today)}`}.`]);
+    if (next.length) qa.push([`When does the ${NEXT} ${sn} season start?`, `${esc(next[0].name)}, ${range(next[0].start, next[0].end)}.`]);
+    body += faqHTML(qa);
+    const url = `/recap/${app}-${YEAR}/`;
+    const title = fitTitle(`${YEAR} ${full} Season in Review: Champions & Every Winner`, `${YEAR} ${sn} Season in Review: Champions & Every Winner`, `${YEAR} ${sn} Season in Review`);
+    const desc = `${YEAR} ${full} season recap: ${driverChamp ? "champion " + driverChamp[1] + ", " : ""}${top.length ? "most wins " + top[0][0] + " (" + top[0][1] + "), " : ""}final standings and the winner of all ${list.length} races. Plus when ${NEXT} starts.`;
+    write(url, page({ url, title, desc, h1: `${YEAR} ${sn} season in review`, photo: [APP_TO_WORLD[app]], color: COLORS[app], appLink: `/?series=${APP_TO_WORLD[app]}`,
+      tick: [full, `${YEAR} champions`, "Every winner", "Final standings", `${NEXT} calendar`],
+      crumbs: [{ name: "Season reviews", item: SITE + "/recap/" }, { name: `${YEAR} ${sn}`, item: SITE + url }], body,
+      jsonld: [{ "@context": "https://schema.org", "@type": "Article", headline: `${YEAR} ${full} season in review`, dateModified: today, author: ORG.name ? { "@type": "Organization", name: ORG.name } : undefined }, faqLD(qa)] }));
+    recaps.push({ app, url, sn, full, complete, champ: driverChamp });
+  }
+  const body = `<p class="lede">Every ${YEAR} season we track: champions, most wins, final standings and every race winner.</p><section class="card"><ul class="list">${recaps.map(r => `<li><a href="${r.url}">${esc(YEAR + " " + r.full)}</a> <small>${r.champ ? esc(r.champ[1]) : ""}${r.complete ? "" : (r.champ ? " · " : "") + "season still running"}</small></li>`).join("")}</ul></section>`;
+  write("/recap/", page({ url: "/recap/", title: `${YEAR} Racing Seasons in Review: Champions & Winners`, desc: `${YEAR} season reviews for F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and Porsche Cup: champions, most wins and every race winner.`, h1: `${YEAR} seasons in review`, crumbs: [{ name: "Season reviews", item: SITE + "/recap/" }], body }));
 }
 
 // ---- Track pages ----
