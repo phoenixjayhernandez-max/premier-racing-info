@@ -2,6 +2,7 @@
 (function(){
 var KEY = "raceweekends-2026", OWN_PHOTOS = [];
 const PHOTO_QUERIES = {
+  "smx": ["AMA Supercross", "SuperMotocross"], "promotocross": ["AMA Motocross Championship", "Pro Motocross race"], "speedway": ["Speedway Grand Prix", "speedway rider"], "usac-sprint": ["USAC sprint car", "USAC racing"], "highlimit": ["High Limit Racing sprint car"], "igtc": ["Bathurst 12 Hour", "Intercontinental GT Challenge"], "lucas-lm": ["Lucas Oil Late Model Dirt Series"], "woo-lm": ["World of Outlaws late model"], "asa-stars": ["ASA STARS National Tour", "ASA super late model"], "aft": ["American Flat Track", "flat track motorcycle race"], "dm": ["Drift Masters"], "ultra4": ["King of the Hammers", "Ultra4 racing"], "kotb": ["King of the Baggers"], "gncc": ["GNCC racing", "Grand National Cross Country"], "gt4am": ["GT4 America", "SprintX GT4"], "gtam": ["GT America SRO"], "grcup": ["Toyota GR Cup", "GR86 Cup race"], "pccas": ["Porsche Carrera Cup Asia"], "ara": ["American Rally Association", "Rally America"], "gtcup": ["GT Cup Open Europe"], "froceania": ["Toyota Racing Series", "Formula Regional Oceania"], "usf-juniors": ["USF Juniors"],
   "f1": ["Formula One 2025 Grand Prix", "Formula One 2024 Grand Prix", "Formula One 2023 Grand Prix race", "Formula One 2022 Grand Prix race"],
   "f2": ["FIA Formula 2 Championship 2024", "FIA Formula 2 Championship", "Formula 2 race"], "f3": ["FIA Formula 3 Championship 2024", "FIA Formula 3 Championship", "Formula 3 race"],
   "f1academy": ["F1 Academy"], "italianf4": ["Italian F4 Championship", "Formula 4 Italy"], "f4us": ["Formula 4 United States Championship", "F4 United States"],
@@ -12,8 +13,7 @@ const PHOTO_QUERIES = {
   "elms": ["European Le Mans Series", "European Le Mans Series LMP2"], "alms": ["Asian Le Mans Series"],
   "gtwc-europe": ["GT World Challenge Europe", "24 Hours of Spa 2024", "24 Hours of Spa 2023", "GT3 Spa-Francorchamps"],
   "gtwc-america": ["GT World Challenge America", "GT3 Road America", "GT3 Circuit of the Americas"], "gtwc-asia": ["GT World Challenge Asia", "GT3 Sepang", "GT3 Suzuka", "GT3 Fuji Speedway"],
-  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour 2024", "Bathurst 12 Hour 2025", "GT3 Phillip Island"],
-  "igtc": ["Intercontinental GT Challenge"], "britgt": ["British GT Championship"], "adacgtm": ["ADAC GT Masters"],
+  "gtwc-australia": ["GT World Challenge Australia", "Bathurst 12 Hour 2024", "Bathurst 12 Hour 2025", "GT3 Phillip Island"], "britgt": ["British GT Championship"], "adacgtm": ["ADAC GT Masters"],
   "dtm": ["DTM 2024 race", "DTM 2025 race", "Deutsche Tourenwagen Masters 2023"], "supergt": ["Super GT GT500", "Super GT GT300", "Super GT race"],
   "porsche-supercup": ["Porsche Supercup", "Porsche Mobil 1 Supercup"], "carrera-cup-na": ["Porsche Carrera Cup North America"], "pccd": ["Porsche Carrera Cup Deutschland"],
   "mustang-challenge": ["Mustang Challenge Dark Horse R", "Ford Mustang Dark Horse R race"],
@@ -24,7 +24,7 @@ const PHOTO_QUERIES = {
   "nhra": ["NHRA Top Fuel dragster", "NHRA Funny Car", "NHRA drag racing", "NHRA Pro Stock", "Top Fuel dragster"], "fd": ["Formula Drift", "Formula D drifting"], "ppihc": ["Pikes Peak International Hill Climb"],
   "motogp": ["MotoGP 2024", "MotoGP 2025", "MotoGP 2023", "MotoGP Sepang", "MotoGP Mugello", "MotoGP Ducati race"],
   "moto2": ["Moto2 2024", "Moto2 2023", "Moto2 race", "Moto2 Mugello", "Moto2 Jerez"], "moto3": ["Moto3 2024", "Moto3 2023", "Moto3 race", "Moto3 Mugello", "Moto3 Jerez"],
-  "wsbk": ["Superbike World Championship 2024", "WorldSBK race"], "supercross": ["AMA Supercross Championship", "Monster Energy Supercross"], "promotocross": ["AMA Pro Motocross"], "mxgp": ["MXGP motocross"],
+  "wsbk": ["Superbike World Championship 2024", "WorldSBK race"], "supercross": ["AMA Supercross Championship", "Monster Energy Supercross"], "mxgp": ["MXGP motocross"],
   "iomtt": ["Isle of Man TT 2024", "Isle of Man TT"], "woo": ["World of Outlaws sprint car", "sprint car racing dirt"],
 };
 
@@ -44,26 +44,26 @@ const PHOTO_NEED = {
   "nascar-oreilly": [/Xfinity|Nationwide Series|Busch Series|O'?Reilly Auto Parts Series/i, /Cup Series|Truck/i], "nascar-truck": [/Truck Series|Craftsman Truck|Camping World Truck/i],
   "wsbk": [/Superbike World Championship|World ?SBK|World Superbikes?|\bSBK\b/i, /Supersport|SSP/i], "wssp": [/Supersport World Championship|World ?SSP|World Supersport/i],
   "igtc": [/Intercontinental GT Challenge|IGTC|Bathurst 12|24 Hours of Spa|Spa 24|Indianapolis 8|Kyalami 9|Suzuka 1000/i],
-  "smx": [/Supercross|SuperMotocross|\bSMX\b/i], "promotocross": [/Pro Motocross|AMA Motocross|Motocross/i, /Supercross/i],
+  "smx": [/Supercross|SuperMotocross|\bSMX\b/i], "promotocross": [/Pro Motocross|AMA Motocross/i, /Supercross/i],
   "speedway": [/Speedway Grand Prix|Speedway GP|speedway riders?|speedway racing/i], "aft": [/Flat ?Track/i], "ara": [/American Rally Association|Rally America|\bARA\b/i],
-  "dm": [/Drift Masters|drifting/i], "usac-sprint": [/USAC|sprint cars?/i], "highlimit": [/High Limit|sprint cars?/i],
-  "lucas-lm": [/Lucas Oil Late Model|late models?/i], "woo-lm": [/World of Outlaws|late models?/i], "super-dirtcar": [/DIRTcar|big[- ]block modifieds?|modifieds?/i],
-  "asa-stars": [/ASA STARS|ASA National|super late models?/i], "ultra4": [/Ultra4|King of the Hammers/i], "kotb": [/King of the Baggers|baggers?/i],
+  "dm": [/Drift Masters/i], "usac-sprint": [/USAC/i], "highlimit": [/High Limit/i],
+  "lucas-lm": [/Lucas Oil Late Model|Lucas Oil Dirt/i], "woo-lm": [/World of Outlaws/i, /sprint/i], "super-dirtcar": [/DIRTcar|big[- ]block modifieds?|modifieds?/i],
+  "asa-stars": [/ASA|ASA STARS/i], "ultra4": [/Ultra4|King of the Hammers/i], "kotb": [/King of the Baggers|baggers?/i],
   "gncc": [/GNCC|Grand National Cross Country|cross[- ]country motorcycle/i], "froceania": [/Formula Regional Oceania|Toyota Racing Series|Castrol Toyota|FT-60/i],
   "sflights": [/Super Formula Lights|SF Lights|Japanese F3|All-Japan Formula 3/i], "gtcup": [/GT Cup Open/i], "gt4am": [/GT4 America|SprintX GT4|Pirelli GT4/i],
   "gtam": [/GT America/i], "fchna": [/Ferrari Challenge/i], "lstna": [/Super Trofeo/i], "grcup": [/GR Cup|GR86 Cup|Toyota GR86/i], "pccas": [/Carrera Cup Asia/i],
-  "usf-juniors": [/USF Juniors|USF2000|Tatuus JR-23/i],
+  "usf-juniors": [/USF Juniors|Tatuus JR-23/i], "cars-tour": [/CARS Tour/i],
   "nhra": [/NHRA|Top Fuel|Funny Car|Pro Stock|dragster|drag rac/i], "woo": [/sprint car|World of Outlaws/i],
 };
 
 const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
   "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
 // Never on track (whole words only, so "Toyota" or "designing" don't trip it)
-const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?|rugby|football|soccer|futbol|calcio|cricket|tennis|basketball|baseball|softball|hockey|lacrosse|volleyball|handball|athletics|marathon|runners?|sprinters?|cycling|cyclists?|bicycles?|giro d|tour de france|horse racing|racehorses?|horses|equestrian|jockeys?|greyhounds?|rowing|regatta|sailing|yachts?|swimm(ing|ers?)|ski(ing|ers?)?|snowboard|golf|boxing|wrestling|fans? cheering|cheerleaders?|referees?|stadio|olimpico|six nations|sei nazioni|national team|transporters?|haulers?|motorhomes?|spectators?|supporters?|crowds?|fan forum|fans|show ?cars?|pace cars?|safety cars?|medical cars?|gates?|entrances?|visits?|visitors?|governor|mayor|ceremon(y|ies)|corral|roadsters?|motortreff|car meets?|cars and coffee|car park|parking|hospitality|paddock club|pit walk|selfies?|engineers?|vintage|antique|historic(al)?|airports?|buses|bus|shuttles?|team principal|garage tour|unveil\w*|livery reveal|shakedown|filming|broadcast\w*|commentators?)\b/i;
+const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?|rugby|football|soccer|futbol|calcio|cricket|tennis|basketball|baseball|softball|hockey|lacrosse|volleyball|handball|athletics|marathon|runners?|sprinters?|cycling|cyclists?|bicycles?|giro d|tour de france|horse racing|racehorses?|horses|equestrian|jockeys?|greyhounds?|rowing|regatta|sailing|yachts?|swimm(ing|ers?)|ski(ing|ers?)?|snowboard|golf|boxing|wrestling|fans? cheering|cheerleaders?|referees?|stadio|olimpico|six nations|sei nazioni|national team|transporters?|haulers?|motorhomes?|spectators?|supporters?|crowds?|fan forum|fans|show ?cars?|pace cars?|safety cars?|medical cars?|gates?|entrances?|visits?|visitors?|governor|mayor|ceremon(y|ies)|corral|roadsters?|motortreff|car meets?|cars and coffee|car park|parking|hospitality|paddock club|pit walk|selfies?|engineers?|vintage|antique|historic(al)?|airports?|buses|bus|shuttles?|thanksgiving|fan days?|collection hall|collections?|recruit\w*|fighter wing|air force base|USS|navy|military|advertising|advertisements? signs?|billboards?|tour of britain|mobility show|audiences?|people of|paddock|garages?|team principal|garage tour|unveil\w*|livery reveal|shakedown|filming|broadcast\w*|commentators?)\b/i;
 // Every photo must also say it is motor racing somewhere in its title or categories.
 const PHOTO_YES = /\b(rac(e|es|ing|ed)|racecars?|motor ?sports?|grand prix|e-?prix|qualifying|practice|warm-?up|starting grids?|grids?|starts? in|laps?|pit ?(lane|stops?|wall)|formula|f[1-4]|nascar|indy ?car|indy ?nxt|indy lights|indianapolis 500|indy 500|motogp|moto[23e]|superbikes?|rally(ing)?|endurance|hypercars?|gt[34]|gtp|lmp[1-3]|lmgt3|lmh|lmdh|(24|12|8|6) hours|hours of|sprint cars?|stock cars?|touring cars?|dirt track|hill ?climb|drag rac\w*|top fuel|funny cars?|dragsters?|supercross|motocross|trophy trucks?|baja|time attack|carrera cup|supercup|cup series|truck series|xfinity|super formula|super gt|dtm|wrc|wec|imsa|blancpain|gt world challenge|world of outlaws|late models?|drift(ing)?|enduro|off-?road|rock crawl\w*|trofeo|challenge|flat ?track|baggers?|modifieds?|dirtcar)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics5"; // bumped Nov 2026: stricter on-track photo rules
+const PHOTOKEY = KEY + "-racepics6"; // bumped Nov 2026: stricter on-track photo rules
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
 try { ["-freepics1", "-freepics2", "-img2", "-racepics1"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
