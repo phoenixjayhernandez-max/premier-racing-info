@@ -2430,7 +2430,7 @@ const OWN_PHOTOS = [
 const fold = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const PHOTO_QUERIES = {
   "smx": ["AMA Supercross", "SuperMotocross"], "promotocross": ["AMA Motocross Championship", "Pro Motocross race"], "speedway": ["Speedway Grand Prix", "speedway rider"], "usac-sprint": ["USAC sprint car", "USAC racing"], "highlimit": ["High Limit Racing sprint car"], "igtc": ["Bathurst 12 Hour", "Intercontinental GT Challenge"], "lucas-lm": ["Lucas Oil Late Model Dirt Series"], "woo-lm": ["World of Outlaws late model"], "asa-stars": ["ASA STARS National Tour", "ASA super late model"], "aft": ["American Flat Track", "flat track motorcycle race"], "dm": ["Drift Masters"], "ultra4": ["King of the Hammers", "Ultra4 racing"], "kotb": ["King of the Baggers"], "gncc": ["GNCC racing", "Grand National Cross Country"], "gt4am": ["GT4 America", "SprintX GT4"], "gtam": ["GT America SRO"], "grcup": ["Toyota GR Cup", "GR86 Cup race"], "pccas": ["Porsche Carrera Cup Asia"], "ara": ["American Rally Association", "Rally America"], "gtcup": ["GT Cup Open Europe"], "froceania": ["Toyota Racing Series", "Formula Regional Oceania"], "usf-juniors": ["USF Juniors"],
-  "f1": ["Formula One 2025 Grand Prix", "Formula One 2024 Grand Prix", "Formula One 2023 Grand Prix race", "Formula One 2022 Grand Prix race"],
+  "f1": ["Formula One 2026 Grand Prix", "2026 Formula One World Championship", "Formula One 2026 race", "Formula One 2025 Grand Prix"],
   "f2": ["FIA Formula 2 Championship 2024", "FIA Formula 2 Championship", "Formula 2 race"], "f3": ["FIA Formula 3 Championship 2024", "FIA Formula 3 Championship", "Formula 3 race"],
   "f1academy": ["F1 Academy"], "italianf4": ["Italian F4 Championship", "Formula 4 Italy"], "f4us": ["Formula 4 United States Championship", "F4 United States"],
   "formulae": ["Formula E ePrix 2024", "Formula E ePrix 2025", "Formula E Gen3", "Formula E race"], "superformula": ["Super Formula Championship", "Super Formula race"],
@@ -2457,7 +2457,7 @@ const PHOTO_QUERIES = {
 
 // What a photo's title/categories must (and must not) say to count for a series
 const PHOTO_NEED = {
-  "f1": [/Formula (One|1)\b|\bF1\b|Grand Prix/i, /Formula (2|3|4|E)\b|\bF[234]\b|Formula Regional|Super Formula|F1 Academy|GP[23]\b|Moto|motorcycle|Historic|Classic/i],
+  "f1": [/Formula (One|1)\b|\bF1\b|Grand Prix/i, /Formula (2|3|4|E)\b|\bF[234]\b|Formula Regional|Super Formula|F1 Academy|GP[23]\b|Moto|motorcycle|Historic|Classic|Sauber|\bStake\b|\bKick\b|Alfa Romeo|Alpha ?Tauri|Toro Rosso|Racing Point|Force India|Renault F1/i], // teams that no longer race in F1 (Sauber is Audi from 2026)
   "f2": [/Formula 2\b|\bF2\b/i], "f3": [/Formula 3\b|\bF3\b/i], "f1academy": [/F1 Academy/i], "italianf4": [/F4|Formula 4/i], "f4us": [/F4|Formula 4/i],
   "formulae": [/Formula E\b|E-?Prix/i], "indycar": [/IndyCar|Indy ?500|Indianapolis 500/i, /Indy NXT|Indy Lights|Historic/i], "indynxt": [/Indy NXT|Indy Lights/i],
   "motogp": [/MotoGP/i, /Moto2|Moto3|MotoE|\bCEV\b|Junior|European Championship|Talent Cup/i, 1], "moto2": [/Moto2/i, /MotoGP|Moto3|\bCEV\b|Junior|European Championship/i, 1], "moto3": [/Moto3/i, /MotoGP|Moto2|\bCEV\b|Junior|European Championship|Talent Cup/i, 1],
@@ -2483,6 +2483,11 @@ const PHOTO_NEED = {
   "nhra": [/NHRA|Top Fuel|Funny Car|Pro Stock|dragster|drag rac/i], "woo": [/sprint car|World of Outlaws/i],
 };
 
+// Series whose cars changed: photos from before this season go to the back, and are dropped once enough current ones exist.
+// F1 got all-new cars in 2026 (and Sauber became Audi), so older F1 photos look out of date.
+const PHOTO_FRESH = { f1: 2026 };
+const photoYear = t => Math.max(0, ...(String(t || "").match(/\b(19[5-9]\d|20[0-4]\d)\b/g) || []).map(Number));
+const isFresh = (wid, x) => !PHOTO_FRESH[wid] || photoYear(x.about) >= PHOTO_FRESH[wid];
 const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
   "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
 // Never on track (whole words only, so "Toyota" or "designing" don't trip it)
@@ -2490,9 +2495,9 @@ const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|l
 // Every photo must also say it is motor racing somewhere in its title or categories.
 const PHOTO_YES = /\b(rac(e|es|ing|ed)|racecars?|motor ?sports?|grand prix|e-?prix|qualifying|practice|warm-?up|starting grids?|grids?|starts? in|laps?|pit ?(lane|stops?|wall)|formula|f[1-4]|nascar|indy ?car|indy ?nxt|indy lights|indianapolis 500|indy 500|motogp|moto[23e]|superbikes?|rally(ing)?|endurance|hypercars?|gt[34]|gtp|lmp[1-3]|lmgt3|lmh|lmdh|(24|12|8|6) hours|hours of|sprint cars?|stock cars?|touring cars?|dirt track|hill ?climb|drag rac\w*|top fuel|funny cars?|dragsters?|supercross|motocross|trophy trucks?|baja|time attack|carrera cup|supercup|cup series|truck series|xfinity|super formula|super gt|dtm|wrc|wec|imsa|blancpain|gt world challenge|world of outlaws|late models?|drift(ing)?|enduro|off-?road|rock crawl\w*|trofeo|challenge|flat ?track|baggers?|modifieds?|dirtcar)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics7"; // bumped Nov 2026: stricter on-track photo rules
+const PHOTOKEY = KEY + "-racepics8"; // bumped Nov 9 2026: current-season F1 photos only (no Sauber/older cars)
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
-try { ["-freepics1", "-freepics2", "-img2", "-racepics1"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
+try { ["-freepics1", "-freepics2", "-img2", "-racepics1", "-racepics7"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
 let PHOTO_CACHE = { t: 0, by: {}, tried: {} }; // per series: photos found, and when a series was last searched
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
@@ -2551,9 +2556,11 @@ function seriesPhotos(wid){
   const qs = queriesFor(wid);
   return photoInflight[wid] = Promise.all(qs.map(q => fromCommons(wid, q))).then(rs => {
     let got = rs.flat();
-    return got.length >= 3 ? got : Promise.all(qs.slice(0, 2).map(q => fromOpenverse(wid, q))).then(o => got.concat(o.flat()));
+    return got.filter(x => isFresh(wid, x)).length >= 3 ? got : Promise.all(qs.slice(0, 2).map(q => fromOpenverse(wid, q))).then(o => got.concat(o.flat()));
   }).then(got => {
-    const seen = new Set(), L = got.filter(x => !seen.has(x.img) && seen.add(x.img)).slice(0, 24);
+    const seen = new Set(); let L = got.filter(x => !seen.has(x.img) && seen.add(x.img));
+    if (PHOTO_FRESH[wid]) { const now = L.filter(x => isFresh(wid, x)); L = now.length >= 3 ? now : now.concat(L.filter(x => !isFresh(wid, x))); }
+    L = L.slice(0, 24);
     if (L.length) PHOTO_CACHE.by[wid] = L;
     PHOTO_CACHE.tried[wid] = Date.now(); savePhotos(); buildPool(); delete photoInflight[wid];
   });

@@ -28,7 +28,7 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - Personal only: output goes to `weekend-post/` (git-ignored) and is never published on the site. The Thursday auto-update run makes it and sends it to Phoenix to post by hand. No tracked races = no post.
 
 ## Rules we settled on
-- Photos: only licensed photos (Wikimedia Commons searches per series, Openverse backup), credited. Strict per-series matching: F1≠F2≠F3≠F4≠FE, NASCAR Cup only Cup, MotoGP≠Moto2≠Moto3; only GT3 regions and Porsche Cups share. No photo is better than a wrong one. Friends' photos go in `OWN_PHOTOS` once they give written permission (incl. commercial use).
+- Photos: only licensed photos (Wikimedia Commons searches per series, Openverse backup), credited. Strict per-series matching: F1≠F2≠F3≠F4≠FE, NASCAR Cup only Cup, MotoGP≠Moto2≠Moto3; only GT3 regions and Porsche Cups share. No photo is better than a wrong one. F1 photos must be current-season (`PHOTO_FRESH`: 2026+ first, older only as filler) and never show teams that left F1 (Sauber/Stake/Kick, Alfa Romeo, AlphaTauri, etc.). Each new season or team change: bump `PHOTO_FRESH`, the F1 queries, and `PHOTOKEY`. Friends' photos go in `OWN_PHOTOS` once they give written permission (incl. commercial use).
 - Legal: Terms + Privacy pages, "not affiliated" notice, EU/UK analytics consent, no press-agency photos. Don't publish Phoenix's personal email on the site.
 - Analytics: Google Analytics G-2XEE8686TF + Cloudflare Web Analytics. Custom events go through `track()` in index.html; key events are pick_saved, alerts_on, sign_up. Search Console verified, sitemap submitted.
 - SEO: answer sentence + "Questions fans ask" FAQ (FAQPage schema) on race/series/watch pages; titles ≤60 chars.
