@@ -1197,6 +1197,57 @@ main{max-width:1200px}
   .hh-word,.mq-track,.gal-track,.hh-media .hh-ph.on.ok{animation:none !important}
   .mq-win,.gal-win{overflow-x:auto} .mq-dup,.gal-tile[aria-hidden="true"]{display:none}
 }
+
+/* ---- Calendar: Month view ---- */
+.mcal-head{display:flex;align-items:center;gap:8px;margin:var(--space-md) 0 4px}
+.mcal-title{margin:0 auto 0 4px;font-size:clamp(26px,4vw,40px);text-transform:uppercase;letter-spacing:-.01em;order:-1;flex:1}
+.mcal-title span{color:var(--color-accent,#2461E9)}
+.mcal-nav{width:40px;height:40px;border-radius:10px;border:1px solid var(--rule,#cfd6e0);background:var(--panel,transparent);color:inherit;font-size:24px;line-height:1;cursor:pointer}
+.mcal-nav:hover{border-color:var(--color-accent,#2461E9)}
+.mcal-today{margin-left:4px}
+.mcal-sum{margin:0 0 var(--space-sm);color:var(--color-ink-2,#5b6675);font-size:14px}
+.mcal{border:1px solid var(--rule,#d5dbe3);border-radius:14px;overflow:hidden;background:var(--panel,#fff)}
+.mcal-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.mcal-dow div{padding:8px 6px;font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-align:center;background:var(--band);color:var(--band-ink)}
+.mcal-cell{position:relative;min-height:116px;padding:6px 0 6px;border-top:1px solid var(--rule,#e2e7ee);border-left:1px solid var(--rule,#e2e7ee);min-width:0;display:flex;flex-direction:column;gap:3px}
+.mcal-row .mcal-cell:first-child{border-left:0}
+.mcal-cell.out{background:repeating-linear-gradient(135deg,transparent 0 8px,color-mix(in oklab,currentColor 4%,transparent) 8px 9px)}
+.mcal-cell.has{cursor:pointer}
+.mcal-cell.has:hover{background:color-mix(in oklab,var(--color-accent,#2461E9) 5%,transparent)}
+.mcal-cell.sel{box-shadow:inset 0 0 0 2px var(--color-accent,#2461E9)}
+.mcal-n{align-self:flex-start;margin:0 8px;font-family:var(--display);font-weight:700;font-size:16px;line-height:26px;min-width:26px;text-align:center;border-radius:50%}
+.mcal-cell.today .mcal-n{background:var(--color-accent,#2461E9);color:#fff}
+.mcal-evs{display:flex;flex-direction:column;gap:3px;min-width:0}
+.mcal-ev{display:flex;align-items:center;gap:5px;height:22px;padding:0 6px;margin:0 -1px;background:color-mix(in oklab,var(--c) 18%,transparent);color:inherit;font-size:12px;line-height:1;white-space:nowrap;overflow:hidden;cursor:pointer;border-left:0;border-radius:0}
+.mcal-ev.st{margin-left:4px;border-radius:6px 0 0 6px;border-left:3px solid var(--c)}
+.mcal-ev.en{margin-right:4px;border-radius:0 6px 6px 0}
+.mcal-ev.st.en{border-radius:6px}
+.mcal-ev b{font-family:var(--display);font-weight:800;color:var(--c);letter-spacing:.02em;text-transform:uppercase;flex:none}
+.mcal-ev i{font-style:normal;overflow:hidden;text-overflow:ellipsis}
+.mcal-ev:not(.st) b{display:none}
+.mcal-ev.race{background:var(--c);color:#fff}
+.mcal-ev.race b{color:#fff}
+.mcal-ev.cx{opacity:.45;text-decoration:line-through}
+.mcal-ev:hover{filter:brightness(1.08)}
+.mcal-more{margin:0 8px;font-size:11px;font-weight:600;color:var(--color-ink-2,#5b6675)}
+.mcal-dots{display:none}
+.mcal-day{margin-top:var(--space-md)}
+.mcal-dayin h3{margin:0 0 var(--space-sm);font-size:22px;text-transform:uppercase}
+.mcal-dayrace{display:flex;gap:12px;padding:12px;border:1px solid var(--rule,#e2e7ee);border-left:4px solid var(--c);border-radius:12px;margin-bottom:10px;cursor:pointer;background:var(--panel,#fff)}
+.mcal-dayrace .nm{font-weight:700;font-size:17px}
+.mcal-dayrace .loc{color:var(--color-ink-2,#5b6675);font-size:14px}
+.mcal-sess{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px}
+.mcal-sess li{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-top:1px dashed var(--rule,#e2e7ee);padding-top:4px}
+.mcal-sess b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.mcal-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--color-ink-2,#5b6675)}
+@media (max-width:700px){
+  .mcal-cell{min-height:64px;padding:4px 0}
+  .mcal-n{font-size:14px;line-height:24px;min-width:24px;margin:0 auto}
+  .mcal-evs{display:none}
+  .mcal-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;padding:0 3px}
+  .mcal-dots i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+  .mcal-dow div{font-size:11px;padding:6px 0;letter-spacing:.04em}
+}
 </style>
 </head>
 <body>
@@ -1237,7 +1288,8 @@ main{max-width:1200px}
     <div class="chips" id="calChips" role="toolbar" aria-label="Series"></div>
     <div class="bar-row">
       <div class="seg" id="viewSeg">
-        <button data-v="upcoming" aria-pressed="true">Upcoming</button>
+        <button data-v="month" aria-pressed="true">Month</button>
+        <button data-v="upcoming" aria-pressed="false">Upcoming</button>
         <button data-v="season" aria-pressed="false">Full<span class="hide-s"> season</span></button>
         <button data-v="next" aria-pressed="false" id="nextSeasonBtn">Next season</button>
         <button data-v="mine" aria-pressed="false">My<span class="hide-s"> weekends</span></button>
@@ -3153,7 +3205,7 @@ function renderSeriesGrid(){
 }
 
 // ---------- Calendar tab ----------
-let calSeries = "all", view = "upcoming", showCancelled = false;
+let calSeries = "all", view = "month", showCancelled = false;
 const inCal = e => calSeries === "all" || e.series === calSeries || (calSeries === "gt" && /^gt/.test(e.series)) || (calSeries === "cups" && /^(psc|pccna)$/.test(e.series));
 function chipsHTML(sel, opts){
   return opts.map(([v, label, s]) => `<button class="chip ${s ? "" : "txt"}" data-v="${v}" aria-pressed="${sel === v}">${s ? plate(s, 20) : ""}${esc(label)}</button>`).join("");
@@ -3162,8 +3214,65 @@ function renderCalChips(){
   document.getElementById("calChips").innerHTML = chipsHTML(calSeries,
     [["all","All series"],["f1","F1","f1"],["imsa","IMSA","imsa"],["wec","WEC","wec"],["gt","All GT World"],["gtwc","America","gtwc"],["gte","Europe","gte"],["gtas","Asia","gtas"],["gtau","Australia","gtau"],["cups","Porsche Cups"],["psc","Supercup","psc"],["pccna","Carrera Cup NA","pccna"],["mustang","Mustang","mustang"],["nascar","NASCAR","nascar"],["indy","IndyCar","indy"],["motogp","MotoGP","motogp"]]);
 }
+// ---------- Month view: a traditional calendar grid ----------
+let calMonth = (() => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; })(), calDay = null;
+const ymdLocal = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+function sessDayKey(iso){ try { return new Intl.DateTimeFormat("en-CA", { timeZone: TX }).format(new Date(iso)); } catch(e){ return iso.slice(0, 10); } }
+function monthEvents(){ let l = events.filter(inCal); if (!showCancelled) l = l.filter(e => !e.cancelled); return l; }
+function dayItems(key){ // races on this day, each with its sessions that fall on it (in the visitor's time zone)
+  return monthEvents().filter(e => ymdLocal(e.start) <= key && ymdLocal(e.end) >= key)
+    .map(e => ({ e, sess: (SESSIONS[e.id] || []).filter(x => sessDayKey(x[1]) === key) }));
+}
+function renderMonth(el){
+  const { y, m } = calMonth, first = new Date(y, m, 1), startDow = first.getDay(), days = new Date(y, m + 1, 0).getDate();
+  const todayKey = ymdLocal(new Date()), list = monthEvents();
+  const cells = [];
+  for (let i = 0; i < startDow; i++) cells.push(null);
+  for (let d = 1; d <= days; d++) cells.push(new Date(y, m, d));
+  while (cells.length % 7) cells.push(null);
+  const inMonth = list.filter(e => e.end >= first && e.start <= new Date(y, m, days));
+  let h = `<div class="mcal-head"><button class="mcal-nav" data-mnav="-1" aria-label="Previous month">‹</button><h2 class="mcal-title">${MONTHS[m]} <span>${y}</span></h2><button class="mcal-nav" data-mnav="1" aria-label="Next month">›</button><button class="tlink mcal-today" data-mnav="0">Today</button></div>
+    <p class="mcal-sum">${inMonth.length ? `${inMonth.length} race weekend${inMonth.length === 1 ? "" : "s"} this month. Tap a race to open it, or a day to see its sessions in ${esc(tzLabel())}.` : "No races this month for this filter."}</p>
+    <div class="mcal" role="grid" aria-label="${MONTHS[m]} ${y}"><div class="mcal-row mcal-dow" role="row">${DOW.map(d => `<div role="columnheader">${d}</div>`).join("")}</div>`;
+  for (let r = 0; r < cells.length / 7; r++) {
+    h += `<div class="mcal-row" role="row">`;
+    for (let c = 0; c < 7; c++) {
+      const d = cells[r * 7 + c];
+      if (!d) { h += `<div class="mcal-cell out" role="gridcell"></div>`; continue; }
+      const key = ymdLocal(d), its = list.filter(e => ymdLocal(e.start) <= key && ymdLocal(e.end) >= key);
+      const raceDay = its.filter(e => { const L = (SESSIONS[e.id] || []).filter(x => !x[2]); return L.length ? sessDayKey(L[L.length - 1][1]) === key : ymdLocal(e.end) === key; });
+      h += `<div class="mcal-cell${key === todayKey ? " today" : ""}${key === calDay ? " sel" : ""}${its.length ? " has" : ""}" role="gridcell" data-mday="${key}" tabindex="${its.length ? 0 : -1}" aria-label="${DOW[d.getDay()]} ${MON[m]} ${d.getDate()}: ${its.length ? its.length + " race" + (its.length > 1 ? "s" : "") : "no races"}">
+        <span class="mcal-n">${d.getDate()}</span>
+        <div class="mcal-evs">${its.slice(0, 4).map(e => `<span class="mcal-ev ${e.series}${raceDay.includes(e) ? " race" : ""}${e.cancelled ? " cx" : ""}${ymdLocal(e.start) === key || c === 0 ? " st" : ""}${ymdLocal(e.end) === key || c === 6 ? " en" : ""}" data-open="${e.id}" role="button" tabindex="-1" title="${esc(SERIES[e.series] + ": " + e.name)}"><b>${esc(SERIES[e.series])}</b><i>${esc(e.name)}</i></span>`).join("")}${its.length > 4 ? `<span class="mcal-more">+${its.length - 4}</span>` : ""}</div>
+        ${its.length ? `<span class="mcal-dots" aria-hidden="true">${its.slice(0, 5).map(e => `<i class="${e.series}"></i>`).join("")}</span>` : ""}
+      </div>`;
+    }
+    h += `</div>`;
+  }
+  h += `</div><div id="mcalDay" class="mcal-day" aria-live="polite">${calDay && calDay.slice(0, 7) === `${y}-${String(m + 1).padStart(2, "0")}` ? dayPanelHTML(calDay) : ""}</div>`;
+  el.innerHTML = h;
+  hydratePhotos(el);
+}
+function dayPanelHTML(key){
+  const [yy, mm, dd] = key.split("-").map(Number), d = new Date(yy, mm - 1, dd), its = dayItems(key);
+  if (!its.length) return `<div class="mcal-dayin"><h3>${DOW[d.getDay()]}, ${MONTHS[mm - 1]} ${dd}</h3><p class="fine">No races this day.</p></div>`;
+  return `<div class="mcal-dayin"><h3>${DOW[d.getDay()]}, ${MONTHS[mm - 1]} ${dd}</h3>${its.map(({ e, sess }) => `<article class="mcal-dayrace ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
+      ${picHTML(e.series, e.id + "-day", "thumb", plate(e.series, 20))}
+      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)} · ${esc(range(e))}${e.cancelled ? " · Cancelled" : ""}</div>
+      ${sess.length ? `<ul class="mcal-sess">${sess.map(x => `<li><span>${esc(x[0])}</span><b>${esc(fmtTime.format(new Date(x[1])))}</b></li>`).join("")}</ul>` : `<p class="fine">${(SESSIONS[e.id] || []).length ? "No sessions this day." : "Session times are added about a week before the race."}</p>`}
+      ${WINNERS[e.id] && ymdLocal(e.end) <= key ? `<p class="fine">Won by ${esc(WINNERS[e.id])}</p>` : ""}</div></article>`).join("")}</div>`;
+}
+document.addEventListener("click", ev => {
+  const n = ev.target.closest("[data-mnav]");
+  if (n) { const v = +n.dataset.mnav; if (v === 0) { const t = new Date(); calMonth = { y: t.getFullYear(), m: t.getMonth() }; calDay = ymdLocal(t); } else { const t = new Date(calMonth.y, calMonth.m + v, 1); calMonth = { y: t.getFullYear(), m: t.getMonth() }; } renderList(); return; }
+  if (ev.target.closest(".mcal-ev")) return; // opens the race (handled by [data-open])
+  const c = ev.target.closest("[data-mday]");
+  if (c && c.classList.contains("has")) { calDay = c.dataset.mday; document.querySelectorAll(".mcal-cell.sel").forEach(x => x.classList.remove("sel")); c.classList.add("sel"); const p = document.getElementById("mcalDay"); if (p) { p.innerHTML = dayPanelHTML(calDay); hydratePhotos(p); p.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); } }
+}, true);
+document.addEventListener("keydown", ev => { const c = ev.target.closest && ev.target.closest("[data-mday]"); if (c && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); c.click(); } });
 function renderList(){
   const el = document.getElementById("list");
+  if (view === "month") { renderMonth(el); return; }
   let list = events.filter(inCal);
   if (!showCancelled) list = list.filter(e => !e.cancelled);
   if (view === "upcoming") list = list.filter(e => e.cancelled ? e.end >= today() : phase(e) !== "past");
