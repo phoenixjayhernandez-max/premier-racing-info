@@ -1869,19 +1869,19 @@ const STATS = {
     standings:[["Kimi Antonelli","Mercedes",390],["Max Verstappen","Red Bull",279],["George Russell","Mercedes",262],["Lewis Hamilton","Ferrari",261],
       ["Charles Leclerc","Ferrari",251],["Lando Norris","McLaren",246],["Oscar Piastri","McLaren",152],["Isack Hadjar","Red Bull",122],
       ["Liam Lawson","Racing Bulls",87],["Pierre Gasly","Alpine",42],["Arvid Lindblad","Racing Bulls",38],["Franco Colapinto","Alpine",27],
-      ["Oliver Bearman","Haas",23],["Gabriel Bortoleto","Audi",14],["Nico Hülkenberg","Audi",14],["Esteban Ocon","Haas",7],
+      ["Oliver Bearman","Haas",23],["Gabriel Bortoleto","Audi",14],["Nico Hülkenberg","Audi",14],["Esteban Ocon","Haas (dropped after Mexico City)",7],
       ["Fernando Alonso","Aston Martin",7],["Carlos Sainz","Williams",7],["Alex Albon","Williams",5],["Yuki Tsunoda","Racing Bulls",1],
-      ["Ryo Hirakawa","Haas",1],["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
+      ["Ryo Hirakawa","Haas",1],["Rafael Câmara","Haas",0],["Lance Stroll","Aston Martin",0],["Valtteri Bottas","Cadillac",0],["Sergio Pérez","Cadillac",0]],
     makersTitle:"Constructors' championship",
     makers:[["Mercedes",652],["Ferrari",512],["Red Bull",415],["McLaren",398],["Racing Bulls",112],["Alpine",69],["Haas",31],["Audi",28],["Williams",12],["Aston Martin",7],["Cadillac",0]],
     gridTitle:"The grid",
     grid:[["Mercedes","Mercedes power","Kimi Antonelli · George Russell"],["Ferrari","Ferrari power","Lewis Hamilton · Charles Leclerc"],
       ["McLaren","Mercedes power","Lando Norris · Oscar Piastri"],["Red Bull","Red Bull Ford power","Max Verstappen · Isack Hadjar"],
       ["Racing Bulls","Red Bull Ford power","Liam Lawson · Arvid Lindblad"],["Alpine","Mercedes power","Pierre Gasly · Franco Colapinto"],
-      ["Haas","Ferrari power","Oliver Bearman · Esteban Ocon"],["Audi","Audi power","Gabriel Bortoleto · Nico Hülkenberg"],
+      ["Haas","Ferrari power","Oliver Bearman · Rafael Câmara (from São Paulo; Ryo Hirakawa drove in Mexico City)"],["Audi","Audi power","Gabriel Bortoleto · Nico Hülkenberg"],
       ["Williams","Mercedes power","Carlos Sainz · Alex Albon"],["Aston Martin","Honda power","Fernando Alonso · Lance Stroll"],
       ["Cadillac","Ferrari power","Valtteri Bottas · Sergio Pérez"]],
-    notes:["Kimi Antonelli is the 2026 world champion, clinched with third in Mexico City with four rounds to go.","Verstappen's Mexico win lifts him to 2nd, two points ahead of Hamilton; Russell and Leclerc are within 16 points of him.","Mercedes lead Ferrari by 126 points in the constructors' with four rounds left.","Red Bull passed McLaren for 3rd in the constructors' (382 to 365)."]
+    notes:["Kimi Antonelli is the 2026 world champion, clinched in Mexico City; Mercedes sealed the constructors' title in São Paulo.","Verstappen is 2nd on 279, with Russell (262) and Hamilton (261) a point apart behind him. Three rounds left: Las Vegas, Qatar, Abu Dhabi.","Haas dropped Esteban Ocon after Mexico City. Ryo Hirakawa drove in Mexico, and Ferrari junior Rafael Câmara debuted in São Paulo; Câmara has the seat for 2027.","Red Bull lead McLaren for 3rd in the constructors' (415 to 398)."]
   },
   imsa: {
     race: { name:"Motul Petit Le Mans (season finale)", where:"Road Atlanta · Oct 3 · GTP class",
@@ -2336,11 +2336,11 @@ const PHOTO_NEED = {
 const PHOTO_FAMILY = { "gtwc-america": "gt3", "gtwc-europe": "gt3", "gtwc-asia": "gt3", "gtwc-australia": "gt3", igtc: "gt3", britgt: "gt3", adacgtm: "gt3",
   "porsche-supercup": "cup", "carrera-cup-na": "cup", pccd: "cup", pccgb: "cup", pccau: "cup", pccas: "cup" };
 // Never on track (whole words only, so "Toyota" or "designing" don't trip it)
-const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?|rugby|football|soccer|futbol|calcio|cricket|tennis|basketball|baseball|softball|hockey|lacrosse|volleyball|handball|athletics|marathon|runners?|sprinters?|cycling|cyclists?|bicycles?|giro d|tour de france|horses?|equestrian|jockeys?|greyhounds?|rowing|regatta|sailing|yachts?|swimm(ing|ers?)|ski(ing|ers?)?|snowboard|golf|boxing|wrestling|fans? cheering|cheerleaders?|referees?|stadio|olimpico|six nations|sei nazioni|national team)\b/i;
+const PHOTO_NOT = /\b(podiums?|portraits?|headshots?|troph(y|ies)|logos?|maps?|layouts?|museums?|motor ?shows?|auto ?shows?|salons?|expos?|exhibits?|exhibitions?|showrooms?|press conferences?|interviews?|autographs?|signing|fan ?zones?|grid girls?|parades?|renders?|renderings?|reveals?|launch(es)?|presentations?|road cars?|street[- ]legal|IAA|Goodwood|concours|dealers?|dealerships?|test drives?|toys?|model cars?|scale models?|replicas?|drawings?|diagrams?|tickets?|posters?|stamps?|coins?|Lego|diecast|die-cast|go-?karts?|simulators?|video games?|esports?|rugby|football|soccer|futbol|calcio|cricket|tennis|basketball|baseball|softball|hockey|lacrosse|volleyball|handball|athletics|marathon|runners?|sprinters?|cycling|cyclists?|bicycles?|giro d|tour de france|horses?|equestrian|jockeys?|greyhounds?|rowing|regatta|sailing|yachts?|swimm(ing|ers?)|ski(ing|ers?)?|snowboard|golf|boxing|wrestling|fans? cheering|cheerleaders?|referees?|stadio|olimpico|six nations|sei nazioni|national team|transporters?|haulers?|motorhomes?|spectators?|supporters?|crowds?|fan forum|fans|show ?cars?|pace cars?|safety cars?|medical cars?|gates?|entrances?|visits?|visitors?|governor|mayor|ceremon(y|ies)|corral|roadsters?|motortreff|car meets?|cars and coffee|car park|parking|hospitality|paddock club|pit walk|selfies?|helmets?|engineers?|team principal|garage tour|unveil\w*|livery reveal|shakedown|filming|broadcast\w*|commentators?)\b/i;
 // Every photo must also say it is motor racing somewhere in its title or categories.
-const PHOTO_YES = /\b(rac(e|es|ing|ed)|motor ?sport|motorsports?|grand prix|gp|circuit|speedway|raceway|autodromo|aut[oó]dromo|rally|endurance|laps?|pit ?(lane|stop|wall)|grid|qualifying|practice|formula|f[1-4]|nascar|indy ?car|indy|motogp|moto[23e]|gt[34]?|gtp|lmp[23]|lmgt3|hypercar|superbike|motorcycles?|sports? ?cars?|touring cars?|stock cars?|sprint cars?|dirt track|hill ?climb|supercars?|carrera cup|supercup|mustang|porsche|ferrari|lamborghini|mclaren|mercedes|bmw|audi|aston martin|corvette|cadillac|toyota|honda|ford|chevrolet|lexus|acura|ducati|aprilia|yamaha|ktm|dragsters?|drag racing|top fuel|funny cars?|off-?road|trophy trucks?|kart(ing)?|nhra|imsa|wec|le mans|daytona|sebring|monza|spa|n[uü]rburgring|bathurst|cota)\b/i;
+const PHOTO_YES = /\b(rac(e|es|ing|ed)|racecars?|motor ?sports?|grand prix|e-?prix|qualifying|practice|warm-?up|starting grids?|grids?|starts? in|laps?|pit ?(lane|stops?|wall)|formula|f[1-4]|nascar|indy ?car|indy ?nxt|indy lights|indianapolis 500|indy 500|motogp|moto[23e]|superbikes?|rally(ing)?|endurance|hypercars?|gt[34]|gtp|lmp[1-3]|lmgt3|lmh|lmdh|(24|12|8|6) hours|hours of|sprint cars?|stock cars?|touring cars?|dirt track|hill ?climb|drag rac\w*|top fuel|funny cars?|dragsters?|supercross|motocross|trophy trucks?|baja|time attack|carrera cup|supercup|cup series|truck series|xfinity|super formula|super gt|dtm|wrc|wec|imsa|blancpain|gt world challenge|world of outlaws|late models?)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics3"; // bumped Nov 2026 after a rugby photo slipped through
+const PHOTOKEY = KEY + "-racepics4"; // bumped Nov 2026: stricter on-track photo rules
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
 try { ["-freepics1", "-freepics2", "-img2", "-racepics1"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
@@ -2354,8 +2354,10 @@ function buildPool(){
 }
 function savePhotos(){ try { localStorage.setItem(PHOTOKEY, JSON.stringify(PHOTO_CACHE)); } catch(e){} }
 // Does this photo show this series on track?
+// Titles that describe people rather than cars: "Ann Lee with Bo Ray at …", "Ann Lee and Bo Ray at …", "Ann Lee during …"
+const PHOTO_PEOPLE = /^\s*[A-ZÀ-Ý][\w'’.-]+(?: [A-ZÀ-Ý][\w'’.-]+){1,2} (?:(?:with|and|&) [A-ZÀ-Ý][\w'’.-]+(?: [A-ZÀ-Ý][\w'’.-]+){1,2} (?:at|during|in)\b|during\b)/;
 function photoFits(wid, text, title){
-  if (PHOTO_NOT.test(text) || !PHOTO_YES.test(text)) return false;
+  if (PHOTO_NOT.test(text) || !PHOTO_YES.test(text) || PHOTO_PEOPLE.test(title || "")) return false;
   const need = PHOTO_NEED[wid];
   if (need) { if (!need[0].test(text)) return false; if (need[1] && need[1].test(need[2] ? title : text)) return false; return true; }
   // directory series without their own rule: the series' name has to be in the photo's title, tags or categories
