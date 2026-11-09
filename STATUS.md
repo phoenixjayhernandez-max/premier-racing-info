@@ -1,18 +1,19 @@
 # Site status
 
-Checked 2026-11-08 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-09 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 29 |
+| 4 | Series directory | ⚠️ 30 |
 | 5 | Watch | ⚠️ 2 |
 | 6 | Tickets | ⚠️ 1 |
 | 7 | Tracks & races near you | ⚠️ 15 |
 | 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
+| 14 | eSports | ⚠️ 2 |
 | 10 | Photos | by hand |
 | 11 | Accounts, alerts & picks game | by hand |
 | 12 | Design & speed | by hand |
@@ -23,39 +24,33 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (4)</summary>
-
-- São Paulo Grand Prix (Formula 1, 2026-11-08) has start times
-- 6 Hours of Monza (World Endurance, 2026-11-08) has start times
-- Championship Race (NASCAR Cup Series, 2026-11-08) has start times
-- Qatar Grand Prix (MotoGP, 2026-11-08) has start times
-
-</details>
-
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
 - Nothing to do.
 
-<details><summary>Up to date (10)</summary>
+<details><summary>Up to date (13)</summary>
 
 - Winner saved: United States Grand Prix (Formula 1, 2026-10-25)
 - Winner saved: Mexico City Grand Prix (Formula 1, 2026-11-01)
-- Winner saved: 6 Hours of Barcelona (World Endurance, 2026-10-18)
-- Winner saved: 3 Hours of Portimão (GT World Challenge Europe, 2026-10-18)
+- Winner saved: São Paulo Grand Prix (Formula 1, 2026-11-08)
+- Winner saved: 6 Hours of Monza (World Endurance, 2026-11-08)
 - Winner saved: Shanghai finale (GT World Challenge Asia, 2026-11-01)
 - Winner saved: Circuit of The Americas (Porsche Carrera Cup North America, 2026-10-25)
 - Winner saved: Xfinity 500 (NASCAR Cup Series, 2026-11-01)
+- Winner saved: Championship Race (NASCAR Cup Series, 2026-11-08)
 - Winner saved: Malaysian Grand Prix (MotoGP, 2026-11-01)
+- Winner saved: Qatar Grand Prix (MotoGP, 2026-11-08)
 - Picks scored: United States Grand Prix (Formula 1, 2026-10-25)
 - Picks scored: Mexico City Grand Prix (Formula 1, 2026-11-01)
+- Picks scored: São Paulo Grand Prix (Formula 1, 2026-11-08)
 
 </details>
 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 43 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 44 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
@@ -84,7 +79,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (11 days ago)
+- [ ] Directory last researched Oct 28, 2026 (12 days ago)
 - [ ] FR Americas: season finished but no champion listed
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
 - [ ] GB3: season finished but no champion listed
@@ -111,6 +106,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 - [ ] Lemons: no status (in progress or finished?) and no next round
 - [ ] All Japan RR: season ended 2026-10-25 but status is still "In progress"
 - [ ] Isle of Man TT: season finished but no champion listed
+- [ ] Trans Am: season ended 2026-11-08 but status is still "In progress"
 - [ ] Lucas Oil Late Models: season finished but no champion listed
 - [ ] GNCC: season finished but no champion listed
 
@@ -118,7 +114,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
 - [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
-- [ ] Trans Am races this weekend (Circuit of The Americas (finale) · Nov 5–8) with no start time
+- [ ] SCORE races this weekend (Baja 1000 (Los Cabos) · race starts Nov 13) with no start time
 
 <details><summary>Up to date (13)</summary>
 
@@ -145,18 +141,18 @@ _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT
 
 <details><summary>Up to date (1)</summary>
 
-- 10 of 10 races in the next 60 days have an official ticket or circuit link
+- 6 of 6 races in the next 60 days have an official ticket or circuit link
 
 </details>
 
 ## 7. Tracks & races near you
 _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 
-- [ ] No circuit website for Interlagos
 - [ ] No circuit website for Adelaide Street Circuit
 - [ ] No circuit website for Shanghai International Circuit
 - [ ] No circuit website for Madring
 - [ ] No circuit website for Istanbul Park
+- [ ] No circuit website for Interlagos
 - [ ] No circuit website for Chang International Circuit
 - [ ] No circuit website for Beijing Street Circuit
 - [ ] No circuit website for Coronado Street Course
@@ -175,7 +171,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.6 hours ago (300 headlines)
+- News last collected 0.4 hours ago (300 headlines)
 
 </details>
 
@@ -187,6 +183,23 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 <details><summary>Up to date (2)</summary>
 
 - Pages last rebuilt November 9, 2026
-- 553 pages in the sitemap
+- 554 pages in the sitemap
+
+</details>
+
+## 14. eSports
+_Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
+
+- [ ] F1 Sim Racing World Championship: check whether the next season has been announced
+- [ ] Porsche Esports Supercup: check whether the next season has been announced
+
+<details><summary>Up to date (6)</summary>
+
+- eSports tab last checked 2026-11-09 (0 days ago)
+- 7 upcoming eSports events listed
+- F1 Sim Racing World Championship: Finished
+- eNASCAR Coca-Cola iRacing Series: Finished
+- Porsche Esports Supercup: Finished
+- Gran Turismo World Series in progress
 
 </details>
