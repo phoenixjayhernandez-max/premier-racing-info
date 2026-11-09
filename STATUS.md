@@ -187,6 +187,6 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 <details><summary>Up to date (2)</summary>
 
 - Pages last rebuilt November 9, 2026
-- 542 pages in the sitemap
+- 553 pages in the sitemap
 
 </details>
