@@ -4641,7 +4641,7 @@ function tkSeriesHTML(){
   for (const [g, label] of groups) {
     const rows = list.filter(x => GROUP_OF(x.discipline) === g); if (!rows.length) continue;
     h += `<div class="month">${esc(label)}</div><div class="tks-list">${rows.map(x => `<div class="tks ${DISC_CLS[x.discipline] || "d-mo"}">
-      <div style="min-width:0"><div class="nm">${esc(x.short || x.name)}</div><div class="loc">${esc(x.status === "Finished" ? "Season over · next season TBA" : x.next ? "Next: " + x.next : x.region || "")}</div></div>
+      <div style="min-width:0"><div class="nm">${esc(x.short || x.name)}</div><div class="loc">${esc(x.status === "Finished" ? (x.next ? "Season over · Next: " + x.next : "Season over · next season TBA") : x.next ? "Next: " + x.next : x.region || "")}</div></div>
       <div class="tk-btns">${seriesTicketLinks(x).map((t, i) => `<a class="btn ${i === 0 ? "star" : ""}" ${i === 0 ? 'aria-pressed="true"' : ""} href="${esc(t[1])}" target="_blank" rel="noopener">${esc(t[0])}</a>`).join("")}</div></div>`).join("")}</div>`;
   }
   return h + `</div></details>`;

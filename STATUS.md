@@ -7,9 +7,9 @@ Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we 
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ⚠️ 1 |
-| 4 | Series directory | ⚠️ 30 |
+| 4 | Series directory | ✅ 0 |
 | 5 | Watch | ✅ 0 |
-| 6 | Tickets | ⚠️ 1 |
+| 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 15 |
 | 8 | News | ✅ 0 |
 | 9 | Search pages | ✅ 0 |
@@ -79,36 +79,14 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (13 days ago)
-- [ ] FR Americas: season finished but no champion listed
-- [ ] Eurocup-3: no status (in progress or finished?) and no next round
-- [ ] GB3: season finished but no champion listed
-- [ ] VP SportsCar: season finished but no champion listed
-- [ ] ADAC GT Masters: season finished but no champion listed
-- [ ] NLS: season finished but no champion listed
-- [ ] 24H Series: season finished but no champion listed
-- [ ] GT Cup Europe: season finished but no champion listed
-- [ ] GT4 Europe: season finished but no champion listed
-- [ ] Ferrari Chall NA: season ended 2026-09-13 but status is still "In progress"
-- [ ] Lambo ST NA: season finished but no champion listed
-- [ ] Carrera Cup GB: season finished but no champion listed
-- [ ] O'Reilly Series: season finished but no champion listed
-- [ ] Truck Series: season finished but no champion listed
-- [ ] NASCAR Mexico: season finished but no champion listed
-- [ ] TCR S. America: In progress, no next round listed
-- [ ] Stock Car Pro: In progress, no next round listed
-- [ ] TC: In progress, no next round listed
-- [ ] TC2000: no status (in progress or finished?) and no next round
-- [ ] KOH / Ultra4: no status (in progress or finished?) and no next round
-- [ ] WoO Sprints: no status (in progress or finished?) and no next round
-- [ ] High Limit: no status (in progress or finished?) and no next round
-- [ ] SST: no status (in progress or finished?) and no next round
-- [ ] Lemons: no status (in progress or finished?) and no next round
-- [ ] All Japan RR: season ended 2026-10-25 but status is still "In progress"
-- [ ] Isle of Man TT: season finished but no champion listed
-- [ ] Trans Am: season ended 2026-11-08 but status is still "In progress"
-- [ ] Lucas Oil Late Models: season finished but no champion listed
-- [ ] GNCC: season finished but no champion listed
+- Nothing to do.
+
+<details><summary>Up to date (2)</summary>
+
+- Directory last researched Nov 10, 2026 (0 days ago)
+- Every series has a current status and next round
+
+</details>
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
@@ -138,7 +116,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 ## 6. Tickets
 _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT_SITES)_
 
-- [ ] Eurocup-3: no official ticket store or site
+- Nothing to do.
 
 <details><summary>Up to date (1)</summary>
 
@@ -172,7 +150,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.0 hours ago (300 headlines)
+- News last collected 0.1 hours ago (300 headlines)
 
 </details>
 
