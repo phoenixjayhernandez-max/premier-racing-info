@@ -1308,7 +1308,7 @@ main{max-width:1200px}
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
-    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time in your own time zone, where to watch in the US, tickets and standings.</p><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026 · race starts Sat, Nov 21 at 10:00 PM CST</li><li><a href="/races/motogp-portuguese-grand-prix-2026/">MotoGP: Portuguese Grand Prix</a> · Algarve International Circuit · Nov 20–22, 2026 · race starts Sun, Nov 22 at 7:00 AM CST</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 9, 2026.</p></div><!--/seo--></div>
+    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time for 13 top series in your own time zone, race dates for 96 more, where to watch in the US, tickets and standings.</p><h2>Coming up</h2><ul><li><a href="/races/f1-las-vegas-grand-prix-2026/">Formula 1: Las Vegas Grand Prix</a> · Las Vegas Strip Circuit · Nov 19–21, 2026 · race starts Sat, Nov 21 at 10:00 PM CST</li><li><a href="/races/motogp-portuguese-grand-prix-2026/">MotoGP: Portuguese Grand Prix</a> · Algarve International Circuit · Nov 20–22, 2026 · race starts Sun, Nov 22 at 7:00 AM CST</li><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 10, 2026.</p></div><!--/seo--></div>
     <div id="installBox"></div>
     <section class="sec" id="newsSec" aria-label="News"></section>
     <div class="sec" id="mySec"></div>
@@ -3106,7 +3106,7 @@ function renderWeekend(){
       <div class="hh-copy">
         <div id="liveNow">${liveNowHTML()}</div>
         <h1 id="homeTitle">Never miss a start<span class="visually-hidden">: race start times in your time zone</span></h1>
-        <p class="lead">Every session of ${WORLD_LIST.length} racing series, in your time zone, with where to watch it.</p>
+        <p class="lead">Every session of ${ORDER.length} top series in your time zone, plus race dates for ${WORLD_LIST.length - ORDER.length} more, with where to watch.</p>
         <div class="hh-acts"><button class="cta cta-primary" data-alerts="1">Turn on alerts</button><button class="cta cta-secondary" data-gotab="calendar">Full calendar</button></div>
       </div>
       <div class="hh-word" aria-hidden="true"><span>LIGHTS OUT</span><span>LIGHTS OUT</span><span>LIGHTS OUT</span><span>LIGHTS OUT</span></div>
@@ -3118,8 +3118,8 @@ function renderWeekend(){
     <section class="feat-sec" aria-label="Featured race">
       <div class="hh-meta"><p class="fine hh-tz">${tzLine()}</p><p class="fine hh-credit" aria-live="off"></p></div>
       ${featHTML(feat)}
-      ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">Also this weekend</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
-      ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">More racing this weekend</h2><div class="wk-rows">${W.map(worldRow).join("")}</div></div>` : ""; })()}
+      ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">${wk.length ? "Also this weekend" : `Same weekend as ${esc(feat.name.replace(/ Grand Prix$/, ""))}`}</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
+      ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">${wk.length ? "More racing this weekend" : `Racing this weekend, ${wkendSpan()}`}</h2><div class="wk-rows">${W.map(worldRow).join("")}</div></div>` : ""; })()}
     </section>
     ${p27PromoHTML()}
     ${galleryHTML()}
@@ -3242,9 +3242,21 @@ function nextRange(txt){
   if (b < new Date(y, t.getMonth() - 2, 1)) { a.setFullYear(y + 1); b.setFullYear(y + 1); } // "Jan 9" seen in November = next year
   return [a, b];
 }
-function worldThisWeekend(){
+// Fri–Sun of the current weekend (or the coming one, Mon–Thu). [Friday 00:00, Sunday 00:00]
+function weekendWindow(){
   const t = today(), dow = t.getDay(), ws = new Date(t); ws.setDate(t.getDate() + (dow === 0 ? -2 : dow === 6 ? -1 : 5 - dow));
   const we = new Date(ws); we.setDate(ws.getDate() + 2);
+  return [ws, we];
+}
+// "Fri 4:45 AM" for sessions this weekend; "Fri, Nov 20 4:45 AM" for anything later, so a weekday never points at the wrong week.
+function whenLbl(iso){
+  const d = new Date(iso), end = new Date(weekendWindow()[1]); end.setDate(end.getDate() + 1);
+  return `${(d < end ? fmtDow : fmtDay).format(d)} ${txTime(iso)}`;
+}
+const fmtShort = d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const wkendSpan = () => { const [ws, we] = weekendWindow(); return `${fmtShort(ws)}–${ws.getMonth() === we.getMonth() ? we.getDate() : fmtShort(we)}`; };
+function worldThisWeekend(){
+  const t = today(), [ws, we] = weekendWindow();
   return WORLD_LIST.filter(x => !x.app && x.status !== "Finished" && x.next).map(x => [x, nextRange(x.next)]).filter(([, r]) => r && r[0] <= we && r[1] >= ws && r[1] >= t);
 }
 function worldRow([x]){
@@ -3253,7 +3265,7 @@ function worldRow([x]){
   return `<div class="wk-row ${DISC_CLS[x.discipline] || "d-mo"}" data-world="${esc(x.id)}" tabindex="0" role="button" aria-label="${esc(x.short || x.name)} details">
     <span class="pic thumb" data-pic="${esc(x.id)}" data-key="${esc(x.id)}-wk" aria-hidden="true"><span class="dplate">${esc(dirCode(x))}</span></span>
     <div class="wk-main"><div class="nm">${esc(x.short || x.name)}${freeWatch(x).length ? ` <span class="free-tag">Free stream</span>` : ""}</div><div class="loc">${esc(where)}</div></div>
-    <div class="wk-next">${n ? `<span>${esc(n[0])}</span><b>${fmtDow.format(new Date(n[1]))} ${txTime(n[1])}</b>` : `<span class="state">${esc((x.next.split(" · ")[1] || "").replace(/\s*\(.*$/, ""))}</span>`}</div>
+    <div class="wk-next">${n ? `<span>${esc(n[0])}</span><b>${whenLbl(n[1])}</b>` : `<span class="state">${esc((x.next.split(" · ")[1] || "").replace(/\s*\(.*$/, ""))}</span>`}</div>
     <div class="wk-watch">${n && n[3] ? `<a class="btn watch" href="${esc(n[3])}" target="_blank" rel="noopener">${esc(n[2])}</a>` : x.site ? `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Times ↗</a>` : ""}</div>
   </div>`;
 }
@@ -3262,7 +3274,7 @@ function wkRow(e){
   return `<div class="wk-row ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
     ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
     <div class="wk-main"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div></div>
-    <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${fmtDow.format(new Date(ns[1]))} ${txTime(ns[1])}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
+    <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${whenLbl(ns[1])}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
     <div class="wk-watch">${watchButtons(e.series, 1)}</div>
   </div>`;
 }
@@ -3447,15 +3459,25 @@ function renderStats(){
   if (st.makers && !stale(st.makersTitle)) pts += card(st.makersTitle, pointsTower(st.makers, c));
   if (st.extra && !stale(st.extraTitle)) pts += card(st.extraTitle, `<div class="scroll"><table class="tower"><tbody>${st.extra.map(x => `<tr><td><span class="who">${esc(x[0])}</span><div class="sub">${esc(x[1])}</div></td><td class="num">${x[2]}</td></tr>`).join("")}</tbody></table></div>`);
   if (!pts) pts = `<div class="card"><p class="lede" style="margin:0">Standings aren't loaded for this series yet.</p></div>`;
-  { const ao = document.getElementById("statsAsof"); if (ao && ao.textContent.trim()) pts += `<p class="fine">${esc(ao.textContent.trim())}</p>`; }
   const race = r ? card(`Latest race: ${r.name}`, `<p class="lede">${esc(r.where)}</p>${r.note ? `<p class="story">${esc(r.note)}</p>` : ""}${resultsBlock(r)}`, false) : "";
   const grid = st.grid ? card(c === "f1" ? "Teams and drivers" : (st.gridTitle || "Drivers"), `<div class="teams">${st.grid.map(x => `<div class="team ${favHit(x.join(" ")) ? "fav" : ""}"><div class="a">${esc(x[0])}</div><div class="b">${esc(x[1])}</div><div class="d">${String(x[2]).split(" · ").some(n => avatar(n)) ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px">${String(x[2]).split(" · ").map(n => `<span class="who-wrap">${avatar(n, 28)}${esc(n)}</span>`).join("")}</div>` : esc(x[2])}</div></div>`).join("")}</div>`) : "";
   const notes = st.notes ? card("Storylines", `<ul class="notes">${st.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`, false) : "";
   let h = `<div class="${c} acc-wrap">`
-    + (r ? `<p class="asof" style="margin:0 0 var(--space-sm)">Latest: ${esc(r.name)}${r.where ? ", " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}</p>` : "")
+    + (r ? `<p class="asof" style="margin:0 0 var(--space-sm)">Latest: ${esc(r.name)}${r.where ? ", " + esc(String(r.where).split(" · ").slice(1, 2).join("")) : ""}${standingsStamp(st) ? ` · <b class="st-stamp">${esc(standingsStamp(st))}</b>` : ""}</p>` : "")
     + pts + race + grid.replace("<details class=\"acc\" open>", "<details class=\"acc\">") + notes;
   document.getElementById("statsBody").innerHTML = h + `</div>`;
   if (!document.getElementById("v-standings").hidden) { tabHero("standings", document.querySelector(".hh-standings")); heroSetup(); }
+}
+
+// Per-series freshness stamp, read from that series' own data, so one stale note can't make every table look old.
+function standingsStamp(st){
+  const r = st.race, t = st.standingsTitle || "";
+  const tablesShown = st.standings && !(st.champs && /before/i.test(t));
+  if (!tablesShown) return st.champs ? "Season complete" : "";
+  if (/^final/i.test(t)) return "Final standings";
+  const m = t.match(/\(after ([^,)]+)/i);
+  if (m) return `Points after ${m[1].trim()}`;
+  return r ? `Points updated after ${r.name.replace(/\s*\(.*\)$/, "")}` : "";
 }
 
 // ---------- Analytics events (GA4). Key events to mark in GA: pick_saved, alerts_on, sign_up ----------
@@ -3525,6 +3547,7 @@ function ticketLinks(e){
 let lastFocus = null;
 function openRace(id){
   const e = events.find(x => x.id === id); if (!e) return;
+  sheetNav("?race=" + encodeURIComponent(id));
   const t = TRACKS[e.circuit], st = STATS[e.series] || {}, mk = MAKERS[e.series] || { title: "", list: [] }, c = e.series;
   const ph = phase(e), [stt, cls] = statusOf(e);
   const others = events.filter(o => o.circuit === e.circuit && o.id !== e.id && !o.cancelled && o.start.getFullYear() === e.start.getFullYear());
@@ -3678,6 +3701,7 @@ document.addEventListener("click", ev => {
 });
 function openWorld(id){
   const x = WORLD_LIST.find(s => s.id === id); if (!x) return;
+  sheetNav("?series=" + encodeURIComponent(id));
   const cls = DISC_CLS[x.discipline] || "d-mo";
   const row = (k, v) => v || v === 0 ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : "";
   let h = `<div class="sh-head ${cls}"><span class="dplate" style="height:38px;min-width:54px;font-size:.95rem">${esc(dirCode(x))}</span>
@@ -3855,12 +3879,25 @@ function alertToggle(id, on){
   id = alertId(id);
   const has = pushPrefs.series.includes(id);
   if (on === undefined) on = !has;
-  if (on && !has) { pushPrefs.series = pushPrefs.series.concat(id); if (!pushPrefs.level[id]) pushPrefs.level[id] = "quali"; track("alert_series_on", { series: id }); }
+  if (on && !has) { pushPrefs.series = pushPrefs.series.concat(id); if (!pushPrefs.level[id]) pushPrefs.level[id] = "race"; track("alert_series_on", { series: id }); }
   if (!on && has) { pushPrefs.series = pushPrefs.series.filter(y => y !== id); delete pushPrefs.level[id]; }
   pushSave();
   return on;
 }
 const alertOn = id => pushPrefs.series.includes(alertId(id));
+// Series the visitor follows (Start here / My series / favorite drivers), as alert ids.
+const pushMineIds = () => [...new Set(favs.map(f => f.s).concat(mySeries.map(alertId)))].filter(Boolean);
+// First time alerts are set up, start from the visitor's own series at "Races" only, so nobody
+// gets pinged for practice sessions of series they never picked. Runs once; clearing the list later is respected.
+function pushSeedFromMine(){
+  if (pushPrefs.series.length || pushPrefs.seeded) return false;
+  const mine = pushMineIds();
+  if (!mine.length) return false;
+  pushPrefs.series = mine; mine.forEach(id => { pushPrefs.level[id] = "race"; });
+  pushPrefs.seeded = true;
+  try { localStorage.setItem(PKEY, JSON.stringify(pushPrefs)); } catch(e){}
+  return true;
+}
 const alertBtn = (id, label) => `<button class="btn" data-palert="${esc(id)}" aria-pressed="${alertOn(id)}">${alertOn(id) ? "🔔 Alerts on" : "🔕 " + esc(label || "Get alerts")}</button>`;
 async function pushSave(){
   try { localStorage.setItem(PKEY, JSON.stringify(pushPrefs)); } catch(e){}
@@ -3880,7 +3917,7 @@ async function pushEnable(){
     if (perm !== "granted") { pushMsg = "Notifications are blocked. Turn them on in your phone's Settings → Notifications → Racing Info, then try again."; renderPush(); return; }
     const reg = await navigator.serviceWorker.ready;
     pushSub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
-    if (!pushPrefs.series.length) pushPrefs.series = [...new Set(favs.map(f => f.s).concat(mySeries.map(id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id)).filter(Boolean)))];
+    pushSeedFromMine();
     await pushSave();
     if (!pushMsg) { pushMsg = "Alerts are on. You'll get them on your lock screen."; track("alerts_on", { series: pushPrefs.series.join(",") }); }
   } catch(e) { pushMsg = "Couldn't turn on alerts on this device (" + (e.message || e) + ")."; }
@@ -3893,10 +3930,11 @@ async function pushDisable(){
 function renderPush(){
   const el = document.getElementById("pushBox"); if (!el) return;
   const p = platform();
+  pushSeedFromMine();
   let h = `<section class="card"><h3>Lock screen alerts</h3>`;
   const sel = new Set(pushPrefs.series);
   let ps = `<h3 class="h4">Your series</h3>`;
-  if (!sel.size) ps += `<p class="fine" style="margin-top:0">No series picked yet, so you get alerts for every series in the app, every session. Pick series below to choose exactly what you get.</p>`;
+  if (!sel.size) ps += `<p class="fine" style="margin-top:0">No series picked yet, so alerts would cover race starts in all ${ORDER.length} main series. Pick series below to choose exactly what you get.</p>`;
   else ps += `<div class="pa-list">${pushPrefs.series.map(id => { const lv = pushPrefs.level[id] || "all", world = !SERIES[id]; return `<div class="pa-row"><div class="pa-name">${alertPlate(id)}<div style="min-width:0"><b>${esc(alertName(id))}</b>${world ? `<small>Alerts when start times are posted for that weekend</small>` : ""}</div><button class="pa-x" data-pseries="${esc(id)}" aria-label="Stop alerts for ${esc(alertName(id))}">×</button></div>
       <div class="pa-seg" role="group" aria-label="What to alert for ${esc(alertName(id))}">${ALERT_LEVELS.map(([v, l]) => `<button data-plevel="${esc(id)}|${v}" aria-pressed="${lv === v}">${l}</button>`).join("")}</div></div>`; }).join("")}</div>`;
   const more = WORLD_LIST.filter(x => !x.app && !sel.has(x.id)).sort((a, b) => (a.short || a.name).localeCompare(b.short || b.name));
@@ -4831,7 +4869,9 @@ function tabHero(n, band){
   return [];
 }
 function showTab(name){
-  if (showTab.cur && showTab.cur !== name) track("tab_view", { tab: name }); showTab.cur = name;
+  if (showTab.cur && showTab.cur !== name) track("tab_view", { tab: name });
+  const changed = showTab.cur !== name; showTab.cur = name;
+  if (changed) tabNav(name);
   for (const n of ["weekend","calendar","standings","series","tickets","esports"]) {
     document.getElementById("t-" + n).setAttribute("aria-selected", n === name);
     document.getElementById("v-" + n).hidden = n !== name;
@@ -4914,6 +4954,51 @@ document.addEventListener("keydown", ev => {
   if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches && ev.target.matches("[data-open],[data-series],[data-world]")) { ev.preventDefault(); ev.target.click(); }
 });
 
+// ---------- Back button ----------
+// Phones close things with Back, so every tab and every sheet gets a history entry.
+// URLs reuse the existing deep links: /#standings for tabs, /?race=<id> and /?series=<id> for sheets.
+const BOOT_QS = location.search; // read before the base history entry tidies the URL
+let navReady = false, navFromPop = false, sheetInHistory = false, sheetTabMoved = false, sheetQs = "";
+const tabHash = name => name && name !== "weekend" ? "#" + name : "";
+const tabUrl = name => location.pathname + tabHash(name);
+function tabNav(name){
+  if (!navReady || navFromPop) return;
+  if (sheetInHistory) { sheetTabMoved = true; return; } // a link inside a sheet switched tabs; settled when the sheet closes
+  history.pushState({ tab: name }, "", tabUrl(name));
+}
+// Called by sheets that have their own deep link; others keep the page URL.
+function sheetNav(qs){
+  sheetQs = qs;
+  if (sheetInHistory) history.replaceState({ sheet: 1, tab: showTab.cur }, "", location.pathname + qs + tabHash(showTab.cur));
+}
+new MutationObserver(() => {
+  if (!navReady) return;
+  const open = !document.getElementById("sheetBg").hidden;
+  if (open && !sheetInHistory) {
+    sheetInHistory = true; sheetTabMoved = false;
+    history.pushState({ sheet: 1, tab: showTab.cur }, "", location.pathname + sheetQs + tabHash(showTab.cur));
+  } else if (!open && sheetInHistory) {
+    // Closed with ×, Esc or the backdrop: drop our history entry so Back doesn't need two presses.
+    sheetInHistory = false; sheetQs = "";
+    if (sheetTabMoved) history.replaceState({ tab: showTab.cur }, "", tabUrl(showTab.cur));
+    else history.back();
+  }
+}).observe(document.getElementById("sheetBg"), { attributes: true, attributeFilter: ["hidden"] });
+window.addEventListener("popstate", ev => {
+  const st = ev.state || {};
+  navFromPop = true;
+  try {
+    if (!document.getElementById("sheetBg").hidden && !st.sheet) { sheetInHistory = false; sheetQs = ""; closeRace(); }
+    const tab = st.tab || (location.hash || "").slice(1) || "weekend";
+    if (["weekend","calendar","standings","series","tickets","esports"].includes(tab) && tab !== showTab.cur) showTab(tab);
+    if (st.sheet && document.getElementById("sheetBg").hidden) { // Forward into a sheet: reopen it if it has a link
+      const q = new URLSearchParams(location.search);
+      sheetInHistory = true; sheetTabMoved = false; // this entry already exists; don't push another
+      if (q.get("race")) openRace(q.get("race")); else if (q.get("series")) openWorld(q.get("series")); else { sheetInHistory = false; history.back(); }
+    }
+  } finally { navFromPop = false; }
+});
+
 { const nb = document.getElementById("nextSeasonBtn"); if (nb) nb.textContent = String(SEASON + 1); }
 renderAll();
 initAccounts();
@@ -4927,6 +5012,9 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   let t = TABS.includes(h) ? h : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
   showTab(TABS.includes(t) ? t : "weekend");
+  // Base entry is always the tab itself, so Back from a deep-linked race lands on the site, not on the link again.
+  history.replaceState({ tab: showTab.cur }, "", tabUrl(showTab.cur) + (h === "predict27" ? "#predict27" : ""));
+  navReady = true;
   if (h === "predict27") goP27();
   if (h === "settings") setTimeout(openSettings, 0);
   if (h === "start") setTimeout(openOnboard, 0);
@@ -4935,7 +5023,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
 setInterval(renderAll, 60 * 60 * 1000);
 // Deep links from the search pages: /?race=<id> or /?series=<id>
 (() => { try {
-  const q = new URLSearchParams(location.search);
+  const q = new URLSearchParams(BOOT_QS);
   if (q.get("race") && events.some(e => e.id === q.get("race"))) openRace(q.get("race"));
   else if (q.get("series") && WORLD_LIST.some(x => x.id === q.get("series"))) { showTab("series"); openWorld(q.get("series")); }
 } catch(e){} })();

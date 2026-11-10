@@ -167,7 +167,7 @@ for (const sub of subs) {
   for (const a of fresh) {
     if (!types[a.type]) continue;
     if (series ? !series.has(a.series) : a.world) continue; // no picks = every app series, none of the others
-    if (a.kind && !levelAllows(level[a.series] || "all", a.kind)) continue;
+    if (a.kind && !levelAllows(level[a.series] || (series ? "all" : "race"), a.kind)) continue; // no picks = races only
     out.push({ title: a.title, body: a.body, url: a.url, tag: a.key });
   }
   if (weekDue && types.week !== false) { const w = weekAlert(series, p.tz); if (w) out.unshift(w); }
