@@ -16,6 +16,9 @@ out_dir = ROOT / "weekend-post"
 if "--out" in args:
     i = args.index("--out"); out_dir = pathlib.Path(args[i + 1]).resolve(); del args[i:i + 2]
 data = json.loads(subprocess.run(["node", str(ROOT / "tools" / "weekend-data.mjs"), *args[:1]], capture_output=True, text=True, check=True).stdout)
+# No tracked series this weekend? Use the other series with posted start times (NHRA, Baja 1000, …) as the races.
+if not data["races"] and data.get("world"):
+    data["races"], data["also"] = data["world"], []
 
 src = (ROOT / "tools" / "logo.mjs").read_text()
 PRI = json.loads(re.search(r"export const PRI_PATH = (\".*?\");", src).group(1))
@@ -143,7 +146,7 @@ def race_slide(r, uid):
         rows = '<div class="srow main" style="height:92px"><div class="d"></div><div class="l">Session times not posted yet</div><div class="t">TBA</div></div>'
     else:
         rows = "".join(
-            f'<div class="srow{" main" if s is sess[-1] else ""}" style="height:{rh}px"><div class="d">{E(s["day"]).upper()}</div>'
+            f'<div class="srow{" main" if s["iso"] == (r["main"] or sess[-1])["iso"] else ""}" style="height:{rh}px"><div class="d">{E(s["day"]).upper()}</div>'
             f'<div class="l" style="font-size:{fs}px">{E(s["label"])}</div><div class="t" style="font-size:{fs + 8}px">{E(s["time"])}</div></div>' for s in shown)
     nm = r["name"]; size = 104 if len(nm) <= 18 else 88 if len(nm) <= 24 else 72
     where = r["circuit"] if r["location"].split(",")[0].strip() in r["circuit"] else f'{r["circuit"]} · {r["location"]}'
@@ -161,7 +164,8 @@ def race_slide(r, uid):
 
 TAGS = {"f1": "#F1 #Formula1", "nascar": "#NASCAR", "indy": "#IndyCar", "motogp": "#MotoGP", "imsa": "#IMSA", "wec": "#WEC",
         "gtwc": "#GTWorldChallenge", "gte": "#GTWorldChallenge", "gtas": "#GTWorldChallenge", "gtau": "#GTWorldChallenge",
-        "psc": "#PorscheSupercup", "pccna": "#CarreraCup", "mustang": "#MustangChallenge"}
+        "psc": "#PorscheSupercup", "pccna": "#CarreraCup", "mustang": "#MustangChallenge",
+        "nhra": "#NHRA #DragRacing", "score": "#Baja1000 #OffRoad", "supertaikyu": "#SuperTaikyu"}
 
 
 def caption():

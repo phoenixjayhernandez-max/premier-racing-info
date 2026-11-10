@@ -44,4 +44,21 @@ const races = RAW.filter(r => r[8] !== "cancelled" && r[5] <= sun && r[6] >= fri
 const also = Object.entries(WORLD_TIMES).filter(([, list]) => list.some(([, iso]) => { const d = fCt.format(new Date(iso)); return d >= fri && d <= sun; }))
   .map(([id]) => WORLD[id]?.short || WORLD[id]?.code || id);
 
-console.log(JSON.stringify({ fri, sun, races, also }, null, 1));
+// The same "also racing" series as full rows, used for the post when no tracked series races that weekend.
+const WCOLORS = ["#E2601F", "#14A883", "#C04BD0", "#3B7DE0", "#E3A21A"];
+const isRaceLabel = l => /race|elimination|start|feature|final/i.test(l) && !/show|qualif|practice/i.test(l);
+const world = Object.entries(WORLD_TIMES).map(([id, list], i) => {
+  const w = WORLD[id] || {}, inWk = (list || []).filter(([, iso]) => { const d = fCt.format(new Date(iso)); return d >= fri && d <= sun; });
+  if (!inWk.length) return null;
+  const sessions = inWk.map(([label, iso, wl]) => ({ label, iso, watchLabel: wl || "", ...when(iso) })).sort((x, y) => x.iso.localeCompare(y.iso));
+  const mains = sessions.filter(x => isRaceLabel(x.label)), main = mains[mains.length - 1] || sessions[sessions.length - 1];
+  let head = String(w.next || w.name || id).split(" · ")[0], paren = (head.match(/\(([^)]*)\)/) || [])[1] || "";
+  head = head.replace(/\s*\([^)]*\)/g, "").trim();
+  const [name, ...rest] = head.split(", ");
+  const circuit = rest.join(", ") || (/finale/i.test(paren) ? "" : paren) || w.region || "";
+  const watch = main.watchLabel || (w.watch && w.watch[0] && w.watch[0][0]) || "";
+  return { id, s: id, series: w.short || w.code || id, seriesFull: w.name || id, color: WCOLORS[i % WCOLORS.length], name, circuit,
+    location: w.region || "", start: fri, end: sun, tags: /finale/i.test(paren) ? ["Season finale"] : [], sessions, main, watch, page: `https://premierracinginfo.com/series/${id}/`, world: true };
+}).filter(Boolean).sort((a, b) => a.main.iso.localeCompare(b.main.iso));
+
+console.log(JSON.stringify({ fri, sun, races, also, world }, null, 1));
