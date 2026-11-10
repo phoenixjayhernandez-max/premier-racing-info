@@ -772,6 +772,10 @@ body{font-size:15px}
 .wk-row:last-child{border-bottom:0}
 .wk-row:hover{background:var(--panel-2)}
 .wk-main .nm{font-weight:600}
+.race-a{color:inherit;text-decoration:none}
+.race-a:hover{text-decoration:underline;text-decoration-thickness:.08em;text-decoration-color:var(--color-accent-deep);text-underline-offset:.12em}
+.race-a:focus-visible,.rp-link:focus-visible{outline:2px solid var(--color-accent-deep);outline-offset:2px;border-radius:2px}
+.rp-link{display:inline-flex;align-items:center;min-height:32px;font-size:.85rem;color:var(--color-ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--color-accent-deep);text-underline-offset:.2em}
 .wk-main .loc{font-size:.85rem}
 .wk-next{text-align:right;line-height:1.25}
 .wk-next span{display:block;font-size:.8rem;color:var(--sub)}
@@ -3154,6 +3158,10 @@ function cdText(iso){
 }
 function tickCountdowns(){ document.querySelectorAll("[data-cd]").forEach(el => { const t = cdText(el.dataset.cd); if (el.textContent !== t) el.textContent = t; }); }
 setInterval(tickCountdowns, 1000);
+// Real links into the static race pages (/races/<slug>/), so visitors and search engines can reach them from the app.
+// Same slug rule as tools/build-pages.mjs. Cancelled races have no page.
+function racePath(e){ return `/races/${String(`${SERIES[e.series]} ${e.name} ${e.start.getFullYear()}`).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}/`; }
+function raceA(e, from){ return e.cancelled ? esc(e.name) : `<a class="race-a" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="${from}">${esc(e.name)}</a>`; }
 function featHTML(e){
   if (!e) return "";
   const [st, cls] = statusOf(e), ns = nextSession(e.id), live = ns && Date.parse(ns[1]) <= Date.now();
@@ -3162,11 +3170,11 @@ function featHTML(e){
     <div class="feat-in">
       <div class="feat-l">
         <div class="feat-top">${plate(e.series, 30)}<span class="state ${cls}">${esc(st)}</span></div>
-        <h2 class="feat-name">${esc(e.name)}</h2>
+        <h2 class="feat-name">${raceA(e, "featured")}</h2>
         <p class="feat-loc">${esc(SERIES_FULL[e.series])} at ${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}</p>
         ${ns ? `<div class="feat-cd"><span>${live ? `${esc(ns[0])} is on now` : `${esc(ns[0])} starts in`}</span>${live ? "" : `<b data-cd="${esc(ns[1])}">${cdText(ns[1])}</b>`}</div>` : ""}
         ${resLine ? `<p class="res">${esc(resLine)}</p>` : ""}
-        <div class="acts">${watchButtons(e.series, 1, "Watch on")}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="tlink" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="tlink" data-gopredict="1">Make your pick</button>` : ""}</div>
+        <div class="acts">${watchButtons(e.series, 1, "Watch on")}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="tlink" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="tlink" data-gopredict="1">Make your pick</button>` : ""}${e.cancelled ? "" : `<a class="rp-link" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="featured_btn">Full race page →</a>`}</div>
       </div>
       ${SESSIONS[e.id] ? `<div class="feat-r">${schedHTML(e.id, true, true)}</div>` : ""}
     </div>
@@ -3205,7 +3213,7 @@ function upNextHTML(skip){
   return `<section class="upnext" aria-labelledby="upTitle"><div class="sec-head"><h2 id="upTitle">Up next</h2><button class="tlink" data-gotab="calendar">Full calendar</button></div>
     <div class="up-strip">${list.map(e => { const d = dayDiff(t, e.start); return `<article class="up-card ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
       ${picHTML(e.series, e.id, "up-ph", `<span class="up-days"><b>${d}</b> ${d === 1 ? "day" : "days"}</span>`)}
-      <div class="up-body">${plate(e.series, 24)}<h3>${esc(e.name)}</h3><p>${esc(e.circuit)}<br>${range(e)}</p></div>
+      <div class="up-body">${plate(e.series, 24)}<h3>${raceA(e, "up_next")}</h3><p>${esc(e.circuit)}<br>${range(e)}</p></div>
     </article>`; }).join("")}</div></section>`;
 }
 // Scroll-linked motion: the ticker rows slide with the page, the race photo drifts. Off for reduced motion.
@@ -3280,7 +3288,7 @@ function wkRow(e){
   const [st, cls] = statusOf(e), ns = nextSession(e.id);
   return `<div class="wk-row ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
     ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
-    <div class="wk-main"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div></div>
+    <div class="wk-main"><div class="nm">${raceA(e, "weekend")}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div></div>
     <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${whenLbl(ns[1])}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
     <div class="wk-watch">${watchButtons(e.series, 1)}</div>
   </div>`;
@@ -3292,7 +3300,7 @@ function evCard(e){
   return `<article class="ev ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
     <div class="ev-top">
       <div class="pl">${plate(e.series, 34)}</div>
-      <div style="min-width:0"><h3>${esc(e.name)}</h3>
+      <div style="min-width:0"><h3>${raceA(e, "card")}</h3>
         <div class="meta">${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}${e.tags.length ? `, ${e.tags.map(esc).join(", ").toLowerCase()}` : ""}</div></div>
       <span class="state ${cls}">${esc(st)}</span>
     </div>
@@ -3370,7 +3378,7 @@ function dayPanelHTML(key){
   if (!its.length) return `<div class="mcal-dayin"><h3>${DOW[d.getDay()]}, ${MONTHS[mm - 1]} ${dd}</h3><p class="fine">No races this day.</p></div>`;
   return `<div class="mcal-dayin"><h3>${DOW[d.getDay()]}, ${MONTHS[mm - 1]} ${dd}</h3>${its.map(({ e, sess }) => `<article class="mcal-dayrace ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
       ${picHTML(e.series, e.id + "-day", "thumb", plate(e.series, 20))}
-      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)} · ${esc(range(e))}${e.cancelled ? " · Cancelled" : ""}</div>
+      <div class="body"><div class="nm">${raceA(e, "calendar")}</div><div class="loc">${esc(e.circuit)} · ${esc(range(e))}${e.cancelled ? " · Cancelled" : ""}</div>
       ${sess.length ? `<ul class="mcal-sess">${sess.map(x => `<li><span>${esc(x[0])}</span><b>${esc(fmtTime.format(new Date(x[1])))}</b></li>`).join("")}</ul>` : `<p class="fine">${(SESSIONS[e.id] || []).length ? "No sessions this day." : "Session times are added about a week before the race."}</p>`}
       ${WINNERS[e.id] && ymdLocal(e.end) <= key ? `<p class="fine">Won by ${esc(WINNERS[e.id])}</p>` : ""}</div></article>`).join("")}</div>`;
 }
@@ -3414,7 +3422,7 @@ function renderList(){
     h += `<article class="row ${e.series} ${ph}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
       <div class="dt"><b>${e.end.getDate()}</b><span>${DOW[e.end.getDay()]} ${MON[e.end.getMonth()]}</span></div>
       ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
-      <div class="body"><div class="nm">${esc(e.name)}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
+      <div class="body"><div class="nm">${raceA(e, "calendar")}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div>${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}</div>
       ${e.cancelled ? "<span></span>" : `<button class="staricon" data-k="starred" data-id="${e.id}" aria-pressed="${!!state.starred[e.id]}" aria-label="Star ${esc(e.name)}" title="Can't miss">★</button>`}
     </article>`;
   }
@@ -3492,7 +3500,8 @@ function track(name, params){ try { if (window.gtag) gtag("event", name, params 
 document.addEventListener("click", ev => {
   const a = ev.target.closest("a[href]"); if (!a) return;
   const h = a.getAttribute("href") || "";
-  if (/^webcal:|\.ics(\?|$)/i.test(h)) track("add_to_calendar", { feed: h.split("/").pop().replace(/\.ics.*/, "") });
+  if (a.dataset.rp) track("race_page_click", { race: a.dataset.rp, from: a.dataset.from || "" });
+  else if (/^webcal:|\.ics(\?|$)/i.test(h)) track("add_to_calendar", { feed: h.split("/").pop().replace(/\.ics.*/, "") });
   else if (a.classList.contains("tlink") || /stubhub|ticket/i.test(h)) track("ticket_click", { link_url: h });
   else if (a.classList.contains("watch") || /^Watch/.test(a.textContent.trim()) || a.closest(".acts")) track("watch_click", { link_url: h, label: a.textContent.trim().slice(0, 60) });
 }, true);
@@ -3568,7 +3577,7 @@ function openRace(id){
       <button class="btn star" data-k="starred" data-id="${e.id}" aria-pressed="${pr("starred")}">★ Can't miss</button>
       <button class="btn" data-k="going" data-id="${e.id}" aria-pressed="${pr("going")}">Going</button>
       <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
-      <button class="btn" data-share="race:${e.id}">Share</button>${alertBtn(e.series, "Alerts for " + SERIES[e.series])}</div>`;
+      <a class="btn" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="sheet">Full race page</a><button class="btn" data-share="race:${e.id}">Share</button>${alertBtn(e.series, "Alerts for " + SERIES[e.series])}</div>`;
 
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
