@@ -143,7 +143,7 @@ for (const e of EV) {
   body += `<section class="card"><h2>The track</h2><p><a href="/tracks/${trackSlug(e.circuit)}/">${esc(e.circuit)}</a>, ${esc(e.location)}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km lap" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}. ${esc(tr[3])}.` : ""}</p></section>`;
   const same = EV.filter(o => o.circuit === e.circuit && o.id !== e.id && o.start <= e.end && o.end >= e.start);
   if (same.length) body += `<section class="card"><h2>Also racing this weekend</h2><ul class="list">${same.map(o => `<li>${raceLink(o)} <small>${esc(SERIES_FULL[o.s])}</small></li>`).join("")}</ul></section>`;
-  body += `<p><a class="btn p" href="/?race=${e.id}">Open in the app for live updates, alerts and picks ›</a> <a class="btn" href="/series/${APP_TO_WORLD[e.s]}/">${esc(full)} calendar &amp; standings</a></p>`;
+  body += `<p><a class="btn p" href="/?alerts=${e.s}&amp;from=race">🔔 Get ${esc(SERIES[e.s] || SERIES_FULL[e.s])} race alerts</a> <a class="btn" href="/?race=${e.id}">Open in the app for live updates and picks ›</a> <a class="btn" href="/series/${APP_TO_WORLD[e.s]}/">${esc(full)} calendar &amp; standings</a></p>`;
   // Direct answer up top + FAQ (start time, how to watch, free option, tickets, where)
   const place = GEO.places?.[e.circuit] || [], country = place[0] || "", watchN = (WATCH[e.s] || []).filter(w => !/timing|official site/i.test(w[0]));
   const free = (WATCH[e.s] || []).filter(w => w[2] && !/search_query/.test(w[1])).map(w => w[0]);
@@ -219,7 +219,7 @@ for (const x of WORLD.series) {
   }
   if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
   if (app) body += `<p><a class="btn" href="/recap/${app}-2026/">2026 season in review ›</a></p>`;
-  body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
+  body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?alerts=${esc(x.id)}&amp;from=series">🔔 Get race alerts</a> <a class="btn" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;
   const name = x.name, sn = x.short && x.short.length < name.length ? x.short : name;
   const wN = watch.filter(v => !/official site|timing/i.test(v[0])), frS = watch.filter(v => v[2] && !/search_query/.test(v[1])).map(v => v[0]);
   const sqa = [];

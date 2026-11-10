@@ -5051,6 +5051,13 @@ setInterval(renderAll, 60 * 60 * 1000);
   const q = new URLSearchParams(BOOT_QS);
   if (q.get("race") && events.some(e => e.id === q.get("race"))) openRace(q.get("race"));
   else if (q.get("series") && WORLD_LIST.some(x => x.id === q.get("series"))) { showTab("series"); openWorld(q.get("series")); }
+  // /?alerts=<series id>&from=race|series: pick that series (races only) and open the alerts panel.
+  const al = q.get("alerts");
+  if (al && (SERIES[alertId(al)] || WORLD_LIST.some(x => x.id === al))) {
+    alertToggle(al, true);
+    track("alert_link_open", { series: alertId(al), from: q.get("from") || "" });
+    setTimeout(openReminders, 0);
+  }
 } catch(e){} })();
 
 </script>
