@@ -521,7 +521,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .pa-dp{font-size:.6rem;padding:2px 4px;min-width:30px;text-align:center}
 .pa-seg{display:grid;grid-template-columns:repeat(3,1fr);margin-top:8px;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
 .pa-seg button{font:inherit;font-size:.78rem;font-weight:600;padding:7px 4px;background:var(--panel);color:var(--ink);border:0;border-left:1px solid var(--rule);cursor:pointer}
-.pa-seg button:first-child{border-left:0}.pa-seg button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
+.pa-seg button:first-child{border-left:0}.wx-row{display:flex;gap:12px;align-items:center;margin-top:6px}.wx-ic{font-size:2rem;line-height:1}.feat-wx{margin:6px 0 0;font-size:.9rem;font-weight:600}.pa-seg.pa-lead{grid-template-columns:repeat(4,1fr);margin:2px 0 0 26px}.pa-seg button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
 .pa-more{font:inherit;width:100%;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
 .set{padding-bottom:var(--space-md)}.set-h{margin:var(--space-md) 0 6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .set-grp{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--panel)}
@@ -3150,7 +3150,7 @@ function renderWeekend(){
       <div class="fig"><b>${left}</b><span>Races left in ${SEASON}</span></div>
       ${nextOther ? `<div class="fig" data-open="${nextOther.id}" role="button" tabindex="0"><b>${dayDiff(t, nextOther.start)}</b><span>Days to ${esc(nextOther.name)}</span></div>` : ""}
     </section>`;
-  hydratePhotos(el); applyNewsPhotos(el); tickCountdowns();
+  hydratePhotos(el); applyNewsPhotos(el); tickCountdowns(); fillWx();
 }
 let LIT_ID = null;
 // Countdown to a session: "02:14:33" under a day, "3d 04h" beyond
@@ -3178,6 +3178,7 @@ function featHTML(e){
         <p class="feat-loc">${esc(SERIES_FULL[e.series])} at ${esc(e.circuit)}, ${esc(e.location)}<br>${range(e)}</p>
         ${ns ? `<div class="feat-cd"><span>${live ? `${esc(ns[0])} is on now` : `${esc(ns[0])} starts in`}</span>${live ? "" : `<b data-cd="${esc(ns[1])}">${cdText(ns[1])}</b>`}</div>` : ""}
         ${resLine ? `<p class="res">${esc(resLine)}</p>` : ""}
+        ${wxTarget(e) ? `<p class="feat-wx" data-wx="${e.id}" data-wxs="1" hidden></p>` : ""}
         <div class="acts">${watchButtons(e.series, 1, "Watch on")}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="tlink" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="tlink" data-gopredict="1">Make your pick</button>` : ""}${e.cancelled ? "" : `<a class="rp-link" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="featured_btn">Full race page →</a>`}</div>
       </div>
       ${SESSIONS[e.id] ? `<div class="feat-r">${schedHTML(e.id, true, true)}</div>` : ""}
@@ -3537,6 +3538,76 @@ document.addEventListener("click", ev => {
 const TICKETS = {
   "gtau-adelaide": ["Supercars (official)", "https://www.supercars.com/events/2026-adelaide"]
 };
+// Track coordinates (lat, lon) for race-start weather. Circuit-level accuracy is plenty for a forecast.
+const TRACK_LL = {
+  "Daytona International Speedway":[29.185,-81.070], "Sebring International Raceway":[27.454,-81.348], "Streets of Long Beach":[33.765,-118.189], "WeatherTech Raceway Laguna Seca":[36.584,-121.753],
+  "Streets of Detroit":[42.330,-83.040], "Watkins Glen International":[42.337,-76.927], "Canadian Tire Motorsport Park":[44.054,-78.676], "Road America":[43.798,-87.990],
+  "VIRginia International Raceway":[36.568,-79.206], "Indianapolis Motor Speedway":[39.795,-86.235], "Michelin Raceway Road Atlanta":[34.147,-83.814], "Albert Park":[-37.850,144.968],
+  "Shanghai International Circuit":[31.339,121.220], "Suzuka":[34.843,136.541], "Bahrain International Circuit":[26.032,50.511], "Jeddah Corniche Circuit":[21.632,39.104],
+  "Miami International Autodrome":[25.958,-80.239], "Circuit Gilles Villeneuve":[45.500,-73.523], "Circuit de Monaco":[43.735,7.421], "Circuit de Barcelona-Catalunya":[41.570,2.261],
+  "Red Bull Ring":[47.220,14.765], "Silverstone":[52.079,-1.017], "Spa-Francorchamps":[50.437,5.971], "Hungaroring":[47.582,19.251], "Zandvoort":[52.389,4.541], "Monza":[45.616,9.281],
+  "Madring":[40.465,-3.616], "Baku City Circuit":[40.373,49.853], "Sepang International Circuit":[2.761,101.738], "Marina Bay":[1.291,103.864], "Circuit of the Americas":[30.133,-97.641],
+  "Autódromo Hermanos Rodríguez":[19.404,-99.091], "Interlagos":[-23.704,-46.700], "Las Vegas Strip Circuit":[36.116,-115.168], "Lusail International Circuit":[25.490,51.454],
+  "Yas Marina":[24.467,54.603], "Autodromo Enzo e Dino Ferrari":[44.341,11.717], "Circuit de la Sarthe":[47.950,0.224], "Fuji Speedway":[35.372,138.927], "Sonoma Raceway":[38.161,-122.455],
+  "Barber Motorsports Park":[33.533,-86.619], "Circuit Paul Ricard":[43.251,5.792], "Brands Hatch":[51.357,0.263], "Misano World Circuit":[43.962,12.684], "Circuit de Nevers Magny-Cours":[46.864,3.164],
+  "Nürburgring":[50.335,6.947], "Algarve International Circuit":[37.232,-8.627], "Mandalika International Circuit":[-8.895,116.305], "Okayama International Circuit":[34.915,134.221],
+  "Beijing Street Circuit":[39.904,116.407], "Phillip Island Grand Prix Circuit":[-38.502,145.233], "The Bend Motorsport Park":[-35.274,139.459], "Queensland Raceway":[-27.690,152.654],
+  "Hidden Valley Raceway":[-12.448,130.906], "Sydney Motorsport Park":[-33.804,150.871], "Adelaide Street Circuit":[-34.927,138.618], "Mid-Ohio Sports Car Course":[40.689,-82.636],
+  "Istanbul Park":[40.952,29.405], "Chang International Circuit":[14.958,103.085], "Mount Panorama":[-33.448,149.555], "Martinsville Speedway":[36.634,-79.851],
+  "Homestead-Miami Speedway":[25.452,-80.409], "EchoPark Speedway":[33.384,-84.317], "Phoenix Raceway":[33.375,-112.311], "Las Vegas Motor Speedway":[36.272,-115.010],
+  "Darlington Raceway":[34.295,-79.906], "Bristol Motor Speedway":[36.516,-82.257], "Talladega Superspeedway":[33.567,-86.066], "Texas Motor Speedway":[33.037,-97.282],
+  "Kansas Speedway":[39.116,-94.831], "Dover Motor Speedway":[39.190,-75.530], "North Wilkesboro Speedway":[36.143,-81.075], "Charlotte Motor Speedway":[35.352,-80.683],
+  "Nashville Superspeedway":[36.045,-86.408], "Pocono Raceway":[41.055,-75.511], "Michigan International Speedway":[42.066,-84.241], "Chicagoland Speedway":[41.475,-88.058],
+  "Iowa Speedway":[41.677,-93.012], "Coronado Street Course":[32.684,-117.180], "World Wide Technology Raceway":[38.651,-90.136], "Richmond Raceway":[37.592,-77.420],
+  "New Hampshire Motor Speedway":[43.363,-71.461], "Streets of St. Petersburg":[27.766,-82.630], "Streets of Arlington":[32.751,-97.083], "Portland International Raceway":[45.595,-122.694],
+  "Streets of Markham":[43.856,-79.337], "Milwaukee Mile":[43.019,-88.012], "Circuit Ricardo Tormo":[39.486,-0.628], "Autódromo Internacional Ayrton Senna":[-16.719,-49.193],
+  "Autódromo Oscar y Juan Gálvez":[-34.694,-58.459], "Circuito de Jerez":[36.708,-6.034], "Bugatti Circuit":[47.956,0.208], "Mugello":[43.997,11.371], "TT Circuit Assen":[52.962,6.523],
+  "Sachsenring":[50.792,12.688], "Brno Circuit":[49.203,16.445], "MotorLand Aragón":[41.077,-0.208], "Mobility Resort Motegi":[36.533,140.227],
+};
+// Race-start weather from Open-Meteo (free, no key). Shown once the race is within the 16-day forecast range.
+const WX_CACHE = {};
+const WX_ICON = c => c === 0 ? ["☀️", "Clear"] : c <= 2 ? ["🌤️", "Partly cloudy"] : c === 3 ? ["☁️", "Cloudy"] : c <= 48 ? ["🌫️", "Fog"] : c <= 57 ? ["🌦️", "Drizzle"] : c <= 67 ? ["🌧️", "Rain"] : c <= 77 ? ["❄️", "Snow"] : c <= 82 ? ["🌦️", "Showers"] : c <= 86 ? ["🌨️", "Snow showers"] : ["⛈️", "Thunderstorms"];
+const wxImperial = () => { try { return /^en-(US|LR)|^my/i.test(navigator.language || ""); } catch (e) { return false; } };
+function wxTarget(e){
+  const iso = raceIso(e), ll = TRACK_LL[e.circuit];
+  if (!iso || !ll || e.cancelled) return null;
+  const ms = Date.parse(iso) - Date.now();
+  return ms > -2 * 3600000 && ms < 15 * 86400000 ? { iso, ll } : null;
+}
+async function wxGet(e){
+  const tg = wxTarget(e); if (!tg) return null;
+  const key = e.id + "|" + tg.iso;
+  if (!WX_CACHE[key]) {
+    const hr = new Date(Math.floor(Date.parse(tg.iso) / 3600000) * 3600000).toISOString().slice(0, 13) + ":00";
+    const u = `https://api.open-meteo.com/v1/forecast?latitude=${tg.ll[0]}&longitude=${tg.ll[1]}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m&timezone=GMT&start_hour=${hr}&end_hour=${hr}`;
+    WX_CACHE[key] = fetch(u).then(r => r.ok ? r.json() : null).then(j => {
+      const h = j && j.hourly; if (!h || !h.time || !h.time.length || h.temperature_2m[0] == null) return null;
+      return { c: h.temperature_2m[0], pop: h.precipitation_probability[0], code: h.weather_code[0], wind: h.wind_speed_10m[0] };
+    }).catch(() => null);
+  }
+  return WX_CACHE[key];
+}
+function wxText(w, short){
+  const [ic, lbl] = WX_ICON(w.code), imp = wxImperial();
+  const t = imp ? `${Math.round(w.c * 9 / 5 + 32)}°F` : `${Math.round(w.c)}°C`;
+  const wind = imp ? `${Math.round(w.wind * 0.621371)} mph` : `${Math.round(w.wind)} km/h`;
+  const rain = w.pop == null ? "" : `${w.pop}% chance of rain`;
+  return short ? `${ic} ${t} · ${w.pop ?? 0}% rain at the start` : { ic, lbl, t, wind, rain };
+}
+// Fills every [data-wx] placeholder on the page: data-wx="eventId", data-wxs="1" for the one-line version.
+function fillWx(){
+  document.querySelectorAll("[data-wx]:not([data-wxd])").forEach(el => {
+    el.setAttribute("data-wxd", "1");
+    const e = events.find(x => x.id === el.dataset.wx); if (!e) return;
+    wxGet(e).then(w => {
+      if (!w) return;
+      if (el.dataset.wxs) { el.textContent = wxText(w, true); el.hidden = false; return; }
+      const x = wxText(w), when = new Date(wxTarget(e).iso);
+      el.innerHTML = `<section class="card wx"><h3>Weather at the start</h3><div class="wx-row"><span class="wx-ic" aria-hidden="true">${x.ic}</span><div><b>${esc(x.t)} · ${esc(x.lbl)}</b><div class="fine" style="margin:2px 0 0">${esc([x.rain, "wind " + x.wind].filter(Boolean).join(" · "))}</div></div></div><p class="fine">Forecast for ${esc(fmtDow.format(when) + " " + fmtTime.format(when))} at ${esc(e.circuit)}, from <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>. Forecasts change; check again on race day.</p></section>`;
+      track("weather_shown", { race: e.id });
+    });
+  });
+}
 const CIRCUIT_SITES = {
   // Added Nov 10, 2026 (official circuit or event sites)
   "Adelaide Street Circuit":"https://adelaide500.com.au", "Shanghai International Circuit":"http://www.icsh.sh.cn", "Madring":"https://www.madring.com",
@@ -3588,6 +3659,7 @@ function openRace(id){
       <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
       <a class="btn" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="sheet">Full race page</a><button class="btn" data-share="race:${e.id}">Share</button>${alertBtn(e.series, "Alerts for " + SERIES[e.series])}</div>`;
 
+  if (wxTarget(e)) h += `<div data-wx="${e.id}"></div>`;
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
       <p class="fine">Free means no subscription needed.</p>`;
@@ -3636,6 +3708,7 @@ function openRace(id){
   document.getElementById("sheetBg").hidden = false;
   document.body.style.overflow = "hidden";
   document.getElementById("sheetClose").focus();
+  fillWx();
 }
 function closeRace(){
   document.getElementById("sheetBg").hidden = true;
@@ -3887,6 +3960,7 @@ const PKEY = KEY + "-push";
 let pushPrefs = { types: { week: true, soon: true, live: true, result: true, news: false }, series: [], level: {} };
 try { pushPrefs = Object.assign(pushPrefs, JSON.parse(localStorage.getItem(PKEY) || "{}")); } catch(e){}
 if (!pushPrefs.level) pushPrefs.level = {};
+if (!Array.isArray(pushPrefs.leads) || !pushPrefs.leads.length) pushPrefs.leads = [45];
 let pushSub = null, pushMsg = "";
 const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
 function b64ToBytes(b64){ const p = "=".repeat((4 - b64.length % 4) % 4); const s = atob((b64 + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...s].map(c => c.charCodeAt(0))); }
@@ -3894,7 +3968,9 @@ async function pushRpc(fn, body){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${SUPABASE_ANON_KEY}`, "content-type": "application/json" }, body: JSON.stringify(body) });
   if (!r.ok) throw new Error("HTTP " + r.status);
 }
-function pushPayloadPrefs(){ let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){} return { types: pushPrefs.types, series: pushPrefs.series, level: pushPrefs.level, favs: favs.map(f => f.n), tz }; }
+function pushPayloadPrefs(){ let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){} return { types: pushPrefs.types, series: pushPrefs.series, level: pushPrefs.level, leads: pushPrefs.leads, favs: favs.map(f => f.n), tz }; }
+// When "starting soon" alerts arrive, in minutes before the session. Pick one or more.
+const ALERT_LEADS = [[1440, "Day before"], [120, "2 hours"], [45, "45 min"], [15, "15 min"]];
 // Per-series alert levels. Ids are app ids (f1, nascar…) or Series-tab ids for the other series.
 const ALERT_LEVELS = [["race", "Races"], ["quali", "Quali + race"], ["all", "Every session"]];
 const alertId = id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id) || id;
@@ -3976,7 +4052,7 @@ function renderPush(){
   } else {
     const t = pushPrefs.types;
     const tog = (k, label, on) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${(on ? t[k] !== false : t[k]) ? "checked" : ""}> ${label}</label>`;
-    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon (about 30 min before)") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
+    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon") + (t.soon !== false ? `<div class="pa-seg pa-lead" role="group" aria-label="When to send starting-soon alerts">${ALERT_LEADS.map(([v, l]) => `<button data-plead="${v}" aria-pressed="${pushPrefs.leads.includes(v)}">${l}</button>`).join("")}</div><p class="fine" style="margin:4px 0 8px">Pick one or more. Each one is a separate alert.</p>` : "") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
   }
   h += (pushSub ? "" : `<p class="fine" style="margin:12px 0 0"><b>Pick your series now.</b> They're saved on this phone and apply as soon as alerts are on.</p>`) + ps;
   if (pushSub) h += `<div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
@@ -3990,12 +4066,17 @@ document.addEventListener("click", ev => {
   if (ps) { alertToggle(ps.dataset.pseries); renderPush(); return; }
   const pl = ev.target.closest("[data-plevel]");
   if (pl) { const [id, v] = pl.dataset.plevel.split("|"); pushPrefs.level[id] = v; pushSave(); renderPush(); return; }
+  const pd = ev.target.closest("[data-plead]");
+  if (pd) { const v = +pd.dataset.plead, on = pushPrefs.leads.includes(v);
+    if (on && pushPrefs.leads.length === 1) return; // keep at least one
+    pushPrefs.leads = on ? pushPrefs.leads.filter(x => x !== v) : pushPrefs.leads.concat(v).sort((a, b) => b - a);
+    track("alert_lead", { leads: pushPrefs.leads.join(",") }); pushSave(); renderPush(); return; }
   const pa = ev.target.closest("[data-palert]");
   if (pa) { ev.stopPropagation(); const on = alertToggle(pa.dataset.palert); document.querySelectorAll(`[data-palert="${pa.dataset.palert}"]`).forEach(b => b.outerHTML = alertBtn(pa.dataset.palert)); if (on && !pushSub) openReminders(); return; }
 });
 document.addEventListener("change", ev => {
   const pt = ev.target.closest("[data-ptype]");
-  if (pt) { pushPrefs.types[pt.dataset.ptype] = pt.checked; pushSave(); }
+  if (pt) { pushPrefs.types[pt.dataset.ptype] = pt.checked; pushSave(); if (pt.dataset.ptype === "soon") renderPush(); }
   if (ev.target.id === "paMore" && ev.target.value) { alertToggle(ev.target.value, true); renderPush(); }
 });
 

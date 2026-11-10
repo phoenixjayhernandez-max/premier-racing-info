@@ -1,6 +1,7 @@
 // Sends lock-screen push notifications to phones that turned them on in the app.
 // Run by GitHub Actions every 15 minutes (.github/workflows/push.yml). Needs the PUSH_SECRET repository secret.
-//   Starting soon : a session of a followed series starts within 45 minutes. Each person picks per series:
+//   Starting soon : a session of a followed series is coming up. Each person picks when (prefs.leads, minutes):
+//                   15, 45 (the default), 120 or 1440 (a day before), one or more. And per series:
 //                   race (races only), quali (qualifying, sprints and races) or all (every session, the default).
 //                   Series from the Series tab get alerts from WORLD_TIMES when their start times are posted.
 //   Live now      : a race (not practice/qualifying) has just started
@@ -41,13 +42,16 @@ const EV = Object.fromEntries(RAW.map(([id, s, name, circuit, loc, start, end, t
 const alerts = []; // {key, type, series, title, body, url}
 const isRace = t => /race|grand prix|\bhours?\b|feature|sprint(?! qualifying| shootout)/i.test(t) && !/practice|qualifying|shootout|warm/i.test(t);
 const kindOf = t => isRace(t) ? "race" : /qualif|shootout|pole|sprint/i.test(t) ? "quali" : "practice";
+// Alert lead times in minutes. Each one is its own alert (sent once), so a person who picks
+// both "day before" and "15 min" gets two. A late run still sends it, with the real time left.
+const LEADS = [15, 45, 120, 1440];
 const levelAllows = (level, kind) => level === "all" || kind === "race" || (level === "quali" && kind === "quali");
 for (const [id, list] of Object.entries(SESSIONS)) {
   const e = EV[id]; if (!e || e.status === "cancelled") continue;
   for (const [title, iso, support] of list) {
     if (support) continue;
     const t = Date.parse(iso), mins = Math.round((t - now) / 60000);
-    if (mins > 0 && mins <= 45) alerts.push({ key: `soon:${id}:${title}`, type: "soon", kind: kindOf(title), series: e.s, title: `${SHORT[e.s] || e.s}: ${title} in ${mins} min`, body: `${e.name} · ${e.circuit}. Tap for times and where to watch.`, url: SITE + "#weekend" });
+    for (const L of LEADS) if (mins > 0 && mins <= L) alerts.push({ key: `soon${L === 45 ? "" : L}:${id}:${title}`, type: "soon", lead: L, iso, kind: kindOf(title), series: e.s, name: SHORT[e.s] || e.s, what: title, title: `${SHORT[e.s] || e.s}: ${title} in ${mins} min`, body: `${e.name} · ${e.circuit}. Tap for times and where to watch.`, url: SITE + "#weekend" });
     if (isRace(title) && mins <= 0 && mins >= -25) alerts.push({ key: `live:${id}:${title}`, type: "live", kind: "race", series: e.s, title: `🟢 ${SHORT[e.s] || e.s} is live`, body: `${e.name}: ${title} has started. Tap to watch.`, url: SITE + "#weekend" });
   }
 }
@@ -56,7 +60,7 @@ for (const [wid, list] of Object.entries(WORLD_TIMES)) {
   const nm = WORLD_SHORT[wid] || wid;
   for (const [title, iso] of list || []) {
     const t = Date.parse(iso), mins = Math.round((t - now) / 60000);
-    if (mins > 0 && mins <= 45) alerts.push({ key: `soon:w:${wid}:${title}:${iso}`, type: "soon", kind: kindOf(title), series: wid, world: true, title: `${nm}: ${title} in ${mins} min`, body: "Tap for times and where to watch.", url: SITE + "?series=" + wid });
+    for (const L of LEADS) if (mins > 0 && mins <= L) alerts.push({ key: `soon${L === 45 ? "" : L}:w:${wid}:${title}:${iso}`, type: "soon", lead: L, iso, kind: kindOf(title), series: wid, world: true, name: nm, what: title, title: `${nm}: ${title} in ${mins} min`, body: "Tap for times and where to watch.", url: SITE + "?series=" + wid });
     if (isRace(title) && mins <= 0 && mins >= -25) alerts.push({ key: `live:w:${wid}:${title}:${iso}`, type: "live", kind: "race", series: wid, world: true, title: `🟢 ${nm} is live`, body: `${title} has started. Tap to watch.`, url: SITE + "?series=" + wid });
   }
 }
@@ -164,11 +168,15 @@ for (const sub of subs) {
   const out = [];
   if (TEST) out.push({ title: "Premier Racing Info", body: "Notifications are working. You'll get race alerts here.", url: SITE, tag: "test" });
   const level = p.level || {};
+  const leads = Array.isArray(p.leads) && p.leads.length ? p.leads.map(Number) : [45];
   for (const a of fresh) {
     if (!types[a.type]) continue;
     if (series ? !series.has(a.series) : a.world) continue; // no picks = every app series, none of the others
     if (a.kind && !levelAllows(level[a.series] || (series ? "all" : "race"), a.kind)) continue; // no picks = races only
-    out.push({ title: a.title, body: a.body, url: a.url, tag: a.key });
+    if (a.lead && !leads.includes(a.lead)) continue;
+    // Longer lead times say the clock time in the person's zone instead of "in 1,380 min".
+    const title = a.lead >= 120 ? `${a.name}: ${a.what} ${clock(a.iso, p.tz)}` : a.title;
+    out.push({ title, body: a.body, url: a.url, tag: a.key });
   }
   if (weekDue && types.week !== false) { const w = weekAlert(series, p.tz); if (w) out.unshift(w); }
   if (types.news && favNames.length) {
@@ -185,6 +193,14 @@ state.lastRun = { at: new Date().toISOString(), phones: subs.length, sent: sentC
 save();
 console.log(`Sent ${sentCount} notifications; removed ${gone.length} expired phones`);
 
+function clock(iso, tz){
+  let zone = "America/Chicago"; try { if (tz) { new Intl.DateTimeFormat("en-US", { timeZone: tz }); zone = tz; } } catch (e) {}
+  const f = new Intl.DateTimeFormat("en-US", { timeZone: zone, hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+  const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone });
+  const d = day.format(new Date(iso)), today = day.format(new Date(now)), tmrw = day.format(new Date(now + 86400000));
+  const when = d === today ? "today" : d === tmrw ? "tomorrow" : new Intl.DateTimeFormat("en-US", { timeZone: zone, weekday: "long" }).format(new Date(iso));
+  return `${when} at ${f.format(new Date(iso)).replace(":00", "")}`;
+}
 function save(){
   // forget entries older than 30 days
   for (const [k, t] of Object.entries(state.sent)) if (now - Date.parse(t) > 30 * 86400000) delete state.sent[k];
