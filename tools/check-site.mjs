@@ -73,6 +73,9 @@ const SECTIONS = [
         if (last && last.end > addDays(r[1], 1)) return todo.push(`${label}: standings are after ${st.race.name} (${r[1]}), but ${last.name} finished ${last.end}`);
         return ok.push(`${label}: current (${st.race.name})`);
       }
+      // A long break is fine when the directory lists a next round that hasn't started yet.
+      const nx = w && w.next && dates(w.next);
+      if (w && w.status !== "Finished" && daysAgo(r[1]) > 21 && nx && nx[0] > today) return ok.push(`${label}: last race ${st.race.name} (${r[1]}); between rounds, next ${w.next}`);
       if (w && w.status !== "Finished" && daysAgo(r[1]) > 21) return todo.push(`${label}: last race in standings is ${st.race.name} (${r[1]}), ${daysAgo(r[1])} days ago — check for newer rounds`);
       ok.push(`${label}: last race ${st.race.name} (${r[1]})`);
     };

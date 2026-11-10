@@ -6,11 +6,11 @@ Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we 
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
-| 3 | Standings | ⚠️ 1 |
+| 3 | Standings | ✅ 0 |
 | 4 | Series directory | ✅ 0 |
 | 5 | Watch | ✅ 0 |
 | 6 | Tickets | ✅ 0 |
-| 7 | Tracks & races near you | ⚠️ 15 |
+| 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ✅ 0 |
 | 9 | Search pages | ✅ 0 |
 | 14 | eSports | ⚠️ 2 |
@@ -50,9 +50,9 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 45 days ago — check for newer rounds
+- Nothing to do.
 
-<details><summary>Up to date (19)</summary>
+<details><summary>Up to date (20)</summary>
 
 - Formula 1: current (São Paulo Grand Prix)
 - IMSA WeatherTech: current (Motul Petit Le Mans (season finale))
@@ -72,6 +72,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 - Supercars: last race Gold Coast 500 (2026-10-25)
 - Super GT: last race Motegi Grand Final (season finale) (2026-11-08)
 - DTM: last race Hockenheim finale, Race 2 (2026-10-11)
+- Formula 2: last race Baku (2026-09-26); between rounds, next Lusail, Qatar · Nov 27–29
 - ELMS: last race 4 Hours of Portimão (season finale) (2026-10-10)
 
 </details>
@@ -127,21 +128,9 @@ _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT
 ## 7. Tracks & races near you
 _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 
-- [ ] No circuit website for Adelaide Street Circuit
-- [ ] No circuit website for Shanghai International Circuit
-- [ ] No circuit website for Madring
-- [ ] No circuit website for Istanbul Park
-- [ ] No circuit website for Interlagos
-- [ ] No circuit website for Chang International Circuit
 - [ ] No circuit website for Beijing Street Circuit
-- [ ] No circuit website for Coronado Street Course
-- [ ] No circuit website for Streets of Arlington
-- [ ] No circuit website for Streets of Markham
-- [ ] No circuit website for Milwaukee Mile
 - [ ] No circuit website for Autódromo Internacional Ayrton Senna
 - [ ] No circuit website for Autódromo Oscar y Juan Gálvez
-- [ ] No circuit website for Bugatti Circuit
-- [ ] No circuit website for Mandalika International Circuit
 
 ## 8. News
 _Headlines collected every 30 minutes (news.json, news.yml)_
@@ -150,7 +139,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (300 headlines)
+- News last collected 0.3 hours ago (300 headlines)
 
 </details>
 
