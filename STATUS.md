@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-09 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,10 +8,10 @@ Checked 2026-11-09 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 30 |
-| 5 | Watch | ⚠️ 2 |
+| 5 | Watch | ✅ 0 |
 | 6 | Tickets | ⚠️ 1 |
 | 7 | Tracks & races near you | ⚠️ 15 |
-| 8 | News | ⚠️ 1 |
+| 8 | News | ✅ 0 |
 | 9 | Search pages | ✅ 0 |
 | 14 | eSports | ⚠️ 2 |
 | 10 | Photos | by hand |
@@ -50,7 +50,7 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Formula 2: last race in standings is Baku (2026-09-26), 44 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 45 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
@@ -79,7 +79,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] Directory last researched Oct 28, 2026 (12 days ago)
+- [ ] Directory last researched Oct 28, 2026 (13 days ago)
 - [ ] FR Americas: season finished but no champion listed
 - [ ] Eurocup-3: no status (in progress or finished?) and no next round
 - [ ] GB3: season finished but no champion listed
@@ -113,10 +113,9 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] NHRA races this weekend (In-N-Out Burger NHRA Finals, Pomona (finale) · Nov 12–15) with no start time
-- [ ] SCORE races this weekend (Baja 1000 (Los Cabos) · race starts Nov 13) with no start time
+- Nothing to do.
 
-<details><summary>Up to date (13)</summary>
+<details><summary>Up to date (15)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -131,6 +130,8 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- NHRA: start time saved for this weekend
+- SCORE: start time saved for this weekend
 
 </details>
 
@@ -167,11 +168,11 @@ _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 ## 8. News
 _Headlines collected every 30 minutes (news.json, news.yml)_
 
-- [ ] GT Australia: no headlines in the last 7 days
+- Nothing to do.
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (300 headlines)
+- News last collected 0.0 hours ago (300 headlines)
 
 </details>
 
@@ -195,7 +196,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-09 (0 days ago)
+- eSports tab last checked 2026-11-09 (1 days ago)
 - 7 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
