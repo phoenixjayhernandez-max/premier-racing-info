@@ -103,7 +103,7 @@ def page(body, h):
 
 def footer(cta="Every session, in your time zone, plus standings and alerts.", bottom=72):
     return (f'<div class="foot" style="padding-bottom:{bottom}px"><div class="cta">{E(cta)}</div>'
-            f'<div class="url"><small>LINK IN BIO</small>premierracinginfo.com</div></div>')
+            f'<div class="url"><small style="white-space:nowrap">@PREMIER.RACING.INFO · LINK IN BIO</small>premierracinginfo.com</div></div>')
 
 
 def cover(h):
