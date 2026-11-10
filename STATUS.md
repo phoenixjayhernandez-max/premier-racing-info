@@ -11,7 +11,7 @@ Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we 
 | 5 | Watch | ✅ 0 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
-| 8 | News | ✅ 0 |
+| 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
 | 14 | eSports | ⚠️ 2 |
 | 10 | Photos | by hand |
@@ -135,11 +135,11 @@ _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 ## 8. News
 _Headlines collected every 30 minutes (news.json, news.yml)_
 
-- Nothing to do.
+- [ ] GT Australia: no headlines in the last 7 days
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (300 headlines)
+- News last collected 0.3 hours ago (300 headlines)
 
 </details>
 
