@@ -521,7 +521,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .pa-dp{font-size:.6rem;padding:2px 4px;min-width:30px;text-align:center}
 .pa-seg{display:grid;grid-template-columns:repeat(3,1fr);margin-top:8px;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
 .pa-seg button{font:inherit;font-size:.78rem;font-weight:600;padding:7px 4px;background:var(--panel);color:var(--ink);border:0;border-left:1px solid var(--rule);cursor:pointer}
-.pa-seg button:first-child{border-left:0}.wx-row{display:flex;gap:12px;align-items:center;margin-top:6px}.wx-ic{font-size:2rem;line-height:1}.feat-wx{margin:6px 0 0;font-size:.9rem;font-weight:600}.pa-seg.pa-lead{grid-template-columns:repeat(4,1fr);margin:2px 0 0 26px}.pa-seg button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
+.pa-seg button:first-child{border-left:0}.wx-line{margin:8px 0 0;font-size:.85rem;color:var(--sub)}.wx-line a{color:inherit}.feat-wx{margin:6px 0 0;font-size:.85rem;opacity:.8}.pa-seg.pa-lead{grid-template-columns:repeat(4,1fr);margin:2px 0 8px 26px}.pa-seg button[aria-pressed="true"]{background:var(--signal);color:var(--signal-ink)}
 .pa-more{font:inherit;width:100%;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
 .set{padding-bottom:var(--space-md)}.set-h{margin:var(--space-md) 0 6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .set-grp{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--panel)}
@@ -3601,9 +3601,10 @@ function fillWx(){
     const e = events.find(x => x.id === el.dataset.wx); if (!e) return;
     wxGet(e).then(w => {
       if (!w) return;
-      if (el.dataset.wxs) { el.textContent = wxText(w, true); el.hidden = false; return; }
-      const x = wxText(w), when = new Date(wxTarget(e).iso);
-      el.innerHTML = `<section class="card wx"><h3>Weather at the start</h3><div class="wx-row"><span class="wx-ic" aria-hidden="true">${x.ic}</span><div><b>${esc(x.t)} · ${esc(x.lbl)}</b><div class="fine" style="margin:2px 0 0">${esc([x.rain, "wind " + x.wind].filter(Boolean).join(" · "))}</div></div></div><p class="fine">Forecast for ${esc(fmtDow.format(when) + " " + fmtTime.format(when))} at ${esc(e.circuit)}, from <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>. Forecasts change; check again on race day.</p></section>`;
+      el.hidden = false;
+      if (el.dataset.wxs) { el.textContent = wxText(w, true); return; }
+      const x = wxText(w);
+      el.innerHTML = `<span aria-hidden="true">${x.ic}</span> <b>Race-start forecast:</b> ${esc([x.t, x.lbl.toLowerCase(), x.rain, "wind " + x.wind].filter(Boolean).join(", "))}. <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>`;
       track("weather_shown", { race: e.id });
     });
   });
@@ -3659,11 +3660,10 @@ function openRace(id){
       <button class="btn" data-k="watched" data-id="${e.id}" aria-pressed="${pr("watched")}">Watched</button>
       <a class="btn" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="sheet">Full race page</a><button class="btn" data-share="race:${e.id}">Share</button>${alertBtn(e.series, "Alerts for " + SERIES[e.series])}</div>`;
 
-  if (wxTarget(e)) h += `<div data-wx="${e.id}"></div>`;
   if (!e.cancelled) {
     h += `<section class="card"><h3>${ph === "past" ? "Watch the replay" : "Where to watch"}</h3><div class="mine" style="margin:8px 0 0">${watchButtons(c)}</div>
       <p class="fine">Free means no subscription needed.</p>`;
-    if (SESSIONS[e.id] && ph !== "past") h += `<h3 class="h4">Session times</h3><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(e.id, false)}<p class="fine">Daylight saving is handled automatically. Support races in grey. Times can change; check the official timetable on the day.</p>`;
+    if (SESSIONS[e.id] && ph !== "past") h += `<h3 class="h4">Session times</h3><p class="fine" style="margin:0 0 6px">${tzLine()}</p>${schedHTML(e.id, false)}${wxTarget(e) ? `<p class="wx-line" data-wx="${e.id}" hidden></p>` : ""}<p class="fine">Daylight saving is handled automatically. Support races in grey. Times can change; check the official timetable on the day.</p>`;
     h += `</section>`;
   }
   const tk = ticketLinks(e);
@@ -4052,7 +4052,7 @@ function renderPush(){
   } else {
     const t = pushPrefs.types;
     const tog = (k, label, on) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${(on ? t[k] !== false : t[k]) ? "checked" : ""}> ${label}</label>`;
-    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon") + (t.soon !== false ? `<div class="pa-seg pa-lead" role="group" aria-label="When to send starting-soon alerts">${ALERT_LEADS.map(([v, l]) => `<button data-plead="${v}" aria-pressed="${pushPrefs.leads.includes(v)}">${l}</button>`).join("")}</div><p class="fine" style="margin:4px 0 8px">Pick one or more. Each one is a separate alert.</p>` : "") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
+    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon <small class=\"fine\" style=\"margin:0 0 0 4px\">pick one or more</small>") + (t.soon !== false ? `<div class="pa-seg pa-lead" role="group" aria-label="When to send starting-soon alerts">${ALERT_LEADS.map(([v, l]) => `<button data-plead="${v}" aria-pressed="${pushPrefs.leads.includes(v)}">${l}</button>`).join("")}</div>` : "") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
   }
   h += (pushSub ? "" : `<p class="fine" style="margin:12px 0 0"><b>Pick your series now.</b> They're saved on this phone and apply as soon as alerts are on.</p>`) + ps;
   if (pushSub) h += `<div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
