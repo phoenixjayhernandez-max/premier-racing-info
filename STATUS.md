@@ -1,10 +1,10 @@
 # Site status
 
-Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-13 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
-| 1 | Calendar & race pages | ✅ 0 |
+| 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ✅ 0 |
@@ -22,7 +22,14 @@ Checked 2026-11-10 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- Nothing to do.
+- [ ] Coming the week after, still without start times: Qatar Grand Prix (Formula 1, 2026-11-29); Adelaide (GT World Challenge Australia, 2026-11-29); Valencia Grand Prix (MotoGP, 2026-11-29)
+
+<details><summary>Up to date (2)</summary>
+
+- Las Vegas Grand Prix (Formula 1, 2026-11-21) has start times
+- Portuguese Grand Prix (MotoGP, 2026-11-22) has start times
+
+</details>
 
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
@@ -84,7 +91,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (2)</summary>
 
-- Directory last researched Nov 10, 2026 (0 days ago)
+- Directory last researched Nov 10, 2026 (3 days ago)
 - Every series has a current status and next round
 
 </details>
@@ -94,7 +101,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 
 - Nothing to do.
 
-<details><summary>Up to date (15)</summary>
+<details><summary>Up to date (19)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -109,8 +116,12 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- Super Taikyu: start time saved for this weekend
+- Stock Car Pro: start time saved for this weekend
+- TC: start time saved for this weekend
 - NHRA: start time saved for this weekend
 - SCORE: start time saved for this weekend
+- ASA STARS: start time saved for this weekend
 
 </details>
 
@@ -139,7 +150,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.3 hours ago (300 headlines)
+- News last collected 0.5 hours ago (300 headlines)
 
 </details>
 
@@ -150,7 +161,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 10, 2026
+- Pages last rebuilt November 14, 2026
 - 554 pages in the sitemap
 
 </details>
@@ -163,7 +174,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-09 (1 days ago)
+- eSports tab last checked 2026-11-09 (4 days ago)
 - 7 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
