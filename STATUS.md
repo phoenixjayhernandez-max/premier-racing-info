@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-13 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-14 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,7 +8,7 @@ Checked 2026-11-13 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ✅ 0 |
-| 5 | Watch | ✅ 0 |
+| 5 | Watch | ⚠️ 1 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ⚠️ 1 |
@@ -91,7 +91,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (2)</summary>
 
-- Directory last researched Nov 10, 2026 (3 days ago)
+- Directory last researched Nov 10, 2026 (4 days ago)
 - Every series has a current status and next round
 
 </details>
@@ -99,9 +99,9 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- Nothing to do.
+- [ ] Old start times to clear from WORLD_TIMES: score
 
-<details><summary>Up to date (19)</summary>
+<details><summary>Up to date (20)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -117,6 +117,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
 - Super Taikyu: start time saved for this weekend
+- Ferrari Chall NA: start time saved for this weekend
 - Stock Car Pro: start time saved for this weekend
 - TC: start time saved for this weekend
 - NHRA: start time saved for this weekend
@@ -150,7 +151,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.5 hours ago (300 headlines)
+- News last collected 0.2 hours ago (300 headlines)
 
 </details>
 
@@ -174,7 +175,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-09 (4 days ago)
+- eSports tab last checked 2026-11-09 (5 days ago)
 - 7 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
