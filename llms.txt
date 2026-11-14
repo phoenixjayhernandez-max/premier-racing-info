@@ -1,6 +1,6 @@
 # Premier Racing Info
 
-> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series, with full session times for 13 of them (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-10.
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series, with full session times for 13 of them (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-14.
 
 ## Main guides
 - [Racing calendar](https://premierracinginfo.com/calendar/): every upcoming race with dates and start times
