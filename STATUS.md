@@ -22,7 +22,7 @@ Checked 2026-11-14 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- [ ] Coming the week after, still without start times: Qatar Grand Prix (Formula 1, 2026-11-29); Adelaide (GT World Challenge Australia, 2026-11-29); Valencia Grand Prix (MotoGP, 2026-11-29)
+- [ ] Coming the week after, still without start times: Valencia Grand Prix (MotoGP, 2026-11-29)
 
 <details><summary>Up to date (2)</summary>
 
@@ -151,7 +151,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (300 headlines)
+- News last collected 0.5 hours ago (300 headlines)
 
 </details>
 
@@ -162,7 +162,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 14, 2026
+- Pages last rebuilt November 15, 2026
 - 554 pages in the sitemap
 
 </details>
