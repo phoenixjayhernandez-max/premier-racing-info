@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-15 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-16 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,7 +8,7 @@ Checked 2026-11-15 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
-| 5 | Watch | ⚠️ 1 |
+| 5 | Watch | ⚠️ 3 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ⚠️ 1 |
@@ -36,14 +36,12 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 
 - Nothing to do.
 
-<details><summary>Up to date (13)</summary>
+<details><summary>Up to date (11)</summary>
 
-- Winner saved: United States Grand Prix (Formula 1, 2026-10-25)
 - Winner saved: Mexico City Grand Prix (Formula 1, 2026-11-01)
 - Winner saved: São Paulo Grand Prix (Formula 1, 2026-11-08)
 - Winner saved: 6 Hours of Monza (World Endurance, 2026-11-08)
 - Winner saved: Shanghai finale (GT World Challenge Asia, 2026-11-01)
-- Winner saved: Circuit of The Americas (Porsche Carrera Cup North America, 2026-10-25)
 - Winner saved: Xfinity 500 (NASCAR Cup Series, 2026-11-01)
 - Winner saved: Championship Race (NASCAR Cup Series, 2026-11-08)
 - Winner saved: Malaysian Grand Prix (MotoGP, 2026-11-01)
@@ -76,7 +74,7 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 - MotoGP: current (Qatar GP (Lusail))
 - Formula E: last race London ePrix (season finale) (2026-08-16)
 - WRC: last race Rally Italia Sardegna (2026-10-04)
-- Supercars: last race Gold Coast 500 (2026-10-25)
+- Supercars: last race Gold Coast 500 (2026-10-25); between rounds, next Adelaide Grand Final · Nov 26–29
 - Super GT: last race Motegi Grand Final (season finale) (2026-11-08)
 - DTM: last race Hockenheim finale, Race 2 (2026-10-11)
 - Formula 2: last race Baku (2026-09-26); between rounds, next Lusail, Qatar · Nov 27–29
@@ -91,7 +89,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 10, 2026 (5 days ago)
+- Directory last researched Nov 10, 2026 (6 days ago)
 
 </details>
 
@@ -99,6 +97,8 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
 - [ ] TCR World Tour races this weekend (Macau (Guia Circuit) · Nov 19–22) with no start time
+- [ ] Moto2 races this weekend (Portugal (Portimão) · Nov 20–22) with no start time
+- [ ] Moto3 races this weekend (Portugal (Portimão) · Nov 20–22) with no start time
 
 <details><summary>Up to date (14)</summary>
 
@@ -168,8 +168,8 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-09 (6 days ago)
-- 7 upcoming eSports events listed
+- eSports tab last checked 2026-11-09 (7 days ago)
+- 6 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
 - Porsche Esports Supercup: Finished
