@@ -7,8 +7,8 @@ Checked 2026-11-15 by `node tools/check-site.mjs`. Sections are in the order we 
 | 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
-| 4 | Series directory | ✅ 0 |
-| 5 | Watch | ⚠️ 2 |
+| 4 | Series directory | ⚠️ 1 |
+| 5 | Watch | ⚠️ 1 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ⚠️ 1 |
@@ -87,22 +87,20 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- Nothing to do.
+- [ ] SCORE: season finished but no champion listed
 
-<details><summary>Up to date (2)</summary>
+<details><summary>Up to date (1)</summary>
 
 - Directory last researched Nov 10, 2026 (5 days ago)
-- Every series has a current status and next round
 
 </details>
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Old start times to clear from WORLD_TIMES: score
 - [ ] TCR World Tour races this weekend (Macau (Guia Circuit) · Nov 19–22) with no start time
 
-<details><summary>Up to date (20)</summary>
+<details><summary>Up to date (14)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -117,13 +115,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
-- Super Taikyu: start time saved for this weekend
 - Ferrari Chall NA: start time saved for this weekend
-- Stock Car Pro: start time saved for this weekend
-- TC: start time saved for this weekend
-- NHRA: start time saved for this weekend
-- SCORE: start time saved for this weekend
-- ASA STARS: start time saved for this weekend
 
 </details>
 
@@ -152,7 +144,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (300 headlines)
+- News last collected 0.1 hours ago (300 headlines)
 
 </details>
 
@@ -163,7 +155,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 15, 2026
+- Pages last rebuilt November 16, 2026
 - 554 pages in the sitemap
 
 </details>
