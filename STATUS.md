@@ -1,19 +1,19 @@
 # Site status
 
-Checked 2026-11-16 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-19 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
-| 1 | Calendar & race pages | ⚠️ 1 |
+| 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
-| 5 | Watch | ⚠️ 3 |
+| 5 | Watch | ⚠️ 1 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
-| 14 | eSports | ⚠️ 2 |
+| 14 | eSports | ⚠️ 3 |
 | 10 | Photos | by hand |
 | 11 | Accounts, alerts & picks game | by hand |
 | 12 | Design & speed | by hand |
@@ -22,11 +22,12 @@ Checked 2026-11-16 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- [ ] Coming the week after, still without start times: Valencia Grand Prix (MotoGP, 2026-11-29)
+- Nothing to do.
 
-<details><summary>Up to date (2)</summary>
+<details><summary>Up to date (3)</summary>
 
 - Las Vegas Grand Prix (Formula 1, 2026-11-21) has start times
+- Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Portuguese Grand Prix (MotoGP, 2026-11-22) has start times
 
 </details>
@@ -89,18 +90,16 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 10, 2026 (6 days ago)
+- Directory last researched Nov 20, 2026 (-1 days ago)
 
 </details>
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] TCR World Tour races this weekend (Macau (Guia Circuit) · Nov 19–22) with no start time
-- [ ] Moto2 races this weekend (Portugal (Portimão) · Nov 20–22) with no start time
-- [ ] Moto3 races this weekend (Portugal (Portimão) · Nov 20–22) with no start time
+- [ ] W2RC / Dakar races this weekend (Abu Dhabi Desert Challenge (finale), Al Ain · Nov 22–27) with no start time
 
-<details><summary>Up to date (14)</summary>
+<details><summary>Up to date (20)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -115,7 +114,13 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- F1 Academy: start time saved for this weekend
+- Super Formula: start time saved for this weekend
 - Ferrari Chall NA: start time saved for this weekend
+- TCR World Tour: start time saved for this weekend
+- TC2000: start time saved for this weekend
+- Moto2: start time saved for this weekend
+- Moto3: start time saved for this weekend
 
 </details>
 
@@ -144,7 +149,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (295 headlines)
+- News last collected 0.1 hours ago (274 headlines)
 
 </details>
 
@@ -155,7 +160,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 16, 2026
+- Pages last rebuilt November 20, 2026
 - 554 pages in the sitemap
 
 </details>
@@ -163,12 +168,12 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
+- [ ] eSports tab last checked 2026-11-09 (10 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
-<details><summary>Up to date (6)</summary>
+<details><summary>Up to date (5)</summary>
 
-- eSports tab last checked 2026-11-09 (7 days ago)
 - 6 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
