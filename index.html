@@ -718,6 +718,18 @@ body{font-size:15px}
 .perso .perso-btns{display:inline-flex;gap:var(--space-md);margin-left:var(--space-xs)}
 .site-foot .tlink{font-weight:400;text-decoration:none;color:var(--sub);min-height:0;font-size:inherit}
 .site-foot .tlink:hover{color:var(--ink)}
+.ig-card{display:flex;align-items:center;gap:var(--space-sm);max-width:520px;margin:0 0 var(--space-md);padding:var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm);border:1px solid var(--rule);border-radius:12px;background:var(--panel-2);color:var(--ink)!important;text-decoration:none;transition:border-color var(--dur-short) var(--ease-out),transform var(--dur-short) var(--ease-out)}
+.ig-card:hover{border-color:#DD2A7B;transform:translateY(-1px)}
+.ig-card:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
+.ig-logo{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 30% 107%,#FDF497 0%,#FDF497 5%,#FD5949 45%,#D6249F 60%,#285AEB 90%)}
+.ig-logo .ig-glyph{width:26px;height:26px}
+.ig-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.ig-t b{font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:.01em;color:var(--ink)}
+.ig-t small{color:var(--sub);font-size:.8rem}
+.ig-btn{flex:none;padding:6px 14px;border-radius:999px;font-weight:700;font-size:.85rem;color:#fff;background:linear-gradient(90deg,#D6249F,#FD5949)}
+@media (max-width:380px){.ig-btn{display:none}}
+.set-ic .ig-mini{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 30% 107%,#FDF497 0%,#FDF497 5%,#FD5949 45%,#D6249F 60%,#285AEB 90%)}
+.set-ic .ig-mini .ig-glyph{width:15px;height:15px}
 .site-foot nav{align-items:baseline}
 .chip.ghost{border-style:solid;background:transparent}
 .nthumb{position:relative}
@@ -1397,10 +1409,11 @@ main{max-width:1200px}
   </section>
 </main>
 
-<footer class="site-foot"><nav aria-label="Guides"><a href="#app" data-getapp="1">Get the app</a><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
+<footer class="site-foot"><a class="ig-card" href="https://www.instagram.com/premier.racing.info/" target="_blank" rel="noopener me" data-ig="footer"><span class="ig-logo"><svg class="ig-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg></span><span class="ig-t"><b>Follow us on Instagram</b><small>@premier.racing.info</small><small>Weekend schedules every Thursday</small></span><span class="ig-btn">Follow</span></a>
+<nav aria-label="Guides"><a href="#app" data-getapp="1">Get the app</a><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
 <nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
 <p>An independent fan site, not affiliated with, endorsed by or sponsored by any series, team, circuit or broadcaster. Series names and marks belong to their owners and are used only to identify them.</p>
-<nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="https://www.instagram.com/premier.racing.info/" target="_blank" rel="noopener me">Instagram</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav>
+<nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav>
 <button class="ash-nap" type="button" data-ash="1" aria-label="For Ash, my little tiger" title="For Ash"><svg viewBox="0 0 40 26" aria-hidden="true" focusable="false"><g fill="#EE8A2C"><path d="M4 24C2 24 1.5 21 3.5 20C7 18 6 12 12 10C18 8 28 9 31 13L33 24Z"/><circle cx="31" cy="15.5" r="6.5"/><path d="M26.4 11.6 26.6 6.4 30 9.6Z"/><path d="M32 9.2 36 6.2 36.4 11.4Z"/><path d="M3 24C1 24 .5 22.6 2 22C6 20.6 12 23 18 23L20 24Z"/><ellipse cx="34" cy="23.6" rx="3" ry="1.4"/></g><g fill="#9A4A10"><path d="M12.5 10.3C14 13 14 16 13 18.5L11.6 18C12.4 15.8 12.3 13.2 11 11Z"/><path d="M17.6 9.4C19 12.4 19 15.6 18 18.6L16.6 18.3C17.4 15.5 17.3 12.6 16 9.8Z"/><path d="M22.6 9.4C24 12.2 24 15 23.2 17.6L21.8 17.4C22.4 15 22.3 12.4 21 9.7Z"/><path d="M30.4 9.4 31 12 31.6 9.4Z"/><path d="M28.4 10.2 29.4 12.4 29.5 10.2Z"/><path d="M34.2 10.4 33 12.4 32.9 10.3Z"/><path d="M6 22 7 21.2 7.6 23.6 6.4 23.8Z"/><path d="M10 22.3 11.2 21.9 11.4 23.9 10.2 23.9Z"/></g><g fill="none" stroke="#3A2210" stroke-width=".7" stroke-linecap="round"><path d="M27.8 15.6Q29 16.6 30.2 15.6"/><path d="M32.2 15.6Q33.4 16.6 34.6 15.6"/></g><path d="M30.6 17.8H31.8L31.2 18.6Z" fill="#3A2210"/><g fill="#F7C9A0"><path d="M27 10.6 27.2 8 28.8 9.6Z"/><path d="M33.6 9 35.4 7.8 35.6 10Z"/></g></svg></button></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
@@ -3573,7 +3586,8 @@ function track(name, params){ try { if (window.gtag) gtag("event", name, params 
 document.addEventListener("click", ev => {
   const a = ev.target.closest("a[href]"); if (!a) return;
   const h = a.getAttribute("href") || "";
-  if (a.dataset.rp) track("race_page_click", { race: a.dataset.rp, from: a.dataset.from || "" });
+  if (a.dataset.ig) track("instagram_click", { from: a.dataset.ig });
+  else if (a.dataset.rp) track("race_page_click", { race: a.dataset.rp, from: a.dataset.from || "" });
   else if (/^webcal:|\.ics(\?|$)/i.test(h)) track("add_to_calendar", { feed: h.split("/").pop().replace(/\.ics.*/, "") });
   else if (a.classList.contains("tlink") || /stubhub|ticket/i.test(h)) track("ticket_click", { link_url: h });
   else if (a.classList.contains("watch") || /^Watch/.test(a.textContent.trim()) || a.closest(".acts")) track("watch_click", { link_url: h, label: a.textContent.trim().slice(0, 60) });
@@ -4503,7 +4517,7 @@ function openSettings(){
     <p class="set-h">About</p><div class="set-grp">
       ${setRow({ go: "install", icon: "📲", label: "Get the app", sub: isStandalone() ? "Installed on this device" : "iPhone, Android, Mac and Windows" })}
       ${setRow({ go: "share", icon: "↗", label: "Share Premier Racing Info" })}
-      ${setRow({ href: "https://www.instagram.com/premier.racing.info/", ext: true, icon: "📷", label: "Follow on Instagram", sub: "Weekend schedules every Thursday", value: "@premier.racing.info" })}
+      ${setRow({ href: "https://www.instagram.com/premier.racing.info/", ext: true, icon: `<span class="ig-mini"><svg class="ig-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg></span>`, label: "Follow on Instagram", sub: "Weekend schedules every Thursday", value: "@premier.racing.info" })}
       ${setRow({ href: "mailto:contact@premierracinginfo.com", icon: "✉️", label: "Contact us", sub: "Questions, corrections or ideas", value: "contact@premierracinginfo.com" })}
       ${setRow({ href: "/about/", icon: "ℹ️", label: "About" })}
       ${setRow({ href: "/privacy/", icon: "🔒", label: "Privacy policy" })}
