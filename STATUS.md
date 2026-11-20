@@ -151,7 +151,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.5 hours ago (273 headlines)
+- News last collected 0.1 hours ago (271 headlines)
 
 </details>
 
