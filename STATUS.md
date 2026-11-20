@@ -1,10 +1,10 @@
 # Site status
 
-Checked 2026-11-19 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-20 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
-| 1 | Calendar & race pages | ✅ 0 |
+| 1 | Calendar & race pages | ⚠️ 1 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
@@ -22,13 +22,15 @@ Checked 2026-11-19 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- Nothing to do.
+- [ ] Coming the week after, still without start times: Abu Dhabi Grand Prix (Formula 1, 2026-12-06)
 
-<details><summary>Up to date (3)</summary>
+<details><summary>Up to date (5)</summary>
 
 - Las Vegas Grand Prix (Formula 1, 2026-11-21) has start times
+- Qatar Grand Prix (Formula 1, 2026-11-29) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Portuguese Grand Prix (MotoGP, 2026-11-22) has start times
+- Valencia Grand Prix (MotoGP, 2026-11-29) has start times
 
 </details>
 
@@ -90,7 +92,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 20, 2026 (-1 days ago)
+- Directory last researched Nov 20, 2026 (0 days ago)
 
 </details>
 
@@ -149,7 +151,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (274 headlines)
+- News last collected 0.5 hours ago (273 headlines)
 
 </details>
 
@@ -168,7 +170,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (10 days ago)
+- [ ] eSports tab last checked 2026-11-09 (11 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
