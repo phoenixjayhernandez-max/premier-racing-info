@@ -1,12 +1,12 @@
 # Site status
 
-Checked 2026-11-21 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-22 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
-| 2 | Results & picks | ✅ 0 |
-| 3 | Standings | ✅ 0 |
+| 2 | Results & picks | ⚠️ 2 |
+| 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 1 |
 | 5 | Watch | ⚠️ 1 |
 | 6 | Tickets | ✅ 0 |
@@ -24,9 +24,8 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (5)</summary>
+<details><summary>Up to date (4)</summary>
 
-- Las Vegas Grand Prix (Formula 1, 2026-11-21) has start times
 - Qatar Grand Prix (Formula 1, 2026-11-29) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Portuguese Grand Prix (MotoGP, 2026-11-22) has start times
@@ -37,7 +36,8 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
-- Nothing to do.
+- [ ] Missing winner (recent): Las Vegas Grand Prix (Formula 1, 2026-11-21)
+- [ ] Picks can't be scored, no top three: Las Vegas Grand Prix (Formula 1, 2026-11-21)
 
 <details><summary>Up to date (11)</summary>
 
@@ -58,11 +58,10 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- Nothing to do.
+- [ ] Formula 1: standings are after São Paulo Grand Prix (2026-11-08), but Las Vegas Grand Prix finished 2026-11-21
 
-<details><summary>Up to date (20)</summary>
+<details><summary>Up to date (19)</summary>
 
-- Formula 1: current (São Paulo Grand Prix)
 - IMSA WeatherTech: current (Motul Petit Le Mans (season finale))
 - FIA WEC: current (6 Hours of Monza (season finale))
 - GT Europe: current (3 Hours of Portimão)
@@ -92,7 +91,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 20, 2026 (1 days ago)
+- Directory last researched Nov 20, 2026 (2 days ago)
 
 </details>
 
@@ -101,7 +100,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 
 - [ ] W2RC / Dakar races this weekend (Abu Dhabi Desert Challenge (finale), Al Ain · Nov 22–27) with no start time
 
-<details><summary>Up to date (19)</summary>
+<details><summary>Up to date (21)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -118,6 +117,8 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - MotoGP: FOX Sports / FS1
 - Super Formula: start time saved for this weekend
 - Ferrari Chall NA: start time saved for this weekend
+- Carrera Cup AU: start time saved for this weekend
+- Supercars: start time saved for this weekend
 - TCR World Tour: start time saved for this weekend
 - TC2000: start time saved for this weekend
 - Moto2: start time saved for this weekend
@@ -132,7 +133,7 @@ _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT
 
 <details><summary>Up to date (1)</summary>
 
-- 6 of 6 races in the next 60 days have an official ticket or circuit link
+- 5 of 5 races in the next 60 days have an official ticket or circuit link
 
 </details>
 
@@ -150,7 +151,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 1.0 hours ago (269 headlines)
+- News last collected 0.1 hours ago (272 headlines)
 
 </details>
 
@@ -169,13 +170,13 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (12 days ago)
+- [ ] eSports tab last checked 2026-11-09 (13 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
 <details><summary>Up to date (5)</summary>
 
-- 6 upcoming eSports events listed
+- 5 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
 - Porsche Esports Supercup: Finished
