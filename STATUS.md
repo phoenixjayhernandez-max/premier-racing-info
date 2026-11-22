@@ -1,10 +1,10 @@
 # Site status
 
-Checked 2026-11-20 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-21 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
-| 1 | Calendar & race pages | ⚠️ 1 |
+| 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
@@ -22,7 +22,7 @@ Checked 2026-11-20 by `node tools/check-site.mjs`. Sections are in the order we 
 ## 1. Calendar & race pages
 _Race dates, session start times and per-session stream links (RAW, SESSIONS, SESSION_WATCH)_
 
-- [ ] Coming the week after, still without start times: Abu Dhabi Grand Prix (Formula 1, 2026-12-06)
+- Nothing to do.
 
 <details><summary>Up to date (5)</summary>
 
@@ -92,7 +92,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 20, 2026 (0 days ago)
+- Directory last researched Nov 20, 2026 (1 days ago)
 
 </details>
 
@@ -101,7 +101,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 
 - [ ] W2RC / Dakar races this weekend (Abu Dhabi Desert Challenge (finale), Al Ain · Nov 22–27) with no start time
 
-<details><summary>Up to date (20)</summary>
+<details><summary>Up to date (19)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -116,7 +116,6 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
-- F1 Academy: start time saved for this weekend
 - Super Formula: start time saved for this weekend
 - Ferrari Chall NA: start time saved for this weekend
 - TCR World Tour: start time saved for this weekend
@@ -151,7 +150,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (271 headlines)
+- News last collected 1.0 hours ago (269 headlines)
 
 </details>
 
@@ -162,7 +161,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 20, 2026
+- Pages last rebuilt November 22, 2026
 - 554 pages in the sitemap
 
 </details>
@@ -170,7 +169,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (11 days ago)
+- [ ] eSports tab last checked 2026-11-09 (12 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
