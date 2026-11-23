@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-22 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-23 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,7 +8,7 @@ Checked 2026-11-22 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
-| 5 | Watch | ✅ 0 |
+| 5 | Watch | ⚠️ 2 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ⚠️ 3 |
 | 8 | News | ⚠️ 1 |
@@ -24,11 +24,10 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (4)</summary>
+<details><summary>Up to date (3)</summary>
 
 - Qatar Grand Prix (Formula 1, 2026-11-29) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
-- Portuguese Grand Prix (MotoGP, 2026-11-22) has start times
 - Valencia Grand Prix (MotoGP, 2026-11-29) has start times
 
 </details>
@@ -38,17 +37,14 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 
 - Nothing to do.
 
-<details><summary>Up to date (13)</summary>
+<details><summary>Up to date (10)</summary>
 
-- Winner saved: Mexico City Grand Prix (Formula 1, 2026-11-01)
 - Winner saved: São Paulo Grand Prix (Formula 1, 2026-11-08)
 - Winner saved: Las Vegas Grand Prix (Formula 1, 2026-11-21)
 - Winner saved: 6 Hours of Monza (World Endurance, 2026-11-08)
-- Winner saved: Shanghai finale (GT World Challenge Asia, 2026-11-01)
-- Winner saved: Xfinity 500 (NASCAR Cup Series, 2026-11-01)
 - Winner saved: Championship Race (NASCAR Cup Series, 2026-11-08)
-- Winner saved: Malaysian Grand Prix (MotoGP, 2026-11-01)
 - Winner saved: Qatar Grand Prix (MotoGP, 2026-11-08)
+- Winner saved: Portuguese Grand Prix (MotoGP, 2026-11-22)
 - Picks scored: United States Grand Prix (Formula 1, 2026-10-25)
 - Picks scored: Mexico City Grand Prix (Formula 1, 2026-11-01)
 - Picks scored: São Paulo Grand Prix (Formula 1, 2026-11-08)
@@ -93,16 +89,17 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 22, 2026 (0 days ago)
+- Directory last researched Nov 22, 2026 (1 days ago)
 
 </details>
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- Nothing to do.
+- [ ] Moto2 races this weekend (Valencia (finale) · Nov 27–29) with no start time
+- [ ] Moto3 races this weekend (Valencia (finale) · Nov 27–29) with no start time
 
-<details><summary>Up to date (16)</summary>
+<details><summary>Up to date (17)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -117,6 +114,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Cup Series: FOX Sports / FS1, Prime Video, TNT / HBO Max, NBC / USA / Peacock
 - IndyCar: FOX Sports / FS1
 - MotoGP: FOX Sports / FS1
+- Formula 2: start time saved for this weekend
 - Carrera Cup AU: start time saved for this weekend
 - Supercars: start time saved for this weekend
 - W2RC / Dakar: start time saved for this weekend
@@ -148,7 +146,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 1.0 hours ago (272 headlines)
+- News last collected 0.2 hours ago (270 headlines)
 
 </details>
 
@@ -167,7 +165,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (13 days ago)
+- [ ] eSports tab last checked 2026-11-09 (14 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
