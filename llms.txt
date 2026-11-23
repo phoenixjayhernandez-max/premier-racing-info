@@ -1,6 +1,6 @@
 # Premier Racing Info
 
-> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series, with full session times for 13 of them (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-22.
+> Free, independent motorsport guide: race start times in your time zone, where to watch in the US, tickets and standings for 109 racing series, with full session times for 13 of them (F1, NASCAR, IndyCar, MotoGP, IMSA, WEC, GT World Challenge and more). Updated 2026-11-23.
 
 ## Main guides
 - [Racing calendar](https://premierracinginfo.com/calendar/): every upcoming race with dates and start times
@@ -14,7 +14,6 @@
 - [About](https://premierracinginfo.com/about/): who runs the site and how data is checked
 
 ## Next races
-- [MotoGP Portuguese Grand Prix 2026](https://premierracinginfo.com/races/motogp-portuguese-grand-prix-2026/): Nov 20–22, 2026, Algarve International Circuit
 - [GT World Challenge Australia Adelaide 2026](https://premierracinginfo.com/races/gt-australia-adelaide-2026/): Nov 26–29, 2026, Adelaide Street Circuit
 - [Formula 1 Qatar Grand Prix 2026](https://premierracinginfo.com/races/f1-qatar-grand-prix-2026/): Nov 27–29, 2026, Lusail International Circuit
 - [MotoGP Valencia Grand Prix 2026](https://premierracinginfo.com/races/motogp-valencia-grand-prix-2026/): Nov 27–29, 2026, Circuit Ricardo Tormo
@@ -26,6 +25,7 @@
 - [NASCAR Cup Series Daytona 500 2027](https://premierracinginfo.com/races/nascar-daytona-500-2027/): Feb 16–21, 2027, Daytona International Speedway
 - [NASCAR Cup Series Autotrader 400 2027](https://premierracinginfo.com/races/nascar-autotrader-400-2027/): Feb 26–28, 2027, EchoPark Speedway
 - [NASCAR Cup Series DuraMAX Grand Prix 2027](https://premierracinginfo.com/races/nascar-duramax-grand-prix-2027/): Mar 5–7, 2027, Circuit of the Americas
+- [IndyCar Grand Prix of St. Petersburg 2027](https://premierracinginfo.com/races/indycar-grand-prix-of-st-petersburg-2027/): Mar 5–7, 2027, Streets of St. Petersburg
 
 ## Notes
 - Times on race pages are given in US Central time in the HTML and converted to the reader's time zone in the browser.
