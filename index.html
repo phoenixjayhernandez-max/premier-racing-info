@@ -548,6 +548,11 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 .ob-pick{cursor:pointer}.ob-pick span,.ob-rn{display:flex;flex-direction:column;min-width:0}.ob-pick small,.ob-rn small{color:var(--sub);font-size:.78rem;line-height:1.3}
 .ob-pick[aria-pressed="true"]{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal);background:color-mix(in oklab,var(--signal) 8%,var(--panel))}
 .ob-pick:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.gd-tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:8px}
+.gd-tab{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--panel);color:var(--ink);min-height:52px}
+.gd-tab:focus-visible{outline:2px solid var(--signal);outline-offset:2px}.gd-tab .gi{font-size:1.15rem;line-height:1.3;flex:none;width:24px;text-align:center}
+.gd-tab span{display:flex;flex-direction:column;min-width:0}.gd-tab small,.gd-do small{color:var(--sub);font-size:.8rem;line-height:1.35}
+.gd-do{list-style:none;margin:0;padding:0;display:grid;gap:10px}.gd-do li{display:flex;gap:10px;align-items:flex-start}.gd-do .gi{flex:none;width:24px;text-align:center;font-size:1.1rem;line-height:1.3}.gd-do b{display:block}.gd-do small{display:block;margin-top:2px}
 .ob-next{display:grid;gap:8px}.ob-foot{position:sticky;bottom:calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));margin:0 calc(-1 * var(--space-md)) calc(-1 * (var(--space-lg) + env(safe-area-inset-bottom,0px)));padding:var(--space-sm) var(--space-md) calc(var(--space-lg) + env(safe-area-inset-bottom,0px));background:var(--color-paper);border-top:1px solid var(--color-rule)}
 .ob-foot .cta{width:100%;justify-content:center}.ob-foot .cta[disabled]{opacity:.5;cursor:not-allowed}
 .in-os.here{border-color:var(--signal);box-shadow:inset 0 0 0 1px var(--signal)}
@@ -1428,7 +1433,7 @@ main{max-width:1200px}
 </main>
 
 <footer class="site-foot"><a class="ig-card" href="https://www.instagram.com/premier.racing.info/" target="_blank" rel="noopener me" data-ig="footer"><span class="ig-logo"><svg class="ig-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg></span><span class="ig-t"><b>Follow us on Instagram</b><small>@premier.racing.info</small><small>Weekend schedules every Thursday</small></span><span class="ig-btn">Follow</span></a>
-<nav aria-label="Guides"><a href="#app" data-getapp="1">Get the app</a><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
+<nav aria-label="Guides"><a href="#help" data-guide="1">How the app works</a><a href="#app" data-getapp="1">Get the app</a><a href="#settings" data-opensettings="1">Settings</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch in the US</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/tracks/">Tracks</a><a href="/series/">All series</a></nav>
 <nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
 <p>An independent fan site, not affiliated with, endorsed by or sponsored by any series, team, circuit or broadcaster. Series names and marks belong to their owners and are used only to identify them.</p>
 <nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav>
@@ -4625,6 +4630,7 @@ function openSettings(){
       <div class="set-row set-static"><span class="set-ic" aria-hidden="true">🌓</span><span class="set-l">Appearance</span>
         <div class="pa-seg set-seg" role="group" aria-label="Appearance">${[["light", "Light"], ["dark", "Dark"], ["system", "Auto"]].map(([v, l]) => `<button data-settheme="${v}" aria-pressed="${tm === v}">${l}</button>`).join("")}</div></div>
       ${setRow({ go: "home", icon: "📍", label: "Home area", sub: "For races near you and tickets", value: esc(areaLbl) })}
+      ${setRow({ go: "guide", icon: "❓", label: "How the app works", sub: "A quick guide to the tabs, races, stars and alerts" })}
       ${setRow({ go: "onboard", icon: "🏁", label: "Start here setup", sub: "Pick series, add calendar and alerts in one go" })}
       ${setRow({ go: "myseries", icon: "★", label: "My series", value: mySeries.length ? mySeries.length + " picked" : "None" })}
       ${setRow({ go: "favs", icon: "🏎️", label: "Favorite drivers & teams", value: favs.length ? favs.length + " followed" : "None" })}
@@ -4668,6 +4674,7 @@ document.addEventListener("click", ev => {
   else if (go === "calendar") { openReminders(); setTimeout(() => { const c = [...document.querySelectorAll("#sheet h3")].find(h => /calendar/i.test(h.textContent)); if (c) c.scrollIntoView({ block: "start" }); }, 50); }
   else if (go === "tz") openTZ();
   else if (go === "onboard") openOnboard();
+  else if (go === "guide") openGuide();
   else if (go === "home") openHome();
   else if (go === "favs") openFavPicker();
   else if (go === "credits") openCredits();
@@ -4695,7 +4702,7 @@ let obPick = [];
 const obDone = () => { try { return !!localStorage.getItem(OB_KEY); } catch(e){ return false; } };
 function startCardHTML(){
   if (obDone() || mySeries.length) return "";
-  return `<section class="ob-card" aria-label="Start here"><div><h2 class="h4">New to racing? Start here</h2><p class="fine">Pick the series you want to follow. We'll show what's next in your time zone and set up your calendar and alerts. Takes 30 seconds.</p></div><div class="ob-acts"><button class="cta cta-primary" data-onboard="1">Start here</button><button class="linkbtn" data-obskip="1">No thanks</button></div></section>`;
+  return `<section class="ob-card" aria-label="Start here"><div><h2 class="h4">New to racing? Start here</h2><p class="fine">Pick the series you want to follow. We'll show what's next in your time zone and set up your calendar and alerts. Takes 30 seconds.</p></div><div class="ob-acts"><button class="cta cta-primary" data-onboard="1">Start here</button><button class="cta cta-secondary" data-guide="1">How the app works</button><button class="linkbtn" data-obskip="1">No thanks</button></div></section>`;
 }
 function obNextHTML(){
   const rows = obPick.map(sid => {
@@ -4727,6 +4734,53 @@ function renderOnboard(){
   h += `<div class="ob-foot"><button class="cta cta-primary" data-obdone="1" ${obPick.length ? "" : "disabled"}>${obPick.length ? `Done: follow ${obPick.length} series` : "Pick at least one"}</button></div>`;
   el.innerHTML = h;
 }
+// ---------- "How the app works": a plain guide for first-time visitors (Settings, footer, Start here card, /#help) ----------
+const GUIDE_TABS = [
+  ["weekend", "🏠", "Home", "What's racing this weekend and next, start times in your time zone, last weekend's results and news."],
+  ["calendar", "📅", "Calendar", "Every race of the season. Filter by series, or switch to the month view."],
+  ["standings", "🏆", "Standings", "Points tables and results for each championship."],
+  ["series", "🗂️", "Series", "Every series we cover, from F1 to grassroots. Tap one to see what it is, when it races and how to watch."],
+  ["tickets", "🎟️", "Tickets", "Races near you and where to buy tickets."],
+  ["esports", "🎮", "eSports", "Pro sim racing championships, where to watch them and how to race yourself."]
+];
+function openGuide(){
+  const sheet = document.getElementById("sheet");
+  const fresh = document.getElementById("sheetBg").hidden;
+  const appTip = isStandalone() ? "" : `<li><span class="gi" aria-hidden="true">📲</span><span><b>Put it on your home screen</b><small>It opens like an app and lets you get alerts. <button class="linkbtn" data-getapp="1">How to add it</button></small></span></li>`;
+  sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">How the app works</h2><div class="m">Everything for race day in one place. It's free, and no account is needed.</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
+  <section class="ob-step"><h3><span class="ob-n">1</span> The six tabs</h3>
+    <p class="fine" style="margin-top:0">They sit along the top. Tap one here to go there.</p>
+    <div class="gd-tabs">${GUIDE_TABS.map(([id, ic, name, what]) => `<button class="gd-tab" data-guidetab="${id}"><span class="gi" aria-hidden="true">${ic}</span><span><b>${name}</b><small>${what}</small></span></button>`).join("")}</div></section>
+  <section class="ob-step"><h3><span class="ob-n">2</span> Tap any race</h3>
+    <p class="fine" style="margin-top:0">A race opens with everything you need for that weekend:</p>
+    <ul class="gd-do">
+      <li><span class="gi" aria-hidden="true">🕒</span><span><b>Session times</b><small>Practice, qualifying and the race, already in your time zone.</small></span></li>
+      <li><span class="gi" aria-hidden="true">📺</span><span><b>Where to watch</b><small>The TV channel or stream, with a link straight to it. After the race it shows the replay and highlights.</small></span></li>
+      <li><span class="gi" aria-hidden="true">🏁</span><span><b>Track, results and tickets</b><small>About the track, the top finishers and where to get tickets.</small></span></li>
+    </ul></section>
+  <section class="ob-step"><h3><span class="ob-n">3</span> Make it yours</h3>
+    <ul class="gd-do">
+      <li><span class="gi" aria-hidden="true">★</span><span><b>Star your series</b><small>Starred series show first on Home, with their news and results. Tap the star at the top to follow favorite drivers and teams.</small></span></li>
+      <li><span class="gi" aria-hidden="true">🔔</span><span><b>Get alerts</b><small>Tap the bell at the top for a lock screen alert before the race starts, or to add every session to your phone's calendar.</small></span></li>
+      <li><span class="gi" aria-hidden="true">⚙️</span><span><b>Settings</b><small>The gear at the top: time zone, light or dark mode, your home area for nearby races, and this guide.</small></span></li>
+      <li><span class="gi" aria-hidden="true">🎯</span><span><b>Play the picks game</b><small>Pick the podium for each race and call next year's champions. Make a free account to play against friends.</small></span></li>
+      ${appTip}
+    </ul></section>
+  <div class="ob-foot" style="display:flex;align-items:center;gap:var(--space-md);flex-wrap:wrap"><button class="cta cta-primary" data-onboard="1">Set it up for me</button><button class="linkbtn" data-guideclose="1">Got it</button></div>`;
+  if (fresh) lastFocus = document.activeElement;
+  document.getElementById("sheetBg").hidden = false;
+  document.body.style.overflow = "hidden";
+  sheet.scrollTop = 0;
+  document.getElementById("sheetClose").focus();
+  try { localStorage.setItem(KEY + "-guide", "seen"); } catch(e){}
+  track("guide_open");
+}
+document.addEventListener("click", ev => {
+  if (ev.target.closest("[data-guide]")) { ev.preventDefault(); ev.stopPropagation(); openGuide(); return; }
+  if (ev.target.closest("[data-guideclose]")) { ev.stopPropagation(); closeRace(); return; }
+  const t = ev.target.closest("[data-guidetab]");
+  if (t) { ev.stopPropagation(); closeRace(); showTab(t.dataset.guidetab); window.scrollTo(0, 0); track("guide_tab", { tab: t.dataset.guidetab }); }
+});
 function openOnboard(){
   obPick = mySeries.map(id => Object.keys(APP_TO_WORLD).find(k => APP_TO_WORLD[k] === id)).filter(Boolean);
   const sheet = document.getElementById("sheet");
@@ -5345,6 +5399,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
   if (h === "recap") setTimeout(() => { const r = document.getElementById("recapSec"); if (r) r.scrollIntoView({ block: "start" }); }, 300);
   if (h === "settings") setTimeout(openSettings, 0);
   if (h === "start") setTimeout(openOnboard, 0);
+  if (h === "help") setTimeout(openGuide, 0);
   if (h === "app") setTimeout(openInstall, 0);
 })();
 setInterval(renderAll, 60 * 60 * 1000);
