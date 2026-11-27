@@ -331,7 +331,7 @@ for (const c of circuits) {
   const tqa = [[`When is the next race at ${c}?`, esc(ans) + (up[0] ? ` Start times for every session are on the <a href="/races/${up[0].slug}/">race page</a>.` : "")],
     [`Where is ${c}?`, `${esc(loc)}${tr && tr[0] ? `. The track is ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) long${tr[1] ? " with " + tr[1] + " corners" : ""}` : ""}.`],
     [`What races are held at ${c}?`, `${esc(listAnd(serNames))}.`]];
-  if (G) { tqa.push([`Can I bring a cooler to ${c}?`, esc(G.cooler)]); tqa.push([`Where do I park at ${c}?`, esc(G.getThere[1])]); }
+  if (G) { if (G.cooler) tqa.push([`Can I bring a cooler to ${c}?`, esc(G.cooler)]); tqa.push([`Where do I park at ${c}?`, esc(G.getThere[1])]); }
   if (tk.length) tqa.push([`How do I buy tickets for ${c}?`, `Use the official seller: ${esc(tk[0][0])}. Links are in the Tickets section above.`]);
   body += faqHTML(tqa);
   write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: fitTitle(`${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, `${c} Race Schedule ${yrs}: Dates & Tickets`, `${c} Race Schedule ${yrs}`, `${c} Races ${yrs}`), desc: `${ans} All races at ${c} (${loc}) in ${yrs}: ${serNames.join(", ")}, with dates, start times in your time zone and official tickets.`,
