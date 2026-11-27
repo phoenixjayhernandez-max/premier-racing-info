@@ -162,7 +162,7 @@ function loadFreePhotos(){
 var hero = document.querySelector(".ph-hero"), reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 var want = hero ? (hero.dataset.w || "").split(",").filter(Boolean) : [];
-if (hero) loadFreePhotos().then(function(){
+if (hero && want[0] !== "none") loadFreePhotos().then(function(){
   // a page whose series has no photos yet fetches them now (then they're cached for every page)
   var missing = want.filter(function(w){ return !PHOTO_POOL.some(function(x){ return x.tags[0] === w; }); });
   return missing.length ? Promise.all(missing.map(seriesPhotos)) : null;

@@ -34,6 +34,12 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - Data comes from `tools/weekend-data.mjs` (RAW, SESSIONS, WATCH, WORLD_TIMES for "Also racing").
 - Instagram: @premier.racing.info (https://www.instagram.com/premier.racing.info/), linked in the site footer (an Instagram-logo "Follow" card, click event `instagram_click`), Settings and Organization schema sameAs. Personal only: output goes to `weekend-post/` (git-ignored) and is never published on the site. The Thursday auto-update run makes it and sends it to Phoenix to post by hand. No tracked races = no post.
 
+## Team profiles (Nov 27, 2026)
+- `teams.js` (`window.TEAMS`): one entry per team. build-pages.mjs makes `/teams/`, `/teams/<id>/` and the add/claim form `/teams/claim/`, and adds a "Teams" card to every series page. Drivers, power unit and standing come from `STATS`/`MORE_STATS` via the team's `stats` label, so they update with the standings.
+- Unclaimed = public facts only (no logos, photos or team text). Verified = only what the team sent through the form, after confirming it with the team. Team photos go in `teams/media/<id>/`. Full process and outreach messages: `OUTREACH.md`.
+- Form submissions go to Supabase table `team_claims` (insert-only for visitors; run `setup/team-claims.sql` once). If the insert fails, the form opens a pre-filled email to contact@ instead. GA events `team_claim_open`, `team_claim_submit`.
+- Terms ("Team profiles", `#teams`) and Privacy cover the form.
+
 ## Rules we settled on
 - Photos: only licensed photos (Wikimedia Commons searches per series, Openverse backup), credited. Strict per-series matching: F1≠F2≠F3≠F4≠FE, NASCAR Cup only Cup, MotoGP≠Moto2≠Moto3; only GT3 regions and Porsche Cups share. No photo is better than a wrong one. F1 photos must be current-season (`PHOTO_FRESH`: 2026+ only, no older filler) and never show teams that left F1 (Sauber/Stake/Kick, Alfa Romeo, AlphaTauri, etc.). Each new season or team change: bump `PHOTO_FRESH`, the F1 queries, and `PHOTOKEY`. Friends' photos go in `OWN_PHOTOS` once they give written permission (incl. commercial use).
 - Legal: Terms + Privacy pages, "not affiliated" notice, EU/UK analytics consent, no press-agency photos. Don't publish Phoenix's personal email on the site.

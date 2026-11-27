@@ -22,6 +22,7 @@ const statsOf = app => STATS[app] || MORE_STATS[MORE_KEY[app]] || null;
 const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO");
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
+eval(fs.readFileSync(path.join(root, "teams.js"), "utf8"));
 const { AFFILIATE, AFF_NOTE, affLink, ticketSearch, relOf } = data;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS, HIGHLIGHTS } = data;
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
@@ -104,7 +105,7 @@ const fUpd = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", y
 const listAnd = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 // Words that slide sideways as you scroll, like the app's home page
 function tickHTML(words){ const w = [...new Set(words.filter(Boolean))]; const inner = w.map(x => `<span>${esc(x)}</span>`).join(""); return `<div class="ph-tick" aria-hidden="true"><div class="ph-row" data-dir="1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div><div class="ph-row" data-dir="-1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div></div>`; }
-function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick }){
+function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick, heroImg }){
   const canon = SITE + url;
   desc = clipDesc(desc);
   const ld = [].concat(jsonld || []).filter(Boolean).concat(url === "/about/" ? [ORG, WEBSITE] : [ORG]);
@@ -116,10 +117,10 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 <link rel="preload" href="/fonts/albert-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>(function(){try{var t=localStorage.getItem("raceweekends-2026-theme");if(!t||t==="auto")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#141A22")}}catch(e){}})()</script><style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
 <body style="${color ? `--c:${color}` : ""}"><header><div class="wrap top"><a class="brand" href="/" aria-label="Premier Racing Info home">${LOGO}<span class="lw" aria-hidden="true"><span class="lw1">PREMIER</span><span class="lw2">RACING INFO</span></span></a><a class="cta" href="${esc(appLink)}">Open the app</a></div></header>
-<section class="ph-hero" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true"><div class="ph-l"></div><div class="ph-l"></div></div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
-<p class="wrap ph-credit"></p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
+<section class="ph-hero${heroImg ? " has-img" : ""}" data-w="${esc(photo.filter(Boolean).join(","))}"><div class="ph-media" aria-hidden="true">${heroImg ? `<div class="ph-l on" style="background-image:url('${esc(heroImg[0])}')"></div>` : `<div class="ph-l"></div><div class="ph-l"></div>`}</div><div class="wrap ph-copy">${crumbs.length ? `<nav class="crumbs"><a href="/">Home</a>${crumbs.map(c => ` › <a href="${esc(c.item.replace(SITE, ""))}">${esc(c.name)}</a>`).join("")}</nav>` : ""}<h1>${esc(h1)}</h1></div></section>
+<p class="wrap ph-credit">${heroImg ? `Photo: ${esc(heroImg[1])}, used with permission` : ""}</p>${tickHTML(tick || [h1, "Start times in your time zone", "Where to watch", "Tickets", "Standings"])}
 <main class="wrap">${body}<p class="updated">Page updated <time datetime="${today}">${fUpd.format(new Date(today))}</time>. Dates, start times and TV listings can change, so check the official series site before you travel.</p></main>
-<footer class="wrap"><a href="/">App</a><a href="/#help">How the app works</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/esports/">eSports</a><a href="/recap/">2026 season reviews</a><a href="/tracks/">Tracks</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://www.instagram.com/premier.racing.info/" rel="noopener me" target="_blank" style="font-weight:700;color:#D6249F;white-space:nowrap"><svg width="18" height="18" style="vertical-align:-4px;margin-right:6px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>Follow @premier.racing.info</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
+<footer class="wrap"><a href="/">App</a><a href="/#help">How the app works</a><a href="/#app">Get the app</a><a href="/calendar/">Race calendar</a><a href="/watch/">How to watch</a><a href="/tickets/">Tickets</a><a href="/races-in/">Races near you</a><a href="/series/">All series</a><a href="/esports/">eSports</a><a href="/recap/">2026 season reviews</a><a href="/tracks/">Tracks</a><a href="/teams/">Teams</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://www.instagram.com/premier.racing.info/" rel="noopener me" target="_blank" style="font-weight:700;color:#D6249F;white-space:nowrap"><svg width="18" height="18" style="vertical-align:-4px;margin-right:6px" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>Follow @premier.racing.info</a><p>Start times are shown in your own time zone. Dates and TV deals can change; check the official sites. Premier Racing Info is an independent fan site, not affiliated with any series, team or circuit.</p></footer>${LOCAL_TIME}<script src="/hero.js" defer></script>${ANALYTICS}</body></html>`;
 }
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
@@ -234,7 +235,12 @@ for (const x of WORLD.series) {
   else if (x.leader) sqa.push([`Who leads the ${sn} standings?`, `${esc(x.leader)}.`]);
   if (x.next) sqa.push([`When is the next ${sn} race?`, `${esc(x.next)}.`]);
   if (wN.length) sqa.push([`How can I watch ${sn} in the US?`, `On ${esc(listAnd(wN.map(v => v[0])))}.${frS.length ? ` Free: ${esc(listAnd(frS))}.` : ""}`]);
-  body = body.replace(/(<p>(?:<a class="btn" href="[^"]*" rel="noopener">Official site ↗<\/a> )?<a class="btn p" href="\/\?series=)/, faqHTML(sqa) + "$1");
+  { // teams in this series (from teams.js), plus the "add your team" invite
+    const tl = ((global.window.TEAMS || {}).list || []).filter(t => t.series.includes(x.id)).sort((a, b) => a.name.localeCompare(b.name));
+    const tc = `<section class="card"><h2>Teams</h2>${tl.length ? `<p>${tl.map(t => `<a href="/teams/${t.id}/">${esc(t.name)}</a>${t.status === "verified" ? " ✓" : ""}`).join(" · ")}</p>` : ""}<p><small>Run a ${esc(sn)} team? <a href="/teams/claim/">Add your team for free</a> with your photos, story and links for fans to support you.</small></p></section>`;
+    sqa._teams = tc;
+  }
+  body = body.replace(/(<p>(?:<a class="btn" href="[^"]*" rel="noopener">Official site ↗<\/a> )?<a class="btn p" href="\/\?(?:series|alerts)=)/, sqa._teams + faqHTML(sqa) + "$1");
   const title = fitTitle(`${sn} ${app ? "2026–2027 Calendar, Standings" : "2026: Champion, Standings"} & How to Watch in the US`, `${sn} ${app ? "Calendar, Standings" : "Champion, Standings"} & How to Watch`, `${sn}: Standings & How to Watch`, `${sn} Standings`);
   const desc = `${name}: ${x.champion ? "2026 champion " + x.champion + ". " : x.leader ? "Leader " + x.leader + ". " : ""}${x.next ? "Next: " + x.next + ". " : ""}${app ? "Full calendar with start times in Central time, standings, " : ""}how to watch in the US and the official site.`;
   const descF = (desc.length < 125 && x.about ? desc.replace(/\. how to watch/, ". How to watch") + " " + x.about : desc.replace(/\. how to watch/, ". How to watch"));
@@ -409,8 +415,140 @@ const monthLabel = k => `${MONTHS[+k.slice(5) - 1]} ${k.slice(0, 4)}`;
   write("/tickets/", page({ url: "/tickets/", title: "Race Tickets 2026–2027: F1, IMSA, WEC & GT Races", desc: "Where to buy tickets for every upcoming F1, IMSA, WEC, GT World Challenge, Porsche Cup and Mustang Challenge race, from the official sellers.", h1: "Race tickets", crumbs: [{ name: "Tickets", item: SITE + "/tickets/" }], body }));
 }
 
-// ---- About, Privacy, 404 ----
 const CONTACT = "contact@premierracinginfo.com";
+// ---- Team profiles (/teams/, /teams/<id>/, /teams/claim/) from teams.js ----
+// Unclaimed profiles are facts only. Verified profiles add what the team sent through the claim form.
+{
+  const SB_URL = (html.match(/const SUPABASE_URL = "([^"]+)"/) || [])[1] || "", SB_KEY = (html.match(/const SUPABASE_ANON_KEY = "([^"]+)"/) || [])[1] || "";
+  const wById = Object.fromEntries(WORLD.series.map(x => [x.id, x]));
+  const sName = id => wById[id] ? (wById[id].short || wById[id].name) : id;
+  const statsFor = wid => STATS[appOf[wid]] || MORE_STATS[wid] || null;
+  const yr = today.slice(0, 4);
+  const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
+  const isTeam = (label, t) => label === t.stats || String(label).startsWith(t.stats + " ");
+  const SOCIAL = [["instagram", "Instagram"], ["tiktok", "TikTok"], ["youtube", "YouTube"], ["x", "X"], ["facebook", "Facebook"]];
+  const SUPPORT = [["merch", "Shop team merch"], ["sponsor", "Sponsor the team"], ["donate", "Donate / support"]];
+  const safeUrl = u => /^https:\/\//.test(u || "") ? u : "";
+  const TEAMS_CSS = `<style>.ph-hero[data-w="none"]:not(.has-img){min-height:auto;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(133,176,255,.07) 22px 24px),#0B1424}.ph-hero[data-w="none"]:not(.has-img) .ph-copy{padding-top:56px}.vbadge{display:inline-block;font-size:.8rem;font-weight:700;border-radius:4px;padding:2px 8px;margin:0 0 12px;border:1px solid var(--rule);color:var(--sub)}.vbadge.ok{background:var(--sig);border-color:var(--sig);color:var(--bg)}.claim{border:2px dashed var(--rule);border-radius:8px;padding:14px 16px;margin:0 0 20px}.claim h2{margin-bottom:4px}.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}.gal figure{margin:0}.gal img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px;display:block}.gal figcaption{font-size:.75rem;color:var(--sub);margin-top:4px}.tlogo{width:84px;height:84px;object-fit:contain;border-radius:8px;background:var(--panel2);float:right;margin:0 0 10px 14px}form.cf label{display:block;font-weight:600;font-size:.92rem;margin:14px 0 4px}form.cf small.h{display:block;color:var(--sub);font-weight:400;font-size:.8rem}form.cf input:not([type=checkbox]):not([type=radio]),form.cf textarea,form.cf select{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--panel2);color:var(--ink)}form.cf textarea{min-height:110px}form.cf .chk{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:12px 0}form.cf .chk input{margin-top:4px;flex:none;width:18px;height:18px}form.cf fieldset{border:0;border-top:2px solid var(--ink);padding:14px 0 0;margin:22px 0 0}form.cf legend{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:1.2rem;padding:0 8px 0 0}form.cf button{font:inherit;font-weight:700;cursor:pointer;margin-top:16px;padding:12px 18px}.two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}@media(max-width:560px){.two{grid-template-columns:1fr}}#cfDone{display:none}.err{color:#C0262D;font-weight:600}</style>`;
+  const list = (global.window.TEAMS && global.window.TEAMS.list) || [];
+
+  for (const t of list) {
+    const main = t.series[0], st = statsFor(main), app = appOf[main];
+    const ver = t.status === "verified";
+    const grid = st && st.grid ? st.grid.find(g => isTeam(g[0], t)) : null;
+    const mk = st && st.makers ? st.makers.findIndex(m => isTeam(m[0], t)) : -1;
+    const drv = st && st.standings ? st.standings.map((r, i) => [i + 1, ...r]).filter(r => isTeam(r[2], t)) : [];
+    const driverNames = t.drivers || (grid ? grid[2].split(" · ").map(x => x.replace(/\s*\(.*\)$/, "")) : drv.map(r => r[1]));
+    const since = t.since ? `${t.since}${t.sinceNote ? ` (${t.sinceNote})` : ""}` : "";
+    const answer = `${t.name} is ${/^[AEIOU8]|^F1|^IMSA|^SRO|^MX/i.test(sName(main)) ? "an" : "a"} ${sName(main)} team based in ${t.base}, ${t.country}${since ? `, racing in ${sName(main)} since ${since}` : ""}.${driverNames.length ? ` Its ${yr} drivers: ${listAnd(driverNames)}.` : ""}${mk >= 0 ? ` It's ${ordinal(mk + 1)} in the ${yr} ${st.makersTitle ? st.makersTitle.toLowerCase() : "team standings"} with ${st.makers[mk][1]} points.` : ""}`;
+    let body = TEAMS_CSS + `<p class="answer">${esc(answer)}</p>`;
+    body += ver ? `<span class="vbadge ok">✓ Verified team profile</span>` : `<span class="vbadge">Unclaimed profile · public facts only</span>`;
+    if (ver && (t.bio || t.logo)) body += `<section class="card"><h2>About ${esc(t.name)}</h2>${t.logo ? `<img class="tlogo" src="${esc(t.logo)}" alt="${esc(t.name)} logo" loading="lazy">` : ""}<p>${esc(t.bio || "")}</p><p><small>Written by the team.</small></p></section>`;
+    if (!ver) body += `<section class="claim"><h2>Is this your team?</h2><p>Claim this profile for free to add your logo, photos, your story, social links and ways for fans to support you. We check every claim with the team before anything goes live.</p><a class="btn p" href="/teams/claim/?team=${esc(t.id)}">Claim this profile ›</a></section>`;
+    const sup = ver && t.support ? SUPPORT.filter(([k]) => safeUrl(t.support[k])) : [];
+    if (sup.length) body += `<section class="card"><h2>Support ${esc(t.name)}</h2><p>Links from the team. Buying merch or sponsoring helps them go racing.</p><div class="btns">${sup.map(([k, l]) => `<a class="btn${k === sup[0][0] ? " p" : ""}" href="${esc(t.support[k])}" rel="noopener" target="_blank" data-sup="${k}">${l}</a>`).join("")}</div></section>`;
+    const facts = [["Series", t.series.map(s => wById[s] ? `<a href="/series/${esc(s)}/">${esc(sName(s))}</a>` : esc(s)).join(", ")], ["Base", esc(`${t.base}, ${t.country}`)], since && ["In the series since", esc(since)], grid && ["Power unit", esc(grid[1])], driverNames.length && [`${yr} drivers`, esc(driverNames.join(", "))], mk >= 0 && [`${yr} standing`, esc(`${ordinal(mk + 1)} · ${st.makers[mk][1]} pts`)], t.site && ["Official site", `<a href="${esc(t.site)}" rel="noopener">${esc(t.site.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""))}</a>`]].filter(Boolean);
+    body += `<section class="card"><h2>Team facts</h2><table>${facts.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</table></section>`;
+    if (drv.length) body += `<section class="card"><h2>${esc(st.standingsTitle || "Standings")}</h2><table><tr><th>Pos</th><th>Driver</th><th class="r">Pts</th></tr>${drv.map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}${r[2] !== t.stats ? ` <small>${esc(r[2].slice(t.stats.length).trim())}</small>` : ""}</td><td class="r">${r[3]}</td></tr>`).join("")}</table><p><a href="/series/${esc(main)}/">Full ${esc(sName(main))} standings ›</a></p></section>`;
+    if (ver && t.photos && t.photos.length) body += `<section class="card"><h2>Photos</h2><div class="gal">${t.photos.map(([src, cr]) => `<figure><img src="${esc(src)}" alt="${esc(t.name)}" loading="lazy"><figcaption>Photo: ${esc(cr)}, used with permission</figcaption></figure>`).join("")}</div></section>`;
+    const soc = ver && t.socials ? SOCIAL.filter(([k]) => safeUrl(t.socials[k])) : [];
+    if (soc.length) body += `<section class="card"><h2>Follow ${esc(t.name)}</h2><div class="btns">${soc.map(([k, l]) => `<a class="btn" href="${esc(t.socials[k])}" rel="noopener me" target="_blank">${l}</a>`).join("")}</div></section>`;
+    const next = app ? EV.filter(e => e.s === app && e.end >= today).sort((a, b) => a.start.localeCompare(b.start)).slice(0, 3) : [];
+    if (next.length) body += `<section class="card"><h2>Next races</h2><ul class="list">${next.map(e => `<li>${raceLink(e)}<small>${esc(e.circuit)} · ${range(e.start, e.end)}</small></li>`).join("")}</ul></section>`;
+    const qa = [[`Where is ${t.name} based?`, esc(`${t.base}, ${t.country}.`)]];
+    if (since) qa.push([`When did ${t.name} start racing in ${sName(main)}?`, esc(`${since}.`)]);
+    if (driverNames.length) qa.push([`Who drives for ${t.name} in ${yr}?`, esc(`${listAnd(driverNames)}.`)]);
+    body += faqHTML(qa);
+    if (!ver) body += `<p><small>This page lists public facts only. ${esc(t.name)} is a trademark of its owner; Premier Racing Info isn't affiliated with the team. Facts checked ${esc(t.checked || "")}.</small></p>`;
+    const sameAs = [t.site, ...(ver && t.socials ? Object.values(t.socials) : [])].filter(safeUrl);
+    const ld = { "@context": "https://schema.org", "@type": "SportsTeam", name: t.name, sport: "Motorsport", url: `${SITE}/teams/${t.id}/`, location: { "@type": "Place", name: `${t.base}, ${t.country}` }, ...(sameAs.length ? { sameAs } : {}), ...(driverNames.length ? { athlete: driverNames.map(n => ({ "@type": "Person", name: n })) } : {}) };
+    const hero = ver && t.photos && t.photos[0] ? t.photos[0] : null;
+    write(`/teams/${t.id}/`, page({ url: `/teams/${t.id}/`, title: fitTitle(`${t.name} ${sName(main)} Team: Drivers, Base & ${yr} Results`, `${t.name}: ${sName(main)} Team Profile`, t.name), desc: answer, h1: t.name, crumbs: [{ name: "Teams", item: SITE + "/teams/" }, { name: t.name, item: `${SITE}/teams/${t.id}/` }], jsonld: [ld, faqLD(qa)], body, color: COLORS[app], photo: ["none"], heroImg: hero, tick: [t.name, sName(main), t.base, ...driverNames] }));
+  }
+
+  { // Team directory
+    const by = {};
+    for (const t of list) (by[t.series[0]] = by[t.series[0]] || []).push(t);
+    let body = TEAMS_CSS + `<p class="answer">Profiles of racing teams: where they're based, who drives for them, how their season is going and how fans can support them. ${list.length} teams so far, with more added as teams join.</p>`;
+    body += `<section class="claim"><h2>Run a race team?</h2><p>Get a free profile on Premier Racing Info. Add your logo, photos, story, socials and links to your merch, sponsorship or fundraising page, and get in front of fans who follow your series. Club, grassroots, karting and pro teams are all welcome.</p><div class="btns"><a class="btn p" href="/teams/claim/">Add or claim your team ›</a></div></section>`;
+    for (const [s, ts] of Object.entries(by)) body += `<section class="card"><h2>${esc(sName(s))}</h2><ul class="list">${ts.sort((a, b) => a.name.localeCompare(b.name)).map(t => `<li><a href="/teams/${t.id}/">${esc(t.name)}</a>${t.status === "verified" ? ' <span class="tag">✓ verified</span>' : ""}<small>${esc(`${t.base}, ${t.country}`)}</small></li>`).join("")}</ul></section>`;
+    write("/teams/", page({ url: "/teams/", title: "Racing Team Profiles: Drivers, Bases & How to Support", desc: `Profiles of ${list.length} racing teams: base, drivers, season results and how fans can support them. Teams can add or claim their profile for free.`, h1: "Racing teams", crumbs: [{ name: "Teams", item: SITE + "/teams/" }], body, photo: ["none"], tick: ["Teams", "Drivers", "Support your team", "Add your team"] }));
+  }
+
+  { // Claim / add-a-team form. Saves to Supabase table team_claims (insert-only for visitors, see tools/sql/team_claims.sql);
+    // if that fails, it opens an email to us with everything filled in so nothing is lost.
+    const teamOpts = list.map(t => `<option value="${esc(t.id)}">${esc(t.name)} (${esc(sName(t.series[0]))})</option>`).join("");
+    const seriesOpts = WORLD.series.map(x => `<option value="${esc(x.short || x.name)}"></option>`).join("");
+    const f = (name, label, type = "text", extra = "", help = "") => `<label for="f_${name}">${label}${help ? `<small class="h">${help}</small>` : ""}</label><input id="f_${name}" name="${name}" type="${type}" ${extra}>`;
+    const body = TEAMS_CSS + `<p class="answer">Add your team to Premier Racing Info, or claim the profile we already made for it. It's free. We check every submission with the team before it goes live, usually within a few days.</p>
+<section class="card"><h2>What you get</h2><ul class="list"><li>A team page with your logo, photos and story, in your own words</li><li>Your socials, plus buttons for merch, sponsorship and donations so fans can support you</li><li>Your page linked from your series and race pages, written so it shows up in search</li><li>You stay in control: change or remove anything at any time by emailing us</li></ul></section>
+<form class="cf" id="cf" novalidate>
+<fieldset><legend>Your team</legend>
+<label><span style="font-weight:600">Is your team already on the site?</span></label>
+<label class="chk"><input type="radio" name="kind" value="claim"> Yes, I'm claiming an existing profile</label>
+<label class="chk"><input type="radio" name="kind" value="new" checked> No, add a new team</label>
+<div id="pickWrap" hidden><label for="f_team_id">Which team?</label><select id="f_team_id" name="team_id"><option value="">Choose…</option>${teamOpts}</select></div>
+${f("team_name", "Team name", "text", 'required maxlength="120" autocomplete="organization"')}
+${f("series", "Series or championship", "text", 'required maxlength="160" list="seriesList"', "Pick from the list or type your own, e.g. SCCA Spec Miata, 24 Hours of Lemons, Lucas Oil Late Models")}<datalist id="seriesList">${seriesOpts}</datalist>
+<div class="two"><div>${f("city", "Home base (town or city)", "text", 'required maxlength="120"')}</div><div>${f("country", "Country", "text", 'required maxlength="80" autocomplete="country-name"')}</div></div>
+${f("website", "Team website", "url", 'maxlength="300" placeholder="https://"')}
+</fieldset>
+<fieldset><legend>About you</legend>
+<div class="two"><div>${f("contact_name", "Your name", "text", 'required maxlength="120" autocomplete="name"')}</div><div>${f("contact_role", "Your role on the team", "text", 'required maxlength="120"', "e.g. owner, team manager, driver, media")}</div></div>
+${f("contact_email", "Team email", "email", 'required maxlength="200" autocomplete="email"', "Use your official team address if you have one. We'll email it to confirm.")}
+${f("verify_handle", "Team's official Instagram or TikTok", "text", 'maxlength="120" placeholder="@yourteam"', "If you don't have a team email, we'll confirm by DM from this account instead.")}
+</fieldset>
+<fieldset><legend>Your profile</legend>
+<label for="f_bio">Short story of your team<small class="h">Up to 600 characters, in your own words. Who you are, what you race, what you're proud of.</small></label><textarea id="f_bio" name="bio" maxlength="600"></textarea>
+${f("drivers", "Drivers", "text", 'maxlength="300"', "Separate names with commas")}
+${f("logo_link", "Logo", "url", 'maxlength="500" placeholder="https://"', "A share link (Google Drive, Dropbox, iCloud) to a PNG or SVG of your logo")}
+${f("photos_link", "Photos", "url", 'maxlength="500" placeholder="https://"', "A share link to a folder of up to 10 photos. Only photos your team owns or has permission to share.")}
+${f("photo_credit", "Photo credit", "text", 'maxlength="200"', "How each photographer should be credited, e.g. \"Jane Doe / @janedoeshoots\"")}
+<div class="two"><div>${f("instagram", "Instagram link", "url", 'maxlength="300" placeholder="https://instagram.com/…"')}</div><div>${f("tiktok", "TikTok link", "url", 'maxlength="300" placeholder="https://tiktok.com/@…"')}</div><div>${f("youtube", "YouTube link", "url", 'maxlength="300" placeholder="https://youtube.com/@…"')}</div><div>${f("facebook", "Facebook or X link", "url", 'maxlength="300" placeholder="https://"')}</div></div>
+</fieldset>
+<fieldset><legend>Ways fans can support you</legend>
+${f("merch", "Merch store", "url", 'maxlength="300" placeholder="https://"')}
+${f("sponsor", "Sponsorship page or contact", "url", 'maxlength="300" placeholder="https://"')}
+${f("donate", "Donations, Patreon or GoFundMe", "url", 'maxlength="300" placeholder="https://"')}
+</fieldset>
+<fieldset><legend>Permission</legend>
+<label class="chk"><input type="checkbox" name="ok_authorized" required> <span>I'm part of this team and allowed to speak for it.</span></label>
+<label class="chk"><input type="checkbox" name="ok_own" required> <span>The team owns everything we're sending (logo, photos, text), or has the photographer's permission to share it.</span></label>
+<label class="chk"><input type="checkbox" name="ok_license" required> <span>We give Premier Racing Info free, non-exclusive permission to show this content, resized or cropped to fit, on its website, app and social accounts to promote our team. We keep ownership of it and can ask for any of it to be changed or removed at any time by emailing ${CONTACT}. See the <a href="/terms/#teams">terms</a>.</span></label>
+<label class="chk"><input type="checkbox" name="ok_contact"> <span>You can contact us about our profile and occasional updates for teams (optional).</span></label>
+<p class="err" id="cfErr" role="alert"></p>
+<button class="btn p" type="submit" id="cfBtn">Send for review</button>
+</fieldset>
+</form>
+<section class="card" id="cfDone" tabindex="-1"><h2>Thanks, we've got it</h2><p>We'll confirm with your team by email or a DM from your official account, then build your page. If you need to change anything in the meantime, email <a href="mailto:${CONTACT}">${CONTACT}</a>.</p><p><a class="btn" href="/teams/">See all teams</a></p></section>
+<script>(function(){
+var SB="${SB_URL}",KEY="${SB_KEY}",TO="${CONTACT}";
+var form=document.getElementById("cf"),err=document.getElementById("cfErr"),btn=document.getElementById("cfBtn"),pick=document.getElementById("pickWrap"),sel=document.getElementById("f_team_id");
+var names={${list.map(t => `${JSON.stringify(t.id)}:[${JSON.stringify(t.name)},${JSON.stringify(sName(t.series[0]))},${JSON.stringify(t.base)},${JSON.stringify(t.country)}]`).join(",")}};
+function setKind(k){form.kind.value=k;pick.hidden=k!=="claim";}
+form.addEventListener("change",function(e){if(e.target.name==="kind")setKind(e.target.value);if(e.target===sel&&names[sel.value]){var n=names[sel.value];form.team_name.value=n[0];form.series.value=n[1];form.city.value=n[2];form.country.value=n[3];}});
+var q=new URLSearchParams(location.search).get("team");if(q&&names[q]){setKind("claim");sel.value=q;sel.dispatchEvent(new Event("change",{bubbles:true}));}
+function ev(n,p){try{window.gtag&&gtag("event",n,p||{})}catch(e){}}
+ev("team_claim_open",{team:q||""});
+form.addEventListener("submit",function(e){e.preventDefault();err.textContent="";
+  var bad=[].slice.call(form.querySelectorAll("[required]")).filter(function(x){return x.type==="checkbox"?!x.checked:!x.value.trim()||!x.checkValidity();});
+  [].slice.call(form.querySelectorAll("input[type=url]")).forEach(function(x){if(x.value&&!/^https?:\\/\\//.test(x.value))bad.push(x);});
+  if(bad.length){err.textContent="Please fill in or fix: "+bad.map(function(x){var l=form.querySelector('label[for="'+x.id+'"]');return x.type==="checkbox"?"the permission boxes":(l?l.firstChild.textContent.trim():x.name);}).filter(function(v,i,a){return a.indexOf(v)===i}).join(", ")+".";bad[0].focus();return;}
+  var d={};new FormData(form).forEach(function(v,k){d[k]=typeof v==="string"?v.trim():v;});
+  ["ok_authorized","ok_own","ok_license","ok_contact"].forEach(function(k){d[k]=!!form[k].checked;});
+  d.team_id=d.kind==="claim"?d.team_id||null:null;d.page=location.href;d.license_version="${today}";
+  btn.disabled=true;btn.textContent="Sending…";
+  function done(){form.style.display="none";var x=document.getElementById("cfDone");x.style.display="block";x.focus();ev("team_claim_submit",{kind:d.kind,team:d.team_id||""});}
+  function mail(){var lines=Object.keys(d).map(function(k){return k+": "+d[k];});location.href="mailto:"+TO+"?subject="+encodeURIComponent("Team profile: "+d.team_name)+"&body="+encodeURIComponent(lines.join("\\n"));done();}
+  if(!SB){mail();return;}
+  fetch(SB+"/rest/v1/team_claims",{method:"POST",headers:{apikey:KEY,authorization:"Bearer "+KEY,"content-type":"application/json",prefer:"return=minimal"},body:JSON.stringify(d)}).then(function(r){if(r.ok)done();else mail();}).catch(mail);
+});
+})();</script>`;
+    write("/teams/claim/", page({ url: "/teams/claim/", title: "Add or Claim Your Team Profile – Premier Racing Info", desc: "Race teams: get a free profile on Premier Racing Info with your logo, photos, story, socials and links for fans to support you. Club, grassroots and pro teams welcome.", h1: "Add your team", crumbs: [{ name: "Teams", item: SITE + "/teams/" }, { name: "Add your team", item: SITE + "/teams/claim/" }], body, photo: ["none"], tick: ["Add your team", "Free team profile", "Photos", "Merch", "Sponsors", "Fans"] }));
+  }
+}
+
+// ---- About, Privacy, 404 ----
 write("/about/", page({ url: "/about/", title: "About Premier Racing Info: Who We Are & How We Check Data", desc: "Premier Racing Info is a free, independent fan site and app for following racing: start times in your time zone, how to watch, tickets, standings, alerts and a picks game.", h1: "About Premier Racing Info", crumbs: [{ name: "About", item: SITE + "/about/" }],
   body: `<p class="answer">Premier Racing Info is a free, independent guide to ${N_ALL} racing series: session start times for ${N_APP} top series in your own time zone, race dates for ${N_DATES} more, where to watch in the US, tickets near you, and standings, all in one place.</p>
   <section class="card"><h2>Who runs it</h2><p>It's built and run by an independent motorsport fan and sim racer in San Antonio, Texas. It started as a way for a few friends to keep up with F1, IMSA and WEC race weekends without doing time-zone math, and grew into a free app and site covering ${WORLD.series.length} series worldwide.</p></section>
@@ -423,6 +561,7 @@ write("/privacy/", page({ url: "/privacy/", title: "Privacy Policy – Premier R
   <h2>What we store</h2><ul>
   <li><b>On your device:</b> your favorites, starred series, races marked Going/Watched, time zone and settings, saved in your browser so the app remembers them.</li>
   <li><b>If you create an account:</b> your email address, display name, those same preferences, your prediction picks, and the profile photo and bio you add (only you can see your photo and bio). Picks and display names are visible to other signed-in players on the leaderboard.</li>
+  <li><b>If you send a team profile:</b> your name, role, email, the team details and links you enter, and the date you agreed to the team terms. We use these to confirm the team, build its page and contact you about it. Your name and email are never shown on the site. Ask us at any time to delete them.</li>
   <li><b>If you turn on alerts:</b> a push address from your browser and which series and alert types you chose, so we can send notifications. Turning alerts off deletes it.</li></ul>
   <h2>What we don't do</h2><p>We don't sell your data, and we don't use it for advertising. We don't ask for your location; times use your phone's time zone setting.</p>
   <h2>Visit statistics</h2><p>We use Google Analytics and Cloudflare Web Analytics to count visits and see which pages people use. Google Analytics sets cookies and receives your browser type, approximate location from your IP address, and the pages you view; it doesn't receive your email, picks or favorites. You can opt out with Google's <a href="https://tools.google.com/dlpage/gaoptout">browser add-on</a> or by blocking cookies for this site. Cloudflare's counter uses no cookies. Visitors in the UK, EU and Switzerland are asked first, and Google Analytics stays off unless they say yes. Nothing on this site is used for advertising.</p>
@@ -436,6 +575,7 @@ write("/terms/", page({ url: "/terms/", title: "Terms of Use – Premier Racing 
   <h2>Times, dates and results</h2><p>We work hard to keep schedules, TV listings, standings and ticket links correct, but they change, and we can make mistakes. Check the official series or circuit site before you travel or buy anything. The site is provided as is, without any warranty.</p>
   <h2>Links, tickets and news</h2><p>Links to tickets, streaming services, news stories and official sites take you to other companies, which have their own terms. We don't sell tickets and aren't responsible for purchases you make elsewhere. News headlines link to the original publisher. If we ever earn a commission from a link, we'll say so next to it.</p>
   <h2>Photos</h2><p>Photos are used under free licences from Wikimedia Commons (or, as a backup, Flickr and other archives through Openverse), credited to their photographers, or with the photographer's permission. The full list is under Photo credits in the app. If you own a photo on this site and want it credited differently or removed, email <a href="mailto:${CONTACT}">${CONTACT}</a> and we'll act on it promptly.</p>
+  <h2 id="teams">Team profiles</h2><p>Team pages that say "Unclaimed" list only public facts, such as the team's name, series, base, drivers and results. They don't use team logos or photos and don't mean the team is involved with this site. A team can add or claim its profile through <a href="/teams/claim/">the team form</a>. When a team sends us its logo, photos, text or links, the person sending them confirms they're allowed to speak for the team and that the team owns the content or has permission to share it. The team keeps ownership and gives us free, non-exclusive permission to show that content, resized or cropped to fit, on this site, in the app and on our social accounts to promote the team. A team can ask us to change or remove any of it, or its whole profile, at any time by emailing <a href="mailto:${CONTACT}">${CONTACT}</a>, and we'll do it promptly. "Support" links on team pages go to the team's own stores and pages; we don't handle those payments.</p>
   <h2>Accounts and picks</h2><p>Keep your account details to yourself and be decent in display names. We can remove names or accounts that are abusive. The picks game is just for fun: there are no prizes or entry fees.</p>
   <h2>Changes</h2><p>If these terms change, the date above will change too. See also our <a href="/privacy/">privacy policy</a>.</p></section>` }));
 fs.writeFileSync(path.join(root, "404.html"), page({ url: "/404.html", title: "Page not found – Premier Racing Info", desc: "This page doesn't exist.", h1: "Page not found",
@@ -453,7 +593,7 @@ ${block}
 var hero = document.querySelector(".ph-hero"), reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 var want = hero ? (hero.dataset.w || "").split(",").filter(Boolean) : [];
-if (hero) loadFreePhotos().then(function(){
+if (hero && want[0] !== "none") loadFreePhotos().then(function(){
   // a page whose series has no photos yet fetches them now (then they're cached for every page)
   var missing = want.filter(function(w){ return !PHOTO_POOL.some(function(x){ return x.tags[0] === w; }); });
   return missing.length ? Promise.all(missing.map(seriesPhotos)) : null;
