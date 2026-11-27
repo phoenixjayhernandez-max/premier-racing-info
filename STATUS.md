@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-27 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -24,9 +24,10 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (3)</summary>
+<details><summary>Up to date (4)</summary>
 
 - Qatar Grand Prix (Formula 1, 2026-11-29) has start times
+- Abu Dhabi Grand Prix (Formula 1, 2026-12-06) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Valencia Grand Prix (MotoGP, 2026-11-29) has start times
 
@@ -90,7 +91,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (2)</summary>
 
-- Directory last researched Nov 22, 2026 (4 days ago)
+- Directory last researched Nov 22, 2026 (5 days ago)
 - Every series has a current status and next round
 
 </details>
@@ -154,7 +155,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.9 hours ago (279 headlines)
+- News last collected 1.2 hours ago (279 headlines)
 
 </details>
 
@@ -178,7 +179,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-26 (0 days ago)
+- eSports tab last checked 2026-11-26 (1 days ago)
 - 5 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
