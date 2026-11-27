@@ -1143,6 +1143,20 @@ main{max-width:1200px}
 
 .sched tr.nx .status,.sched tr.nx .status.live{color:inherit}
 .sched tr.nx .status.live::before{background:currentColor}
+/* Live: loud on purpose. Every live race gets the red pill */
+.live-strip{gap:var(--space-xs) var(--space-sm)}
+.live-tag{font-size:var(--text-md,1.05rem);padding:var(--space-2xs,4px) var(--space-sm,12px);box-shadow:0 0 0 0 rgba(215,38,30,.6);animation:liveglow 1.8s ease-out infinite}
+.live-tag i{width:10px;height:10px}
+.live-tag.soon{animation:none;box-shadow:none}
+@keyframes liveglow{0%{box-shadow:0 0 0 0 rgba(215,38,30,.6)}70%{box-shadow:0 0 0 10px rgba(215,38,30,0)}100%{box-shadow:0 0 0 0 rgba(215,38,30,0)}}
+.live-strip:not(.soon) .live-item{border:2px solid #D7261E;border-left-width:5px;background:color-mix(in oklab,var(--band) 85%,transparent)}
+.live-strip:not(.soon) .live-open b{font-weight:700}
+.live-strip:not(.soon) .live-watch{background:#D7261E;color:#fff;text-decoration:none;padding:6px 12px;border-radius:var(--radius-card);min-height:32px;display:inline-flex;align-items:center;gap:6px}
+.live-strip:not(.soon) .live-watch::before{content:"\25B6";font-size:.7em}
+.live-strip:not(.soon) .live-watch:hover{background:#B51E17}
+.status.live,.state.live,.sched tr.nx .status.live,.g-row .state.live{display:inline-flex;align-items:center;gap:5px;background:#D7261E;color:#fff;border:0;border-radius:3px;padding:2px 8px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:.75rem;vertical-align:middle}
+.status.live::before,.state.live::before,.sched tr.nx .status.live::before,.g-row .state.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:none;animation:livepulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.live-tag{animation:none}.status.live::before,.state.live::before,.sched tr.nx .status.live::before,.g-row .state.live::before{animation:none}}
 /* standings: one series dropdown, collapsible sections */
 .sd-group{grid-column:1/-1;margin:var(--space-xs) var(--space-sm) var(--space-3xs);font-size:var(--text-xs);font-weight:600;color:var(--color-muted)}
 .sd-item .dplate{min-width:36px;height:22px;font-size:.66rem}
@@ -2431,7 +2445,7 @@ function liveSessions(){
 }
 function liveNowHTML(){
   const L = liveSessions(), now = Date.now();
-  if (L.length) return `<div class="live-strip" role="status" aria-live="polite"><span class="live-tag"><i aria-hidden="true"></i>Live now</span>${L.slice(0, 4).map(x => { const w = (WATCH[x.e.series] || [])[0];
+  if (L.length) return `<div class="live-strip" role="status" aria-live="polite"><span class="live-tag"><i aria-hidden="true"></i>Live now${L.length > 1 ? ` · ${L.length}` : ""}</span>${L.map(x => { const w = (WATCH[x.e.series] || [])[0];
     const sw = sessWatch(x.e.id, x.name);
     return `<span class="live-item ${x.e.series}"><button class="live-open" data-open="${x.e.id}">${plate(x.e.series, 18)}<b>${esc(x.name)}</b> <span>${esc(x.e.name)}</span></button>${sw && (!x.support || sw[2]) ? `<a class="live-watch" href="${esc(sw[1])}" target="_blank" rel="noopener">${/schedule/i.test(sw[0]) ? esc(sw[0]) : "Watch on " + esc(sw[0])}</a>` : ""}</span>`; }).join("")}</div>`;
   // Nothing on track: the next start within 3 hours
