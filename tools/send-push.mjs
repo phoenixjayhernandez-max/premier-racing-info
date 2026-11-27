@@ -7,6 +7,7 @@
 //   Live now      : a race (not practice/qualifying) has just started
 //   Results       : a new winner, pole or session result was added to the app
 //   This weekend  : Thursday from 5 PM Central, one summary of the weekend's races in the person's series and time zone
+//   Results recap : Sunday from 10:45 PM Central (after the results update) until Monday noon, the weekend's winners in the person's series
 //   Favorite news : a new headline names one of the person's favorite drivers or teams (off by default)
 // Subscriptions and the sending key live in Supabase and are read through a function that checks PUSH_SECRET.
 // push-state.json remembers what was already sent so nobody gets the same alert twice.
@@ -25,6 +26,8 @@ const SHORT = grab(/const SERIES = (\{[^\n]*\});/, "SERIES");
 const WINNERS = grab(/const WINNERS = (\{[\s\S]*?\n\});/, "WINNERS", {});
 const WORLD_TIMES = grab(/const WORLD_TIMES = (\{[\s\S]*?\n\});/, "WORLD_TIMES", {});
 const WORLD_SHORT = (() => { try { const w = {}; Function("window", fs.readFileSync(path.join(root, "world.js"), "utf8"))(w); return Object.fromEntries(w.WORLD.series.map(x => [x.id, x.short || x.name])); } catch (e) { return {}; } })();
+const APP_TO_WORLD = grab(/const APP_TO_WORLD = (\{[^\n]*\});/, "APP_TO_WORLD", {});
+const MORE_STATS = grab(/const MORE_STATS = (\{[\s\S]*?\n\});/, "MORE_STATS", {});
 const WINNERS_LIVE = grab(/const WINNERS_LIVE = (\{[\s\S]*?\});/, "WINNERS_LIVE", {});
 const SUPABASE_URL = process.env.SUPABASE_URL_TEST || grab(/const SUPABASE_URL = ("[^"]*");/, "SUPABASE_URL");
 const SUPABASE_KEY = grab(/const SUPABASE_ANON_KEY = ("[^"]*");/, "SUPABASE_ANON_KEY");
@@ -107,6 +110,38 @@ function weekAlert(seriesSet, tz){
   return { title: `🏁 ${n} race${n === 1 ? "" : "s"} this weekend`, body: `${body}${tzName ? ` (${tzName})` : ""}`, url: SITE + "#weekend", tag: weekKey };
 }
 
+// ---- Sunday night "weekend results" (once per weekend, Sun 10:45 PM Central until Mon noon) ----
+const recapWindow = (CT_PARTS.weekday === "Sun" && (ctHour > 22 || (ctHour === 22 && +new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", minute: "numeric" }).format(new Date(now)) >= 45))) || (CT_PARTS.weekday === "Mon" && ctHour < 12);
+const recapSun = CT_PARTS.weekday === "Sun" ? ctDate : addDays(ctDate, -1), recapFri = addDays(recapSun, -2), recapMon = addDays(recapSun, 1);
+const recapKey = `recap:${recapSun}`;
+const recapRaces = []; // {series, world, label, win}
+const shortWin = w => String(w).split(/,| \(| · /)[0].trim();
+const MON3 = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+if (recapWindow) {
+  for (const [id, s, name, circuit, loc, start, end, tags, status] of RAW) {
+    if (status === "cancelled" || end < recapFri || end > recapMon || !WINNERS[id]) continue;
+    recapRaces.push({ series: s, label: `${SHORT[s] || s} ${name.replace(/Grand Prix/, "GP")}`, win: shortWin(WINNERS[id]) });
+  }
+  // Directory series: latest race in MORE_STATS dated inside the weekend ("Sandown · Nov 13–15")
+  const yr = recapSun.slice(0, 4);
+  for (const [wid, st] of Object.entries(MORE_STATS)) {
+    const r = st && st.race, m = r && /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? (\d{1,2})(?:\s*[–-]\s*(\d{1,2}))?/.exec(r.where || "");
+    if (!m) continue;
+    const d = `${yr}-${String(MON3.indexOf(m[1].toLowerCase()) + 1).padStart(2, "0")}-${String(m[3] || m[2]).padStart(2, "0")}`;
+    if (d < recapFri || d > recapMon || recapRaces.some(x => !x.world && APP_TO_WORLD[x.series] === wid)) continue;
+    const first = String(r.note || "").split(/(?<=\.)\s/)[0];
+    recapRaces.push({ series: wid, world: true, label: `${WORLD_SHORT[wid] || wid} ${r.name.replace(/ \(.*\)$/, "")}`, win: first.length < 90 ? first.replace(/\.$/, "") : "" });
+  }
+}
+function recapAlert(seriesSet){
+  const mine = recapRaces.filter(r => r.win && (seriesSet ? seriesSet.has(r.series) : !r.world));
+  if (!mine.length) return null;
+  const parts = mine.map(r => `${r.label}: ${r.win}`);
+  let body = parts.join(" · ");
+  if (body.length > 170) { let out = ""; let i = 0; for (; i < parts.length && (out + parts[i]).length < 140; i++) out += (i ? " · " : "") + parts[i]; body = `${out} +${parts.length - i} more`; }
+  return { title: "🏆 Weekend results", body, url: SITE + "#recap", tag: recapKey };
+}
+
 let news = [];
 try { news = JSON.parse(fs.readFileSync(path.join(root, "news.json"), "utf8")).items || []; } catch (e) {}
 news = news.filter(x => now - Date.parse(x.time) < 3 * 3600000);
@@ -119,6 +154,7 @@ if (!state.seeded) {
 }
 const fresh = alerts.filter(a => !state.sent[a.key]);
 const weekDue = weekRaces.length > 0 && !state.sent[weekKey];
+const recapDue = recapRaces.some(r => r.win) && !state.sent[recapKey];
 const freshNews = news.filter(x => !state.sent["news:" + x.link]);
 
 // ---- Load subscriptions ----
@@ -179,6 +215,7 @@ for (const sub of subs) {
     out.push({ title, body: a.body, url: a.url, tag: a.key });
   }
   if (weekDue && types.week !== false) { const w = weekAlert(series, p.tz); if (w) out.unshift(w); }
+  if (recapDue && types.week !== false) { const r = recapAlert(series); if (r) out.unshift(r); }
   if (types.news && favNames.length) {
     const hit = freshNews.find(x => favNames.some(n => x.title.includes(n)));
     if (hit) out.push({ title: `📰 ${hit.source}`, body: hit.title, url: hit.link, tag: "news:" + hit.link });
@@ -188,6 +225,7 @@ for (const sub of subs) {
 for (const a of fresh) state.sent[a.key] = new Date().toISOString();
 for (const x of freshNews) state.sent["news:" + x.link] = new Date().toISOString();
 if (weekDue) state.sent[weekKey] = new Date().toISOString();
+if (recapDue) state.sent[recapKey] = new Date().toISOString();
 if (gone.length) await rpc("drop_push_subs", { p_secret: SECRET, p_endpoints: gone }).catch(e => console.log(e.message));
 state.lastRun = { at: new Date().toISOString(), phones: subs.length, sent: sentCount, failed: failCount, expired: gone.length, test: TEST };
 save();

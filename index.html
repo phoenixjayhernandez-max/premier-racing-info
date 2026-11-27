@@ -892,7 +892,7 @@ main{max-width:1200px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;border-top:var(--rule-bar) solid var(--color-ink);padding-top:var(--space-md);margin-bottom:var(--space-lg)}
 .sec-head h2{font-size:var(--text-section);line-height:.98}
 .sec-aside{color:var(--color-muted);font-size:var(--text-sm)}
-.guide{padding:var(--space-xl) 0}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
+.guide{padding:var(--space-xl) 0}.recap{padding:var(--space-xl) 0 0}.rc-list{list-style:none;margin:var(--space-sm) 0 0;padding:0}.rc-row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-top:1px solid var(--rule);cursor:pointer}.rc-row:first-child{border-top:0}.rc-what{display:flex;flex-direction:column;gap:2px;min-width:0}.rc-what b{font-weight:600}.rc-what .race-a{color:inherit}.rc-win{font-size:.9rem}.rc-win.pend{color:var(--sub)}.rc-champ{font-size:.8rem;color:var(--sub)}.rc-tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.1;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;color:var(--sub);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
 .g-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--space-xl) var(--space-lg)}
 .g-dh{font-family:var(--font-body);font-weight:600;font-size:var(--text-md);text-transform:none;letter-spacing:0;padding-bottom:var(--space-xs);border-bottom:1px solid var(--color-ink)}
 .g-list{list-style:none;margin:0;padding:0}
@@ -1913,6 +1913,9 @@ const WORLD_TIMES = {
   "pccau":[["Race 1","2026-11-27T03:20:00Z"],["Race 2","2026-11-28T02:50:00Z"],["Race 3","2026-11-29T02:50:00Z"]],
   // NASCAR Brasil finale, Brasília (BRT = UTC-3): three races Sun 9:01, 14:05, 14:31. Source: joint event programme (Copa Truck, Nov 19).
   "nascar-brasil":[["Race 1","2026-11-29T12:01:00Z"],["Race 2","2026-11-29T17:05:00Z"],["Race 3","2026-11-29T17:31:00Z"]],
+  // Moto2 + Moto3 Valencia finale (CET = UTC+1): Moto3 race Sun 11:00, Moto2 race Sun 12:15. Source: sport-flash.com Valencia GP session pages.
+  "moto3":[["Race","2026-11-29T10:00:00Z"]],
+  "moto2":[["Race","2026-11-29T11:15:00Z"]],
 };
 const SESSION_WATCH = {
   "nascar-martinsville|Race":["NBC","https://www.nbcsports.com/motor-sports/nascar"],
@@ -1992,13 +1995,13 @@ const MORE_STATS = {
     notes:["Rally Saudi Arabia (Nov 11–14) was cancelled, so Sardinia was the last round.","The 2027 calendar is expected to have 14 rounds, including a new Rally Scotland."]
   },
   "supercars": {
-    race: { name:"Gold Coast 500", where:"Surfers Paradise · Oct 25 · Finals round 1",
-      note:"Broc Feeney won Race 32 from Brodie Kostecki and Chaz Mostert. Ryan Wood, Kai Allen and Jack Le Brocq were knocked out of the Finals.",
-      rows:[["1","88","Broc Feeney","Triple Eight · Ford Mustang","Winner"],["2","17","Brodie Kostecki","Dick Johnson Racing · Ford Mustang","+6.9"],["3","1","Chaz Mostert","Walkinshaw TWG · Toyota Supra",""]], partial:true },
+    race: { name:"Sandown 500", where:"Sandown · Nov 13–15 · Finals semi-final",
+      note:"Brodie Kostecki won Saturday's Race 33 from Matt Payne and Cam Waters. Payne won Sunday's Race 34 from pole, with Anton De Pasquale second. Payne, Kostecki, Broc Feeney and Chaz Mostert go to the Adelaide Grand Final.",
+      rows:[["R33","17","Brodie Kostecki","Dick Johnson Racing · Ford Mustang","Winner"],["R34","19","Matt Payne","Grove Racing · Ford Mustang","Winner"]], partial:true },
     champs:null,
-    standingsTitle:"Finals standings (top 7 go to Sandown)",
-    standings:[["Matt Payne","Grove Racing",3376],["Broc Feeney","Triple Eight",3372],["Brodie Kostecki","Dick Johnson Racing",3325],["Chaz Mostert","Walkinshaw TWG Racing",3316],["Will Brown","Triple Eight",3267],["Cameron Waters","Tickford Racing",3232],["Anton De Pasquale","Team 18",3216]],
-    notes:["Next: Sandown semi-final, Nov 6–8. The Grand Final is in Adelaide, Nov 26–29.","Payne leads Feeney by four points."]
+    standingsTitle:"Grand Final points (reset after Sandown, with seeding bonuses)",
+    standings:[["Matt Payne","Grove Racing",5150],["Brodie Kostecki","Dick Johnson Racing",5120],["Broc Feeney","Triple Eight",5096],["Chaz Mostert","Walkinshaw TWG Racing",5078]],
+    notes:["The title is decided over three races at the Adelaide Grand Final, Nov 26–29. Whoever of the four scores best there is champion.","Payne leads Kostecki by 30 points; Feeney is 54 back and defending champion Mostert 72."]
   },
   "supergt": {
     race: { name:"Motegi Grand Final (season finale)", where:"Mobility Resort Motegi · Nov 7–8",
@@ -2219,7 +2222,7 @@ const relOf = t => t && t[2] === "aff" ? "sponsored noopener" : "noopener";
 // eSports: sim racing championships, big online events and the official games. Checked by the Thursday updater (section 14 in SECTIONS.md).
 // events: [id, name, sim, venue, startISO, endISO, about, link, pro]  (pro = a pro championship final or live event, used for the tab header)
 const ESPORTS = {
-  asof: "2026-11-09",
+  asof: "2026-11-26",
   events: [
     ["ir-mountain-showdown-2026", "Mountain Showdown", "iRacing", "Mount Panorama, Bathurst", "2026-11-13", "2026-11-15", "Super Formula Lights special event, open to every iRacing member", "https://www.iracing.com/specialevents/", false],
     ["ir-runoffs-2026", "iRacing SCCA Runoffs", "iRacing", "Road America", "2026-11-17", "2026-11-21", "A week of qualifying, then title races in six classes, from USF 2000 and GT4 to MX-5 and Formula Vee", "https://www.iracing.com/specialevents/", false],
@@ -3236,6 +3239,7 @@ function renderWeekend(){
       ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">${wk.length ? "Also this weekend" : `Same weekend as ${esc(feat.name.replace(/ Grand Prix$/, ""))}`}</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
       ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">${wk.length ? "More racing this weekend" : `Racing this weekend, ${wkendSpan()}`}</h2><div class="wk-rows">${W.slice(0, 4).map(worldRow).join("")}</div>${W.length > 4 ? `<details class="g-more"><summary class="btn">Show ${W.length - 4} more series</summary><div class="wk-rows">${W.slice(4).map(worldRow).join("")}</div></details>` : ""}</div>` : ""; })()}
     </section>
+    ${recapHTML()}
     ${startCardHTML()}
     ${p27PromoHTML()}
     ${galleryHTML()}
@@ -3267,6 +3271,54 @@ setInterval(tickCountdowns, 1000);
 // Same slug rule as tools/build-pages.mjs. Cancelled races have no page.
 function racePath(e){ return `/races/${String(`${SERIES[e.series]} ${e.name} ${e.start.getFullYear()}`).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}/`; }
 function raceA(e, from){ return e.cancelled ? esc(e.name) : `<a class="race-a" href="${racePath(e)}" data-rp="${esc(e.id)}" data-from="${from}">${esc(e.name)}</a>`; }
+// ---------- Weekend results (Sunday night through Wednesday) ----------
+// The last Fri–Mon window: app races that ended in it, plus directory series whose latest race (MORE_STATS) did.
+function lastWeekend(){
+  const t = today(), dow = t.getDay(); // 0 Sun
+  if (![0, 1, 2, 3].includes(dow)) return null;
+  const sun = new Date(t); sun.setDate(t.getDate() - dow);
+  const fri = new Date(sun); fri.setDate(sun.getDate() - 2);
+  const mon = new Date(sun); mon.setDate(sun.getDate() + 1);
+  return { fri, sun, mon, isSunday: dow === 0 };
+}
+function recapItems(){
+  const W = lastWeekend(); if (!W) return [];
+  const out = [];
+  for (const e of events) {
+    if (e.cancelled || e.end < W.fri || e.end > W.mon) continue;
+    const st = STATS[e.series] || {}, win = WINNERS[e.id] || WINNERS_LIVE[e.id] || "";
+    let champ = "";
+    const ms = MORE_STATS[APP_TO_WORLD[e.series]] || {};
+    if (st.champs && st.champs[0]) champ = `🏆 ${st.champs[0][1]} is the ${SEASON} champion`;
+    else if (ms.champs && ms.champs[0]) champ = `🏆 ${ms.champs[0][1]} is the ${SEASON} champion`;
+    else if (st.standings && st.standings[0]) { const a = st.standings[0], b = st.standings[1], pa = +a[a.length - 1], pb = b ? +b[b.length - 1] : 0; champ = `Leader: ${a[0]}${pa ? `, ${pa} pts` : ""}${b && pa ? `, ${+(pa - pb).toFixed(1)} ahead` : ""}`; }
+    out.push({ e, label: SERIES[e.series], name: e.name, win, champ });
+  }
+  const appWids = new Set(out.map(x => APP_TO_WORLD[x.e.series]));
+  for (const [wid, st] of Object.entries(MORE_STATS)) {
+    const r = st.race; if (!r || !r.where || appWids.has(wid)) continue;
+    const rg = nextRange(r.where); if (!rg || rg[1] < W.fri || rg[1] > W.mon) continue;
+    const x = WORLD_LIST.find(w => w.id === wid);
+    let champ = "";
+    if (st.champs && st.champs[0]) champ = `🏆 ${st.champs[0][1]} is the ${SEASON} champion`;
+    else if (st.standings && st.standings[0]) { const p0 = st.standings[0], p1 = st.standings[1], pa = +p0[p0.length - 1], pb = p1 ? +p1[p1.length - 1] : 0; champ = `Leader: ${p0[0]}${pa ? `, ${pa.toLocaleString("en-US")} pts` : ""}${p1 && pa ? `, ${+(pa - pb).toFixed(1)} ahead` : ""}`; }
+    out.push({ wid, label: x ? (x.short || x.name) : wid, name: r.name.replace(/ \(.*\)$/, ""), win: (r.note || "").split(/(?<=\.)\s/)[0], champ });
+  }
+  return out;
+}
+function recapHTML(){
+  const W = lastWeekend(), items = recapItems();
+  if (!W || !items.length) return "";
+  if (W.isSunday && !items.some(x => x.win)) return ""; // Sunday: only once the first results are in
+  const span = `${MON[W.fri.getMonth()]} ${W.fri.getDate()}–${W.sun.getMonth() !== W.fri.getMonth() ? MON[W.sun.getMonth()] + " " : ""}${W.sun.getDate()}`;
+  return `<section class="recap" id="recapSec" aria-labelledby="recapTitle">
+    <div class="sec-head"><h2 id="recapTitle">Weekend results</h2><p class="sec-aside">${esc(span)} · ${items.length} race${items.length === 1 ? "" : "s"}</p></div>
+    <ol class="rc-list">${items.map(x => `<li class="rc-row ${x.e ? x.e.series : ""}"${x.e ? ` data-open="${x.e.id}" tabindex="0" role="button"` : x.wid ? ` data-world="${esc(x.wid)}" tabindex="0" role="button"` : ""}>
+      <span class="rc-pl">${x.e ? plate(x.e.series, 24) : `<span class="rc-tag">${esc(x.label)}</span>`}</span>
+      <span class="rc-what"><b>${x.e ? raceA(x.e, "recap") : esc(x.name)}</b>${x.win ? `<span class="rc-win">${x.e ? "Won by " : ""}${esc(x.win)}</span>` : `<span class="rc-win pend">Result coming soon</span>`}${x.champ ? `<span class="rc-champ">${esc(x.champ)}</span>` : ""}</span>
+    </li>`).join("")}</ol>
+  </section>`;
+}
 function featHTML(e){
   if (!e) return "";
   const [st, cls] = statusOf(e), ns = nextSession(e.id), live = ns && Date.parse(ns[1]) <= Date.now();
@@ -3727,6 +3779,7 @@ const CIRCUIT_SITES = {
   "Streets of Long Beach":"https://gplb.com", "WeatherTech Raceway Laguna Seca":"https://www.weathertechraceway.com", "Streets of Detroit":"https://detroitgp.com",
   "Watkins Glen International":"https://www.theglen.com", "Road America":"https://www.roadamerica.com", "VIRginia International Raceway":"https://virnow.com",
   "Indianapolis Motor Speedway":"https://www.indianapolismotorspeedway.com", "Michelin Raceway Road Atlanta":"https://www.michelinracewayroadatlanta.com",
+  "Beijing Street Circuit":"https://www.gt-world-challenge-asia.com", "Autódromo Internacional Ayrton Senna":"https://moto.gpbrasil.com.br", "Autódromo Oscar y Juan Gálvez":"https://buenosaires.gob.ar/gobierno/autodromo-oscar-y-juan-galvez",
   "Circuit of the Americas":"https://circuitoftheamericas.com", "Sonoma Raceway":"https://www.sonomaraceway.com", "Barber Motorsports Park":"https://www.barbermotorsports.com",
   "Mid-Ohio Sports Car Course":"https://www.midohio.com", "Canadian Tire Motorsport Park":"https://www.ctmp.ca", "Circuit de la Sarthe":"https://www.24h-lemans.com",
   "Spa-Francorchamps":"https://www.spa-francorchamps.be", "Nürburgring":"https://nuerburgring.de", "Brands Hatch":"https://www.brandshatch.co.uk",
@@ -4162,7 +4215,7 @@ function renderPush(){
   } else {
     const t = pushPrefs.types;
     const tog = (k, label, on) => `<label class="toggle" style="display:flex;margin:6px 0"><input type="checkbox" data-ptype="${k}" ${(on ? t[k] !== false : t[k]) ? "checked" : ""}> ${label}</label>`;
-    h += tog("week", "This weekend's races (Thursday evening)", true) + tog("soon", "Starting soon <small class=\"fine\" style=\"margin:0 0 0 4px\">pick one or more</small>") + (t.soon !== false ? `<div class="pa-seg pa-lead" role="group" aria-label="When to send starting-soon alerts">${ALERT_LEADS.map(([v, l]) => `<button data-plead="${v}" aria-pressed="${pushPrefs.leads.includes(v)}">${l}</button>`).join("")}</div>` : "") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
+    h += tog("week", "Weekend preview (Thursday) and results (Sunday night)", true) + tog("soon", "Starting soon <small class=\"fine\" style=\"margin:0 0 0 4px\">pick one or more</small>") + (t.soon !== false ? `<div class="pa-seg pa-lead" role="group" aria-label="When to send starting-soon alerts">${ALERT_LEADS.map(([v, l]) => `<button data-plead="${v}" aria-pressed="${pushPrefs.leads.includes(v)}">${l}</button>`).join("")}</div>` : "") + tog("live", "Race is live") + tog("result", "Results, pole and winners") + tog("news", "News about your favorite drivers and teams");
   }
   h += (pushSub ? "" : `<p class="fine" style="margin:12px 0 0"><b>Pick your series now.</b> They're saved on this phone and apply as soon as alerts are on.</p>`) + ps;
   if (pushSub) h += `<div class="mine" style="margin:10px 0 0"><button class="btn" id="pushOff">Turn off alerts</button></div>`;
@@ -5235,13 +5288,14 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) load
 (() => {
   const h = (location.hash || "").slice(1);
   const TABS = ["weekend","calendar","standings","series","tickets","esports"];
-  let t = TABS.includes(h) ? h : null;
+  let t = TABS.includes(h) ? h : h === "recap" ? "weekend" : null;
   if (!t) try { t = localStorage.getItem(KEY + "-tab"); } catch(e){}
   showTab(TABS.includes(t) ? t : "weekend");
   // Base entry is always the tab itself, so Back from a deep-linked race lands on the site, not on the link again.
   history.replaceState({ tab: showTab.cur }, "", tabUrl(showTab.cur) + (h === "predict27" ? "#predict27" : ""));
   navReady = true;
   if (h === "predict27") goP27();
+  if (h === "recap") setTimeout(() => { const r = document.getElementById("recapSec"); if (r) r.scrollIntoView({ block: "start" }); }, 300);
   if (h === "settings") setTimeout(openSettings, 0);
   if (h === "start") setTimeout(openOnboard, 0);
   if (h === "app") setTimeout(openInstall, 0);

@@ -12,6 +12,7 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - `tools/build-pages.mjs`: generates ~530 SEO pages (races/, series/, tracks/, races-in/, calendar/, watch/, tickets/, about/, privacy/, terms/), `hero.js`, `llms.txt`, sitemap, and the crawlable block between `<!--seo-->` and `<!--/seo-->` in index.html. Run `node tools/build-pages.mjs` after data changes.
 - eSports tab (`/#esports`, Nov 9, 2026): rendered by `renderEsports()` from `ESPORTS`. The header has no photos on purpose (the photo rules exclude sim/esports images), just a CSS grid-and-stripe band. build-pages.mjs also makes `/esports/` from the same data.
 - `tools/build-ics.mjs`: calendar feeds in `calendar/`.
+- `tools/track-guides.mjs`: visitor guides for big US tracks, used by build-pages.mjs. Written from each track's official fan pages; re-check before each season.
 - `sw.js`: service worker, network-first. Bump the cache name (`pri-vNN`) on every UI change.
 - GitHub Actions: news.yml (news.json), push.yml (alerts), pages.yml (daily rebuild). Supabase holds accounts/picks/alerts (publishable key only — never commit secrets).
 

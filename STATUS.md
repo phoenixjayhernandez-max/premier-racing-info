@@ -1,6 +1,6 @@
 # Site status
 
-Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-27 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
@@ -8,12 +8,12 @@ Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we 
 | 2 | Results & picks | ✅ 0 |
 | 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 1 |
-| 5 | Watch | ⚠️ 2 |
+| 5 | Watch | ✅ 0 |
 | 6 | Tickets | ✅ 0 |
-| 7 | Tracks & races near you | ⚠️ 3 |
+| 7 | Tracks & races near you | ✅ 0 |
 | 8 | News | ⚠️ 1 |
 | 9 | Search pages | ✅ 0 |
-| 14 | eSports | ⚠️ 3 |
+| 14 | eSports | ⚠️ 2 |
 | 10 | Photos | by hand |
 | 11 | Accounts, alerts & picks game | by hand |
 | 12 | Design & speed | by hand |
@@ -24,9 +24,10 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (3)</summary>
+<details><summary>Up to date (4)</summary>
 
 - Qatar Grand Prix (Formula 1, 2026-11-29) has start times
+- Abu Dhabi Grand Prix (Formula 1, 2026-12-06) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Valencia Grand Prix (MotoGP, 2026-11-29) has start times
 
@@ -55,7 +56,7 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- [ ] Supercars: last race in standings is Gold Coast 500 (2026-10-25), 32 days ago — check for newer rounds
+- [ ] Formula 2: last race in standings is Baku (2026-09-26), 62 days ago — check for newer rounds
 
 <details><summary>Up to date (19)</summary>
 
@@ -74,9 +75,9 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 - MotoGP: current (Portuguese GP (Portimão))
 - Formula E: last race London ePrix (season finale) (2026-08-16)
 - WRC: last race Rally Italia Sardegna (2026-10-04)
+- Supercars: last race Sandown 500 (2026-11-15)
 - Super GT: last race Motegi Grand Final (season finale) (2026-11-08)
 - DTM: last race Hockenheim finale, Race 2 (2026-10-11)
-- Formula 2: last race Baku (2026-09-26); between rounds, next Lusail, Qatar · Nov 27–29
 - ELMS: last race 4 Hours of Portimão (season finale) (2026-10-10)
 
 </details>
@@ -88,17 +89,16 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 22, 2026 (4 days ago)
+- Directory last researched Nov 22, 2026 (5 days ago)
 
 </details>
 
 ## 5. Watch
 _Where to watch in the US, per series and per session (WATCH, world.js watch, WORLD_TIMES)_
 
-- [ ] Moto2 races this weekend (Valencia (finale) · Nov 27–29) with no start time
-- [ ] Moto3 races this weekend (Valencia (finale) · Nov 27–29) with no start time
+- Nothing to do.
 
-<details><summary>Up to date (18)</summary>
+<details><summary>Up to date (20)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -118,6 +118,8 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - NASCAR Brasil: start time saved for this weekend
 - Supercars: start time saved for this weekend
 - W2RC / Dakar: start time saved for this weekend
+- Moto2: start time saved for this weekend
+- Moto3: start time saved for this weekend
 
 </details>
 
@@ -135,9 +137,13 @@ _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT
 ## 7. Tracks & races near you
 _Track pages and the state/country lists (GEO, CIRCUIT_SITES)_
 
-- [ ] No circuit website for Beijing Street Circuit
-- [ ] No circuit website for Autódromo Internacional Ayrton Senna
-- [ ] No circuit website for Autódromo Oscar y Juan Gálvez
+- Nothing to do.
+
+<details><summary>Up to date (1)</summary>
+
+- All 96 upcoming circuits have a location and website
+
+</details>
 
 ## 8. News
 _Headlines collected every 30 minutes (news.json, news.yml)_
@@ -146,7 +152,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (279 headlines)
+- News last collected 0.3 hours ago (279 headlines)
 
 </details>
 
@@ -165,12 +171,12 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (17 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
-<details><summary>Up to date (5)</summary>
+<details><summary>Up to date (6)</summary>
 
+- eSports tab last checked 2026-11-26 (1 days ago)
 - 5 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished

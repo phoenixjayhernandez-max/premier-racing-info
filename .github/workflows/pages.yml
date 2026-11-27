@@ -3,7 +3,7 @@ name: Rebuild search pages
 on:
   push:
     branches: [main]
-    paths: ["index.html", "world.js", "tools/build-pages.mjs", "tools/check-site.mjs"]
+    paths: ["index.html", "world.js", "tools/build-pages.mjs", "tools/track-guides.mjs", "tools/check-site.mjs"]
   schedule:
     - cron: "17 11 * * *"
   workflow_dispatch:

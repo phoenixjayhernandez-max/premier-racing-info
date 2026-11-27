@@ -4,6 +4,7 @@
 //   /tracks/<slug>/  one page per circuit: races there, tickets
 //   /watch/, /texas/, /tickets/, /calendar/ guides, plus sitemap.xml and robots.txt
 // Run: node tools/build-pages.mjs  (GitHub Actions runs it automatically when index.html or world.js changes)
+import { TRACK_GUIDES } from "./track-guides.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -67,7 +68,7 @@ a{color:inherit}header{background:var(--bg);border-bottom:2px solid var(--ink)}.
 nav.crumbs{font-size:.85rem;color:var(--sub);padding:10px 0 0}nav.crumbs a{color:var(--sub)}
 h1{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.05;margin:14px 0 6px}
 h2{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:1.3rem;margin:0 0 8px}
-.lede{color:var(--sub);margin:0 0 16px}.card{background:transparent;border:0;border-top:2px solid var(--ink);border-radius:0;padding:16px 0 24px;margin:0 0 16px}
+.lede{color:var(--sub);margin:0 0 16px}.guide h3{font-size:1rem;margin:16px 0 6px}ul.tips{margin:0;padding-left:20px}ul.tips li{margin:0 0 6px}.card{background:transparent;border:0;border-top:2px solid var(--ink);border-radius:0;padding:16px 0 24px;margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{padding:7px 4px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}th{font-size:.8rem;font-weight:600;color:var(--sub)}
 td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--panel2);text-decoration:none;font-weight:600;font-size:.9rem}
@@ -309,6 +310,11 @@ for (const c of circuits) {
   let body = `<p class="lede">${esc(loc)}${GEO.places?.[c] && !loc.includes(GEO.places[c][0]) && GEO.places[c][0] !== "United States" ? ", " + esc(GEO.places[c][0]) : ""}${tr ? ` · ${tr[0] ? tr[0].toFixed(2) + " km (" + (tr[0] * 0.621371).toFixed(2) + " mi)" : ""}${tr[1] ? ", " + tr[1] + " corners" : ""} · ${esc(tr[2])}` : ""}</p>`;
   if (tr && tr[3]) body += `<p>${esc(tr[3])}.</p>`;
   if (up.length) body += `<section class="card"><h2>Upcoming races</h2><ul class="list">${up.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${e.tags.includes("Provisional") ? " · provisional" : ""}</small></li>`).join("")}</ul></section>`;
+  const G = TRACK_GUIDES[c];
+  if (G) {
+    const ul = a => `<ul class="tips">${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+    body += `<section class="card guide"><h2>Going to ${esc(c)}</h2><h3>Getting there and parking</h3>${ul(G.getThere)}<h3>Bags and coolers</h3>${ul(G.bags)}<h3>Tips</h3>${ul(G.tips)}<p><small>Rules can change by event, so check the track's own pages before you go: ${G.src.map(x => `<a href="${esc(x[1])}" rel="noopener">${esc(x[0])}</a>`).join(", ")}. Last checked ${fUpd.format(new Date(G.checked))}.</small></p></section>`;
+  }
   const past = list.filter(e => e.end < today);
   if (past.length) body += `<section class="card"><h2>Earlier in 2026</h2><ul class="list">${past.map(e => `<li>${raceLink(e)} <small>${esc(SERIES_FULL[e.s])} · ${range(e.start, e.end)}${WINNERS[e.id] ? " · " + esc(WINNERS[e.id]) : ""}</small></li>`).join("")}</ul></section>`;
   const tk = up[0] ? ticketLinks(up[0]) : [];
@@ -320,6 +326,7 @@ for (const c of circuits) {
   const tqa = [[`When is the next race at ${c}?`, esc(ans) + (up[0] ? ` Start times for every session are on the <a href="/races/${up[0].slug}/">race page</a>.` : "")],
     [`Where is ${c}?`, `${esc(loc)}${tr && tr[0] ? `. The track is ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) long${tr[1] ? " with " + tr[1] + " corners" : ""}` : ""}.`],
     [`What races are held at ${c}?`, `${esc(listAnd(serNames))}.`]];
+  if (G) { tqa.push([`Can I bring a cooler to ${c}?`, esc(G.cooler)]); tqa.push([`Where do I park at ${c}?`, esc(G.getThere[1])]); }
   if (tk.length) tqa.push([`How do I buy tickets for ${c}?`, `Use the official seller: ${esc(tk[0][0])}. Links are in the Tickets section above.`]);
   body += faqHTML(tqa);
   write(`/tracks/${sl}/`, page({ url: `/tracks/${sl}/`, title: fitTitle(`${c} Race Schedule ${yrs}: Every Race, Dates & Tickets`, `${c} Race Schedule ${yrs}: Dates & Tickets`, `${c} Race Schedule ${yrs}`, `${c} Races ${yrs}`), desc: `${ans} All races at ${c} (${loc}) in ${yrs}: ${serNames.join(", ")}, with dates, start times in your time zone and official tickets.`,
