@@ -1323,12 +1323,29 @@ main{max-width:1200px}
 .ash-nap{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-sm);opacity:.75;color:var(--sub);font-size:.72rem;border-radius:6px;padding:2px 4px}
 .ash-nap:hover,.ash-nap:focus-visible{opacity:1}.ash-nap:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .ash-nap svg{width:34px;height:22px;display:block}
-.ash-run{position:fixed;left:0;bottom:calc(10px + env(safe-area-inset-bottom));width:64px;height:40px;z-index:60;pointer-events:none;transform:translateX(-80px)}
-.ash-run svg{width:100%;height:100%;display:block}
-@media (prefers-reduced-motion:no-preference){.ash-run{animation:ashRun 4.2s linear forwards}.ash-run svg{animation:ashBob .28s ease-in-out infinite alternate}}
-@keyframes ashRun{to{transform:translateX(calc(100vw + 20px))}}@keyframes ashBob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
-@media (prefers-reduced-motion:reduce){.ash-run{display:none}}
-.ash-note{position:fixed;left:50%;bottom:calc(64px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:61;display:flex;align-items:center;gap:var(--space-sm);width:max-content;max-width:calc(100vw - 32px);background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r);box-shadow:0 8px 28px rgba(0,0,0,.18);padding:var(--space-sm) var(--space-md);cursor:pointer}
+.ash-stage{position:fixed;left:0;right:0;bottom:calc(8px + env(safe-area-inset-bottom));height:150px;z-index:60;pointer-events:none;overflow:hidden}
+.ash-cat,.ash-pal{position:absolute;bottom:0;left:0;will-change:transform}
+.ash-cat{width:84px;height:53px}.ash-cat>svg{width:100%;height:100%;display:block;overflow:visible}
+.ash-pal{width:66px;height:132px}.ash-pal svg{width:100%;height:100%;display:block;overflow:visible}
+.ash-cat .lg,.ash-pal .arm,.ash-pal .leg{transform-box:fill-box;transform-origin:50% 0}
+.ash-cat .tail{transform-box:fill-box;transform-origin:100% 100%}
+.ash-cat .rear{transform-box:view-box;transform-origin:20px 34px;transition:transform .22s cubic-bezier(.3,1.6,.5,1)}
+.ash-cat.run .lg.a{animation:ashLegA .3s ease-in-out infinite alternate}.ash-cat.run .lg.b{animation:ashLegB .3s ease-in-out infinite alternate}
+.ash-cat.run .body{animation:ashBob .15s ease-in-out infinite alternate}.ash-cat .tail{animation:ashTail .6s ease-in-out infinite alternate}
+@keyframes ashLegA{from{transform:rotate(32deg)}to{transform:rotate(-32deg)}}@keyframes ashLegB{from{transform:rotate(-32deg)}to{transform:rotate(32deg)}}
+@keyframes ashBob{from{transform:translateY(0)}to{transform:translateY(-1.6px)}}@keyframes ashTail{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+.ash-cat.five .rear{transform:rotate(-34deg)}.ash-cat.five .paw{transform:rotate(-158deg);transition:transform .2s ease-out}
+.ash-cat.sit .rear{transform:rotate(-12deg)}
+.ash-pal .arm{transition:transform .25s ease-out}.ash-pal.ready .arm.f{transform:rotate(45deg)}
+.ash-pal.wave .arm.f{animation:ashWave .32s ease-in-out infinite alternate}@keyframes ashWave{from{transform:rotate(112deg)}to{transform:rotate(142deg)}}
+.ash-pal.walk .leg.a{animation:ashLegA .34s ease-in-out infinite alternate}.ash-pal.walk .leg.b{animation:ashLegB .34s ease-in-out infinite alternate}
+.ash-pop{position:absolute;bottom:0;left:0;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:none}
+.ash-pop svg{width:100%;height:100%;display:block;overflow:visible}
+@keyframes ashPop{0%{transform:scale(.2);opacity:0}25%{opacity:1}100%{transform:scale(1.5);opacity:0}}
+@keyframes ashHeart{0%{transform:translate(0,0) scale(.6);opacity:0}20%{opacity:1}100%{transform:translate(var(--dx),-46px) scale(1);opacity:0}}
+.ash-heart{position:absolute;left:0;bottom:0;font-size:14px;line-height:1;animation:ashHeart 1.3s ease-out forwards}
+@media (prefers-reduced-motion:reduce){.ash-stage{display:none}}
+.ash-note{position:fixed;left:50%;bottom:calc(170px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:61;display:flex;align-items:center;gap:var(--space-sm);width:max-content;max-width:calc(100vw - 32px);background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r);box-shadow:0 8px 28px rgba(0,0,0,.18);padding:var(--space-sm) var(--space-md);cursor:pointer}
 .ash-note svg{width:48px;height:31px;flex:none}.ash-note b{display:block;font-family:var(--display);font-size:1.05rem;letter-spacing:.01em}.ash-note span{color:var(--sub);font-size:.82rem}
 @media (prefers-reduced-motion:no-preference){.ash-note{animation:ashIn .35s ease-out}@keyframes ashIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}}
 </style>
@@ -5236,20 +5253,78 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 </script>
 <!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-2XEE8686TF"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",region:["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB","CH"]});gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"granted"});try{var c=localStorage.getItem("pri-consent");if(c)gtag("consent","update",{analytics_storage:c==="yes"?"granted":"denied"})}catch(e){}gtag("js",new Date());gtag("config","G-2XEE8686TF");</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e52456a52f8540c69bb1ce758237400a"}'></script><!-- End Cloudflare Web Analytics -->
 <script>
-// Ash, my little tiger. Tap the sleeping cat in the footer, or type "ash" or "tiger", and he runs a lap.
+// Ash, my little tiger. Tap the sleeping cat in the footer, or type "ash" or "tiger": he runs over, gives a high five, and heads off on another lap.
 (function(){
-  var RUN='<svg viewBox="0 0 64 40" aria-hidden="true"><g fill="#EE8A2C"><path d="M10 18C4 16 2 9 6 5C7 4 8.5 5 7.8 6.2C5.5 9.5 7 14 12 15.5Z"/><ellipse cx="25" cy="21" rx="15" ry="8"/><rect x="13" y="24" width="4" height="12" rx="2" transform="rotate(14 15 24)"/><rect x="19" y="25" width="4" height="11" rx="2" transform="rotate(-10 21 25)"/><rect x="31" y="25" width="4" height="11" rx="2" transform="rotate(12 33 25)"/><rect x="36" y="24" width="4" height="12" rx="2" transform="rotate(-14 38 24)"/><circle cx="44" cy="14" r="8"/><path d="M38.5 9 39.5 2 44 7Z"/><path d="M45 7 50 2.5 50.8 9.5Z"/></g><g fill="#9A4A10"><path d="M18 13.6C19.5 17 19.5 20 18 23L16.5 22.5C17.5 19.5 17.3 16.8 16 14.4Z"/><path d="M23 13C24.6 16.5 24.6 20 23.2 23.5L21.6 23.2C22.8 19.8 22.6 16.8 21.2 13.4Z"/><path d="M28.2 13C29.8 16.5 29.8 20 28.4 23.5L26.8 23.3C28 19.8 27.8 16.8 26.4 13.2Z"/><path d="M33.4 13.8C34.8 17 34.8 19.8 33.6 22.8L32 22.6C33 19.6 32.9 17 31.6 14Z"/><path d="M5.2 8.5 8 9.3 7.8 10.6 5 9.9Z"/><path d="M6 12.6 9 12.3 9.5 13.6 6.6 14Z"/><path d="M43.2 7 44 10.5 44.8 7Z"/><path d="M41 8 42.4 10.8 42.6 8Z"/><path d="M47 8 45.6 10.8 45.4 8Z"/></g><g fill="#3A2210"><circle cx="46.8" cy="13.6" r="1.1"/><circle cx="41.6" cy="13.6" r="1.1"/><path d="M43.4 16.4H45L44.2 17.4Z"/></g><g fill="#F7C9A0"><path d="M39.5 8 40 4.2 42.4 7Z"/><path d="M48.6 4.6 49.4 8.2 46.6 7.2Z"/></g></svg>';
+  var O="#EE8A2C",S="#9A4A10",D="#3A2210",P="#F7C9A0";
+  function leg(x,cls){ return '<g class="lg '+cls+'"><rect x="'+x+'" y="23" width="4.2" height="12" rx="2.1" fill="'+O+'"/><ellipse cx="'+(x+2.1)+'" cy="34.6" rx="2.6" ry="1.4" fill="'+P+'"/></g>'; }
+  var CAT='<svg viewBox="0 0 64 40" aria-hidden="true"><g class="rear"><g class="body">'+
+    '<path class="tail" d="M11 19C5 17.5 2.5 11 5.5 6.5C6.6 5 8.6 5.8 8 7.4C6.2 10.8 7.6 14.6 12.4 16Z" fill="'+O+'"/>'+
+    leg(13.5,"b")+leg(19,"a")+leg(31,"b")+
+    '<ellipse cx="25" cy="21" rx="15" ry="8" fill="'+O+'"/>'+
+    '<g fill="'+S+'"><path d="M18 13.6C19.5 17 19.5 20 18 23L16.5 22.5C17.5 19.5 17.3 16.8 16 14.4Z"/><path d="M23 13C24.6 16.5 24.6 20 23.2 23.5L21.6 23.2C22.8 19.8 22.6 16.8 21.2 13.4Z"/><path d="M28.2 13C29.8 16.5 29.8 20 28.4 23.5L26.8 23.3C28 19.8 27.8 16.8 26.4 13.2Z"/><path d="M33.4 13.8C34.8 17 34.8 19.8 33.6 22.8L32 22.6C33 19.6 32.9 17 31.6 14Z"/></g>'+
+    '<g class="lg a paw"><rect x="36" y="22" width="4.2" height="13" rx="2.1" fill="'+O+'"/><ellipse cx="38.1" cy="34.6" rx="2.8" ry="1.6" fill="'+P+'"/></g>'+
+    '<g fill="'+O+'"><circle cx="44" cy="14" r="8"/><path d="M38.5 9 39.5 2 44 7Z"/><path d="M45 7 50 2.5 50.8 9.5Z"/></g>'+
+    '<g fill="'+S+'"><path d="M43.2 7 44 10.5 44.8 7Z"/><path d="M41 8 42.4 10.8 42.6 8Z"/><path d="M47 8 45.6 10.8 45.4 8Z"/></g>'+
+    '<g fill="'+P+'"><path d="M39.5 8 40 4.2 42.4 7Z"/><path d="M48.6 4.6 49.4 8.2 46.6 7.2Z"/><ellipse cx="45.6" cy="17.4" rx="3.4" ry="2.2"/></g>'+
+    '<g fill="'+D+'"><circle cx="47" cy="13.4" r="1.15"/><circle cx="42" cy="13.4" r="1.15"/><path d="M44.8 15.8H46.4L45.6 16.8Z"/></g>'+
+    '<g stroke="'+D+'" stroke-width=".45" stroke-linecap="round" opacity=".6"><path d="M48.5 16.6 53 15.6"/><path d="M48.5 17.6 53 18"/></g>'+
+    '</g></g></svg>';
+  // A friend at the edge of the screen, facing left toward Ash.
+  var SKIN="#C68A5E",JER="#2F5FE8",NAVY="#13204A";
+  var PAL='<svg viewBox="0 0 60 120" aria-hidden="true">'+
+    '<g class="leg b"><rect x="25" y="76" width="8" height="38" rx="4" fill="'+SKIN+'"/><path d="M20 112h14v6H18Z" fill="'+D+'"/></g>'+
+    '<g class="leg a"><rect x="33" y="76" width="8" height="38" rx="4" fill="'+SKIN+'"/><path d="M28 112h14v6H26Z" fill="'+D+'"/></g>'+
+    '<path d="M22 72h22l2 16H20Z" fill="'+NAVY+'"/>'+
+    '<g class="arm b"><rect x="36" y="32" width="7" height="34" rx="3.5" fill="'+SKIN+'"/><rect x="36" y="32" width="7" height="11" rx="3" fill="'+JER+'"/></g>'+
+    '<path d="M21 34c0-5 4-8 9-8h6c5 0 9 3 9 8v40H21Z" fill="'+JER+'"/><path d="M27 26h12l-6 6Z" fill="#fff" opacity=".9"/>'+
+    '<circle cx="33" cy="15" r="9.5" fill="'+SKIN+'"/><path d="M23.5 14c0-6.5 4.5-10.5 10-10.5s9.5 3.5 9.5 8c-4 0-9-1-12.5-3.5-1.5 3-4 5.5-7 6Z" fill="#2A1A12"/>'+
+    '<circle cx="28.4" cy="15.4" r="1.1" fill="'+D+'"/><path d="M25.6 19.4q2.6 2 5 0" stroke="'+D+'" stroke-width="1" fill="none" stroke-linecap="round"/>'+
+    '<g class="arm f"><rect x="21" y="32" width="7" height="34" rx="3.5" fill="'+SKIN+'"/><rect x="21" y="32" width="7" height="11" rx="3" fill="'+JER+'"/><circle cx="24.5" cy="65" r="4.4" fill="'+SKIN+'"/></g>'+
+    '</svg>';
+  var POP='<svg viewBox="-30 -30 60 60" aria-hidden="true"><g stroke="#FFC23A" stroke-width="3" stroke-linecap="round"><path d="M0-12V-24"/><path d="M0 12V24"/><path d="M-12 0H-24"/><path d="M12 0H24"/><path d="M-9-9-17-17"/><path d="M9 9 17 17"/><path d="M9-9 17-17"/><path d="M-9 9-17 17"/></g><circle r="6" fill="#FFC23A"/></svg>';
   var busy=false, typed="";
+  function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  function move(el,from,to,ms,ease){ var a=el.animate([{transform:"translateX("+from+"px)"},{transform:"translateX("+to+"px)"}],{duration:ms,easing:ease||"linear",fill:"forwards"}); return a.finished.catch(function(){}); }
   function lap(){
     if (busy) return; busy=true;
-    var run=document.createElement("div"); run.className="ash-run"; run.innerHTML=RUN; document.body.appendChild(run);
     var nap=document.querySelector(".ash-nap svg");
     var note=document.createElement("div"); note.className="ash-note"; note.setAttribute("role","status");
-    note.innerHTML=(nap?nap.outerHTML:"")+'<div><b>For Ash, my little tiger</b><span>Always riding along. \u{1F9E1}</span></div>';
-    document.body.appendChild(note);
-    var done=function(){ if (!busy) return; busy=false; run.remove(); note.remove(); };
+    note.innerHTML=(nap?nap.outerHTML:"")+'<div><b>For Ash, my little tiger</b><span>Up top, buddy. Always riding along. \u{1F9E1}</span></div>';
+    var reduce=window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var stage=null;
+    var done=function(){ if (!busy) return; busy=false; note.remove(); if (stage) stage.remove(); };
     note.addEventListener("click",done);
-    setTimeout(done,7000);
+    if (reduce){ document.body.appendChild(note); setTimeout(done,6000); return; }
+    stage=document.createElement("div"); stage.className="ash-stage";
+    var cat=document.createElement("div"); cat.className="ash-cat run"; cat.innerHTML=CAT;
+    var pal=document.createElement("div"); pal.className="ash-pal walk"; pal.innerHTML=PAL;
+    stage.appendChild(pal); stage.appendChild(cat); document.body.appendChild(stage);
+    var W=stage.clientWidth, palX=Math.max(W-96,180), catX=palX-34;
+    move(pal,W+10,palX,900,"cubic-bezier(.2,.7,.3,1)").then(function(){ pal.classList.remove("walk"); pal.classList.add("ready"); });
+    move(cat,-100,catX,Math.min(2800,Math.max(1700,catX*5)),"cubic-bezier(.35,.05,.45,1)")
+    .then(function(){ cat.classList.remove("run"); return wait(120); })
+    .then(function(){
+      cat.classList.add("five");
+      cat.animate([{transform:"translate("+catX+"px,0)"},{transform:"translate("+catX+"px,-20px)",offset:.3},{transform:"translate("+catX+"px,-20px)",offset:.8},{transform:"translate("+catX+"px,0)"}],{duration:1100,easing:"ease-out",fill:"forwards"});
+      return wait(300);
+    })
+    .then(function(){
+      var pop=document.createElement("div"); pop.className="ash-pop"; pop.innerHTML=POP;
+      pop.style.left=(palX+1)+"px"; pop.style.bottom="71px"; pop.style.margin="0 0 -28px -28px";
+      var inner=pop.firstChild; inner.style.animation="ashPop .5s ease-out forwards"; stage.appendChild(pop);
+      ["-14px","4px","18px"].forEach(function(dx,i){ var h=document.createElement("span"); h.className="ash-heart"; h.textContent="\u{1F9E1}"; h.style.setProperty("--dx",dx); h.style.transform="translate(0,0)"; h.style.left=(palX-8+i*6)+"px"; h.style.bottom="78px"; h.style.animationDelay=(i*90)+"ms"; stage.appendChild(h); });
+      if (navigator.vibrate) { try{ navigator.vibrate(18); }catch(e){} }
+      return wait(700);
+    })
+    .then(function(){ cat.classList.remove("five"); cat.classList.add("sit"); pal.classList.remove("ready"); pal.classList.add("wave"); document.body.appendChild(note); return wait(1500); })
+    .then(function(){
+      cat.classList.remove("sit"); cat.classList.add("run");
+      move(cat,catX,W+40,Math.max(700,(W-catX)*3),"cubic-bezier(.5,0,.8,.6)");
+      return wait(500);
+    })
+    .then(function(){ pal.classList.remove("wave"); pal.classList.add("walk"); return move(pal,palX,W+20,700,"ease-in"); })
+    .then(function(){ stage.remove(); stage=null; return wait(2600); })
+    .then(done);
   }
   document.addEventListener("click",function(ev){ if (ev.target.closest && ev.target.closest("[data-ash]")) lap(); });
   document.addEventListener("keydown",function(ev){
