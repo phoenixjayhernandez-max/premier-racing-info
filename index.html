@@ -123,7 +123,7 @@ button{font:inherit;color:inherit}
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--signal)}
 .tab:focus-visible{outline:2px solid var(--color-focus);outline-offset:-2px}
 
-main{max-width:1200px;margin:0 auto;padding-inline:var(--space-md);padding-block:var(--space-md) var(--space-2xl)}
+main{max-width:1200px;margin:0 auto;padding-inline:var(--space-md);padding-block:var(--space-md) var(--space-lg)}
 .view[hidden]{display:none}
 .h2{font-family:var(--display);font-weight:800;font-size:1.5rem;margin:0 0 var(--space-2xs);line-height:1.05;text-wrap:balance}
 .kicker{font-size:.8rem;color:var(--sub);margin:0 0 var(--space-md)}
@@ -272,7 +272,7 @@ html,body{overflow-x:clip}
 .hbtn:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
 .favs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-xs)}
 .fv{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:var(--space-sm) var(--space-md);display:grid;grid-template-columns:auto 1fr;gap:var(--space-2xs) var(--space-sm)}
-.fv .pl{grid-row:span 4}
+.fv .pl{padding-top:2px}.fv .fb{display:flex;flex-direction:column;gap:var(--space-2xs);min-width:0}
 .fv .t{font-weight:600;font-size:1rem}
 .fv .l{font-size:.84rem;color:var(--sub)}
 .fv .l b{color:var(--ink);font-weight:600}
@@ -480,7 +480,7 @@ summary.h3like{font-family:var(--display);font-weight:800;font-size:1.15rem;curs
 
 
 .ev .acts .btn{max-width:100%}
-.site-foot{max-width:1100px;margin:var(--space-xl) auto 0;padding:var(--space-md) var(--space-md) calc(var(--space-xl) + env(safe-area-inset-bottom));border-top:1px solid var(--rule);color:var(--sub);font-size:.8rem}
+.site-foot{max-width:1100px;margin:var(--space-md) auto 0;padding:var(--space-md) var(--space-md) calc(var(--space-xl) + env(safe-area-inset-bottom));border-top:1px solid var(--rule);color:var(--sub);font-size:.8rem}
 .site-foot nav{display:flex;flex-wrap:wrap;gap:var(--space-xs) var(--space-md)}.site-foot a{color:var(--sub)}
 .linkbtn{all:unset;cursor:pointer;text-decoration:underline;font-weight:600;color:var(--ink)}
 .tzline{white-space:normal}
@@ -892,7 +892,7 @@ main{max-width:1200px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;border-top:var(--rule-bar) solid var(--color-ink);padding-top:var(--space-md);margin-bottom:var(--space-lg)}
 .sec-head h2{font-size:var(--text-section);line-height:.98}
 .sec-aside{color:var(--color-muted);font-size:var(--text-sm)}
-.guide{padding:var(--space-xl) 0}
+.guide{padding:var(--space-xl) 0}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
 .g-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--space-xl) var(--space-lg)}
 .g-dh{font-family:var(--font-body);font-weight:600;font-size:var(--text-md);text-transform:none;letter-spacing:0;padding-bottom:var(--space-xs);border-bottom:1px solid var(--color-ink)}
 .g-list{list-style:none;margin:0;padding:0}
@@ -1320,9 +1320,9 @@ main{max-width:1200px}
 .es-real .tag:hover,.es-real .tag:focus-visible{border-color:var(--signal);color:var(--signal)}
 @media (max-width:560px){ .es-ev{grid-template-columns:minmax(0,1fr);gap:4px} .es-ev .d{font-size:.8rem;color:var(--sub);padding:0} .es-ev.pro .d{color:var(--signal)} .es-ev .w{flex-direction:row;align-items:center;justify-content:space-between;margin-top:4px} }
 /* Ash, my little tiger. A small tribute: tap the sleeping cat in the footer, or type "ash" or "tiger". */
-.ash-nap{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-sm);opacity:.75;color:var(--sub);font-size:.72rem;border-radius:6px;padding:2px 4px}
+.ash-nap{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-sm);opacity:.9;color:var(--sub);font-size:.72rem;border-radius:6px;padding:2px 4px}
 .ash-nap:hover,.ash-nap:focus-visible{opacity:1}.ash-nap:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.ash-nap svg{width:34px;height:22px;display:block}
+.ash-nap svg{width:42px;height:27px;display:block}
 .ash-stage{position:fixed;left:0;right:0;bottom:calc(8px + env(safe-area-inset-bottom));height:110px;z-index:60;pointer-events:none;overflow:hidden}
 .ash-cat{position:absolute;bottom:0;left:0;width:104px;height:65px;will-change:transform}.ash-cat>svg{width:100%;height:100%;display:block;overflow:visible}
 .ash-cat .lg{transform-box:fill-box;transform-origin:50% 0}
@@ -1374,7 +1374,7 @@ main{max-width:1200px}
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
-    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time for 13 top series in your own time zone, race dates for 96 more, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026 · race starts Sat, Nov 28 at 5:10 PM CST</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026 · race starts Sun, Nov 29 at 10:00 AM CST</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026 · race starts Sun, Nov 29 at 7:00 AM CST</li></ul><h2>Coming up</h2><ul><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026 · race starts Sun, Dec 6 at 7:00 AM CST</li><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li><li><a href="/races/imsa-rolex-24-at-daytona-2027/">IMSA WeatherTech: Rolex 24 at Daytona</a> · Daytona International Speedway · Jan 28–31, 2027</li><li><a href="/races/nascar-clash-2027/">NASCAR Cup Series: Clash</a> · Daytona International Speedway · Feb 12–13, 2027</li><li><a href="/races/nascar-daytona-500-2027/">NASCAR Cup Series: Daytona 500</a> · Daytona International Speedway · Feb 16–21, 2027</li><li><a href="/races/nascar-autotrader-400-2027/">NASCAR Cup Series: Autotrader 400</a> · EchoPark Speedway · Feb 26–28, 2027</li><li><a href="/races/nascar-duramax-grand-prix-2027/">NASCAR Cup Series: DuraMAX Grand Prix</a> · Circuit of the Americas · Mar 5–7, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 23, 2026.</p></div><!--/seo--></div>
+    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time for 13 top series in your own time zone, race dates for 96 more, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026 · race starts Sat, Nov 28 at 5:10 PM CST</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026 · race starts Sun, Nov 29 at 10:00 AM CST</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026 · race starts Sun, Nov 29 at 7:00 AM CST</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026 · race starts Sun, Dec 6 at 7:00 AM CST</li></ul><h2>Coming up</h2><ul><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li><li><a href="/races/imsa-rolex-24-at-daytona-2027/">IMSA WeatherTech: Rolex 24 at Daytona</a> · Daytona International Speedway · Jan 28–31, 2027</li><li><a href="/races/nascar-clash-2027/">NASCAR Cup Series: Clash</a> · Daytona International Speedway · Feb 12–13, 2027</li><li><a href="/races/nascar-daytona-500-2027/">NASCAR Cup Series: Daytona 500</a> · Daytona International Speedway · Feb 16–21, 2027</li><li><a href="/races/nascar-autotrader-400-2027/">NASCAR Cup Series: Autotrader 400</a> · EchoPark Speedway · Feb 26–28, 2027</li><li><a href="/races/nascar-duramax-grand-prix-2027/">NASCAR Cup Series: DuraMAX Grand Prix</a> · Circuit of the Americas · Mar 5–7, 2027</li><li><a href="/races/indycar-grand-prix-of-st-petersburg-2027/">IndyCar: Grand Prix of St. Petersburg</a> · Streets of St. Petersburg · Mar 5–7, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 27, 2026.</p></div><!--/seo--></div>
     <div id="installBox"></div>
     <section class="sec" id="newsSec" aria-label="News"></section>
     <div class="sec" id="mySec"></div>
@@ -2676,6 +2676,15 @@ function heroPoolFrom(first){
   const pool = []; for (let i = 0; pool.length < 20 && i < 6; i++) for (const t of tags) { const x = byTag.get(t)[i]; if (x && pool.length < 20) pool.push(x); }
   return pool;
 }
+// Ask Wikimedia for a copy close to the size it's shown at (thumbnails were loading 1600px originals).
+const PIC_STEPS = [120, 250, 330, 500, 960, 1280, 1600];
+function sized(url, cssW){
+  const m = /^(https:\/\/upload\.wikimedia\.org\/.+\/thumb\/.+\/)(\d+)px-/.exec(url || "");
+  if (!m || !cssW) return url;
+  const want = cssW * Math.min(window.devicePixelRatio || 1, 2), have = +m[2];
+  const w = PIC_STEPS.find(x => x >= want) || 1600;
+  return w >= have ? url : url.replace(m[0], m[1] + w + "px-");
+}
 const heroReady = new Map(); // url -> decoded src
 function heroLoad(x){
   if (heroReady.has(x.img)) return heroReady.get(x.img);
@@ -2684,7 +2693,7 @@ function heroLoad(x){
     img.decoding = "async";
     img.onload = () => (img.decode ? img.decode() : Promise.resolve()).catch(() => {}).then(() => res(img.src));
     img.onerror = () => res(null);
-    img.src = x.img;
+    img.src = sized(x.img, Math.max(window.innerWidth || 0, 600));
   });
   heroReady.set(x.img, p); return p;
 }
@@ -2750,7 +2759,7 @@ function fillPics(root = document){
       let best = null, bs = -1;
       for (let i = 0; i < all.length; i++) { const c = all[(h + i) % all.length]; const sc = picScore(c, words, wid) - (used.has(c.img) ? 2.5 : 0); if (sc > bs) { bs = sc; best = c; } }
       if ((!best || bs <= -50) && wid && !PHOTO_CACHE.tried[wid] && !photoInflight[wid]) seriesPhotos(wid).then(() => fillPics());
-      if (best && bs > -50) { used.add(best.img); el.style.backgroundImage = `url("${best.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
+      if (best && bs > -50) { used.add(best.img); el.style.backgroundImage = `url("${sized(best.img, el.offsetWidth || 400).replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(best); }
       return;
     }
     const fam = PHOTO_FAMILY[wid];
@@ -2759,7 +2768,7 @@ function fillPics(root = document){
     for (const pool of tiers) { if (!pool.length) continue; for (let i = 0; i < pool.length; i++) { const c = pool[(h + i) % pool.length]; if (!used.has(c.img)) { x = c; break; } } if (!x) x = pool[h % pool.length]; break; }
     if (!x) { if (wid && !PHOTO_CACHE.tried[wid] && !photoInflight[wid]) seriesPhotos(wid).then(() => fillPics()); return; }
     used.add(x.img);
-    el.style.backgroundImage = `url("${x.img.replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(x);
+    el.style.backgroundImage = `url("${sized(x.img, el.offsetWidth || 400).replace(/"/g, "%22")}")`; el.classList.add("ok"); el.title = photoCredit(x);
   });
 }
 { let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => { fillPics(); document.querySelectorAll(".gal-tile").forEach(g => { const ph = g.querySelector(".pic.ok"), cr = g.querySelector(".gal-cr"); if (ph && cr && !cr.textContent && ph.title) cr.textContent = "📷 " + ph.title; }); }, 30); }).observe(document.body, { childList: true, subtree: true }); }
@@ -2782,7 +2791,7 @@ loadFreePhotos().then(() => applyNewsPhotos()).catch(() => {});
 function openCredits(){
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Photo credits</h2><div class="m">Every photo on this site, who took it and its licence</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
-    ${PHOTO_POOL.length ? `<ul class="credits">${PHOTO_POOL.map(x => `<li><span class="cr-pic" style="background-image:url('${esc(x.img.replace(/'/g, "%27"))}')"></span><span>${x.page ? `<a href="${esc(x.page)}" target="_blank" rel="noopener">${esc(x.by || "Unknown")}</a>` : esc(x.by)}<br><small>${esc(x.own ? "Used with permission" : x.lic + ", via Wikimedia Commons")}</small></span></li>`).join("")}</ul>` : `<p class="fine">Photos are loading. Try again in a moment.</p>`}
+    ${PHOTO_POOL.length ? `<ul class="credits">${PHOTO_POOL.map(x => `<li><span class="cr-pic" style="background-image:url('${esc(sized(x.img, 60).replace(/'/g, "%27"))}')"></span><span>${x.page ? `<a href="${esc(x.page)}" target="_blank" rel="noopener">${esc(x.by || "Unknown")}</a>` : esc(x.by)}<br><small>${esc(x.own ? "Used with permission" : x.lic + ", via Wikimedia Commons")}</small></span></li>`).join("")}</ul>` : `<p class="fine">Photos are loading. Try again in a moment.</p>`}
     <p class="fine">Photos come from Wikimedia Commons and, when Commons has none for a series, from Flickr and other open archives found through Openverse. All are free to use under the licence shown; follow each link for the original. Track photos in race and series pages come from Wikipedia under free licences and are credited on the photo. To ask for a photo to be removed, use the contact on the About page.</p>`;
   lastFocus = document.activeElement; document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; sheet.scrollTop = 0;
 }
@@ -2874,7 +2883,7 @@ function favSummary(f){
     if (i >= 0) { const pts = list[i][list[i].length - 1]; lines.push(`<b>P${i + 1}</b> in ${esc((title || "standings").replace(/ \(.*\)/, ""))}, ${pts} pts${i ? ` · ${+(list[0][list[0].length-1] - pts).toFixed(1)} behind` : " · leader"}`); break; }
   }
   const champ = (st.champs || []).find(c => String(c[1] + " " + c[2]).includes(f.n));
-  if (champ) lines.push(`<b>2026 champion:</b> ${esc(champ[0])}`);
+  if (champ) lines.push(`🏆 <b>2026 ${esc(champ[0].replace(/s$/, ""))} champion</b>`);
   const r = st.race;
   if (r && r.rows) {
     const hit = r.rows.filter(x => String(x[2] + " " + x[3]).includes(f.n)).slice(0, 2);
@@ -2892,7 +2901,7 @@ function renderFavs(){
     return;
   }
   el.innerHTML = `<h2 class="h2">Your favorites</h2><p class="kicker">Highlighted with ★ in results and standings. <button class="btn" data-favpick="1" style="margin-left:6px">Edit</button></p>
-    <div class="favs">${favs.map(f => `<div class="fv ${f.s}"><div class="pl">${plate(f.s, 30)}</div><div class="t avrow">${avatar(f.n, 40)}${esc(f.n)}</div>${favSummary(f).map(l => `<div class="l">${l}</div>`).join("")}</div>`).join("")}</div>`;
+    <div class="favs">${favs.map(f => `<div class="fv ${f.s}"><div class="pl">${plate(f.s, 30)}</div><div class="fb"><div class="t avrow">${avatar(f.n, 40)}${esc(f.n)}</div>${favSummary(f).map(l => `<div class="l">${l}</div>`).join("")}</div></div>`).join("")}</div>`;
 }
 let pickSeries = "f1", pickQuery = "";
 function openFavPicker(){
@@ -3225,7 +3234,7 @@ function renderWeekend(){
       <div class="hh-meta"><p class="fine hh-tz">${tzLine()}</p><p class="fine hh-credit" aria-live="off"></p></div>
       ${featHTML(feat)}
       ${items.length > 1 ? `<div class="wk-more"><h2 class="h4">${wk.length ? "Also this weekend" : `Same weekend as ${esc(feat.name.replace(/ Grand Prix$/, ""))}`}</h2><div class="wk-rows">${items.filter(e => e !== feat).map(wkRow).join("")}</div></div>` : ""}
-      ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">${wk.length ? "More racing this weekend" : `Racing this weekend, ${wkendSpan()}`}</h2><div class="wk-rows">${W.map(worldRow).join("")}</div></div>` : ""; })()}
+      ${(() => { const W = worldThisWeekend(); return W.length ? `<div class="wk-more"><h2 class="h4">${wk.length ? "More racing this weekend" : `Racing this weekend, ${wkendSpan()}`}</h2><div class="wk-rows">${W.slice(0, 4).map(worldRow).join("")}</div>${W.length > 4 ? `<details class="g-more"><summary class="btn">Show ${W.length - 4} more series</summary><div class="wk-rows">${W.slice(4).map(worldRow).join("")}</div></details>` : ""}</div>` : ""; })()}
     </section>
     ${startCardHTML()}
     ${p27PromoHTML()}
@@ -3333,15 +3342,20 @@ function guideHTML(list){
   if (!rows.length) return `<p class="fine">Session times are added about a week before each race.</p>`;
   rows.sort((a, b) => a.t - b.t);
   const nx = rows.find(r => !r.x[2] && r.t + 2 * 3600000 > now);
-  const days = []; for (const r of rows) { const k = fmtDay.format(new Date(r.t)); if (!days.length || days[days.length - 1][0] !== k) days.push([k, []]); days[days.length - 1][1].push(r); }
-  return `<div class="g-days">${days.map(([k, rs]) => `<div class="g-day"><h3 class="g-dh">${esc(k)}</h3><ol class="g-list">${rs.map(r => {
+  // Finished sessions drop off; the next six show, the rest open with "Show all"
+  const left = rows.filter(r => r.t + 2 * 3600000 >= now), pool = left.length ? left : rows, SHOW = 6;
+  const dayList = rs2 => { const days = []; for (const r of rs2) { const k = fmtDay.format(new Date(r.t)); if (!days.length || days[days.length - 1][0] !== k) days.push([k, []]); days[days.length - 1][1].push(r); } return days; };
+  const row = r => {
     const done = r.t + 2 * 3600000 < now, on = r.t <= now && !done, w = (WATCH[r.e.series] || [])[0];
     return `<li class="g-row ${r.x[2] ? "sup" : ""} ${done ? "done" : ""} ${r === nx ? "nx" : ""}" data-open="${r.e.id}" tabindex="0" role="button" aria-label="${esc(r.x[0])}, ${esc(r.e.name)}">
       <time class="g-t" datetime="${esc(r.x[1])}">${txTime(r.x[1]).replace(/ [A-Z]{2,5}$/, "")}</time>
       <span class="g-pl">${plate(r.e.series, 22)}</span>
       <span class="g-what"><b>${esc(r.x[0])}${on ? ` <span class="state live">Live</span>` : r === nx ? ` <span class="g-next">Next</span>` : ""}</b><span>${esc(r.e.name)}</span></span>
       ${w ? `<a class="g-w" href="${esc(w[1])}" target="_blank" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>` : "<span></span>"}
-    </li>`; }).join("")}</ol></div>`).join("")}</div>`;
+    </li>`; };
+  const block = rs2 => `<div class="g-days">${dayList(rs2).map(([k, rs]) => `<div class="g-day"><h3 class="g-dh">${esc(k)}</h3><ol class="g-list">${rs.map(row).join("")}</ol></div>`).join("")}</div>`;
+  const first = pool.slice(0, SHOW), rest = pool.slice(SHOW);
+  return block(first) + (rest.length ? `<details class="g-more"><summary class="btn">Show ${rest.length} more session${rest.length === 1 ? "" : "s"}</summary>${block(rest)}</details>` : "");
 }
 // Directory series racing this weekend, read from each series' "next" round in the Series tab data
 const MON3 = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
