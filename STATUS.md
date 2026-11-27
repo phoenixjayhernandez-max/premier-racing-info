@@ -155,7 +155,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 1.2 hours ago (279 headlines)
+- News last collected 0.4 hours ago (278 headlines)
 
 </details>
 
@@ -167,7 +167,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 <details><summary>Up to date (2)</summary>
 
 - Pages last rebuilt November 27, 2026
-- 554 pages in the sitemap
+- 567 pages in the sitemap
 
 </details>
 
