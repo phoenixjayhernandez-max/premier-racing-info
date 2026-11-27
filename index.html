@@ -1338,11 +1338,11 @@ main{max-width:1200px}
 .ash-glass{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));width:132px;height:132px;margin-left:-66px;z-index:62;pointer-events:none}
 .ash-glass svg{width:100%;height:100%;display:block;overflow:visible}
 .ash-glass .pad{transform-origin:50% 60%;animation:ashSmack 1.25s cubic-bezier(.2,.9,.3,1) forwards}
-@keyframes ashSmack{0%{transform:translateY(140px) scale(.25) rotate(-12deg);opacity:0}18%{opacity:1}30%{transform:translateY(0) scale(1.18,1.1) rotate(-4deg)}38%{transform:scale(1.06,.94)}46%,72%{transform:scale(1);opacity:1}100%{transform:translateY(120px) scale(.3) rotate(-10deg);opacity:0}}
+@keyframes ashSmack{0%{transform:translateY(140px) scale(.25) rotate(-12deg);opacity:0}18%{opacity:1}30%{transform:translateY(0) scale(1.18,1.1) rotate(-4deg)}38%{transform:scale(1.06,.94)}46%,76%{transform:scale(1);opacity:1}92%{opacity:1}100%{transform:translateY(130px) scale(.35) rotate(-10deg);opacity:0}}
 .ash-glass .ring{transform-origin:50% 55%;opacity:0;animation:ashRing .6s ease-out .36s forwards}
 @keyframes ashRing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
 .ash-glass .print{opacity:0;animation:ashPrint 1.9s ease-out .4s forwards}
-@keyframes ashPrint{0%{opacity:0}10%{opacity:.35}100%{opacity:0}}
+@keyframes ashPrint{0%,70%{opacity:0}78%{opacity:.4}100%{opacity:0}}
 .ash-heart{position:absolute;left:50%;top:30%;font-size:16px;line-height:1;opacity:0;animation:ashHeart 1.3s ease-out forwards}
 @keyframes ashHeart{0%{transform:translate(0,0) scale(.6);opacity:0}20%{opacity:1}100%{transform:translate(var(--dx),-60px) scale(1);opacity:0}}
 @media (prefers-reduced-motion:reduce){.ash-stage,.ash-glass{display:none}}
@@ -1432,7 +1432,7 @@ main{max-width:1200px}
 <nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
 <p>An independent fan site, not affiliated with, endorsed by or sponsored by any series, team, circuit or broadcaster. Series names and marks belong to their owners and are used only to identify them.</p>
 <nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav>
-<button class="ash-nap" type="button" data-ash="1" aria-label="For Ash, my little tiger" title="For Ash"><svg viewBox="0 0 40 26" aria-hidden="true" focusable="false"><g fill="#EE8A2C"><path d="M4 24C2 24 1.5 21 3.5 20C7 18 6 12 12 10C18 8 28 9 31 13L33 24Z"/><circle cx="31" cy="15.5" r="6.5"/><path d="M26.4 11.6 26.6 6.4 30 9.6Z"/><path d="M32 9.2 36 6.2 36.4 11.4Z"/><path d="M3 24C1 24 .5 22.6 2 22C6 20.6 12 23 18 23L20 24Z"/><ellipse cx="34" cy="23.6" rx="3" ry="1.4"/></g><g fill="#9A4A10"><path d="M12.5 10.3C14 13 14 16 13 18.5L11.6 18C12.4 15.8 12.3 13.2 11 11Z"/><path d="M17.6 9.4C19 12.4 19 15.6 18 18.6L16.6 18.3C17.4 15.5 17.3 12.6 16 9.8Z"/><path d="M22.6 9.4C24 12.2 24 15 23.2 17.6L21.8 17.4C22.4 15 22.3 12.4 21 9.7Z"/><path d="M30.4 9.4 31 12 31.6 9.4Z"/><path d="M28.4 10.2 29.4 12.4 29.5 10.2Z"/><path d="M34.2 10.4 33 12.4 32.9 10.3Z"/><path d="M6 22 7 21.2 7.6 23.6 6.4 23.8Z"/><path d="M10 22.3 11.2 21.9 11.4 23.9 10.2 23.9Z"/></g><g fill="none" stroke="#3A2210" stroke-width=".7" stroke-linecap="round"><path d="M27.8 15.6Q29 16.6 30.2 15.6"/><path d="M32.2 15.6Q33.4 16.6 34.6 15.6"/></g><path d="M30.6 17.8H31.8L31.2 18.6Z" fill="#3A2210"/><g fill="#F7C9A0"><path d="M27 10.6 27.2 8 28.8 9.6Z"/><path d="M33.6 9 35.4 7.8 35.6 10Z"/></g></svg></button></footer>
+<button class="ash-nap" type="button" data-ash="1" aria-label="For Ash, my little tiger" title="For Ash"><svg viewBox="0 0 40 26" aria-hidden="true" focusable="false"><g fill="#EDB685"><path d="M4 24C2 24 1.5 21 3.5 20C7 18 6 12 12 10C18 8 28 9 31 13L33 24Z"/><circle cx="31" cy="15.5" r="6.5"/><path d="M26.4 11.6 26.6 6.4 30 9.6Z"/><path d="M32 9.2 36 6.2 36.4 11.4Z"/><path d="M3 24C1 24 .5 22.6 2 22C6 20.6 12 23 18 23L20 24Z"/><ellipse cx="34" cy="23.6" rx="3" ry="1.4"/></g><g fill="#D8955E"><path d="M12.5 10.3C14 13 14 16 13 18.5L11.6 18C12.4 15.8 12.3 13.2 11 11Z"/><path d="M17.6 9.4C19 12.4 19 15.6 18 18.6L16.6 18.3C17.4 15.5 17.3 12.6 16 9.8Z"/><path d="M22.6 9.4C24 12.2 24 15 23.2 17.6L21.8 17.4C22.4 15 22.3 12.4 21 9.7Z"/><path d="M30.4 9.4 31 12 31.6 9.4Z"/><path d="M28.4 10.2 29.4 12.4 29.5 10.2Z"/><path d="M34.2 10.4 33 12.4 32.9 10.3Z"/><path d="M6 22 7 21.2 7.6 23.6 6.4 23.8Z"/><path d="M10 22.3 11.2 21.9 11.4 23.9 10.2 23.9Z"/></g><g fill="none" stroke="#7A4A26" stroke-width=".7" stroke-linecap="round"><path d="M27.8 15.6Q29 16.6 30.2 15.6"/><path d="M32.2 15.6Q33.4 16.6 34.6 15.6"/></g><path d="M30.6 17.8H31.8L31.2 18.6Z" fill="#7A4A26"/><g fill="#F2A7A4"><path d="M27 10.6 27.2 8 28.8 9.6Z"/><path d="M33.6 9 35.4 7.8 35.6 10Z"/></g></svg></button></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -5256,29 +5256,35 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
 <script>
 // Ash, my little tiger. Tap the sleeping cat in the footer, or type "ash" or "tiger": he runs out, high-fives the screen, and heads off on another lap.
 (function(){
-  var O="#EE8A2C",S="#9A4A10",D="#3A2210",P="#F7C9A0";
-  function leg(x,cls){ return '<g class="lg '+cls+'"><rect x="'+x+'" y="23" width="4.2" height="12" rx="2.1" fill="'+O+'"/><ellipse cx="'+(x+2.1)+'" cy="34.6" rx="2.6" ry="1.4" fill="'+P+'"/></g>'; }
-  var CAT='<svg viewBox="0 0 64 40" aria-hidden="true"><g class="rear"><g class="body">'+
-    '<path class="tail" d="M11 19C5 17.5 2.5 11 5.5 6.5C6.6 5 8.6 5.8 8 7.4C6.2 10.8 7.6 14.6 12.4 16Z" fill="'+O+'"/>'+
-    leg(13.5,"b")+leg(19,"a")+leg(31,"b")+
-    '<ellipse cx="25" cy="21" rx="15" ry="8" fill="'+O+'"/>'+
-    '<g fill="'+S+'"><path d="M18 13.6C19.5 17 19.5 20 18 23L16.5 22.5C17.5 19.5 17.3 16.8 16 14.4Z"/><path d="M23 13C24.6 16.5 24.6 20 23.2 23.5L21.6 23.2C22.8 19.8 22.6 16.8 21.2 13.4Z"/><path d="M28.2 13C29.8 16.5 29.8 20 28.4 23.5L26.8 23.3C28 19.8 27.8 16.8 26.4 13.2Z"/><path d="M33.4 13.8C34.8 17 34.8 19.8 33.6 22.8L32 22.6C33 19.6 32.9 17 31.6 14Z"/></g>'+
-    '<g class="lg a paw"><rect x="36" y="22" width="4.2" height="13" rx="2.1" fill="'+O+'"/><ellipse cx="38.1" cy="34.6" rx="2.8" ry="1.6" fill="'+P+'"/></g>'+
-    '<g fill="'+O+'"><circle cx="44" cy="14" r="8"/><path d="M38.5 9 39.5 2 44 7Z"/><path d="M45 7 50 2.5 50.8 9.5Z"/></g>'+
-    '<g fill="'+S+'"><path d="M43.2 7 44 10.5 44.8 7Z"/><path d="M41 8 42.4 10.8 42.6 8Z"/><path d="M47 8 45.6 10.8 45.4 8Z"/></g>'+
-    '<g fill="'+P+'"><path d="M39.5 8 40 4.2 42.4 7Z"/><path d="M48.6 4.6 49.4 8.2 46.6 7.2Z"/><ellipse cx="45.6" cy="17.4" rx="3.4" ry="2.2"/></g>'+
-    '<g fill="'+D+'"><circle cx="47" cy="13.4" r="1.15"/><circle cx="42" cy="13.4" r="1.15"/><path d="M44.8 15.8H46.4L45.6 16.8Z"/></g>'+
-    '<g stroke="'+D+'" stroke-width=".45" stroke-linecap="round" opacity=".6"><path d="M48.5 16.6 53 15.6"/><path d="M48.5 17.6 53 18"/></g>'+
-    '</g></g></svg>';
+  var O="#EDB685",OL="#F7D3AA",S="#D8955E",D="#2A1A10",P="#FBEBD8",PK="#F2A7A4",LN="#9A6236";
+  function leg(x,cls,back){ return '<g class="lg '+cls+'"><rect x="'+x+'" y="23" width="4.6" height="12.4" rx="2.3" fill="'+(back?S:O)+'" stroke="'+LN+'" stroke-width=".5"/><ellipse cx="'+(x+2.3)+'" cy="35" rx="2.9" ry="1.6" fill="'+P+'" stroke="'+LN+'" stroke-width=".45"/></g>'; }
+  var CAT='<svg viewBox="0 0 64 40" aria-hidden="true"><defs><clipPath id="ashBodyClip"><path d="M12 20.5C11.6 14.6 18 12.6 27 13C33.5 13.3 38.5 14.8 40.5 18C41.8 22.6 38.5 26.4 30 26.8C22 27.2 12.4 26.6 12 20.5Z"/></clipPath></defs><g class="rear"><g class="body">'+
+   '<g class="tail"><path d="M13.5 19.5C7.5 19 3.6 14.6 4.6 9.2C5.2 6.4 7.6 5 9 6.2" fill="none" stroke="'+LN+'" stroke-width="5.6" stroke-linecap="round"/><path d="M13.5 19.5C7.5 19 3.6 14.6 4.6 9.2C5.2 6.4 7.6 5 9 6.2" fill="none" stroke="'+O+'" stroke-width="4.4" stroke-linecap="round"/><path d="M13.5 19.5C7.5 19 3.6 14.6 4.6 9.2C5.2 6.4 7.6 5 9 6.2" fill="none" stroke="'+S+'" stroke-width="4.4" stroke-dasharray="1.6 3.2" opacity=".8"/><circle cx="9" cy="6.2" r="2.2" fill="'+OL+'"/></g>'+
+   leg(15,"b",1)+leg(32.5,"b",1)+
+   '<path d="M12 20.5C11.6 14.6 18 12.6 27 13C33.5 13.3 38.5 14.8 40.5 18C41.8 22.6 38.5 26.4 30 26.8C22 27.2 12.4 26.6 12 20.5Z" fill="'+O+'" stroke="'+LN+'" stroke-width=".6"/>'+
+   '<path d="M17 25.6C21 27.4 30 27.4 35 25.6C33 23.6 26 23.2 17 25.6Z" fill="'+P+'" opacity=".9"/>'+
+   '<g clip-path="url(#ashBodyClip)"><path d="M12.2 22C12 16.6 15 13.6 19.4 13.4C22 15.6 22.6 20.4 20.6 25.6C16.4 26.6 12.4 25.6 12.2 22Z" fill="'+OL+'" opacity=".35"/>'+
+   '<g fill="none" stroke="'+S+'" stroke-width="1.3" stroke-linecap="round" opacity=".75"><path d="M19.5 12.6C20.8 15.2 20.8 18 19.8 20.6"/><path d="M24.4 11.6C25.8 14.6 25.8 17.6 24.8 20.4"/><path d="M29.4 11.8C30.8 14.6 30.6 17.4 29.6 19.8"/><path d="M34.2 12.6C35.4 15 35.2 17.2 34.4 19.2"/><path d="M14 16.6C15.6 17.8 16.4 19.6 16.4 21.6"/></g></g>'+
+   leg(19.5,"a")+
+   '<g class="lg a paw"><rect x="37" y="22" width="4.6" height="13.4" rx="2.3" fill="'+O+'" stroke="'+LN+'" stroke-width=".5"/><ellipse cx="39.3" cy="35" rx="3" ry="1.7" fill="'+P+'" stroke="'+LN+'" stroke-width=".45"/></g>'+
+   '<path d="M38 20.5C38.5 24.5 42 26 45 24.5C42.8 23 41.2 21 41 18Z" fill="'+P+'"/>'+
+   '<g stroke="'+LN+'" stroke-width=".6" stroke-linejoin="round"><path d="M38.2 11 37.6 1.8C37.6 1 38.4 .6 39.1 1.2L44.8 6.6Z" fill="'+O+'"/><path d="M46.4 6.4 53.2 1.6C53.9 1.1 54.6 1.6 54.5 2.4L53.2 11.4Z" fill="'+O+'"/>'+
+   '<path d="M36.4 15.6C36.4 9.6 40.6 6 46 6C51.4 6 55.4 9.6 55.4 15C55.4 18 54.4 20.4 52.4 22C50 24 42 24.4 39 22C37.2 20.6 36.4 18.4 36.4 15.6Z" fill="'+O+'"/></g>'+
+   '<g fill="'+PK+'"><path d="M39.4 8.6 39.2 3.6 43 7Z"/><path d="M48.6 6.4 53 3.4 52.2 9Z"/></g>'+
+   '<path d="M45.4 6.4 46 9.8 46.6 6.4Z M42.8 7 44.2 9.8 44.2 7.2Z M49.2 7 47.8 9.8 47.8 7.2Z" fill="'+S+'"/>'+
+   '<path d="M45 18.4C45 16.2 47 15.4 49.6 15.4C52.6 15.4 55 16.4 55 18.6C55 21 52.6 22.4 50 22.4C47 22.4 45 20.8 45 18.4Z" fill="'+P+'"/>'+
+   '<g><ellipse cx="44.6" cy="13.4" rx="2" ry="2.3" fill="#C9973E"/><ellipse cx="51" cy="13.2" rx="1.8" ry="2.2" fill="#C9973E"/><ellipse cx="45" cy="13.5" rx="1" ry="1.9" fill="'+D+'"/><ellipse cx="51.3" cy="13.3" rx=".9" ry="1.8" fill="'+D+'"/><circle cx="45.4" cy="12.6" r=".55" fill="#fff"/><circle cx="51.7" cy="12.4" r=".5" fill="#fff"/></g>'+
+   '<path d="M52.2 16.4H54.2L53.2 17.7Z" fill="'+PK+'" stroke="'+LN+'" stroke-width=".35" stroke-linejoin="round"/>'+
+   '<path d="M53.2 17.7V18.6M53.2 18.6Q52.2 19.8 51 19.2M53.2 18.6Q54 19.6 55 19.1" stroke="'+D+'" stroke-width=".55" fill="none" stroke-linecap="round"/>'+
+   '<g stroke="#fff" stroke-width=".4" stroke-linecap="round" opacity=".75"><path d="M54.6 18.2 60 17.2"/><path d="M54.6 19.2 60 19.6"/></g>'+
+   '</g></g></svg>';
   // His paw, pressed against the screen: orange fur, pink toe beans.
-  var PB="#F49BA6";
   var GLASS='<svg viewBox="0 0 132 132" aria-hidden="true">'+
     '<circle class="ring" cx="66" cy="72" r="56" fill="none" stroke="#FFC23A" stroke-width="4"/>'+
-    '<g class="print" fill="'+O+'"><ellipse cx="66" cy="84" rx="26" ry="21"/><ellipse cx="34" cy="52" rx="10" ry="13"/><ellipse cx="54" cy="36" rx="10" ry="13"/><ellipse cx="78" cy="36" rx="10" ry="13"/><ellipse cx="98" cy="52" rx="10" ry="13"/></g>'+
-    '<g class="pad"><path d="M66 128C34 128 18 108 18 82C18 52 38 18 66 18S114 52 114 82C114 108 98 128 66 128Z" fill="'+O+'"/>'+
-    '<g fill="'+S+'"><path d="M30 60q6 3 10 10" stroke="'+S+'" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M102 60q-6 3-10 10" stroke="'+S+'" stroke-width="3" fill="none" stroke-linecap="round"/></g>'+
-    '<g fill="'+PB+'"><path d="M66 70c14 0 24 10 24 20 0 9-7 14-14 12-4-1-6-2-10-2s-6 1-10 2c-7 2-14-3-14-12 0-10 10-20 24-20Z"/><ellipse cx="38" cy="56" rx="8" ry="10"/><ellipse cx="55" cy="42" rx="8" ry="10.5"/><ellipse cx="77" cy="42" rx="8" ry="10.5"/><ellipse cx="94" cy="56" rx="8" ry="10"/></g>'+
-    '<g fill="#fff" opacity=".45"><ellipse cx="60" cy="80" rx="6" ry="3"/><ellipse cx="52" cy="38" rx="2.4" ry="3.4"/><ellipse cx="74" cy="38" rx="2.4" ry="3.4"/></g></g></svg>';
+    '<g class="print" fill="'+PK+'"><path d="M66 76c15 0 26 10 26 21 0 9-7 14-15 12-4-1-7-2-11-2s-7 1-11 2c-8 2-15-3-15-12 0-11 11-21 26-21Z"/><ellipse cx="31" cy="58" rx="8" ry="10"/><ellipse cx="52" cy="40" rx="8" ry="10.5"/><ellipse cx="80" cy="40" rx="8" ry="10.5"/><ellipse cx="101" cy="58" rx="8" ry="10"/></g>'+
+    '<g class="pad" stroke="'+LN+'" stroke-width="2.4"><g fill="'+O+'"><ellipse cx="66" cy="92" rx="38" ry="32"/><ellipse cx="30" cy="58" rx="15" ry="18"/><ellipse cx="52" cy="38" rx="15" ry="18"/><ellipse cx="80" cy="38" rx="15" ry="18"/><ellipse cx="102" cy="58" rx="15" ry="18"/></g>'+
+    '<g fill="'+PK+'" stroke-width="1.6"><path d="M66 76c15 0 26 10 26 21 0 9-7 14-15 12-4-1-7-2-11-2s-7 1-11 2c-8 2-15-3-15-12 0-11 11-21 26-21Z"/><ellipse cx="31" cy="58" rx="8" ry="10"/><ellipse cx="52" cy="40" rx="8" ry="10.5"/><ellipse cx="80" cy="40" rx="8" ry="10.5"/><ellipse cx="101" cy="58" rx="8" ry="10"/></g>'+
+    '<g fill="#fff" stroke="none" opacity=".5"><ellipse cx="58" cy="86" rx="7" ry="3.4"/><ellipse cx="49" cy="35" rx="2.6" ry="3.6"/><ellipse cx="77" cy="35" rx="2.6" ry="3.6"/></g></g></svg>';
   var busy=false, typed="";
   function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
   function move(el,from,to,ms,ease){ var a=el.animate([{transform:"translateX("+from+"px)"},{transform:"translateX("+to+"px)"}],{duration:ms,easing:ease||"linear",fill:"forwards"}); return a.finished.catch(function(){}); }
