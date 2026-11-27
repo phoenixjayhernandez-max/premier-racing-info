@@ -1,12 +1,12 @@
 # Site status
 
-Checked 2026-11-23 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ✅ 0 |
-| 3 | Standings | ✅ 0 |
+| 3 | Standings | ⚠️ 1 |
 | 4 | Series directory | ⚠️ 1 |
 | 5 | Watch | ⚠️ 2 |
 | 6 | Tickets | ✅ 0 |
@@ -55,9 +55,9 @@ _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, 
 ## 3. Standings
 _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 
-- Nothing to do.
+- [ ] Supercars: last race in standings is Gold Coast 500 (2026-10-25), 32 days ago — check for newer rounds
 
-<details><summary>Up to date (20)</summary>
+<details><summary>Up to date (19)</summary>
 
 - Formula 1: current (Las Vegas Grand Prix)
 - IMSA WeatherTech: current (Motul Petit Le Mans (season finale))
@@ -74,7 +74,6 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 - MotoGP: current (Portuguese GP (Portimão))
 - Formula E: last race London ePrix (season finale) (2026-08-16)
 - WRC: last race Rally Italia Sardegna (2026-10-04)
-- Supercars: last race Gold Coast 500 (2026-10-25); between rounds, next Adelaide Grand Final · Nov 26–29
 - Super GT: last race Motegi Grand Final (season finale) (2026-11-08)
 - DTM: last race Hockenheim finale, Race 2 (2026-10-11)
 - Formula 2: last race Baku (2026-09-26); between rounds, next Lusail, Qatar · Nov 27–29
@@ -89,7 +88,7 @@ _All 109 series: status, champion or leader, next round, season dates (world.js)
 
 <details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 22, 2026 (1 days ago)
+- Directory last researched Nov 22, 2026 (4 days ago)
 
 </details>
 
@@ -99,7 +98,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - [ ] Moto2 races this weekend (Valencia (finale) · Nov 27–29) with no start time
 - [ ] Moto3 races this weekend (Valencia (finale) · Nov 27–29) with no start time
 
-<details><summary>Up to date (17)</summary>
+<details><summary>Up to date (18)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -116,6 +115,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - MotoGP: FOX Sports / FS1
 - Formula 2: start time saved for this weekend
 - Carrera Cup AU: start time saved for this weekend
+- NASCAR Brasil: start time saved for this weekend
 - Supercars: start time saved for this weekend
 - W2RC / Dakar: start time saved for this weekend
 
@@ -146,7 +146,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.2 hours ago (270 headlines)
+- News last collected 0.1 hours ago (279 headlines)
 
 </details>
 
@@ -157,7 +157,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 
 <details><summary>Up to date (2)</summary>
 
-- Pages last rebuilt November 23, 2026
+- Pages last rebuilt November 27, 2026
 - 554 pages in the sitemap
 
 </details>
@@ -165,7 +165,7 @@ _The ~530 generated pages, sitemap and the crawlable block in index.html (tools/
 ## 14. eSports
 _Sim racing championships, upcoming events and official games on the eSports tab (ESPORTS in index.html)_
 
-- [ ] eSports tab last checked 2026-11-09 (14 days ago)
+- [ ] eSports tab last checked 2026-11-09 (17 days ago)
 - [ ] F1 Sim Racing World Championship: check whether the next season has been announced
 - [ ] Porsche Esports Supercup: check whether the next season has been announced
 
