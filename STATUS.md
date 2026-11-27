@@ -1,13 +1,13 @@
 # Site status
 
-Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-27 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ⚠️ 2 |
 | 3 | Standings | ✅ 0 |
-| 4 | Series directory | ⚠️ 1 |
+| 4 | Series directory | ✅ 0 |
 | 5 | Watch | ✅ 0 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ✅ 0 |
@@ -24,9 +24,10 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 
 - Nothing to do.
 
-<details><summary>Up to date (3)</summary>
+<details><summary>Up to date (4)</summary>
 
 - Qatar Grand Prix (Formula 1, 2026-11-29) has start times
+- Abu Dhabi Grand Prix (Formula 1, 2026-12-06) has start times
 - Adelaide (GT World Challenge Australia, 2026-11-29) has start times
 - Valencia Grand Prix (MotoGP, 2026-11-29) has start times
 
@@ -86,11 +87,12 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- [ ] SCORE: season finished but no champion listed
+- Nothing to do.
 
-<details><summary>Up to date (1)</summary>
+<details><summary>Up to date (2)</summary>
 
-- Directory last researched Nov 22, 2026 (4 days ago)
+- Directory last researched Nov 22, 2026 (5 days ago)
+- Every series has a current status and next round
 
 </details>
 
@@ -153,7 +155,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.1 hours ago (279 headlines)
+- News last collected 0.7 hours ago (279 headlines)
 
 </details>
 
@@ -177,7 +179,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-26 (0 days ago)
+- eSports tab last checked 2026-11-26 (1 days ago)
 - 5 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
