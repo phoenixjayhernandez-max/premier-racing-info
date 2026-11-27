@@ -5,7 +5,7 @@ Checked 2026-11-26 by `node tools/check-site.mjs`. Sections are in the order we 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
-| 2 | Results & picks | ✅ 0 |
+| 2 | Results & picks | ⚠️ 2 |
 | 3 | Standings | ✅ 0 |
 | 4 | Series directory | ⚠️ 1 |
 | 5 | Watch | ✅ 0 |
@@ -35,7 +35,8 @@ _Race dates, session start times and per-session stream links (RAW, SESSIONS, SE
 ## 2. Results & picks
 _Winners on race pages and the top three used to score picks (WINNERS, PODIUMS, RESULT_FOR)_
 
-- Nothing to do.
+- [ ] No highlights video yet: Las Vegas Grand Prix (Formula 1, 2026-11-21) (add to HIGHLIGHTS)
+- [ ] No highlights video yet: Portuguese Grand Prix (MotoGP, 2026-11-22) (add to HIGHLIGHTS)
 
 <details><summary>Up to date (10)</summary>
 
@@ -152,7 +153,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.3 hours ago (279 headlines)
+- News last collected 0.4 hours ago (279 headlines)
 
 </details>
 
