@@ -13,7 +13,7 @@ Sections 1–9 and 14 are checked by the script. Sections 10–13 can't be judge
 | # | Section | What it covers | Data it comes from | Done means | Last done |
 |---|---|---|---|---|---|
 | 1 | Calendar & race pages | Race dates, session start times, per-session stream links | `RAW`, `SESSIONS`, `SESSION_WATCH` | Every race in the next 7 days has start times; next year's calendar is in for each tracked series | |
-| 2 | Results & picks | Winners on race pages, top three for the picks game | `WINNERS`, `PODIUMS`, `RESULT_FOR`, `LIVE` | Every finished race has a winner; every finished F1 race has a `PODIUMS` line | |
+| 2 | Results & picks | Winners on race pages, top three for the picks game, race highlight videos | `WINNERS`, `PODIUMS`, `RESULT_FOR`, `LIVE`, `HIGHLIGHTS` | Every finished race has a winner; every finished F1 race has a `PODIUMS` line; big-series races from the last 10 days have a `HIGHLIGHTS` video (official channel only; confirm title and channel with `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID` before adding) | |
 | 3 | Standings | Last race, standings and notes for 21 series | `STATS`, `MORE_STATS`, `statsAsof` | Each series' standings are after its most recent race | |
 | 4 | Series directory | All 98 series: status, champion or leader, next round | `world.js` | Researched in the last 7 days; no passed "next" dates; finished seasons have a champion | |
 | 5 | Watch | Where to watch in the US, start times for other series | `WATCH`, `world.js` watch, `WORLD_TIMES` | Every series has watch links; every series racing this weekend has a start time | |

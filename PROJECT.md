@@ -23,6 +23,12 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 - Phones under 460px show just the PRI mark in the app header.
 - Regenerate icons, favicon and share image with `python3 tools/make-icons.py`; bump `og.png?v=N` in index.html and build-pages.mjs when the share image changes.
 
+## Race highlights (Nov 26, 2026)
+- `HIGHLIGHTS` in index.html: "race id": ["YouTube video id", "channel"], official series channel or US broadcaster only, confirmed with `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json`. With an id, race sheets play it in place (youtube-nocookie, loads on tap) and race pages embed it; without one they show a "Watch highlights on YouTube" search button. check-site section 2 lists big-series races from the last 10 days with no video.
+
+## Instagram results post (Nov 26, 2026)
+- `python3 tools/make-results-post.py [YYYY-MM-DD]` makes "Weekend results" for the weekend just finished: `01-results.png` (feed, 1080x1350), `story.png` (1080x1920) and `caption.txt`, from WINNERS plus directory series in MORE_STATS (`tools/results-data.mjs`). Output goes to `results-post/` (git-ignored); for Phoenix to post by hand on Sunday night or Monday.
+
 ## Instagram weekend post (Nov 8, 2026)
 - `python3 tools/make-weekend-post.py [YYYY-MM-DD]` makes the "This weekend in racing" set for the Fri–Sun weekend (current if Fri–Sun, else next): `01-weekend.png` (feed, 1080x1350), one carousel slide per race with every session, `story.png` (1080x1920, footer kept above the reply bar) and `caption.txt`. Times are Central; "where to watch" is the race's SESSION_WATCH entry or the series' first WATCH link.
 - Data comes from `tools/weekend-data.mjs` (RAW, SESSIONS, WATCH, WORLD_TIMES for "Also racing").

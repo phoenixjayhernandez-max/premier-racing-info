@@ -892,7 +892,7 @@ main{max-width:1200px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;border-top:var(--rule-bar) solid var(--color-ink);padding-top:var(--space-md);margin-bottom:var(--space-lg)}
 .sec-head h2{font-size:var(--text-section);line-height:.98}
 .sec-aside{color:var(--color-muted);font-size:var(--text-sm)}
-.guide{padding:var(--space-xl) 0}.es-watch{display:flex;flex-direction:column;gap:6px;margin-top:var(--space-sm)}.es-watch>b{font-family:var(--display);font-weight:800;font-size:.95rem;text-transform:uppercase;letter-spacing:.02em}.es-watch .mine{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin:0}.recap{padding:var(--space-xl) 0 0}.rc-list{list-style:none;margin:var(--space-sm) 0 0;padding:0}.rc-row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-top:1px solid var(--rule);cursor:pointer}.rc-row:first-child{border-top:0}.rc-what{display:flex;flex-direction:column;gap:2px;min-width:0}.rc-what b{font-weight:600}.rc-what .race-a{color:inherit}.rc-win{font-size:.9rem}.rc-win.pend{color:var(--sub)}.rc-champ{font-size:.8rem;color:var(--sub)}.rc-tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.1;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;color:var(--sub);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
+.guide{padding:var(--space-xl) 0}.es-watch{display:flex;flex-direction:column;gap:6px;margin-top:var(--space-sm)}.es-watch>b{font-family:var(--display);font-weight:800;font-size:.95rem;text-transform:uppercase;letter-spacing:.02em}.es-watch .mine{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin:0}.hl-play{all:unset;cursor:pointer;position:relative;display:block;width:100%;aspect-ratio:16/9;margin-top:8px;border-radius:var(--r);overflow:hidden;background:#000}.hl-play img{width:100%;height:100%;object-fit:cover;display:block}.hl-btn{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;display:grid;place-items:center;font-size:1.6rem;padding-left:4px}.hl-play:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}.hl-frame{position:relative;width:100%;aspect-ratio:16/9;margin-top:8px;border-radius:var(--r);overflow:hidden;background:#000}.hl-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.recap{padding:var(--space-xl) 0 0}.rc-list{list-style:none;margin:var(--space-sm) 0 0;padding:0}.rc-row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-top:1px solid var(--rule);cursor:pointer}.rc-row:first-child{border-top:0}.rc-what{display:flex;flex-direction:column;gap:2px;min-width:0}.rc-what b{font-weight:600}.rc-what .race-a{color:inherit}.rc-win{font-size:.9rem}.rc-win.pend{color:var(--sub)}.rc-champ{font-size:.8rem;color:var(--sub)}.rc-tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.1;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;color:var(--sub);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
 .g-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--space-xl) var(--space-lg)}
 .g-dh{font-family:var(--font-body);font-weight:600;font-size:var(--text-md);text-transform:none;letter-spacing:0;padding-bottom:var(--space-xs);border-bottom:1px solid var(--color-ink)}
 .g-list{list-style:none;margin:0;padding:0}
@@ -1929,6 +1929,10 @@ const SESSION_WATCH = {
 
 
 
+// Official race highlight videos on YouTube: "race id": ["video id", "channel"]. Only the series' own channel (or its US broadcaster's),
+// checked with https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID before adding. Races without one get a YouTube search button.
+const HIGHLIGHTS = {
+};
 const LIVE = {};
 const WINNERS_LIVE = {};
 // Top three finishers of each race, used to score prediction picks. Add one line per finished race.
@@ -2450,6 +2454,18 @@ function schedHTML(id, compact, lit = true){
     return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}${sw ? `<a class="s-watch" href="${esc(sw[1])}" target="_blank" rel="noopener" aria-label="Watch ${esc(x[0])}: ${esc(sw[0])}">${sw[2] ? (on ? "Watch live" : "Watch") + " on " + esc(sw[0]) : /schedule/i.test(sw[0]) ? esc(sw[0]) : "On " + esc(sw[0])} ↗</a>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
   }).join("")}</table>`;
 }
+// Race highlights: the official video plays here (privacy-enhanced, loads only when tapped), or a YouTube search for this race
+function hlSearch(e){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(`${e.start.getFullYear()} ${e.name} ${SERIES_FULL[e.series]} race highlights`); }
+function highlightsHTML(e){
+  const h = HIGHLIGHTS[e.id];
+  if (h) return `<section class="card hl"><h3>Race highlights</h3><button class="hl-play" type="button" data-yt="${esc(h[0])}" aria-label="Play ${esc(e.name)} highlights"><img src="https://i.ytimg.com/vi/${esc(h[0])}/hqdefault.jpg" alt="" loading="lazy"><span class="hl-btn" aria-hidden="true">▶</span></button><p class="fine">Video: ${esc(h[1])} on YouTube. <a href="https://www.youtube.com/watch?v=${esc(h[0])}" target="_blank" rel="noopener" data-hl="${esc(e.id)}">Open on YouTube</a></p></section>`;
+  return `<section class="card hl"><h3>Race highlights</h3><div class="mine" style="margin:8px 0 0"><a class="btn watch ${e.series}" href="${hlSearch(e)}" target="_blank" rel="noopener" data-hl="${esc(e.id)}">Watch highlights on YouTube</a></div><p class="fine">Opens YouTube with this race's highlights from the official channels.</p></section>`;
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest && ev.target.closest(".hl-play");
+  if (b) { b.outerHTML = `<div class="hl-frame"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0" title="Race highlights" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`; track("highlights_play", { video: b.dataset.yt }); return; }
+  const a = ev.target.closest && ev.target.closest("a[data-hl]"); if (a) track("highlights_click", { race: a.dataset.hl });
+});
 function watchButtons(series, n = 9, lead = ""){
   const st = AFFILIATE.stream, su = n > 1 && st.series.includes(series) && affLink("stream");
   return WATCH[series].slice(0, n).concat(su ? [[`${st.name} · affiliate`, su, false, "aff"]] : []).map((w, i) =>
@@ -3863,6 +3879,7 @@ function openRace(id){
   } else if (!e.cancelled && !LIVE[e.id]) {
     h += `<section class="card"><h3>Results</h3><p class="lede" style="margin:0">${ph === "past" ? "Results for this round aren't loaded yet." : "Qualifying and race results show here during and after the weekend."}</p></section>`;
   }
+  if (!e.cancelled && (ph === "past" || WINNERS[e.id] || HIGHLIGHTS[e.id])) h += highlightsHTML(e);
 
   h += `<section class="card"><h3>The track</h3>${photoSlot(`${e.circuit} race track`, "", true)}<p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
   if (t) {

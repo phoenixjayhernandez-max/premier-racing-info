@@ -13,12 +13,12 @@ const read = f => fs.readFileSync(path.join(root, f), "utf8");
 const html = read("index.html");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES_FULL,WINNERS,PODIUMS,STATS,MORE_STATS,WATCH,WORLD_TIMES,ESPORTS};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + ";return {RAW,SESSIONS,SERIES_FULL,WINNERS,PODIUMS,STATS,MORE_STATS,WATCH,WORLD_TIMES,ESPORTS,HIGHLIGHTS};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const TICKETS = grabObj("TICKETS"), CIRCUIT_SITES = grabObj("CIRCUIT_SITES"), GEO = grabObj("GEO"), SERIES_TICKETS = grabObj("SERIES_TICKETS");
 global.window = {}; eval(read("world.js"));
 const WORLD = global.window.WORLD;
-const { RAW, SESSIONS, SERIES_FULL, WINNERS, PODIUMS, STATS, MORE_STATS, WATCH, WORLD_TIMES, ESPORTS } = data;
+const { RAW, SESSIONS, SERIES_FULL, WINNERS, PODIUMS, STATS, MORE_STATS, WATCH, WORLD_TIMES, ESPORTS, HIGHLIGHTS } = data;
 
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const WORLD_TO_APP = Object.fromEntries(Object.entries(APP_TO_WORLD).map(([a, w]) => [w, a]));
@@ -56,6 +56,8 @@ const SECTIONS = [
     const recent = done.filter(e => daysAgo(e.end) <= 21), older = done.filter(e => daysAgo(e.end) > 21 && !WINNERS[e.id]);
     for (const e of recent) WINNERS[e.id] ? ok.push(`Winner saved: ${nm(e)}`) : todo.push(`Missing winner (recent): ${nm(e)}`);
     if (older.length) todo.push(`Older races with no winner listed (${older.length}): ${older.map(e => e.id).join(", ")}`);
+    // Highlight videos for the big series' races in the last 10 days (official channel, checked with YouTube oEmbed)
+    for (const e of done.filter(e => daysAgo(e.end) <= 10 && ["f1", "nascar", "indy", "motogp", "imsa", "wec"].includes(e.s))) (HIGHLIGHTS[e.id] ? ok : todo).push(HIGHLIGHTS[e.id] ? `Highlights video: ${nm(e)}` : `No highlights video yet: ${nm(e)} (add to HIGHLIGHTS)`);
     const pickSeries = [...new Set(Object.keys(PODIUMS).map(id => (EV.find(e => e.id === id) || {}).s).filter(Boolean))];
     for (const s of pickSeries) {
       const first = EV.filter(e => PODIUMS[e.id] && e.s === s).map(e => e.end).sort()[0];

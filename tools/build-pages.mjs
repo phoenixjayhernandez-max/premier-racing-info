@@ -15,7 +15,7 @@ const SITE = "https://premierracinginfo.com";
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + ";return {ESPORTS,AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + "; return {HIGHLIGHTS,ESPORTS,AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const MORE_STATS = grabObj("MORE_STATS"), MORE_KEY = { nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const statsOf = app => STATS[app] || MORE_STATS[MORE_KEY[app]] || null;
@@ -23,7 +23,7 @@ const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CI
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
 const { AFFILIATE, AFF_NOTE, affLink, ticketSearch, relOf } = data;
-const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS } = data;
+const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS, HIGHLIGHTS } = data;
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const COLORS = { f1: "#D7261E", imsa: "#2563B8", wec: "#0F8A6C", gtwc: "#C2410C", gte: "#6D28D9", gtas: "#BE185D", gtau: "#0E7490", psc: "#4B5563", pccna: "#3F6212", mustang: "#7F1D1D" , nascar: "#A16207", indy: "#1E3A8A", motogp: "#86198F" };
 
@@ -68,7 +68,7 @@ a{color:inherit}header{background:var(--bg);border-bottom:2px solid var(--ink)}.
 nav.crumbs{font-size:.85rem;color:var(--sub);padding:10px 0 0}nav.crumbs a{color:var(--sub)}
 h1{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.05;margin:14px 0 6px}
 h2{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;text-transform:uppercase;font-size:1.3rem;margin:0 0 8px}
-.lede{color:var(--sub);margin:0 0 16px}.guide h3{font-size:1rem;margin:16px 0 6px}ul.tips{margin:0;padding-left:20px}ul.tips li{margin:0 0 6px}.card{background:transparent;border:0;border-top:2px solid var(--ink);border-radius:0;padding:16px 0 24px;margin:0 0 16px}
+.lede{color:var(--sub);margin:0 0 16px}.vid{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000;margin:0 0 8px}.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.guide h3{font-size:1rem;margin:16px 0 6px}ul.tips{margin:0;padding-left:20px}ul.tips li{margin:0 0 6px}.card{background:transparent;border:0;border-top:2px solid var(--ink);border-radius:0;padding:16px 0 24px;margin:0 0 16px}
 table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{padding:7px 4px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}th{font-size:.8rem;font-weight:600;color:var(--sub)}
 td.r{text-align:right;white-space:nowrap;font-weight:600}.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .btn{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid var(--rule);background:var(--panel2);text-decoration:none;font-weight:600;font-size:.9rem}
@@ -138,6 +138,11 @@ for (const e of EV) {
     const r = STATS[RESULT_FOR[e.id]].race;
     body += `<section class="card"><h2>Results</h2>${r.note ? `<p>${esc(r.note)}</p>` : ""}<table><tr><th>Pos</th><th>Driver</th><th>Team / car</th></tr>${r.rows.slice(0, 10).map(x => `<tr><td>${esc(x[0])}</td><td>${esc(x[2])}</td><td>${esc(x[3])}</td></tr>`).join("")}</table></section>`;
   } else if (WINNERS[e.id]) body += `<section class="card"><h2>Winner</h2><p>${esc(WINNERS[e.id])}</p></section>`;
+  if (past || WINNERS[e.id] || HIGHLIGHTS[e.id]) {
+    const hl = HIGHLIGHTS[e.id], q = encodeURIComponent(`${e.year} ${e.name} ${full} race highlights`);
+    body += hl ? `<section class="card"><h2>Race highlights</h2><div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${esc(hl[0])}?rel=0" title="${esc(nm)} highlights" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p><small>Video: ${esc(hl[1])} on YouTube.</small></p></section>`
+      : `<section class="card"><h2>Race highlights</h2><div class="btns"><a class="btn p" href="https://www.youtube.com/results?search_query=${q}" rel="noopener">▶ Watch highlights on YouTube</a></div></section>`;
+  }
   body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watchList(e.s)}</div></section>`;
   const tk = ticketLinks(e);
   if (tk.length) body += `<section class="card"><h2>Tickets</h2><div class="btns">${tk.map((t, i) => `<a class="btn${i === 0 ? " p" : ""}" href="${esc(t[1])}" rel="${relOf(t)}">${esc(t[0])}</a>`).join("")}</div>${tk.some(t => t[2] === "aff") ? `<p><small>${esc(AFF_NOTE)}</small></p>` : ""}</section>`;
