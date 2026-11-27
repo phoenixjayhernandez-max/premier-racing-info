@@ -72,9 +72,9 @@ const PHOTO_NOT = /\b(walk(s|about|ing)?|paddock|hospitality|motorhomes?|fan ?fo
 // Every photo must also say it is motor racing somewhere in its title or categories.
 const PHOTO_YES = /\b(rac(e|es|ing|ed)|racecars?|motor ?sports?|grand prix|e-?prix|qualifying|practice|warm-?up|starting grids?|grids?|starts? in|laps?|pit ?(lane|stops?|wall)|formula|f[1-4]|nascar|indy ?car|indy ?nxt|indy lights|indianapolis 500|indy 500|motogp|moto[23e]|superbikes?|rally(ing)?|endurance|hypercars?|gt[34]|gtp|lmp[1-3]|lmgt3|lmh|lmdh|(24|12|8|6) hours|hours of|sprint cars?|stock cars?|touring cars?|dirt track|hill ?climb|drag rac\w*|top fuel|funny cars?|dragsters?|supercross|motocross|trophy trucks?|baja|time attack|carrera cup|supercup|cup series|truck series|xfinity|super formula|super gt|dtm|wrc|wec|imsa|blancpain|gt world challenge|world of outlaws|late models?|drift(ing)?|enduro|off-?road|rock crawl\w*|trofeo|challenge|flat ?track|baggers?|modifieds?|dirtcar)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics10"; // Nov 9 2026: no paddock/people shots, F1 needs a car (racepics9: 2026+ F1 only)
+const PHOTOKEY = KEY + "-racepics11"; // Nov 26 2026: no government/people photos, every photo needs a car on track (racepics10: no paddock/people shots)
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
-try { ["-freepics1", "-freepics2", "-img2", "-racepics1", "-racepics7", "-racepics8", "-racepics9"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
+try { ["-freepics1", "-freepics2", "-img2", "-racepics1", "-racepics7", "-racepics8", "-racepics9", "-racepics10"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
 let PHOTO_CACHE = { t: 0, by: {}, tried: {} }; // per series: photos found, and when a series was last searched
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
@@ -90,8 +90,14 @@ function savePhotos(){ try { localStorage.setItem(PHOTOKEY, JSON.stringify(PHOTO
 const PHOTO_NAME = "[A-ZÀ-Ý][\\w'’.-]+(?: [A-ZÀ-Ý][\\w'’.-]+){1,2}";
 // Nov 9 2026: "Lando Norris at the Melbourne Walk during …" got through the old rule and filled the F1 hero with people.
 const PHOTO_PEOPLE = new RegExp(`^\\s*${PHOTO_NAME} (?:(?:with|and|&) ${PHOTO_NAME} )?(?:at|during|in|with|on|before|after|arriving|walking|signing|celebrat\\w*|talking|speaking|greeting|waving|poses?|posing)\\b`);
+// Nov 26 2026: a Virginia governor's-office photo ("Name - September 14, 2023", tagged with a NASCAR race) reached a race sheet.
+// Government, officials and ceremonies never; titles that are just a name and a date never; and every photo has to show a car or bike on track.
+const PHOTO_GOV = /\b(governors?|lt\.? governor|lieutenant governor|first (lady|family)|senators?|congress(man|woman|men|women)?|mayors?|secretary|presidents?|vice president|politicians?|delegates?|ambassadors?|ministers?|officials?|executive mansion|commonwealth of virginia|proclamations?|ceremon(y|ies)|ribbon[- ]cutting|groundbreaking|remarks|visits?|visiting|attends?|attending|meets|meeting|police|sheriffs?|troopers?|army|navy|air force|marines|national guard|soldiers?|veterans?|students?|schools?|children|kids|fans|crowds?|spectators?|honorary|grand marshal|flyovers?|anthem|invocation|press|media day|reception|gala|dinner|luncheon|banquet|awards?)\b/i;
+const PHOTO_NAME_DATE = /^\s*[A-ZÀ-Ý][\w'’.]*(?: [A-ZÀ-Ý][\w'’.]*){0,4}\s*[-–—,]\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2},? \d{4}\b/;
+const PHOTO_ONTRACK = /\b(cars?|racecars?|race cars?|stock cars?|No\.? ?\d+|#\d+|chevrolet|chevy|ford|toyota|camaro|mustang|camry|supra|honda|dallara|ferrari|porsche|mercedes|bmw|audi|lamborghini|mclaren|aston martin|cadillac|acura|lexus|corvette|alpine|peugeot|hyundai|nissan|ducati|yamaha|ktm|aprilia|suzuki|kawasaki|bikes?|motorcycles?|riders?|on track|laps?|turn \d+|corners?|chicane|hairpin|straight|banking|pit stops?|pit lane|start|starting grid|green flag|restart|race action|in action|overtak\w*|battle|leads|leading|trucks?|karts?|buggies|buggy|single[- ]seaters?|prototypes?|hypercars?|gt3|gt4|gtp|lmp\d|lmgt3|livery|sprint cars?|late models?|modifieds?|dragsters?|funny cars?)\b/i;
 function photoFits(wid, text, title){
   if (PHOTO_NOT.test(text) || !PHOTO_YES.test(text) || PHOTO_PEOPLE.test(title || "")) return false;
+  if (PHOTO_GOV.test(text) || PHOTO_NAME_DATE.test(title || "") || !PHOTO_ONTRACK.test(text)) return false;
   if (PHOTO_CAR[wid] && !PHOTO_CAR[wid].test(text)) return false;
   const need = PHOTO_NEED[wid];
   if (need) { if (!need[0].test(text)) return false; if (need[1] && need[1].test(need[2] ? title : text)) return false; return true; }

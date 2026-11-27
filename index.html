@@ -892,7 +892,7 @@ main{max-width:1200px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;border-top:var(--rule-bar) solid var(--color-ink);padding-top:var(--space-md);margin-bottom:var(--space-lg)}
 .sec-head h2{font-size:var(--text-section);line-height:.98}
 .sec-aside{color:var(--color-muted);font-size:var(--text-sm)}
-.guide{padding:var(--space-xl) 0}.recap{padding:var(--space-xl) 0 0}.rc-list{list-style:none;margin:var(--space-sm) 0 0;padding:0}.rc-row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-top:1px solid var(--rule);cursor:pointer}.rc-row:first-child{border-top:0}.rc-what{display:flex;flex-direction:column;gap:2px;min-width:0}.rc-what b{font-weight:600}.rc-what .race-a{color:inherit}.rc-win{font-size:.9rem}.rc-win.pend{color:var(--sub)}.rc-champ{font-size:.8rem;color:var(--sub)}.rc-tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.1;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;color:var(--sub);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
+.guide{padding:var(--space-xl) 0}.es-watch{display:flex;flex-direction:column;gap:6px;margin-top:var(--space-sm)}.es-watch>b{font-family:var(--display);font-weight:800;font-size:.95rem;text-transform:uppercase;letter-spacing:.02em}.es-watch .mine{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin:0}.recap{padding:var(--space-xl) 0 0}.rc-list{list-style:none;margin:var(--space-sm) 0 0;padding:0}.rc-row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-top:1px solid var(--rule);cursor:pointer}.rc-row:first-child{border-top:0}.rc-what{display:flex;flex-direction:column;gap:2px;min-width:0}.rc-what b{font-weight:600}.rc-what .race-a{color:inherit}.rc-win{font-size:.9rem}.rc-win.pend{color:var(--sub)}.rc-champ{font-size:.8rem;color:var(--sub)}.rc-tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.1;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;color:var(--sub);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-more{margin-top:var(--space-md)}.g-more>summary{list-style:none;cursor:pointer;width:100%;justify-content:center;padding:12px}.g-more>summary::-webkit-details-marker{display:none}.g-more[open]>summary{display:none}.g-more .g-days{margin-top:var(--space-lg)}
 .g-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--space-xl) var(--space-lg)}
 .g-dh{font-family:var(--font-body);font-weight:600;font-size:var(--text-md);text-transform:none;letter-spacing:0;padding-bottom:var(--space-xs);border-bottom:1px solid var(--color-ink)}
 .g-list{list-style:none;margin:0;padding:0}
@@ -1322,7 +1322,7 @@ main{max-width:1200px}
 /* Ash, my little tiger. A small tribute: tap the sleeping cat in the footer, or type "ash" or "tiger". */
 .ash-nap{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-sm);opacity:.9;color:var(--sub);font-size:.72rem;border-radius:6px;padding:2px 4px}
 .ash-nap:hover,.ash-nap:focus-visible{opacity:1}.ash-nap:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.ash-nap svg{width:42px;height:27px;display:block}
+.ash-nap svg{width:48px;height:30px;display:block}
 .ash-stage{position:fixed;left:0;right:0;bottom:calc(8px + env(safe-area-inset-bottom));height:110px;z-index:60;pointer-events:none;overflow:hidden}
 .ash-cat{position:absolute;bottom:0;left:0;width:104px;height:65px;will-change:transform}.ash-cat>svg{width:100%;height:100%;display:block;overflow:visible}
 .ash-cat .lg{transform-box:fill-box;transform-origin:50% 0}
@@ -1432,7 +1432,12 @@ main{max-width:1200px}
 <nav aria-label="Series"><a href="/series/f1/">F1</a><a href="/series/imsa/">IMSA</a><a href="/series/wec/">WEC</a><a href="/series/nascar-cup/">NASCAR</a><a href="/series/indycar/">IndyCar</a><a href="/series/motogp/">MotoGP</a></nav>
 <p>An independent fan site, not affiliated with, endorsed by or sponsored by any series, team, circuit or broadcaster. Series names and marks belong to their owners and are used only to identify them.</p>
 <nav aria-label="About"><button class="tlink" data-share="app">Share the app</button><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><button class="tlink" data-credits="1">Photo credits</button></nav>
-<button class="ash-nap" type="button" data-ash="1" aria-label="For Ash, my little tiger" title="For Ash"><svg viewBox="0 0 40 26" aria-hidden="true" focusable="false"><defs><radialGradient id="ashBall" cx=".45" cy=".35" r=".7"><stop offset="0" stop-color="#F6D2AA"/><stop offset=".7" stop-color="#EDB685"/><stop offset="1" stop-color="#DC9A62"/></radialGradient></defs><ellipse cx="20" cy="14" rx="16" ry="10.6" fill="url(#ashBall)" stroke="#9A6236" stroke-width=".6"/><g fill="none" stroke="#D48A52" stroke-width="1.3" stroke-linecap="round" opacity=".55"><path d="M10 6.6C12 9 12.4 12 11.4 14.8"/><path d="M15.4 4.2C17.2 7 17.4 10 16.6 12.6"/><path d="M21.4 3.8C22.6 6.4 22.6 9 22 11"/><path d="M6.4 11C8.4 12.4 9.2 14.4 9 16.6"/></g><path d="M27.6 9.2C31 8.6 34.2 10.6 34 14C33.8 17 31 18.6 28 18.2C25.4 17.8 24 15.6 24.6 13" fill="#EDB685" stroke="#9A6236" stroke-width=".55"/><path d="M29 9.4 30.6 6 32 9.8Z" fill="#EDB685" stroke="#9A6236" stroke-width=".5" stroke-linejoin="round"/><path d="M29.9 9 30.6 7.4 31.2 9.2Z" fill="#F0A3A0"/><g stroke="#24160C" stroke-width=".55" fill="none" stroke-linecap="round"><path d="M27.4 13.4Q28.4 14.2 29.4 13.4"/><path d="M30.8 13.2Q31.8 14 32.8 13.2"/></g><path d="M30.1 15.2H31.1L30.6 15.8Z" fill="#F0A3A0"/><path d="M5 17.4C8 23.4 20 25.2 28.6 21.6C31.4 20.4 33.6 19 34.4 17" fill="none" stroke="#9A6236" stroke-width="3.9" stroke-linecap="round"/><path d="M5 17.4C8 23.4 20 25.2 28.6 21.6C31.4 20.4 33.6 19 34.4 17" fill="none" stroke="#EDB685" stroke-width="2.8" stroke-linecap="round"/><path d="M5 17.4C8 23.4 20 25.2 28.6 21.6" fill="none" stroke="#D48A52" stroke-width="2.8" stroke-dasharray="1.2 2.4" opacity=".7"/><path d="M32 19.2C33.2 18.6 34 17.8 34.4 17" stroke="#FCEEDD" stroke-width="2.6" stroke-linecap="round" fill="none"/><ellipse cx="23" cy="18.6" rx="2.6" ry="1.5" fill="#FCEEDD" stroke="#9A6236" stroke-width=".45"/></svg></button></footer>
+<button class="ash-nap" type="button" data-ash="1" aria-label="For Ash, my little tiger" title="For Ash"><svg viewBox="0 0 48 30" aria-hidden="true" focusable="false"><defs><radialGradient id="ashBall2" cx=".42" cy=".3" r=".75"><stop offset="0" stop-color="#F9DDB9"/><stop offset=".6" stop-color="#EDB685"/><stop offset="1" stop-color="#D9955C"/></radialGradient></defs>body loaf
+'<path d="M5 20C3.6 11.6 10.4 5.4 20.6 5.2C29 5 35.6 8.6 37.4 14L40 22.6C40.6 25.4 38.4 27.2 34.8 27.4H9.6C6.8 27.4 5.4 24.2 5 20Z" fill="url(#ashBall2)" stroke="#8A5428" stroke-width=".7"/>soft stripes on the back
+'<g fill="none" stroke="#D48A52" stroke-width="1.5" stroke-linecap="round" opacity=".6"><path d="M12.4 7.6C14.4 10 15 13 14.4 16"/><path d="M18.2 5.8C19.8 8.6 20.2 11.6 19.6 14.6"/><path d="M24.4 5.6C25.6 8.2 25.8 11 25.2 13.6"/><path d="M8 11.6C10 12.8 11 14.8 11 17"/></g>tail wrapped along the front, light tip
+'<path d="M6.4 22.6C9 27 17 28.4 24.6 27.2" fill="none" stroke="#8A5428" stroke-width="4.4" stroke-linecap="round"/><path d="M6.4 22.6C9 27 17 28.4 24.6 27.2" fill="none" stroke="#EDB685" stroke-width="3.2" stroke-linecap="round"/><path d="M6.4 22.6C9 27 17 28.4 22 27.6" fill="none" stroke="#D48A52" stroke-width="3.2" stroke-dasharray="1.3 2.4" opacity=".7"/><path d="M22.8 27.4C24 27.2 25 27 25.6 26.8" stroke="#F8D9B6" stroke-width="3" stroke-linecap="round" fill="none"/>head resting on paws
+'<g stroke="#8A5428" stroke-width=".65" stroke-linejoin="round"><path d="M28.4 13.6 28.6 7.6C28.6 7 29.3 6.8 29.7 7.2L33 10.6Z" fill="#EDB685"/><path d="M36.6 10.4 40.2 7.6C40.6 7.2 41.3 7.5 41.2 8.1L40.6 13.8Z" fill="#EDB685"/><path d="M27.6 17C27.6 12.4 30.8 9.8 34.8 9.8C38.8 9.8 42 12.4 42 16.8C42 20.6 39 23 34.8 23C30.6 23 27.6 20.8 27.6 17Z" fill="#EDB685"/></g><g fill="#F0A3A0"><path d="M29.4 11.6 29.5 8.4 31.6 10.4Z"/><path d="M37.6 10.4 40 8.6 39.8 11.8Z"/></g><g fill="#D48A52" opacity=".7"><path d="M34.2 10 34.8 12.6 35.4 10Z"/><path d="M32.4 10.4 33.4 12.4 33.4 10.6Z"/><path d="M37.2 10.6 36.2 12.4 36.2 10.6Z"/></g><ellipse cx="34.8" cy="19.4" rx="3.8" ry="2.6" fill="#FCEEDD"/><g stroke="#2B1A0E" stroke-width=".7" fill="none" stroke-linecap="round"><path d="M30.6 16.2Q32 17.3 33.4 16.2"/><path d="M36.2 16.2Q37.6 17.3 39 16.2"/></g><path d="M34.2 18.3H35.4L34.8 19Z" fill="#F0A3A0"/>front paws tucked under the chin
+'<g fill="#FCEEDD" stroke="#8A5428" stroke-width=".55"><ellipse cx="30.4" cy="23.6" rx="3" ry="1.7"/><ellipse cx="38.6" cy="23.8" rx="3" ry="1.7"/></g></svg></button></footer>
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
@@ -2232,6 +2237,11 @@ const ESPORTS = {
     ["ir-chili-bowl-2026", "Chili Bowl", "iRacing", "Chili Bowl, Tulsa", "2026-12-15", "2026-12-20", "Dirt midget heats building to a 55-lap A-Main", "https://www.iracing.com/specialevents/", false],
     ["ir-pcc-vir-2026", "THE Production Car Challenge", "iRacing", "VIRginia International Raceway", "2026-12-18", "2026-12-19", "4 hours in production cars (MX-5, BMW M2 CS, GR86, Clio), solo or as a team", "https://www.iracing.com/specialevents/", false],
   ],
+  // Where to watch each event: [label, link, free]. iRacing special events stream on iRacing's own Twitch (often with RACESPOT); GT World Series on Gran Turismo LIVE.
+  watch: {
+    iracing: [["iRacing on Twitch", "https://www.twitch.tv/iracing", true], ["Find it on YouTube", "https://www.youtube.com/results?search_query=iRacing+special+event+live", false]],
+    "gtws-finals-2026": [["Gran Turismo LIVE", "https://www.gran-turismo.com/us/live/", true], ["Find it on YouTube", "https://www.youtube.com/results?search_query=Gran+Turismo+World+Series+World+Finals+2026", false]],
+  },
   // Pro championships. champs: [title, who, detail]
   series: [
     { id: "f1-sim", name: "F1 Sim Racing World Championship", sim: "F1 25", real: "f1", status: "Finished", season: "Mar 27 – May 28, 2026 · 12 races at 4 live events",
@@ -2252,7 +2262,7 @@ const ESPORTS = {
     { id: "gt-world-series", name: "Gran Turismo World Series", sim: "Gran Turismo 7", real: "", status: "In progress", season: "May 23 – Dec 6, 2026 · Milan, Tokyo, Singapore, then the finals",
       about: "Gran Turismo's official world championship, with the Nations Cup for drivers and the Manufacturers Cup for car brands.",
       champs: [], note: "World Finals in Tokyo on December 5–6.", next: "",
-      watch: [["Find it on YouTube", "https://www.youtube.com/results?search_query=Gran+Turismo+World+Series+2026"]], site: "https://www.gran-turismo.com/us/gt7/championships/2026" },
+      watch: [["Gran Turismo LIVE", "https://www.gran-turismo.com/us/live/"], ["Find it on YouTube", "https://www.youtube.com/results?search_query=Gran+Turismo+World+Series+2026"]], site: "https://www.gran-turismo.com/us/gt7/championships/2026" },
   ],
   // Official games of real series: [game, maker or platform, what it covers, real-world series ids, link]
   games: [
@@ -2480,7 +2490,8 @@ function pointsTower(list, c){
 
 
 // ---------- Photos (Wikipedia lead images, loaded on the phone) ----------
-const IMGKEY = KEY + "-img4";
+const IMGKEY = KEY + "-img5"; // Nov 26 2026: drivers and tracks must match by name
+try { localStorage.removeItem(KEY + "-img4"); } catch(e){}
 let imgCache = {};
 try { imgCache = JSON.parse(localStorage.getItem(IMGKEY) || "{}"); } catch(e){ imgCache = {}; }
 const imgPending = {};
@@ -2495,7 +2506,11 @@ function wikiImage(q, size = 800, photoOnly = false, track = false){
   return imgPending[ck] = fetch(url).then(r => r.json()).then(d => {
     const pages = Object.values((d.query && d.query.pages) || {}).sort((a, b) => a.index - b.index);
     // Photo-only: just the top search result, and only a real photo (no logos, maps or drawings).
-    const pg = photoOnly ? (pages[0] && pages[0].thumbnail && /\.jpe?g($|\/|\?)/i.test(pages[0].thumbnail.source) && !/\.svg/i.test(pages[0].thumbnail.source) ? pages[0] : null) : pages.find(p => p.thumbnail && (!track || TRACK_TITLE.test(p.title || "")));
+    // Nov 26 2026: the article has to be about this exact driver or track (surname / a distinctive word of the circuit's name in its title).
+    const who = / racing driver$/.test(q) ? fold(q.replace(/ racing driver$/, "")).split(/\s+/).pop() : "";
+    const trackWords = track ? fold(q.replace(/ race track$/, "")).split(/[^a-z0-9]+/).filter(x => x.length >= 4 && !/^(circuit|international|raceway|speedway|motor|motorsport|streets?|park|track|autodromo|street|grand|prix|course|racing)$/.test(x)) : [];
+    const sameTrack = p => !track || (TRACK_TITLE.test(p.title || "") && (!trackWords.length || trackWords.some(x => fold(p.title).includes(x))) && (!/\bstreets?\b/i.test(q) || /street|grand prix/i.test(p.title || "")));
+    const pg = photoOnly ? (pages[0] && pages[0].thumbnail && /\.jpe?g($|\/|\?)/i.test(pages[0].thumbnail.source) && !/\.svg/i.test(pages[0].thumbnail.source) && (!who || fold(pages[0].title || "").includes(who)) ? pages[0] : null) : pages.find(p => p.thumbnail && sameTrack(p));
     if (!pg || !pg.thumbnail || !pg.pageimage) { imgCache[ck] = 0; return 0; }
     return fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=url|extmetadata&iiextmetadatafilter=Artist|LicenseShortName&titles=" + encodeURIComponent("File:" + pg.pageimage)).then(r => r.json()).then(d2 => {
       const p2 = Object.values((d2.query && d2.query.pages) || {})[0], ii = p2 && p2.imageinfo && p2.imageinfo[0], m = (ii && ii.extmetadata) || {};
@@ -2590,9 +2605,9 @@ const PHOTO_NOT = /\b(walk(s|about|ing)?|paddock|hospitality|motorhomes?|fan ?fo
 // Every photo must also say it is motor racing somewhere in its title or categories.
 const PHOTO_YES = /\b(rac(e|es|ing|ed)|racecars?|motor ?sports?|grand prix|e-?prix|qualifying|practice|warm-?up|starting grids?|grids?|starts? in|laps?|pit ?(lane|stops?|wall)|formula|f[1-4]|nascar|indy ?car|indy ?nxt|indy lights|indianapolis 500|indy 500|motogp|moto[23e]|superbikes?|rally(ing)?|endurance|hypercars?|gt[34]|gtp|lmp[1-3]|lmgt3|lmh|lmdh|(24|12|8|6) hours|hours of|sprint cars?|stock cars?|touring cars?|dirt track|hill ?climb|drag rac\w*|top fuel|funny cars?|dragsters?|supercross|motocross|trophy trucks?|baja|time attack|carrera cup|supercup|cup series|truck series|xfinity|super formula|super gt|dtm|wrc|wec|imsa|blancpain|gt world challenge|world of outlaws|late models?|drift(ing)?|enduro|off-?road|rock crawl\w*|trofeo|challenge|flat ?track|baggers?|modifieds?|dirtcar)\b/i;
 const FREE_LIC = /^(cc[ -]by(-sa)?( \d(\.\d)?)?|cc0|public domain|pd\b|pdm)/i;
-const PHOTOKEY = KEY + "-racepics10"; // Nov 9 2026: no paddock/people shots, F1 needs a car (racepics9: 2026+ F1 only)
+const PHOTOKEY = KEY + "-racepics11"; // Nov 26 2026: no government/people photos, every photo needs a car on track (racepics10: no paddock/people shots)
 // Throw away photo lists saved by older versions of the site (they could include road cars and show cars)
-try { ["-freepics1", "-freepics2", "-img2", "-racepics1", "-racepics7", "-racepics8", "-racepics9"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
+try { ["-freepics1", "-freepics2", "-img2", "-racepics1", "-racepics7", "-racepics8", "-racepics9", "-racepics10"].forEach(k => localStorage.removeItem(KEY + k)); } catch(e){}
 let PHOTO_POOL = []; // { img, page, by, lic, tags:[world id], about, own }
 let PHOTO_CACHE = { t: 0, by: {}, tried: {} }; // per series: photos found, and when a series was last searched
 const plain = h => (new DOMParser().parseFromString(String(h || ""), "text/html").body.textContent || "").replace(/\s+/g, " ").trim(); // parsed inertly: no scripts, no image loads
@@ -2608,8 +2623,14 @@ function savePhotos(){ try { localStorage.setItem(PHOTOKEY, JSON.stringify(PHOTO
 const PHOTO_NAME = "[A-ZÀ-Ý][\\w'’.-]+(?: [A-ZÀ-Ý][\\w'’.-]+){1,2}";
 // Nov 9 2026: "Lando Norris at the Melbourne Walk during …" got through the old rule and filled the F1 hero with people.
 const PHOTO_PEOPLE = new RegExp(`^\\s*${PHOTO_NAME} (?:(?:with|and|&) ${PHOTO_NAME} )?(?:at|during|in|with|on|before|after|arriving|walking|signing|celebrat\\w*|talking|speaking|greeting|waving|poses?|posing)\\b`);
+// Nov 26 2026: a Virginia governor's-office photo ("Name - September 14, 2023", tagged with a NASCAR race) reached a race sheet.
+// Government, officials and ceremonies never; titles that are just a name and a date never; and every photo has to show a car or bike on track.
+const PHOTO_GOV = /\b(governors?|lt\.? governor|lieutenant governor|first (lady|family)|senators?|congress(man|woman|men|women)?|mayors?|secretary|presidents?|vice president|politicians?|delegates?|ambassadors?|ministers?|officials?|executive mansion|commonwealth of virginia|proclamations?|ceremon(y|ies)|ribbon[- ]cutting|groundbreaking|remarks|visits?|visiting|attends?|attending|meets|meeting|police|sheriffs?|troopers?|army|navy|air force|marines|national guard|soldiers?|veterans?|students?|schools?|children|kids|fans|crowds?|spectators?|honorary|grand marshal|flyovers?|anthem|invocation|press|media day|reception|gala|dinner|luncheon|banquet|awards?)\b/i;
+const PHOTO_NAME_DATE = /^\s*[A-ZÀ-Ý][\w'’.]*(?: [A-ZÀ-Ý][\w'’.]*){0,4}\s*[-–—,]\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2},? \d{4}\b/;
+const PHOTO_ONTRACK = /\b(cars?|racecars?|race cars?|stock cars?|No\.? ?\d+|#\d+|chevrolet|chevy|ford|toyota|camaro|mustang|camry|supra|honda|dallara|ferrari|porsche|mercedes|bmw|audi|lamborghini|mclaren|aston martin|cadillac|acura|lexus|corvette|alpine|peugeot|hyundai|nissan|ducati|yamaha|ktm|aprilia|suzuki|kawasaki|bikes?|motorcycles?|riders?|on track|laps?|turn \d+|corners?|chicane|hairpin|straight|banking|pit stops?|pit lane|start|starting grid|green flag|restart|race action|in action|overtak\w*|battle|leads|leading|trucks?|karts?|buggies|buggy|single[- ]seaters?|prototypes?|hypercars?|gt3|gt4|gtp|lmp\d|lmgt3|livery|sprint cars?|late models?|modifieds?|dragsters?|funny cars?)\b/i;
 function photoFits(wid, text, title){
   if (PHOTO_NOT.test(text) || !PHOTO_YES.test(text) || PHOTO_PEOPLE.test(title || "")) return false;
+  if (PHOTO_GOV.test(text) || PHOTO_NAME_DATE.test(title || "") || !PHOTO_ONTRACK.test(text)) return false;
   if (PHOTO_CAR[wid] && !PHOTO_CAR[wid].test(text)) return false;
   const need = PHOTO_NEED[wid];
   if (need) { if (!need[0].test(text)) return false; if (need[1] && need[1].test(need[2] ? title : text)) return false; return true; }
@@ -2758,6 +2779,7 @@ function fillPics(root = document){
   root.querySelectorAll(".pic:not(.ok)").forEach(el => {
     const wid = el.dataset.pic, h = picHash(el.dataset.key || wid), d = picDisc(wid);
     if (el.dataset.q) {
+      if (!wid) return; // a story with no series gets no photo, never another series' car
       const words = [...new Set(fold(el.dataset.q).split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !PIC_STOP.has(w) && !/^\d{1,2}$/.test(w)))];
       let best = null, bs = -1;
       for (let i = 0; i < all.length; i++) { const c = all[(h + i) % all.length]; const sc = picScore(c, words, wid) - (used.has(c.img) ? 2.5 : 0); if (sc > bs) { bs = sc; best = c; } }
@@ -5051,6 +5073,11 @@ function esEvents(){
   return ESPORTS.events.map(([id, name, sim, venue, s, e, about, link, pro]) => ({ id, name, sim, venue, s: esDate(s), e: esDate(e), about, link, pro }))
     .filter(e => e.e >= t).map(e => ({ ...e, ph: e.s <= t ? "now" : "future" })).sort((a, b) => a.s - b.s);
 }
+// Same look as the race sheet's "Where to watch": first button highlighted with a color mark, "Free" tag on free streams
+function esWatchButtons(list, id){
+  return (list || []).map((w, i) => `<a class="btn ${i === 0 ? "watch" : ""}" style="--c:var(--signal)" href="${esc(w[1])}" target="_blank" rel="noopener" data-es="${esc(id)}">${esc(w[0])}${w[2] ? ` <span class="free">Free</span>` : ""}</a>`).join("");
+}
+const esEventWatch = e => ESPORTS.watch[e.id] || (e.sim === "iRacing" ? ESPORTS.watch.iracing : null);
 const esWorld = id => { const w = worldById(id); return w ? (w.short || w.name) : id; };
 function renderEsports(){
   const el = document.getElementById("esBody"); if (!el) return;
@@ -5059,7 +5086,7 @@ function renderEsports(){
   let h = `<section class="sec"><h2 class="h2">Coming up</h2><p class="kicker">Pro finals and the big iRacing special events anyone with the game can enter. Start times are on each event’s page.</p>`;
   h += ev.length ? `<div class="card es-list">${ev.map(e => `<div class="es-ev ${e.ph}${e.pro ? " pro" : ""}">
       <span class="d">${esRange(e)}</span>
-      <span class="n">${esc(e.name)}${e.pro ? `<span class="tag es-pro">Pro final</span>` : ""}<small>${esc(e.sim)}${e.venue ? ` · ${esc(e.venue)}` : ""}</small><span class="ab">${esc(e.about)}</span></span>
+      <span class="n">${esc(e.name)}${e.pro ? `<span class="tag es-pro">Pro final</span>` : ""}<small>${esc(e.sim)}${e.venue ? ` · ${esc(e.venue)}` : ""}</small><span class="ab">${esc(e.about)}</span>${esEventWatch(e) ? `<span class="es-watch"><b>Where to watch</b><span class="mine">${esWatchButtons(esEventWatch(e), e.id)}</span></span>` : ""}</span>
       <span class="w">${when(e)}<a class="btn" href="${esc(e.link)}" target="_blank" rel="noopener" data-es="${esc(e.id)}">Details</a></span></div>`).join("")}</div>`
     : `<div class="card"><p class="lede" style="margin:0">No sim racing events listed right now. Check back soon.</p></div>`;
   h += `</section><section class="sec"><h2 class="h2">Pro championships</h2><p class="kicker">The official esports series of real championships, and who won them in ${SEASON}.</p><div class="es-grid">`;
@@ -5068,7 +5095,7 @@ function renderEsports(){
       <h3>${esc(x.name)}</h3><p class="es-season">${esc(x.season)}</p><p class="lede">${esc(x.about)}</p>
       ${x.champs.length ? `<div class="champs">${x.champs.map(c => `<div class="champ"><div class="cl">${esc(c[0])}</div><div class="w">${esc(c[1])}</div>${c[2] ? `<div class="x">${esc(c[2])}</div>` : ""}</div>`).join("")}</div>` : ""}
       ${x.note || x.next ? `<p class="fine">${esc([x.note, x.next].filter(Boolean).join(" "))}</p>` : ""}
-      <div class="mine es-btns">${x.watch.map(w => `<a class="btn star" aria-pressed="true" href="${esc(w[1])}" target="_blank" rel="noopener" data-es="${esc(x.id)}">${esc(w[0])}</a>`).join("")}<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener" data-es="${esc(x.id)}">Official site</a>${x.real ? `<button class="btn" data-world="${esc(x.real)}">Real ${esc(esWorld(x.real))}</button>` : ""}</div></article>`;
+      <div class="es-watch"><b>Where to watch</b><span class="mine">${esWatchButtons(x.watch.map(w => [w[0], w[1], /twitch|youtube|gran-turismo\.com\/\w+\/live/i.test(w[1]) && !/search_query/.test(w[1])]), x.id)}</span></div><div class="mine es-btns"><a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener" data-es="${esc(x.id)}">Official site</a>${x.real ? `<button class="btn" data-world="${esc(x.real)}">Real ${esc(esWorld(x.real))}</button>` : ""}</div></article>`;
   }
   h += `</div></section><section class="sec"><h2 class="h2">Race it yourself</h2><p class="kicker">The official games of the series on this site. Tap a series to see its real calendar.</p><div class="card es-list">`;
   for (const [g, by, about, real, link] of ESPORTS.games) {
