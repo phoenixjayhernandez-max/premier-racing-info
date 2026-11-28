@@ -247,6 +247,20 @@ for (const x of WORLD.series) {
     if (st.standings && !(st.champs && /before/i.test(st.standingsTitle || ""))) body += `<section class="card"><h2>${esc(st.standingsTitle || "Standings")}</h2><table><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr>${st.standings.slice(0, 10).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r[0])}${r.length > 2 ? `<br><small>${esc(r[1])}</small>` : ""}</td><td class="r">${r[r.length - 1]}</td></tr>`).join("")}</table></section>`;
     if (st.grid) body += `<section class="card"><h2>${esc(st.gridTitle && !/format/i.test(st.gridTitle) ? st.gridTitle : "Teams and drivers")}</h2><ul class="list">${st.grid.map(g => `<li><b>${esc(g[0])}</b> <small>${esc(g[1])} · ${esc(g[2])}</small></li>`).join("")}</ul></section>`;
   }
+  { // calendar, results, standings and entry list from data/series/<id>.json (SERIES-DATA.md)
+    const f = path.join(root, "data/series", x.id + ".json");
+    const D = !app && fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null;
+    if (D) {
+      const yrs = [...new Set((D.calendar || []).map(r => r.start.slice(0, 4)))];
+      for (const yr of yrs) body += `<section class="card"><h2>${yr} calendar</h2><table><tr><th>Rd</th><th>Event</th><th>Date</th><th>Winner</th></tr>${D.calendar.filter(r => r.start.startsWith(yr)).map(r => `<tr><td>${esc(r.rd || "")}</td><td>${esc(r.name)}${r.cancelled ? " (cancelled)" : r.provisional ? " (provisional)" : ""}<br><small>${esc([r.circuit, r.location].filter(Boolean).join(", "))}</small></td><td style="white-space:nowrap">${range(r.start, r.end || r.start)}</td><td>${esc(r.winner || "")}</td></tr>`).join("")}</table></section>`;
+      const last = [...(D.calendar || [])].reverse().find(r => r.results && (r.end || r.start) < today);
+      if (last) body += `<section class="card"><h2>Latest results: ${esc(last.name)}</h2>${last.results.map(bk => `<h3>${esc(bk.title || "Race")}</h3><table><tr><th>Pos</th><th>Driver</th><th>Team / car</th></tr>${bk.rows.slice(0, 10).map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[2])}</td><td>${esc(r[3] || "")}</td></tr>`).join("")}</table>`).join("")}</section>`;
+      if ((D.champions || []).length) body += `<section class="card"><h2>Champions</h2><ul class="list">${D.champions.map(c => `<li><b>${esc(c[1])}</b> <small>${esc(c[0])}${c[2] ? " · " + esc(c[2]) : ""}</small></li>`).join("")}</ul></section>`;
+      for (const tb of D.standings || []) body += `<section class="card"><h2>${esc(tb.title)} standings</h2>${D.standingsNote ? `<p><small>${esc(D.standingsNote)}</small></p>` : ""}<table><tr><th>Pos</th><th>Name</th><th style="text-align:right">Pts</th></tr>${tb.rows.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r[0])}${r.length > 2 ? `<br><small>${esc(r[1])}</small>` : ""}</td><td class="r">${esc(r[r.length - 1])}</td></tr>`).join("")}</table></section>`;
+      if ((D.entries || []).length) body += `<section class="card"><h2>${esc(D.entriesTitle || "Teams and drivers")}</h2><ul class="list">${D.entries.map(e => `<li><b>${e[0] ? "#" + esc(e[0]) + " " : ""}${esc(e[1])}</b> <small>${esc([e[2], e[3]].filter(Boolean).join(" · "))}</small></li>`).join("")}</ul></section>`;
+      body += `<p><small>Sources: ${(D.sources || []).map(s => `<a href="${esc(s[1])}" rel="noopener">${esc(s[0])}</a>${s[2] ? ` (${esc(s[2])})` : ""}`).join(" · ")}. Checked ${esc(D.updated || "")}.</small></p>`;
+    }
+  }
   if (watch.length) body += `<section class="card"><h2>How to watch in the US</h2><div class="btns">${watch.map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("")}</div></section>`;
   if (app) body += `<p><a class="btn" href="/recap/${app}-2026/">2026 season in review ›</a></p>`;
   body += `<p>${x.site ? `<a class="btn" href="${esc(x.site)}" rel="noopener">Official site ↗</a> ` : ""}<a class="btn p" href="/?alerts=${esc(x.id)}&amp;from=series">🔔 Get race alerts</a> <a class="btn" href="/?series=${esc(x.id)}">Open in the app ›</a></p>`;

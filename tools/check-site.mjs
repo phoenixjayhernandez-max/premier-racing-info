@@ -166,6 +166,31 @@ const SECTIONS = [
     }
     return { todo, ok };
   }],
+  [15, "Series data files", "Calendar, results, standings and entry lists for the 96 series outside the app (data/series/<id>.json, SERIES-DATA.md)", () => {
+    const todo = [], ok = [], T = JSON.parse(read("data/series/tiers.json"));
+    const byId = Object.fromEntries(WORLD.series.map(x => [x.id, x]));
+    const missing = [];
+    for (const tier of ["full", "partial", "limited"]) for (const id of T[tier]) {
+      const f = path.join(root, "data/series", id + ".json"), x = byId[id] || { name: id };
+      if (!fs.existsSync(f)) { missing.push([tier, id, x.name]); continue; }
+      let D; try { D = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { todo.push(`${x.name}: data/series/${id}.json is not valid JSON (${e.message})`); continue; }
+      const cal = D.calendar || [], past = cal.filter(r => (r.end || r.start) < today && !r.cancelled);
+      const noWin = past.filter(r => !r.winner && !r.results && daysAgo(r.end || r.start) >= 1);
+      const racing = cal.some(r => r.start <= today && (r.end || r.start) >= addDays(today, -10)) || cal.some(r => r.start > today) && past.length > 0;
+      const age = D.updated ? daysAgo(D.updated) : 999;
+      if (noWin.length) todo.push(`${x.name}: no winner for ${noWin.map(r => r.name).join(", ")}`);
+      if (!cal.length) todo.push(`${x.name}: no calendar in data/series/${id}.json`);
+      else if (!cal.some(r => r.start.startsWith(String(+today.slice(0, 4) + 1))) && !cal.some(r => r.start > today)) todo.push(`${x.name}: check whether the ${+today.slice(0, 4) + 1} calendar is out`);
+      if (!(D.standings || []).length && !(D.champions || []).length) todo.push(`${x.name}: no standings or champion`);
+      if (!(D.entries || []).length && tier !== "limited") todo.push(`${x.name}: no entry list`);
+      if (racing && age > 8) todo.push(`${x.name}: in season, last checked ${D.updated || "never"} (${age} days ago)`);
+      else ok.push(`${x.name} (${tier}): ${cal.length} rounds, checked ${D.updated || "?"}`);
+    }
+    const next = missing.slice(0, 5);
+    for (const [tier, id, name] of next) todo.push(`No data file yet (${tier} tier): ${name} → data/series/${id}.json`);
+    if (missing.length > next.length) todo.push(`${missing.length - next.length} more series still without a data file (see data/series/tiers.json)`);
+    return { todo, ok };
+  }],
 ];
 // Sections the script can't judge on its own; checked by hand, see SECTIONS.md
 const MANUAL = [[10, "Photos"], [11, "Accounts, alerts & picks game"], [12, "Design & speed"], [13, "Legal pages"]];

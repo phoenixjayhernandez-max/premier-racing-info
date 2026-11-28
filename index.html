@@ -226,6 +226,7 @@ main{max-width:1200px;margin:0 auto;padding-inline:var(--space-md);padding-block
 .card .story{margin:0 0 var(--space-xs);max-width:65ch}
 .asof{font-size:.8rem;color:var(--sub);margin:0 0 var(--space-md)}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sd-cal{display:flex;flex-direction:column}.sd-rd{display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;padding:10px 0;border-top:1px solid var(--rule)}.sd-rd:first-child{border-top:0}.sd-rd .sd-n{font-family:"Saira Condensed",system-ui,sans-serif;font-weight:800;font-size:1.2rem;color:var(--sub)}.sd-rd .nm{font-weight:600}.sd-rd .sd-d{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}.sd-rd.done .sd-d,.sd-rd.done .sd-n{color:var(--sub)}.sd-rd.nx{box-shadow:inset 3px 0 0 var(--sig);padding-left:8px}.sd-rd.cx{opacity:.55}.sd-w{margin-top:2px;font-weight:600}
 .tower{width:100%;border-collapse:separate;border-spacing:0 3px;font-variant-numeric:tabular-nums}
 .tower th{text-align:left;font-size:.7rem;font-weight:600;color:var(--sub);padding:var(--space-2xs) var(--space-xs)}
 .tower td{background:var(--panel-2);padding:var(--space-xs) var(--space-xs);vertical-align:middle}
@@ -4043,7 +4044,9 @@ function openWorld(id){
   h += `</div><p class="fine">Info checked ${esc((window.WORLD && window.WORLD.asof) || "")}${x.source ? `. <a href="${esc(x.source)}" target="_blank" rel="noopener" style="color:inherit">source</a>` : ""}. Dates and TV deals can change; check the official site.</p></section>`;
   const P = x.app && STATS[x.app] ? seriesHubHTML(x.app) : null;
   const wrap = t => `<div class="${x.app || ""}">${t}</div>`;
-  const news = seriesNewsHTML(x.id);
+  const news = seriesNewsHTML(x.id, 15);
+  const D = SDATA[x.id];
+  if (D === undefined) loadSData(x.id);
   const racing = `<section class="card"><h3>The racing</h3><dl class="kv">${row(x.discipline.startsWith("Moto") ? "Bikes" : "Cars", x.cars)}${row("Races in", x.region)}${row("Level", x.level)}</dl></section>`;
   const panes = [];
   if (P) {
@@ -4052,7 +4055,11 @@ function openWorld(id){
     if (P.stand) panes.push(["stand", "Standings", wrap(P.stand)]);
     panes.push(["drivers", x.discipline.startsWith("Moto") ? "Riders" : "Drivers", wrap(P.drivers) + racing]);
   } else {
-    panes.push(["overview", "Overview", h + `<section class="card"><h3>${SEASON} season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>` + racing]);
+    const S = D ? sdataHTML(x, D) : {};
+    panes.push(["overview", "Overview", (S.next || "") + h + `<section class="card"><h3>${SEASON} season</h3><dl class="kv">${row("Status", x.status)}${row("Champion", x.champion)}${row("Leader", x.leader)}${row("Next", x.next)}${row("Season", x.season)}${row("Rounds", x.rounds)}</dl></section>` + (S.top || "") + racing]);
+    if (S.cal) panes.push(["cal", "Calendar", S.cal + S.src]);
+    if (S.stand) panes.push(["stand", "Standings", S.stand + S.src]);
+    if (S.entries) panes.push(["drivers", x.discipline.startsWith("Moto") ? "Riders" : "Drivers", S.entries + S.src]);
   }
   if (news) panes.push(["news", "News", news]);
   const startPane = panes.some(p => p[0] === worldPane) ? worldPane : "overview";
@@ -4166,8 +4173,40 @@ function openNews(focusSearch){
   box.addEventListener("keydown", ev => { if (ev.key === "Enter") box.blur(); });
   if (focusSearch) { box.focus(); const n = box.value.length; box.setSelectionRange(n, n); }
 }
-function seriesNewsHTML(id){
-  const list = ((NEWS && NEWS.items) || []).filter(x => x.tags.includes(id)).slice(0, 4);
+// ---------- Series data files (data/series/<id>.json): calendar, results, standings and entry list ----------
+// For the series outside the app's 13 full calendars. Loaded when a series sheet opens; see SERIES-DATA.md.
+const SDATA = {};
+function loadSData(id){
+  SDATA[id] = null;
+  fetch(`/data/series/${encodeURIComponent(id)}.json`).then(r => r.ok ? r.json() : null).then(d => {
+    if (!d) return;
+    SDATA[id] = d;
+    const open = !document.getElementById("sheetBg").hidden && document.querySelector(`#sheet .sh-head [data-mystar="${CSS.escape(id)}"]`);
+    if (open) { const y = document.getElementById("sheet").scrollTop; openWorld(id); document.getElementById("sheet").scrollTop = y; }
+  }).catch(() => {});
+}
+const sdDay = s => new Date(s + "T12:00:00");
+const sdRange = (a, b) => { const f = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }); return !b || a === b ? f.format(sdDay(a)) : f.formatRange ? f.formatRange(sdDay(a), sdDay(b)) : f.format(sdDay(a)) + " – " + f.format(sdDay(b)); };
+function sdataHTML(x, D){
+  const t = today(), cal = D.calendar || [], S = { next: "", top: "", cal: "", stand: "", entries: "", src: "" };
+  const done = r => sdDay(r.end || r.start) < t, nx = cal.find(r => !done(r) && !r.cancelled), last = [...cal].reverse().find(r => done(r) && (r.winner || r.results));
+  const where = r => [r.circuit, r.location].filter(Boolean).map(esc).join(" · ");
+  if (nx) S.next = `<section class="card"><h3>${sdDay(nx.start) <= t ? "This weekend" : "Next round"}</h3><div class="hub-next"><div class="nm">${nx.rd ? `Round ${esc(nx.rd)}: ` : ""}${esc(nx.name)}</div><div class="loc">${where(nx)} · ${sdRange(nx.start, nx.end)}${sdDay(nx.start).getFullYear() !== SEASON ? " " + sdDay(nx.start).getFullYear() : ""}</div>${nx.note ? `<p class="fine" style="margin:4px 0 0">${esc(nx.note)}</p>` : ""}</div></section>`;
+  if (last) S.top = `<section class="card"><h3>Latest result</h3><p class="lede" style="margin:0 0 6px">${esc(last.name)} · ${sdRange(last.start, last.end)}</p>${last.results ? last.results.map(b => `<h3 class="h4">${esc(b.title || "Race")}</h3>${tower(b.rows.map(r => [String(r[0]), r[1] || "", r[2] || "", r[3] || "", r[4] || ""]), b.head3)}`).join("") : `<p style="margin:0;font-weight:700">Winner: ${esc(last.winner)}</p>`}</section>`;
+  if (cal.length) {
+    const yrs = [...new Set(cal.map(r => r.start.slice(0, 4)))];
+    S.cal = yrs.map(y => `<section class="card"><h3>${y} calendar</h3><div class="sd-cal">${cal.filter(r => r.start.startsWith(y)).map(r => `<div class="sd-rd${r === nx ? " nx" : ""}${done(r) ? " done" : ""}${r.cancelled ? " cx" : ""}"><div class="sd-n">${esc(r.rd || "")}</div><div class="sd-m"><div class="nm">${esc(r.name)}${r.cancelled ? ' <span class="tag">Cancelled</span>' : ""}${r.provisional ? ' <span class="tag">Provisional</span>' : ""}</div><div class="fine" style="margin:0">${where(r)}</div>${r.winner ? `<div class="sd-w">🏆 ${esc(r.winner)}</div>` : ""}${r.pole ? `<div class="fine" style="margin:0">Pole: ${esc(r.pole)}</div>` : ""}${r.note ? `<div class="fine" style="margin:0">${esc(r.note)}</div>` : ""}</div><div class="sd-d">${sdRange(r.start, r.end)}</div></div>`).join("")}</div></section>`).join("");
+  }
+  if ((D.champions || []).length || (D.standings || []).length) {
+    S.stand = `<section class="card"><h3>Standings</h3>${D.standingsNote ? `<p class="fine" style="margin:0 0 6px">${esc(D.standingsNote)}</p>` : ""}${(D.champions || []).length ? `<div class="champs">${D.champions.map(c => `<div class="champ"><div class="cl">${esc(c[0])}</div><div class="w">${esc(c[1])}</div><div class="x">${esc(c[2] || "")}</div></div>`).join("")}</div>` : ""}`
+      + (D.standings || []).map(tb => `<h3 class="h4">${esc(tb.title)}</h3>${pointsTower(tb.rows, x.app || "")}`).join("") + `</section>`;
+  }
+  if ((D.entries || []).length) S.entries = `<section class="card"><h3>${esc(D.entriesTitle || "Teams and drivers")}</h3><div class="teams">${D.entries.map(e => `<div class="team ${favHit(e.join(" ")) ? "fav" : ""}"><div class="a">${esc(e[1])}${e[0] ? ` <span class="fine" style="margin:0">#${esc(e[0])}</span>` : ""}</div><div class="b">${esc(e[2] || "")}</div>${e[3] ? `<div class="d">${esc(e[3])}</div>` : ""}</div>`).join("")}</div></section>`;
+  S.src = `<p class="fine">${(D.sources || []).map(s => `<a href="${esc(s[1])}" target="_blank" rel="noopener" style="color:inherit">${esc(s[0])}</a>${s[2] ? ` (${esc(s[2])})` : ""}`).join(" · ")}${D.updated ? ` · checked ${esc(D.updated)}` : ""}. Results can be changed by the stewards after a race.</p>`;
+  return S;
+}
+function seriesNewsHTML(id, n = 4){
+  const list = ((NEWS && NEWS.items) || []).filter(x => x.tags.includes(id)).slice(0, n);
   return list.length ? `<section class="card"><h3>Latest news</h3><div class="nlist">${list.map(newsItemHTML).join("")}</div></section>` : "";
 }
 function loadNews(){

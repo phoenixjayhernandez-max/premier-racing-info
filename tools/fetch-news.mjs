@@ -1,5 +1,6 @@
 // Collects the latest racing headlines from public RSS feeds and writes news.json.
 // Run by GitHub Actions every 30 minutes (.github/workflows/news.yml). No dependencies; Node 18+.
+// Sources: the series feeds below, keyword-tagged general feeds, and a Google News search per series in world.js.
 // Only headlines, links, times and thumbnails are stored. Tapping a story opens the original article.
 import fs from "node:fs";
 
@@ -91,8 +92,40 @@ function tagsFor(text, base){
   return [...t];
 }
 
-const now = Date.now(), keepMs = 10 * 86400000;
+const now = Date.now(), keepMs = 10 * 86400000, searchKeepMs = 21 * 86400000;
 const seen = new Set(), items = [], report = [];
+
+// Per-series Google News searches, so every series in world.js gets headlines (smaller series have no feed of their own).
+// A quarter of the series is searched each run (each one every ~2 hours); earlier results are kept from news.json.
+// A story only counts for a series if its headline matches that series' rule above (no loose matches).
+global.window = {}; eval(fs.readFileSync("world.js", "utf8"));
+const RULE = Object.fromEntries(RULES.map(r => [r[0], r]));
+const slot = Math.floor(now / 1800000) % 4;
+const SEARCHES = window.WORLD.series.filter((x, i) => RULE[x.id] && i % 4 === slot).map(x => {
+  const q = [...new Set([x.name, x.short].filter(Boolean))].map(n => `"${n}"`).join(" OR ");
+  return [x.id, `https://news.google.com/rss/search?${new URLSearchParams({ q: `${q} when:21d`, hl: "en-US", gl: "US", ceid: "US:en" })}`];
+});
+const getText = async url => { const r = await fetch(url, { headers: { "user-agent": "PremierRacingInfo/1.0 (+https://github.com/phoenixjayhernandez-max/premier-racing-info)", accept: "application/rss+xml, application/xml, text/xml, */*" }, signal: AbortSignal.timeout(20000) }); if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); };
+for (let i = 0; i < SEARCHES.length; i += 6) await Promise.all(SEARCHES.slice(i, i + 6).map(async ([id, url]) => {
+  try {
+    const xml = await getText(url), blocks = xml.match(/<item\b[\s\S]*?<\/item>/gi) || [];
+    let n = 0;
+    for (const b of blocks) {
+      const src = decode(tag(b, "source")), link = decode(tag(b, "link")), t = Date.parse(decode(tag(b, "pubDate")));
+      let title = decode(tag(b, "title")); if (src && title.endsWith(" - " + src)) title = title.slice(0, -(src.length + 3));
+      const [, re, not] = RULE[id];
+      if (!title || !/^https:\/\//.test(link) || !t || now - t > searchKeepMs || t - now > 3600000 || !re.test(title) || (not && not.test(title))) continue;
+      items.push({ source: src || "Google News", title, link, time: new Date(t).toISOString(), img: "", tags: tagsFor(title, [id]) });
+      if (++n >= 8) break;
+    }
+    report.push(`Google News ${id}: ${n}`);
+  } catch (e) { report.push(`Google News ${id}: FAILED ${e.message}`); }
+}));
+
+// Keep earlier stories (other series' searches, feeds that failed this run) while they're inside their window
+const prev = fs.existsSync("news.json") ? JSON.parse(fs.readFileSync("news.json", "utf8")) : null;
+for (const x of (prev && prev.items) || []) { const t = Date.parse(x.time); if (t && now - t <= (x.img || !/google/i.test(x.link) ? keepMs : searchKeepMs)) items.push(x); }
+
 await Promise.all(FEEDS.map(async ([source, url, base]) => {
   try {
     const r = await fetch(url, { headers: { "user-agent": "PremierRacingInfo/1.0 (+https://github.com/phoenixjayhernandez-max/premier-racing-info)", accept: "application/rss+xml, application/xml, text/xml, */*" }, signal: AbortSignal.timeout(20000) });
@@ -118,11 +151,10 @@ for (const x of items) {
   }
   seen.add(key); seen.add(tkey);
   out.push(x);
-  if (out.length >= 300) break;
+  if (out.length >= 600) break;
 }
 for (const line of report.sort()) console.log(line);
 if (!out.length) { console.log("No stories fetched; keeping the old news.json"); process.exit(0); }
-const old = fs.existsSync("news.json") ? JSON.parse(fs.readFileSync("news.json", "utf8")) : null;
-if (old && JSON.stringify(old.items) === JSON.stringify(out)) { console.log("No new stories"); process.exit(0); }
+if (prev && JSON.stringify(prev.items) === JSON.stringify(out)) { console.log("No new stories"); process.exit(0); }
 fs.writeFileSync("news.json", JSON.stringify({ updated: new Date().toISOString(), items: out }));
 console.log(`news.json written: ${out.length} stories`);

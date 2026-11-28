@@ -67,3 +67,23 @@ Big pro teams come later, once there are good examples to show.
 Use the `status` column in `team_claims` (new → contacted → verified → live, or rejected).
 For teams you've messaged that haven't submitted yet, keep a simple list: team, series, how you contacted them,
 date, follow-up date.
+
+## Series data request
+For series that publish little (limited tier in `data/series/tiers.json`) or have gaps. Send from contact@premierracinginfo.com to the series' media/PR contact. Log it in the series file (`"asked"`, see SERIES-DATA.md).
+
+> Subject: Schedule and results for [SERIES] on Premier Racing Info
+>
+> Hi [NAME],
+>
+> I run Premier Racing Info (premierracinginfo.com), a free guide that shows fans race start times in their own
+> time zone, where to watch, results and standings for 100+ racing series. [SERIES] is on the site, and I'd like
+> its page to be as complete as the big series: calendar, results after each event, standings and the entry list.
+>
+> Could you add us to your media list for results and press releases, or point me to where you publish them?
+> If you have photos we're allowed to use with credit, we'd love those too.
+>
+> Everything links back to your official site, and the series page is here: premierracinginfo.com/series/[ID]/
+>
+> Thanks,
+> Phoenix Hernandez
+> Premier Racing Info

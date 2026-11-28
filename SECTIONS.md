@@ -48,3 +48,6 @@ Sections 1–9 and 14 are checked by the script. Sections 10–13 can't be judge
 - [ ] Terms and Privacy still match what the site does (accounts, alerts, analytics, any affiliate links).
 - [ ] "Not affiliated" notice is in the footer; EU/UK consent prompt shows.
 - [ ] No personal email on the site.
+
+**15. Series data files**
+- [ ] Work `node tools/check-site.mjs 15`: next series without a data file (tier order), missing winners, stale files. See SERIES-DATA.md.

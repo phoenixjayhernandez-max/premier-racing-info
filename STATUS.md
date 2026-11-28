@@ -1,19 +1,20 @@
 # Site status
 
-Checked 2026-11-27 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
+Checked 2026-11-28 by `node tools/check-site.mjs`. Sections are in the order we work through them (see SECTIONS.md).
 
 | # | Section | To do |
 |---|---|---|
 | 1 | Calendar & race pages | ✅ 0 |
 | 2 | Results & picks | ⚠️ 2 |
 | 3 | Standings | ✅ 0 |
-| 4 | Series directory | ✅ 0 |
+| 4 | Series directory | ⚠️ 1 |
 | 5 | Watch | ✅ 0 |
 | 6 | Tickets | ✅ 0 |
 | 7 | Tracks & races near you | ✅ 0 |
 | 8 | News | ✅ 0 |
 | 9 | Search pages | ✅ 0 |
 | 14 | eSports | ⚠️ 2 |
+| 15 | Series data files | ⚠️ 6 |
 | 10 | Photos | by hand |
 | 11 | Accounts, alerts & picks game | by hand |
 | 12 | Design & speed | by hand |
@@ -87,12 +88,11 @@ _Last race, standings and notes for all 21 series (STATS, MORE_STATS)_
 ## 4. Series directory
 _All 109 series: status, champion or leader, next round, season dates (world.js)_
 
-- Nothing to do.
+- [ ] W2RC / Dakar: next round "Abu Dhabi Desert Challenge (finale), Al Ain · Nov 22–27" has passed (hidden on the site)
 
-<details><summary>Up to date (2)</summary>
+<details><summary>Up to date (1)</summary>
 
-- Directory last researched Nov 22, 2026 (5 days ago)
-- Every series has a current status and next round
+- Directory last researched Nov 22, 2026 (6 days ago)
 
 </details>
 
@@ -101,7 +101,7 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 
 - Nothing to do.
 
-<details><summary>Up to date (20)</summary>
+<details><summary>Up to date (19)</summary>
 
 - Formula 1: Apple TV, F1 live timing
 - IMSA WeatherTech: Peacock, NBC / USA Network
@@ -120,7 +120,6 @@ _Where to watch in the US, per series and per session (WATCH, world.js watch, WO
 - Carrera Cup AU: start time saved for this weekend
 - NASCAR Brasil: start time saved for this weekend
 - Supercars: start time saved for this weekend
-- W2RC / Dakar: start time saved for this weekend
 - Moto2: start time saved for this weekend
 - Moto3: start time saved for this weekend
 
@@ -133,7 +132,7 @@ _Official ticket links per race and per series (TICKETS, SERIES_TICKETS, CIRCUIT
 
 <details><summary>Up to date (1)</summary>
 
-- 5 of 5 races in the next 60 days have an official ticket or circuit link
+- 6 of 6 races in the next 60 days have an official ticket or circuit link
 
 </details>
 
@@ -155,7 +154,7 @@ _Headlines collected every 30 minutes (news.json, news.yml)_
 
 <details><summary>Up to date (1)</summary>
 
-- News last collected 0.4 hours ago (272 headlines)
+- News last collected 0.2 hours ago (272 headlines)
 
 </details>
 
@@ -179,7 +178,7 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 
 <details><summary>Up to date (6)</summary>
 
-- eSports tab last checked 2026-11-26 (1 days ago)
+- eSports tab last checked 2026-11-26 (2 days ago)
 - 5 upcoming eSports events listed
 - F1 Sim Racing World Championship: Finished
 - eNASCAR Coca-Cola iRacing Series: Finished
@@ -187,3 +186,13 @@ _Sim racing championships, upcoming events and official games on the eSports tab
 - Gran Turismo World Series in progress
 
 </details>
+
+## 15. Series data files
+_Calendar, results, standings and entry lists for the 96 series outside the app (data/series/<id>.json, SERIES-DATA.md)_
+
+- [ ] No data file yet (full tier): Japanese Super Formula Championship → data/series/superformula.json
+- [ ] No data file yet (full tier): FIA Formula 2 Championship → data/series/f2.json
+- [ ] No data file yet (full tier): FIA Formula 3 Championship → data/series/f3.json
+- [ ] No data file yet (full tier): F1 Academy → data/series/f1academy.json
+- [ ] No data file yet (full tier): Indy NXT by Firestone → data/series/indynxt.json
+- [ ] 91 more series still without a data file (see data/series/tiers.json)
