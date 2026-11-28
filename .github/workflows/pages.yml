@@ -3,7 +3,7 @@ name: Rebuild search pages
 on:
   push:
     branches: [main]
-    paths: ["index.html", "world.js", "tools/build-pages.mjs", "tools/track-guides.mjs", "tools/check-site.mjs"]
+    paths: ["index.html", "world.js", "teams.js", "tools/build-pages.mjs", "tools/make-share-images.py", "tools/track-guides.mjs", "tools/check-site.mjs"]
   schedule:
     - cron: "17 11 * * *"
   workflow_dispatch:
@@ -18,19 +18,31 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-1
+      - name: Install Playwright
+        run: pip install playwright && python -m playwright install --with-deps chromium
       - name: Build pages
         run: node tools/build-pages.mjs
+      - name: Race share images (only changed cards), then rebuild so pages link them
+        run: python tools/make-share-images.py && node tools/build-pages.mjs
       - name: Check every section for out-of-date data
         run: node tools/check-site.mjs --write > /dev/null
       - name: Save if anything changed
         run: |
-          git add -A races series tracks calendar/index.html watch tickets texas races-in about privacy terms 404.html sitemap.xml robots.txt hero.js llms.txt index.html STATUS.md
+          git add -A icons/races races series tracks calendar/index.html watch tickets texas races-in about privacy terms 404.html sitemap.xml robots.txt hero.js llms.txt index.html STATUS.md
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git config user.name "pages-bot"
           git config user.email "pages-bot@users.noreply.github.com"

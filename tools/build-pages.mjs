@@ -105,14 +105,14 @@ const fUpd = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", y
 const listAnd = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 // Words that slide sideways as you scroll, like the app's home page
 function tickHTML(words){ const w = [...new Set(words.filter(Boolean))]; const inner = w.map(x => `<span>${esc(x)}</span>`).join(""); return `<div class="ph-tick" aria-hidden="true"><div class="ph-row" data-dir="1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div><div class="ph-row" data-dir="-1"><div class="ph-track">${inner}${inner}${inner}${inner}</div></div></div>`; }
-function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick, heroImg }){
+function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink = "/", photo = [], tick, heroImg, ogImg }){
   const canon = SITE + url;
   desc = clipDesc(desc);
   const ld = [].concat(jsonld || []).filter(Boolean).concat(url === "/about/" ? [ORG, WEBSITE] : [ORG]);
   ld.push({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ name: "Premier Racing Info", item: SITE + "/" }].concat(crumbs).map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.item })) });
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><link rel="canonical" href="${canon}">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${canon}"><meta property="og:image" content="${SITE}/icons/og.png?v=3">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Premier Racing Info"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${canon}"><meta property="og:image" content="${ogImg || SITE + "/icons/og.png?v=3"}">${ogImg ? '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">' : ""}<meta property="og:image:alt" content="${esc(title)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#F7F9FB"><link rel="icon" type="image/svg+xml" href="/icons/favicon.svg"><link rel="icon" type="image/png" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-180.png"><link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/fonts/albert-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>(function(){try{var t=localStorage.getItem("raceweekends-2026-theme");if(!t||t==="auto")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#141A22")}}catch(e){}})()</script><style>${CSS}</style>${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x).replace(/</g, "\\u003c")}</script>`).join("")}</head>
@@ -127,10 +127,20 @@ const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync
 const watchList = s => (WATCH[s] || []).map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("");
 const raceLink = e => `<a href="/races/${e.slug}/">${esc(e.name)}</a>`;
 
+// ---- Race share images (link previews on Reddit, Discord, iMessage, X) ----
+// build-pages writes the card text to tools/.share-cards.json (git-ignored); tools/make-share-images.py renders
+// icons/races/<slug>.jpg and records each card's hash in icons/races/manifest.json. Pages only point at an image
+// that the manifest lists, with ?v=<hash> so link previews refresh when a start time or winner changes.
+const SHARE_DIR = path.join(root, "icons", "races");
+const SHARE = (() => { try { return JSON.parse(fs.readFileSync(path.join(SHARE_DIR, "manifest.json"), "utf8")); } catch { return {}; } })();
+const shareCards = [];
+const fCard = new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+
 // ---- Race pages ----
 for (const e of EV) {
   const nm = ["nascar", "indy", "motogp"].includes(e.s) && !e.name.includes(SERIES[e.s]) ? `${SERIES[e.s]} ${e.name}` : e.name;
   const full = SERIES_FULL[e.s], sess = SESSIONS[e.id] || [], tr = TRACKS[e.circuit], past = e.end < today;
+  const done = past || (!!WINNERS[e.id] && e.end <= today); // finished: race-day pages switch to results once the winner is in
   const mainRace = sess.filter(x => !x[2]).slice(-1)[0];
   let body = `<p class="lede">${esc(full)} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</p>`;
   if (sess.length) body += `<section class="card"><h2>Start times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => { const sw = SESSION_WATCH[e.id + "|" + x[0]]; return `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}${sw ? `<br><small><a href="${esc(sw[1])}" rel="noopener">Watch on ${esc(sw[0])}</a></small>` : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}">${fTime.format(new Date(x[1]))}</td></tr>`; }).join("")}</table></section>`;
@@ -156,11 +166,11 @@ for (const e of EV) {
   const free = (WATCH[e.s] || []).filter(w => w[2] && !/search_query/.test(w[1])).map(w => w[0]);
   const where = `${e.circuit} in ${e.location}${country && !e.location.includes(country) && country !== "United States" ? ", " + country : ""}`;
   let answer, qa = [];
-  if (mainRace && !past) {
+  if (mainRace && !done) {
     const d = new Date(mainRace[1]);
     answer = `The ${full} ${nm} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
     qa.push([`What time does the ${nm} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC). ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
-  } else if (!past) {
+  } else if (!done) {
     answer = `The ${full} ${nm} ${e.year} runs ${range(e.start, e.end)} at ${esc(where)}. Session times are usually published about a week before; this page updates when they're out.`;
     qa.push([`When is the ${nm} ${e.year}?`, `The ${nm} runs ${range(e.start, e.end)} at ${esc(where)}. Exact start times are usually published about a week before the race.`]);
   } else {
@@ -176,15 +186,28 @@ for (const e of EV) {
   qa.push([`Where is the ${nm} held?`, `At ${esc(where)}${tr && tr[0] ? `, a ${tr[0].toFixed(2)} km (${(tr[0] * 0.621371).toFixed(2)} mi) ${esc((tr[2] || "").toLowerCase()) || "circuit"}${tr[1] ? ` with ${tr[1]} corners` : ""}` : ""}.`]);
   body = body.replace('<p><a class="btn p" href="/?race=', faqHTML(qa) + '<p><a class="btn p" href="/?race=');
   const withSeries = e.s !== "f1" && nm === e.name, sx = withSeries ? `${SERIES[e.s]} ${nm}` : nm;
-  const title = fitTitle(`${nm} ${e.year}${withSeries ? " – " + SERIES[e.s] : ""}: Start Times, How to Watch & Tickets`, `${sx} ${e.year}: Start Times, How to Watch & Tickets`, `${sx} ${e.year}: Start Times & How to Watch`, `${sx} ${e.year} Start Times`, `${sx} ${e.year}`);
-  const desc = `${full} ${nm} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
+  const win = WINNERS[e.id], hasRes = !!(RESULT_FOR[e.id] && STATS[RESULT_FOR[e.id]]?.race?.rows);
+  // After the race people search "results" / "who won", so finished races get a results title and description
+  const title = done
+    ? fitTitle(`${nm} ${e.year}${withSeries ? " – " + SERIES[e.s] : ""}: Results, Winner & Highlights`, `${sx} ${e.year} Results: Winner & Highlights`, `${sx} ${e.year} Results & Winner`, `${sx} ${e.year} Results`, `${sx} ${e.year}`)
+    : fitTitle(`${nm} ${e.year}${withSeries ? " – " + SERIES[e.s] : ""}: Start Times, How to Watch & Tickets`, `${sx} ${e.year}: Start Times, How to Watch & Tickets`, `${sx} ${e.year}: Start Times & How to Watch`, `${sx} ${e.year} Start Times`, `${sx} ${e.year}`);
+  const desc = done
+    ? `${full} ${nm} ${e.year} results at ${e.circuit}, ${range(e.start, e.end)}.${win ? ` Winner: ${win.replace(/\.$/, "")}.` : ""} ${hasRes ? "Top-10 results, " : ""}race highlights and the next ${SERIES[e.s] || full} race.`
+    : `${full} ${nm} ${e.year} at ${e.circuit}, ${range(e.start, e.end)}. ${mainRace ? `Race starts ${fDay.format(new Date(mainRace[1]))} at ${fTime.format(new Date(mainRace[1]))}. ` : ""}Session times in your time zone, how to watch in the US${tk.length ? ", tickets" : ""}${RESULT_FOR[e.id] || WINNERS[e.id] ? " and results" : ""}.`;
+  const card = { slug: e.slug, s: e.s, color: COLORS[e.s], series: full, name: nm, year: e.year, circuit: e.circuit, location: e.location, dates: range(e.start, e.end).replace(/, \d{4}$/, "").toUpperCase(),
+    ...(done ? (win ? { label: "Winner", value: win.replace(/\.$/, "") } : { label: "Results", value: "Results & highlights" })
+      : mainRace ? { label: "Race start", value: fCard.format(new Date(mainRace[1])).replace(" at ", " · ") + " CT" } : { label: "Start times", value: "Coming soon · in your time zone" }) };
+  shareCards.push(card);
+  const ogImg = SHARE[e.slug] ? `${SITE}/icons/races/${e.slug}.jpg?v=${SHARE[e.slug]}` : null;
   const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${nm} ${e.year}`, sport: "Motorsport",
     startDate: SESSIONS[e.id]?.[0]?.[1] || e.start, endDate: (() => { const l = SESSIONS[e.id] || [], last = l.length ? l[l.length - 1][1] : ""; return last && last.slice(0, 10) >= e.end ? last : e.end; })(), eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: { "@type": "Place", name: e.circuit, address: { "@type": "PostalAddress", addressLocality: e.location.split(",")[0], ...(place[1] ? { addressRegion: place[1] } : {}), ...(country ? { addressCountry: country } : {}) } }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: SITE + "/icons/og.png?v=3", description: desc };
+    location: { "@type": "Place", name: e.circuit, address: { "@type": "PostalAddress", addressLocality: e.location.split(",")[0], ...(place[1] ? { addressRegion: place[1] } : {}), ...(country ? { addressCountry: country } : {}) } }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: ogImg || SITE + "/icons/og.png?v=3", description: desc };
   if (tk[0] && !/google\.com/.test(tk[0][1])) ld.offers = { "@type": "Offer", url: tk[0][1], availability: "https://schema.org/InStock" };
-  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${nm} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`,
+  write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${nm} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`, ogImg,
     crumbs: [{ name: full, item: SITE + `/series/${APP_TO_WORLD[e.s]}/` }, { name: `${nm} ${e.year}`, item: SITE + `/races/${e.slug}/` }], body }));
 }
+
+fs.writeFileSync(path.join(root, "tools", ".share-cards.json"), JSON.stringify(shareCards));
 
 // ---- Series pages ----
 const appOf = Object.fromEntries(Object.entries(APP_TO_WORLD).map(([a, w]) => [w, a]));

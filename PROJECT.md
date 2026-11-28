@@ -26,6 +26,10 @@ Free race-weekend site/PWA at https://premierracinginfo.com (GitHub Pages, Cloud
 ## Race highlights (Nov 26, 2026)
 - `HIGHLIGHTS` in index.html: "race id": ["YouTube video id", "channel"], official series channel or US broadcaster only, confirmed with `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json`. With an id, race sheets play it in place (youtube-nocookie, loads on tap) and race pages embed it; without one they show a "Watch highlights on YouTube" search button. check-site section 2 lists big-series races from the last 10 days with no video.
 
+## Race share images and results titles (Nov 27, 2026)
+- Every race page has its own link-preview image (`icons/races/<slug>.jpg`, 1200x630): series, race, track, dates, and the race start (Central) or the winner. `tools/make-share-images.py` renders them from `tools/.share-cards.json` (written by build-pages.mjs) and only re-renders cards whose text changed (hash in `icons/races/manifest.json`, used as `?v=` so previews refresh). pages.yml runs it on every rebuild. Bump `DESIGN` in the script after changing the card design.
+- Finished races (or race day once WINNERS has the winner) get a "Results, Winner & Highlights" title and description instead of "Start Times".
+
 ## Instagram results post (Nov 26, 2026)
 - `python3 tools/make-results-post.py [YYYY-MM-DD]` makes "Weekend results" for the weekend just finished: `01-results.png` (feed, 1080x1350), `story.png` (1080x1920) and `caption.txt`, from WINNERS plus directory series in MORE_STATS (`tools/results-data.mjs`). Output goes to `results-post/` (git-ignored); for Phoenix to post by hand on Sunday night or Monday.
 
