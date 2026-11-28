@@ -393,6 +393,7 @@ html,body{overflow-x:clip}
 
 /* ---------- Logos & photos ---------- */
 .maker{display:inline-flex;align-items:center;gap:var(--space-2xs)}
+figure.tmap{display:none;margin:4px 0 12px}figure.tmap.ok{display:block}figure.tmap .tmap-img{display:block;background:#fff;border-radius:8px;padding:12px;border:1px solid var(--rule)}figure.tmap img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain}figure.tmap figcaption{font-size:.72rem;color:var(--sub);margin-top:4px}figure.tmap figcaption a{color:inherit}
 .photo{position:relative;background:var(--photo-bg);border-radius:8px;overflow:hidden;display:none}
 .photo.ok{display:block}
 .photo img{display:block;width:100%;height:100%;object-fit:contain}
@@ -2858,7 +2859,7 @@ function openCredits(){
   const sheet = document.getElementById("sheet");
   sheet.innerHTML = `<div class="sh-head" style="--c:var(--rule)"><div><h2 id="sheetTitle">Photo credits</h2><div class="m">Every photo on this site, who took it and its licence</div></div><button class="close" id="sheetClose" aria-label="Close">×</button></div>
     ${PHOTO_POOL.length ? `<ul class="credits">${PHOTO_POOL.map(x => `<li><span class="cr-pic" style="background-image:url('${esc(sized(x.img, 60).replace(/'/g, "%27"))}')"></span><span>${x.page ? `<a href="${esc(x.page)}" target="_blank" rel="noopener">${esc(x.by || "Unknown")}</a>` : esc(x.by)}<br><small>${esc(x.own ? "Used with permission" : x.lic + ", via Wikimedia Commons")}</small></span></li>`).join("")}</ul>` : `<p class="fine">Photos are loading. Try again in a moment.</p>`}
-    <p class="fine">Photos come from Wikimedia Commons and, when Commons has none for a series, from Flickr and other open archives found through Openverse. All are free to use under the licence shown; follow each link for the original. Track photos in race and series pages come from Wikipedia under free licences and are credited on the photo. To ask for a photo to be removed, use the contact on the About page.</p>`;
+    <p class="fine">Photos come from Wikimedia Commons and, when Commons has none for a series, from Flickr and other open archives found through Openverse. All are free to use under the licence shown; follow each link for the original. Track photos in race and series pages come from Wikipedia under free licences and are credited on the photo. Track maps are the layout diagrams from each circuit's Wikipedia article (Wikimedia Commons, free licences), credited under the map. To ask for a photo to be removed, use the contact on the About page.</p>`;
   lastFocus = document.activeElement; document.getElementById("sheetBg").hidden = false; document.body.style.overflow = "hidden"; sheet.scrollTop = 0;
 }
 document.addEventListener("click", ev => { if (ev.target.closest("[data-credits]")) { ev.preventDefault(); openCredits(); } });
@@ -3906,7 +3907,7 @@ function openRace(id){
   }
   if (!e.cancelled && (ph === "past" || WINNERS[e.id] || HIGHLIGHTS[e.id])) h += highlightsHTML(e);
 
-  h += `<section class="card"><h3>The track</h3>${photoSlot(`${e.circuit} race track`, "", true)}<p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p>`;
+  h += `<section class="card"><h3>The track</h3><p class="lede">${esc(e.circuit)} · ${esc(e.location)}</p><figure class="tmap" data-tmap="${esc(e.circuit)}" data-loc="${esc(String(e.location || "").split(",")[0])}"></figure>`;
   if (t) {
     h += `<div class="facts">
       <div class="fact"><div class="k">Lap</div><div class="v">${t[0] ? t[0].toFixed(2) + " km" : "—"}</div><div class="fine" style="margin:0">${t[0] ? (t[0] * 0.621371).toFixed(2) + " mi" : ""}</div></div>
@@ -5572,5 +5573,6 @@ if ("serviceWorker" in navigator) { window.addEventListener("load", () => naviga
   });
 })();
 </script>
+<script src="/tmap.js" defer></script>
 </body>
 </html>
