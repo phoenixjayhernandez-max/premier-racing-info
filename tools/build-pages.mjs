@@ -15,7 +15,7 @@ const SITE = "https://premierracinginfo.com";
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const src = html.match(/<script>\n\/\/ ---------- Data ----------([\s\S]*?)<\/script>/)[1];
 const data = new Function("window", "document", "localStorage",
-  src.slice(0, src.indexOf("function esc")) + "; return {HIGHLIGHTS,ESPORTS,AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
+  src.slice(0, src.indexOf("function esc")) + "; return {sessEnd,HIGHLIGHTS,ESPORTS,AFFILIATE,AFF_NOTE,affLink,ticketSearch,relOf,RAW,SESSIONS,SERIES,SERIES_FULL,WINNERS,RESULT_FOR,STATS,WATCH,TRACKS,MAKERS,events};")({}, {}, {});
 const grabObj = name => { const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\n\\});`)); return m ? Function(`return (${m[1]})`)() : {}; };
 const MORE_STATS = grabObj("MORE_STATS"), MORE_KEY = { nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const statsOf = app => STATS[app] || MORE_STATS[MORE_KEY[app]] || null;
@@ -23,7 +23,7 @@ const SESSION_WATCH = grabObj("SESSION_WATCH"), TICKETS = grabObj("TICKETS"), CI
 global.window = {}; eval(fs.readFileSync(path.join(root, "world.js"), "utf8"));
 const WORLD = global.window.WORLD;
 eval(fs.readFileSync(path.join(root, "teams.js"), "utf8"));
-const { AFFILIATE, AFF_NOTE, affLink, ticketSearch, relOf } = data;
+const { AFFILIATE, AFF_NOTE, affLink, ticketSearch, relOf, sessEnd } = data;
 const { RAW, SESSIONS, SERIES, SERIES_FULL, WINNERS, RESULT_FOR, STATS, WATCH, TRACKS, HIGHLIGHTS } = data;
 const APP_TO_WORLD = { f1: "f1", imsa: "imsa", wec: "wec", gtwc: "gtwc-america", gte: "gtwc-europe", gtas: "gtwc-asia", gtau: "gtwc-australia", psc: "porsche-supercup", pccna: "carrera-cup-na", mustang: "mustang-challenge", nascar: "nascar-cup", indy: "indycar", motogp: "motogp" };
 const COLORS = { f1: "#D7261E", imsa: "#2563B8", wec: "#0F8A6C", gtwc: "#C2410C", gte: "#6D28D9", gtas: "#BE185D", gtau: "#0E7490", psc: "#4B5563", pccna: "#3F6212", mustang: "#7F1D1D" , nascar: "#A16207", indy: "#1E3A8A", motogp: "#86198F" };
@@ -89,7 +89,8 @@ footer{color:var(--sub);font-size:.85rem;padding:24px 0 40px}footer a{margin-rig
 const ANALYTICS = `<!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-2XEE8686TF"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",region:["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB","CH"]});gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"granted"});try{var c=localStorage.getItem("pri-consent");if(c)gtag("consent","update",{analytics_storage:c==="yes"?"granted":"denied"})}catch(e){}gtag("js",new Date());gtag("config","G-2XEE8686TF");</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e52456a52f8540c69bb1ce758237400a"}'></script><!-- End Cloudflare Web Analytics -->`;
 // Converts the Central-time start times (what search engines see) into the visitor's own time zone.
 const LOCAL_TIME = `<script>(function(){try{var d=new Intl.DateTimeFormat("en-US",{weekday:"short",month:"short",day:"numeric"}),t=new Intl.DateTimeFormat("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
-document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});document.querySelectorAll("[data-time]").forEach(function(e){e.textContent=t.format(new Date(e.dataset.time))});
+document.querySelectorAll("[data-day]").forEach(function(e){e.textContent=d.format(new Date(e.dataset.day))});function rg(a,b,x){var p=t.format(a).replace(":00 "," ").split(" "),q=t.format(b).replace(":00 "," ");return (p[1]===q.split(" ")[1]&&b-a<432e5?p[0]:p[0]+" "+p[1])+"\u2013"+(x?"~":"")+q}
+document.querySelectorAll("[data-time]").forEach(function(e){var a=new Date(e.dataset.time);e.textContent=e.dataset.end?rg(a,new Date(+e.dataset.end),e.dataset.approx==="1"):t.format(a)});
 var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";document.querySelectorAll(".tzn").forEach(function(e){e.textContent=z.replace(/_/g," ").split("/").pop()+" time"})}catch(e){}})()</script>`;
 // FAQ block: visible question headings + direct answers, and matching FAQPage schema (AEO)
 function faqHTML(qa){ return qa.length ? `<section class="card faq"><h2>Questions fans ask</h2>${qa.map(([q, a]) => `<h3>${esc(q)}</h3><p>${a}</p>`).join("")}</section>` : ""; }
@@ -125,6 +126,8 @@ function page({ url, title, desc, h1, crumbs = [], body, color, jsonld, appLink 
 const pages = [];
 const write = (url, content) => { const dir = path.join(root, url); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, "index.html"), content); pages.push(url); };
 const watchList = s => (WATCH[s] || []).map(w => `<a class="btn" href="${esc(w[1])}" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>`).join("");
+const endOf = (e, x) => sessEnd(e.id, e.s, x, e.name);
+const rangeCT = (iso, [m, ap]) => { const a = fTime.format(new Date(iso)).replace(":00 ", " "), b = fTime.format(new Date(m)).replace(":00 ", " "), pa = a.split(" "); return `${pa[1] === b.split(" ")[1] && m - Date.parse(iso) < 432e5 ? pa[0] : pa[0] + " " + pa[1]}–${ap ? "~" : ""}${b}`; };
 const raceLink = e => `<a href="/races/${e.slug}/">${esc(e.name)}</a>`;
 
 // ---- Race share images (link previews on Reddit, Discord, iMessage, X) ----
@@ -143,7 +146,7 @@ for (const e of EV) {
   const done = past || (!!WINNERS[e.id] && e.end <= today); // finished: race-day pages switch to results once the winner is in
   const mainRace = sess.filter(x => !x[2]).slice(-1)[0];
   let body = `<p class="lede">${esc(full)} · ${esc(e.circuit)}, ${esc(e.location)} · ${range(e.start, e.end)}${e.tags.length ? " · " + e.tags.map(esc).join(", ") : ""}</p>`;
-  if (sess.length) body += `<section class="card"><h2>Start times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Time</th></tr>${sess.map(x => { const sw = SESSION_WATCH[e.id + "|" + x[0]]; return `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}${sw ? `<br><small><a href="${esc(sw[1])}" rel="noopener">Watch on ${esc(sw[0])}</a></small>` : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}">${fTime.format(new Date(x[1]))}</td></tr>`; }).join("")}</table></section>`;
+  if (sess.length) body += `<section class="card"><h2>Session times (<span class="tzn">US Central time</span>)</h2><table><tr><th>Session</th><th>Day</th><th style="text-align:right">Start–finish</th></tr>${sess.map(x => { const sw = SESSION_WATCH[e.id + "|" + x[0]]; return `<tr><td>${esc(x[0])}${x[2] ? ' <span class="tag">support</span>' : ""}${sw ? `<br><small><a href="${esc(sw[1])}" rel="noopener">Watch on ${esc(sw[0])}</a></small>` : ""}</td><td data-day="${x[1]}">${fDay.format(new Date(x[1]))}</td><td class="r" data-time="${x[1]}" data-end="${endOf(e, x)[0]}" data-approx="${endOf(e, x)[1] ? 1 : 0}">${rangeCT(x[1], endOf(e, x))}</td></tr>`; }).join("")}</table>${sess.some(x => endOf(e, x)[1]) ? `<p><small>Finish times with ~ are estimates; races can run long.</small></p>` : ""}</section>`;
   else if (!past) body += `<section class="card"><h2>Start times</h2><p>Session times are usually published about a week before the race. They'll show here in your time zone as soon as they're out.</p></section>`;
   if (RESULT_FOR[e.id] && STATS[RESULT_FOR[e.id]]?.race?.rows) {
     const r = STATS[RESULT_FOR[e.id]].race;
@@ -168,8 +171,8 @@ for (const e of EV) {
   let answer, qa = [];
   if (mainRace && !done) {
     const d = new Date(mainRace[1]);
-    answer = `The ${full} ${nm} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
-    qa.push([`What time does the ${nm} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC). ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
+    answer = `The ${full} ${nm} ${e.year} starts <b>${fLong.format(d)} at <span data-time="${mainRace[1]}">${fTime.format(d)}</span></b> (${fUTC.format(d)} UTC) at ${esc(where)}, and ${endOf(e, mainRace)[1] ? "should finish around" : "finishes at"} <span data-time="${new Date(endOf(e, mainRace)[0]).toISOString()}">${fTime.format(new Date(endOf(e, mainRace)[0]))}</span>.${watchN.length ? ` In the US it's live on ${esc(listAnd(watchN.map(w => w[0])))}.` : ""}`;
+    qa.push([`What time does the ${nm} ${e.year} start?`, `The main race starts ${fLong.format(d)} at ${fTime.format(d)} US Central time (${fUTC.format(d)} UTC) and ${endOf(e, mainRace)[1] ? "should finish around" : "finishes at"} ${fTime.format(new Date(endOf(e, mainRace)[0]))}. ${sess.length > 1 ? `The weekend runs ${range(e.start, e.end)}, with ${sess.length} sessions listed above in your own time zone.` : ""}`.trim()]);
   } else if (!done) {
     answer = `The ${full} ${nm} ${e.year} runs ${range(e.start, e.end)} at ${esc(where)}. Session times are usually published about a week before; this page updates when they're out.`;
     qa.push([`When is the ${nm} ${e.year}?`, `The ${nm} runs ${range(e.start, e.end)} at ${esc(where)}. Exact start times are usually published about a week before the race.`]);
@@ -200,7 +203,7 @@ for (const e of EV) {
   shareCards.push(card);
   const ogImg = SHARE[e.slug] ? `${SITE}/icons/races/${e.slug}.jpg?v=${SHARE[e.slug]}` : null;
   const ld = { "@context": "https://schema.org", "@type": "SportsEvent", name: `${full} ${nm} ${e.year}`, sport: "Motorsport",
-    startDate: SESSIONS[e.id]?.[0]?.[1] || e.start, endDate: (() => { const l = SESSIONS[e.id] || [], last = l.length ? l[l.length - 1][1] : ""; return last && last.slice(0, 10) >= e.end ? last : e.end; })(), eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    startDate: SESSIONS[e.id]?.[0]?.[1] || e.start, endDate: (() => { const l = SESSIONS[e.id] || []; if (!l.length) return e.end; const fin = new Date(Math.max(...l.map(x => endOf(e, x)[0]))).toISOString().replace(".000Z", "Z"); return fin.slice(0, 10) >= e.end ? fin : e.end; })(), eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: e.circuit, address: { "@type": "PostalAddress", addressLocality: e.location.split(",")[0], ...(place[1] ? { addressRegion: place[1] } : {}), ...(country ? { addressCountry: country } : {}) } }, organizer: { "@type": "SportsOrganization", name: full }, url: SITE + `/races/${e.slug}/`, image: ogImg || SITE + "/icons/og.png?v=3", description: desc };
   if (tk[0] && !/google\.com/.test(tk[0][1])) ld.offers = { "@type": "Offer", url: tk[0][1], availability: "https://schema.org/InStock" };
   write(`/races/${e.slug}/`, page({ url: `/races/${e.slug}/`, title, desc, h1: `${nm} ${e.year}`, photo: [APP_TO_WORLD[e.s]], tick: [SERIES_FULL[e.s], e.circuit, e.location, "Start times", "Where to watch", "Tickets"], color: COLORS[e.s], jsonld: [ld, faqLD(qa)], appLink: `/?race=${e.id}`, ogImg,
@@ -713,7 +716,7 @@ ${upcoming.map(e => `- [${SERIES_FULL[e.s]} ${e.name} ${e.year}](${SITE}/races/$
   const ix = path.join(root, "index.html"); let app = fs.readFileSync(ix, "utf8");
   const up = EV.filter(e => e.end >= today).sort((a, b) => a.start.localeCompare(b.start));
   const wk = new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10), now = up.filter(e => e.start <= wk), next = up.filter(e => e.start > wk).slice(0, 8);
-  const line = e => { const m = (SESSIONS[e.id] || []).filter(x => !x[2]).slice(-1)[0]; return `<li><a href="/races/${e.slug}/">${esc(SERIES_FULL[e.s])}: ${esc(e.name)}</a> · ${esc(e.circuit)} · ${range(e.start, e.end)}${m ? ` · race starts ${fDay.format(new Date(m[1]))} at ${fTime.format(new Date(m[1]))}` : ""}</li>`; };
+  const line = e => { const m = (SESSIONS[e.id] || []).filter(x => !x[2]).slice(-1)[0]; return `<li><a href="/races/${e.slug}/">${esc(SERIES_FULL[e.s])}: ${esc(e.name)}</a> · ${esc(e.circuit)} · ${range(e.start, e.end)}${m ? ` · race ${fDay.format(new Date(m[1]))}, ${rangeCT(m[1], endOf(e, m))}` : ""}</li>`; };
   const html = `<!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to ${N_ALL} racing series: every session start time for ${N_APP} top series in your own time zone, race dates for ${N_DATES} more, where to watch in the US, tickets and standings.</p>${now.length ? `<h2>Racing this week</h2><ul>${now.map(line).join("")}</ul>` : ""}<h2>Coming up</h2><ul>${next.map(line).join("")}</ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated ${fUpd.format(new Date(today))}.</p></div><!--/seo-->`;
   app = app.includes("<!--seo-->") ? app.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, html) : app.replace('<div id="weekendTop"></div>', `<div id="weekendTop">${html}</div>`);
   fs.writeFileSync(ix, app);

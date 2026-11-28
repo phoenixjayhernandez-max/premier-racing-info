@@ -22,11 +22,10 @@ const fold = line => { const out = []; while (line.length > 74) { out.push(line.
 const stamp = utc(new Date());
 const SITE = "https://premierracinginfo.com/";
 
-function hoursFor(name){
-  const m = name.match(/(\d+)\s*Hours?/i); if (m) return +m[1];
-  if (/grand prix|race|feature/i.test(name)) return 2;
-  return 1;
-}
+// Session lengths come from sessMins/sessEnd in index.html, the same ones the site shows.
+const endFns = html.match(/(const SESSION_END = \{[\s\S]*?\n\};\nfunction sessMins[\s\S]*?\n\}\n\/\/ \[end time[^\n]*\nfunction sessEnd[\s\S]*?\n\}\n)/);
+if (!endFns) throw new Error("Couldn't find sessEnd");
+const sessEnd = Function(endFns[1] + "return sessEnd;")();
 
 function eventsFor(filter){
   const out = [];
@@ -36,10 +35,10 @@ function eventsFor(filter){
     const sess = SESSIONS[id];
     if (sess && sess.length) {
       sess.forEach(([title, iso, support], i) => {
-        const st = new Date(iso), en = new Date(st.getTime() + hoursFor(title) * 3600000);
+        const st = new Date(iso), [enMs, approx] = sessEnd(id, s, [title, iso, support], name), en = new Date(enMs);
         const lines = ["BEGIN:VEVENT", `UID:${id}-${i}@premier-racing-info`, `DTSTAMP:${stamp}`,
           `DTSTART:${utc(st)}`, `DTEND:${utc(en)}`, `SUMMARY:${esc((support ? "" : "🏁 ") + title + " · " + name)}`,
-          `LOCATION:${esc(circuit + ", " + loc)}`, `DESCRIPTION:${esc(label + "\nDetails: " + SITE)}`, `URL:${SITE}`];
+          `LOCATION:${esc(circuit + ", " + loc)}`, `DESCRIPTION:${esc(label + (approx ? "\nFinish time is an estimate." : "") + "\nDetails: " + SITE)}`, `URL:${SITE}`];
         if (!support) lines.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${esc(title + " starts in 30 minutes · " + name)}`, "TRIGGER:-PT30M", "END:VALARM");
         lines.push("END:VEVENT");
         out.push(...lines);

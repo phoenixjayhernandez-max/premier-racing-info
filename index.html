@@ -908,7 +908,9 @@ main{max-width:1200px}
 .g-row{display:grid;grid-template-columns:4.6rem auto minmax(0,1fr);gap:var(--space-2xs) var(--space-sm);align-items:start;padding:var(--space-sm) 0;border-bottom:1px solid var(--color-rule);cursor:pointer}
 .g-row:hover{background:var(--color-paper-2)}
 .g-row:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
-.g-t{font-family:var(--font-outlier);font-weight:500;font-size:var(--text-sm);font-variant-numeric:tabular-nums;padding-top:var(--space-3xs);white-space:nowrap}
+.g-t{font-family:var(--font-outlier);font-weight:500;font-size:var(--text-sm);font-variant-numeric:tabular-nums;padding-top:var(--space-3xs);white-space:nowrap;display:flex;flex-direction:column}
+.g-end{font-size:var(--text-xs);color:var(--sub);font-weight:400}
+.end-note{margin:4px 0 0}
 .g-pl{padding-top:1px}
 .g-what{min-width:0}
 .g-what b{display:block;font-weight:600}
@@ -1397,7 +1399,7 @@ main{max-width:1200px}
 
 <main>
   <section class="view" id="v-weekend" role="tabpanel" aria-labelledby="t-weekend">
-    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time for 13 top series in your own time zone, race dates for 96 more, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026 · race starts Sat, Nov 28 at 5:10 PM CST</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026 · race starts Sun, Nov 29 at 10:00 AM CST</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026 · race starts Sun, Nov 29 at 7:00 AM CST</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026 · race starts Sun, Dec 6 at 7:00 AM CST</li></ul><h2>Coming up</h2><ul><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li><li><a href="/races/imsa-rolex-24-at-daytona-2027/">IMSA WeatherTech: Rolex 24 at Daytona</a> · Daytona International Speedway · Jan 28–31, 2027</li><li><a href="/races/nascar-clash-2027/">NASCAR Cup Series: Clash</a> · Daytona International Speedway · Feb 12–13, 2027</li><li><a href="/races/nascar-daytona-500-2027/">NASCAR Cup Series: Daytona 500</a> · Daytona International Speedway · Feb 16–21, 2027</li><li><a href="/races/nascar-autotrader-400-2027/">NASCAR Cup Series: Autotrader 400</a> · EchoPark Speedway · Feb 26–28, 2027</li><li><a href="/races/nascar-duramax-grand-prix-2027/">NASCAR Cup Series: DuraMAX Grand Prix</a> · Circuit of the Americas · Mar 5–7, 2027</li><li><a href="/races/indycar-grand-prix-of-st-petersburg-2027/">IndyCar: Grand Prix of St. Petersburg</a> · Streets of St. Petersburg · Mar 5–7, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 28, 2026.</p></div><!--/seo--></div>
+    <div id="weekendTop"><!--seo--><div class="seo-static"><h2>Race start times in your time zone</h2><p>Premier Racing Info is a free guide to 109 racing series: every session start time for 13 top series in your own time zone, race dates for 96 more, where to watch in the US, tickets and standings.</p><h2>Racing this week</h2><ul><li><a href="/races/gt-australia-adelaide-2026/">GT World Challenge Australia: Adelaide</a> · Adelaide Street Circuit · Nov 26–29, 2026 · race Sat, Nov 28, 5:10–~6:10 PM CST</li><li><a href="/races/f1-qatar-grand-prix-2026/">Formula 1: Qatar Grand Prix</a> · Lusail International Circuit · Nov 27–29, 2026 · race Sun, Nov 29, 10 AM–~12 PM CST</li><li><a href="/races/motogp-valencia-grand-prix-2026/">MotoGP: Valencia Grand Prix</a> · Circuit Ricardo Tormo · Nov 27–29, 2026 · race Sun, Nov 29, 7–~7:45 AM CST</li><li><a href="/races/f1-abu-dhabi-grand-prix-2026/">Formula 1: Abu Dhabi Grand Prix</a> · Yas Marina · Dec 4–6, 2026 · race Sun, Dec 6, 7–~9 AM CST</li></ul><h2>Coming up</h2><ul><li><a href="/races/mustang-challenge-daytona-2027/">Ford Mustang Challenge: Daytona</a> · Daytona International Speedway · Jan 22–24, 2027</li><li><a href="/races/carrera-cup-na-daytona-2027/">Porsche Carrera Cup North America: Daytona</a> · Daytona International Speedway · Jan 27–29, 2027</li><li><a href="/races/imsa-rolex-24-at-daytona-2027/">IMSA WeatherTech: Rolex 24 at Daytona</a> · Daytona International Speedway · Jan 28–31, 2027</li><li><a href="/races/nascar-clash-2027/">NASCAR Cup Series: Clash</a> · Daytona International Speedway · Feb 12–13, 2027</li><li><a href="/races/nascar-daytona-500-2027/">NASCAR Cup Series: Daytona 500</a> · Daytona International Speedway · Feb 16–21, 2027</li><li><a href="/races/nascar-autotrader-400-2027/">NASCAR Cup Series: Autotrader 400</a> · EchoPark Speedway · Feb 26–28, 2027</li><li><a href="/races/nascar-duramax-grand-prix-2027/">NASCAR Cup Series: DuraMAX Grand Prix</a> · Circuit of the Americas · Mar 5–7, 2027</li><li><a href="/races/indycar-grand-prix-of-st-petersburg-2027/">IndyCar: Grand Prix of St. Petersburg</a> · Streets of St. Petersburg · Mar 5–7, 2027</li></ul><p><a href="/calendar/">Full racing calendar</a> · <a href="/watch/">How to watch in the US</a> · <a href="/tickets/">Tickets</a> · <a href="/races-in/">Races near you</a> · <a href="/series/">All series</a> · <a href="/esports/">eSports</a> · <a href="/about/">About</a></p><p>Updated November 28, 2026.</p></div><!--/seo--></div>
     <div id="installBox"></div>
     <section class="sec" id="newsSec" aria-label="News"></section>
     <div class="sec" id="mySec"></div>
@@ -1948,6 +1950,51 @@ const WORLD_TIMES = {
   "moto3":[["Race","2026-11-29T10:00:00Z"]],
   "moto2":[["Race","2026-11-29T11:15:00Z"]],
 };
+// How long each session runs. Practice and qualifying lengths are the published session lengths; race lengths
+// vary, so their finish times are estimates and show with "~". To set an exact finish, add "eventId|Session"
+// (or "worldId|Session" for WORLD_TIMES) to SESSION_END with the UTC end time or the length in minutes.
+const SESSION_END = {
+};
+function sessMins(series, name, evName = "", support = false){
+  const n = name.toLowerCase(), h = /(\d+)\s*hours?/i.exec(name) || /(\d+)\s*hours?/i.exec(evName);
+  if (/warm/.test(n)) return 10;
+  if (/hyperpole/.test(n)) return 10;
+  if (/qualif|shootout/.test(n)) {
+    if (/sprint/.test(n)) return 45;
+    if (series === "wec" || /lmgt3|hypercar|lmp/.test(n)) return 15;
+    if (series === "motogp") return 40;
+    return 60;
+  }
+  if (/practice/.test(n)) {
+    if (series === "motogp") return /practice 1/.test(n) ? 45 : /practice 2/.test(n) ? 30 : 60;
+    if (series === "wec") return /3/.test(n) ? 60 : 90;
+    return 60;
+  }
+  if (h && !/practice|qualif/.test(n)) return +h[1] * 60;
+  if (support) return /feature/.test(n) ? 40 : 30;
+  if (/ceremon|finish|podium/.test(n)) return 60;
+  if (/sprint/.test(n)) return series === "motogp" ? 30 : series === "f2" ? 45 : 45;
+  switch (series) {
+    case "nascar": return /600/.test(evName) ? 270 : 210;
+    case "indy": return /500/.test(evName) ? 225 : 150;
+    case "motogp": case "moto2": case "moto3": return 45;
+    case "f1": return 120;
+    case "f2": return /feature/.test(n) ? 75 : 45;
+    case "pccau": case "psc": case "pccna": case "mustang": return 30;
+    case "supercars": return 105;
+    case "nascar-brasil": return 50;
+    case "gtwc": case "gte": case "gtas": case "gtau": return 60;
+  }
+  return 120;
+}
+// [end time in ms, true if the finish is an estimate]
+function sessEnd(key, series, x, evName = ""){
+  const t = Date.parse(x[1]), o = SESSION_END[key + "|" + x[0]];
+  if (typeof o === "number") return [t + o * 60000, false];
+  if (typeof o === "string" && !isNaN(Date.parse(o))) return [Date.parse(o), false];
+  const n = x[0].toLowerCase(), fixed = /practice|qualif|shootout|warm|hyperpole/.test(n);
+  return [t + sessMins(series, x[0], evName, !!x[2]) * 60000, !fixed];
+}
 const SESSION_WATCH = {
   "nascar-martinsville|Race":["NBC","https://www.nbcsports.com/motor-sports/nascar"],
   "nascar-homestead|Race":["NBC","https://www.nbcsports.com/motor-sports/nascar"],
@@ -2425,23 +2472,25 @@ document.addEventListener("click", ev => {
   if (t) { setTZ(t.dataset.tzset); try { localStorage.setItem(TZKEY, tzPref); } catch(e){} if (typeof cloudPush === "function") cloudPush(); closeRace(); renderAll(); }
 });
 const txTime = iso => fmtTime.format(new Date(iso)).replace(":00 ", " ");
-// How long a session is on track, for the "Live now" strip
-function sessHours(e, name, support){
-  const h = /(\d+)\s*Hours?/i.exec(name) || /(\d+)\s*Hours?/i.exec(e.name);
-  if (h && /race|hours|grand prix/i.test(name + " " + e.name) && !/practice|qualif/i.test(name)) return Math.min(25, +h[1] + 0.5);
-  if (support) return 1;
-  if (/practice|qualif|shootout|warm/i.test(name)) return 1.25;
-  if (/sprint/i.test(name)) return e.series === "motogp" ? 0.75 : 1;
-  if (e.series === "nascar") return /600/.test(e.name) ? 4.5 : 3.5;
-  if (e.series === "indy") return /500/.test(e.name) ? 3.75 : 2.5;
-  if (e.series === "motogp") return 1;
-  return 2;
+const evEnd = (e, x) => sessEnd(e.id, e.series, x, e.name);
+// "8:30–9:30 AM CST", "11:30 AM–~1:30 PM CST"
+function rangeTxt(iso, endMs, approx){
+  const cut = v => v.replace(":00 ", " ");
+  const a = cut(fmtTime.format(new Date(iso))), b = cut(fmtTime.format(new Date(endMs)));
+  const pa = a.split(" "), pb = b.split(" ");
+  const head = pa[1] === pb[1] && endMs - Date.parse(iso) < 12 * 3600000 ? pa[0] : pa[0] + " " + pa[1];
+  return `${head}–${approx ? "~" : ""}${b}`;
 }
+const isoRange = (e, iso) => { const x = (SESSIONS[e.id] || []).find(v => v[1] === iso); return x ? evRange(e, x) : fmtTime.format(new Date(iso)); };
+const evRange = (e, x) => { const [m, a] = evEnd(e, x); return rangeTxt(x[1], m, a); };
+const endOnly = (endMs, approx) => (approx ? "~" : "") + fmtTime.format(new Date(endMs)).replace(":00 ", " ").replace(/ [A-Z]{2,5}$|\s+GMT.*$/, "");
+const approxNote = `<p class="fine end-note">Finish times with ~ are estimates; races can run long.</p>`;
+function sessHours(e, name, support){ return sessMins(e.series, name, e.name, support) / 60; }
 function liveSessions(){
   const now = Date.now(), out = [];
   for (const e of events) {
     if (e.cancelled || phase(e) !== "now") continue;
-    for (const x of SESSIONS[e.id] || []) { const t = Date.parse(x[1]), end = t + sessHours(e, x[0], x[2]) * 3600000; if (t <= now && now < end) out.push({ e, name: x[0], support: !!x[2], end }); }
+    for (const x of SESSIONS[e.id] || []) { const t = Date.parse(x[1]), end = evEnd(e, x)[0] + (evEnd(e, x)[1] ? 1800000 : 0); if (t <= now && now < end) out.push({ e, name: x[0], support: !!x[2], end }); }
   }
   return out.sort((a, b) => a.support - b.support || ORDER.indexOf(a.e.series) - ORDER.indexOf(b.e.series));
 }
@@ -2472,13 +2521,14 @@ function sessWatch(id, name){
 }
 function schedHTML(id, compact, lit = true){
   const L = SESSIONS[id]; if (!L) return "";
-  const nx = lit ? nextSession(id) : null, now = Date.now();
+  const nx = lit ? nextSession(id) : null, now = Date.now(), ev = events.find(v => v.id === id) || { id, series: id.split("-")[0], name: "" };
   const rows = L.filter(x => !compact || !x[2]);
+  let est = false;
   return `<table class="sched${compact ? " compact" : ""}">${rows.map(x => {
-    const t = Date.parse(x[1]), done = t + 2 * 3600000 < now, on = t <= now && !done;
+    const t = Date.parse(x[1]), [em, ap] = evEnd(ev, x), done = em + (ap ? 1800000 : 0) < now, on = t <= now && !done; if (ap) est = true;
     const sw = !compact && !done ? sessWatch(id, x[0]) : null;
-    return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}${sw ? `<a class="s-watch" href="${esc(sw[1])}" target="_blank" rel="noopener" aria-label="Watch ${esc(x[0])}: ${esc(sw[0])}">${sw[2] ? (on ? "Watch live" : "Watch") + " on " + esc(sw[0]) : /schedule/i.test(sw[0]) ? esc(sw[0]) : "On " + esc(sw[0])} ↗</a>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${txTime(x[1])}</td></tr>`;
-  }).join("")}</table>`;
+    return `<tr class="${x === nx ? "nx" : ""} ${done ? "done" : ""} ${x[2] ? "sup" : ""}"><td>${esc(x[0])}${on ? ` <span class="status live">Now</span>` : ""}${sw ? `<a class="s-watch" href="${esc(sw[1])}" target="_blank" rel="noopener" aria-label="Watch ${esc(x[0])}: ${esc(sw[0])}">${sw[2] ? (on ? "Watch live" : "Watch") + " on " + esc(sw[0]) : /schedule/i.test(sw[0]) ? esc(sw[0]) : "On " + esc(sw[0])} ↗</a>` : ""}</td><td>${fmtDay.format(new Date(t))}</td><td>${rangeTxt(x[1], em, ap)}</td></tr>`;
+  }).join("")}</table>${est && !compact ? approxNote : ""}`;
 }
 // Race highlights: the official video plays here (privacy-enhanced, loads only when tapped), or a YouTube search for this race
 function hlSearch(e){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(`${e.start.getFullYear()} ${e.name} ${SERIES_FULL[e.series]} race highlights`); }
@@ -3273,7 +3323,7 @@ function renderWeekend(){
   // Hero race card: the one race that matters, on the first screen of a phone, with a series-specific alert button.
   const fIso = raceIso(feat), fNs = nextSession(feat.id), cdIso = fIso || (fNs && fNs[1]);
   const hrLbl = wk.length ? (wk.some(e => phase(e) === "now") ? "On track now" : "This weekend") : "Next race";
-  const hrWhen = fIso ? `Race ${fmtDow.format(new Date(fIso))} ${fmtTime.format(new Date(fIso))}` : range(feat);
+  const hrWhen = fIso ? `Race ${fmtDow.format(new Date(fIso))} ${isoRange(feat, fIso)}` : range(feat);
   const hrCd = cdIso && Date.parse(cdIso) > Date.now() ? ` · <span class="hr-cd" data-cd="${esc(cdIso)}">${esc(cdText(cdIso))}</span>` : "";
   const hrOn = !!pushSub && alertOn(feat.series);
   el.innerHTML = `
@@ -3412,7 +3462,7 @@ function raceIso(e){ const L = (SESSIONS[e.id] || []).filter(x => !x[2]); const 
 function marqueeHTML(){
   const list = events.filter(e => !e.cancelled && phase(e) !== "past").sort((a, b) => a.start - b.start).slice(0, 8);
   if (!list.length) return "";
-  const item = e => { const iso = raceIso(e); return `<span class="mq-item">${plate(e.series, 22)}<b>${esc(e.name)}</b>${iso ? `<span class="mq-when">${esc(fmtDow.format(new Date(iso)))} ${esc(fmtTime.format(new Date(iso)))}</span><span class="mq-cd" data-cd="${esc(iso)}">${esc(cdText(iso))}</span>` : `<span class="mq-when">${esc(range(e))}</span>`}</span><span class="mq-sep" aria-hidden="true">◆</span>`; };
+  const item = e => { const iso = raceIso(e); return `<span class="mq-item">${plate(e.series, 22)}<b>${esc(e.name)}</b>${iso ? `<span class="mq-when">${esc(fmtDow.format(new Date(iso)))} ${esc(isoRange(e, iso))}</span><span class="mq-cd" data-cd="${esc(iso)}">${esc(cdText(iso))}</span>` : `<span class="mq-when">${esc(range(e))}</span>`}</span><span class="mq-sep" aria-hidden="true">◆</span>`; };
   const inner = list.map(item).join("");
   return `<div class="mq" aria-label="Next races"><div class="mq-lab">Next up</div><div class="mq-win"><div class="mq-track">${inner}<span aria-hidden="true" class="mq-dup">${inner}</span></div></div></div>`;
 }
@@ -3462,9 +3512,9 @@ function guideHTML(list){
   const left = rows.filter(r => r.t + 2 * 3600000 >= now), pool = left.length ? left : rows, SHOW = 6;
   const dayList = rs2 => { const days = []; for (const r of rs2) { const k = fmtDay.format(new Date(r.t)); if (!days.length || days[days.length - 1][0] !== k) days.push([k, []]); days[days.length - 1][1].push(r); } return days; };
   const row = r => {
-    const done = r.t + 2 * 3600000 < now, on = r.t <= now && !done, w = (WATCH[r.e.series] || [])[0];
+    const fin = evEnd(r.e, r.x), done = fin[0] + (fin[1] ? 1800000 : 0) < now, on = r.t <= now && !done, w = (WATCH[r.e.series] || [])[0];
     return `<li class="g-row ${r.x[2] ? "sup" : ""} ${done ? "done" : ""} ${r === nx ? "nx" : ""}" data-open="${r.e.id}" tabindex="0" role="button" aria-label="${esc(r.x[0])}, ${esc(r.e.name)}">
-      <time class="g-t" datetime="${esc(r.x[1])}">${txTime(r.x[1]).replace(/ [A-Z]{2,5}$/, "")}</time>
+      <span class="g-t"><time datetime="${esc(r.x[1])}">${txTime(r.x[1]).replace(/ [A-Z]{2,5}$/, "")}</time><small class="g-end">to ${endOnly(fin[0], fin[1])}</small></span>
       <span class="g-pl">${plate(r.e.series, 22)}</span>
       <span class="g-what"><b>${esc(r.x[0])}${on ? ` <span class="state live">Live</span>` : r === nx ? ` <span class="g-next">Next</span>` : ""}</b><span>${esc(r.e.name)}</span></span>
       ${w ? `<a class="g-w" href="${esc(w[1])}" target="_blank" rel="noopener">${esc(w[0])}${w[2] ? " (free)" : ""}</a>` : "<span></span>"}
@@ -3491,9 +3541,9 @@ function weekendWindow(){
   return [ws, we];
 }
 // "Fri 4:45 AM" for sessions this weekend; "Fri, Nov 20 4:45 AM" for anything later, so a weekday never points at the wrong week.
-function whenLbl(iso){
+function whenLbl(iso, fin){
   const d = new Date(iso), end = new Date(weekendWindow()[1]); end.setDate(end.getDate() + 1);
-  return `${(d < end ? fmtDow : fmtDay).format(d)} ${txTime(iso)}`;
+  return `${(d < end ? fmtDow : fmtDay).format(d)} ${fin ? rangeTxt(iso, fin[0], fin[1]) : txTime(iso)}`;
 }
 const fmtShort = d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 const wkendSpan = () => { const [ws, we] = weekendWindow(); return `${fmtShort(ws)}–${ws.getMonth() === we.getMonth() ? we.getDate() : fmtShort(we)}`; };
@@ -3507,7 +3557,7 @@ function worldRow([x]){
   return `<div class="wk-row ${DISC_CLS[x.discipline] || "d-mo"}" data-world="${esc(x.id)}" tabindex="0" role="button" aria-label="${esc(x.short || x.name)} details">
     <span class="pic thumb" data-pic="${esc(x.id)}" data-key="${esc(x.id)}-wk" aria-hidden="true"><span class="dplate">${esc(dirCode(x))}</span></span>
     <div class="wk-main"><div class="nm">${esc(x.short || x.name)}${freeWatch(x).length ? ` <span class="free-tag">Free stream</span>` : ""}</div><div class="loc">${esc(where)}</div></div>
-    <div class="wk-next">${n ? `<span>${esc(n[0])}</span><b>${whenLbl(n[1])}</b>` : `<span class="state">${esc((x.next.split(" · ")[1] || "").replace(/\s*\(.*$/, ""))}</span>`}</div>
+    <div class="wk-next">${n ? `<span>${esc(n[0])}</span><b>${whenLbl(n[1], sessEnd(x.id, x.id, n))}</b>` : `<span class="state">${esc((x.next.split(" · ")[1] || "").replace(/\s*\(.*$/, ""))}</span>`}</div>
     <div class="wk-watch">${n && n[3] ? `<a class="btn watch" href="${esc(n[3])}" target="_blank" rel="noopener">${esc(n[2])}</a>` : x.site ? `<a class="btn" href="${esc(x.site)}" target="_blank" rel="noopener">Times ↗</a>` : ""}</div>
   </div>`;
 }
@@ -3516,7 +3566,7 @@ function wkRow(e){
   return `<div class="wk-row ${e.series}" data-open="${e.id}" tabindex="0" role="button" aria-label="${esc(e.name)} details">
     ${picHTML(e.series, e.id, "thumb", plate(e.series, 20))}
     <div class="wk-main"><div class="nm">${raceA(e, "weekend")}</div><div class="loc">${esc(e.circuit)}, ${esc(e.location)}</div></div>
-    <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${whenLbl(ns[1])}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
+    <div class="wk-next">${ns ? `<span>${esc(ns[0])}</span><b>${whenLbl(ns[1], evEnd(e, ns))}</b>` : `<span class="state ${cls}">${esc(st)}</span>`}</div>
     <div class="wk-watch">${watchButtons(e.series, 1)}</div>
   </div>`;
 }
@@ -3532,7 +3582,7 @@ function evCard(e){
       <span class="state ${cls}">${esc(st)}</span>
     </div>
     ${resLine ? `<div class="res">${esc(resLine)}</div>` : ""}
-    ${sched || (nextSession(e.id) ? `<div class="next">Next: ${esc(nextSession(e.id)[0])}, ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${txTime(nextSession(e.id)[1])}</div>` : "")}
+    ${sched || (nextSession(e.id) ? `<div class="next">Next: ${esc(nextSession(e.id)[0])}, ${fmtDow.format(new Date(nextSession(e.id)[1]))} ${evRange(e, nextSession(e.id))}</div>` : "")}
     <div class="acts">${watchButtons(e.series, 1, "Watch on")}${phase(e) === "future" && ticketLinks(e)[0] ? `<a class="tlink" href="${esc(ticketLinks(e)[0][1])}" target="_blank" rel="noopener">Tickets</a>` : ""}${e.series === "f1" && phase(e) !== "past" ? `<button class="tlink" data-gopredict="1">Make your pick</button>` : ""}</div>
   </article>`;
 }
@@ -3606,7 +3656,7 @@ function dayPanelHTML(key){
   return `<div class="mcal-dayin"><h3>${DOW[d.getDay()]}, ${MONTHS[mm - 1]} ${dd}</h3>${its.map(({ e, sess }) => `<article class="mcal-dayrace ${e.series}" data-open="${e.id}" role="button" tabindex="0" aria-label="${esc(e.name)} details">
       ${picHTML(e.series, e.id + "-day", "thumb", plate(e.series, 20))}
       <div class="body"><div class="nm">${raceA(e, "calendar")}</div><div class="loc">${esc(e.circuit)} · ${esc(range(e))}${e.cancelled ? " · Cancelled" : ""}</div>
-      ${sess.length ? `<ul class="mcal-sess">${sess.map(x => `<li><span>${esc(x[0])}</span><b>${esc(fmtTime.format(new Date(x[1])))}</b></li>`).join("")}</ul>` : `<p class="fine">${(SESSIONS[e.id] || []).length ? "No sessions this day." : "Session times are added about a week before the race."}</p>`}
+      ${sess.length ? `<ul class="mcal-sess">${sess.map(x => `<li><span>${esc(x[0])}</span><b>${esc(evRange(e, x))}</b></li>`).join("")}</ul>` : `<p class="fine">${(SESSIONS[e.id] || []).length ? "No sessions this day." : "Session times are added about a week before the race."}</p>`}
       ${WINNERS[e.id] && ymdLocal(e.end) <= key ? `<p class="fine">Won by ${esc(WINNERS[e.id])}</p>` : ""}</div></article>`).join("")}</div>`;
 }
 document.addEventListener("click", ev => {
@@ -4773,7 +4823,7 @@ function obNextHTML(){
     return { e, ns, t: ns ? Date.parse(ns[1]) : e.start.getTime() };
   }).filter(Boolean).sort((a, b) => a.t - b.t);
   if (!rows.length) return `<p class="fine">No upcoming races for these yet. New calendars are added as soon as they're out.</p>`;
-  return `<div class="ob-next">${rows.map(({ e, ns }) => `<div class="ob-race">${plate(e.series, 24)}<span class="ob-rn"><b>${esc(e.name)}</b><small>${ns ? `${esc(ns[0])}: ${fmtDay.format(new Date(ns[1]))}, ${txTime(ns[1])}` : `${range(e)} (start times coming)`}</small></span></div>`).join("")}</div><p class="fine">Times are in ${esc(tzLabel())}.</p>`;
+  return `<div class="ob-next">${rows.map(({ e, ns }) => `<div class="ob-race">${plate(e.series, 24)}<span class="ob-rn"><b>${esc(e.name)}</b><small>${ns ? `${esc(ns[0])}: ${fmtDay.format(new Date(ns[1]))}, ${evRange(e, ns)}` : `${range(e)} (start times coming)`}</small></span></div>`).join("")}</div><p class="fine">Times are in ${esc(tzLabel())}.</p>`;
 }
 function renderOnboard(){
   const el = document.getElementById("obBody"); if (!el) return;

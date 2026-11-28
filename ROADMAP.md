@@ -3,6 +3,7 @@
 Ideas and plans for later. Nothing here is being built yet unless it says so.
 
 ## Next up
+- Done Nov 28, 2026: start and finish times everywhere a session time shows (race sheets, weekend guide, calendar day panel, hero, Next up strip, Series-tab weekend rows, race pages, FAQ answers, schema endDate, .ics feeds). Practice/qualifying use published lengths; race finishes are estimates shown with ~. Set exact finishes in `SESSION_END`.
 - Done Nov 28, 2026: track maps. `tmap.js` shows the layout diagram from each circuit's Wikipedia article (Commons, free licences, credited) in race sheets, race pages and track pages. Hidden when a track has no free map. Cached per browser (`pri-tmap-v1`).
 - In progress Nov 27, 2026: every series as complete as F1 (SERIES-DATA.md). Built: data file format `data/series/<id>.json`, Calendar/Standings/Drivers tabs and "Next round"/"Latest result" in the app's series sheet, the same sections on `/series/<id>/` pages, tiers (`data/series/tiers.json`: 45 full, 44 partial, 7 limited), check-site section 15, and a Google News search per series so every series gets headlines. Next: fill the files tier by tier (Super Formula first), race pages for those series' rounds, richer race pages (full results, qualifying, standings after the race, past winners at the track), and outreach to limited-tier series.
 - Done Nov 27, 2026: per-race share images (link previews) and results titles/descriptions on finished race pages.
